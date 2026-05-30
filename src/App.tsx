@@ -1120,11 +1120,11 @@ function PlanCard({ plan, index, onSelectPlan }: { plan: typeof PLANS[number]; i
               <span className="font-display text-5xl font-bold text-ink tabular">{plan.price}</span>
               <span className="text-ink/50 text-sm">/ 12 mo</span>
             </div>
-            <div className="mt-2 text-sm text-ink/60">Winner tour value up to <b className="neon-gold">₹{plan.tourValue.toLocaleString('en-IN')}</b> · {plan.duration}</div>
+            <div className="mt-2 text-sm text-ink/60">Winner tour value up to <span className="font-semibold text-ink">₹{plan.tourValue.toLocaleString('en-IN')}</span> · {plan.duration}</div>
           </div>
 
           <div className="p-7 border-b border-slate-line">
-            <div className="flex items-center gap-2 mb-3"><MapPin className="w-4 h-4 text-cyan" /><div className="text-[11px] uppercase tracking-widest neon-cyan font-semibold">Winner Destinations</div></div>
+            <div className="flex items-center gap-2 mb-3"><MapPin className="w-4 h-4 text-cyan" /><div className="text-[11px] uppercase tracking-widest text-cyan font-semibold">Winner Destinations</div></div>
             <ul className="space-y-2">{plan.destinations.map((d) => <li key={d} className="flex items-start gap-2 text-sm text-ink/80"><GoldCheck size={15} /><span>{d}</span></li>)}</ul>
           </div>
 
@@ -1192,12 +1192,12 @@ function Plans({ onSelectPlan }: { onSelectPlan: (planName: string) => void }) {
               <Sparkles className="w-6 h-6 text-white animate-pulse" />
             </div>
             <div className="text-left text-xs sm:text-sm leading-relaxed relative z-10 text-ink">
-              <div className="font-semibold text-cyan-deep uppercase tracking-wider flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
+              <div className="font-semibold text-cyan-deep uppercase tracking-widest flex items-center gap-1.5 text-[11px]">
+                <span className="w-1.5 h-1.5 rounded-full bg-cyan-deep animate-pulse" />
                 Subscription Rules & Benefits
               </div>
-              <div className="text-ink/80 mt-1">
-                <span className="text-rose-600 font-bold">No Cash Refunds.</span> Active subscribers are automatically entered into weekly draws to win a <span className="text-cyan-deep font-bold">fully-paid tour package</span>. If you don't win, 100% of your subscription fee accumulates as <span className="text-cyan-deep font-bold">Discount Credits</span> to book future tours.
+              <div className="text-ink/75 mt-1">
+                <span className="font-semibold text-rose-700">No Cash Refunds.</span> Active subscribers are automatically entered into weekly draws to win a <span className="font-semibold text-ink">fully-paid tour package</span>. If you don't win, 100% of your subscription fee accumulates as <span className="font-semibold text-ink">Discount Credits</span> to book future tours.
               </div>
             </div>
           </motion.div>
