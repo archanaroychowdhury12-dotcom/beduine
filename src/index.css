@@ -804,3 +804,550 @@ input[type="range"]::-moz-range-thumb {
     }
   }
 }
+
+
+
+/* Video Background — Cards & Sections Glassmorphism */
+.video-bg-container {
+  position: relative;
+  overflow: visible;
+  clip-path: inset(0); /* Constrain fixed viewport elements to this container */
+}
+
+.video-bg-container section {
+  background: transparent !important;
+}
+
+/* Premium frosted glass for cards ON video — Translucent & Highly Readable */
+.video-bg-container .glass {
+  background: rgba(6, 12, 16, 0.42) !important;
+  backdrop-filter: blur(24px) saturate(190%) !important;
+  border: 1px solid rgba(13, 148, 136, 0.38) !important;
+  box-shadow:
+    0 16px 45px -10px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.4s ease, box-shadow 0.4s ease !important;
+}
+.video-bg-container .glass:hover {
+  transform: translateY(-6px) scale(1.012) !important;
+  border-color: rgba(0, 217, 255, 0.6) !important;
+  box-shadow: 0 20px 45px rgba(0, 217, 255, 0.18), 0 0 30px rgba(0, 217, 255, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
+}
+
+.video-bg-container .glass-light {
+  background: rgba(9, 18, 23, 0.38) !important;
+  backdrop-filter: blur(20px) saturate(170%) !important;
+  border: 1px solid rgba(13, 148, 136, 0.28) !important;
+  box-shadow:
+    0 12px 35px -8px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.4s ease, box-shadow 0.4s ease !important;
+}
+.video-bg-container .glass-light:hover {
+  transform: translateY(-6px) scale(1.012) !important;
+  border-color: rgba(0, 217, 255, 0.42) !important;
+  box-shadow: 0 20px 45px rgba(0, 217, 255, 0.12), 0 0 25px rgba(0, 217, 255, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+}
+
+.video-bg-container .glass-cyan {
+  background: linear-gradient(135deg, rgba(14,165,233,0.18) 0%, rgba(6, 12, 16, 0.42) 100%) !important;
+  backdrop-filter: blur(24px) saturate(190%) !important;
+  border: 1px solid rgba(14,165,233,0.45) !important;
+  box-shadow:
+    0 16px 45px -10px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.4s ease, box-shadow 0.4s ease !important;
+}
+.video-bg-container .glass-cyan:hover {
+  transform: translateY(-6px) scale(1.012) !important;
+  border-color: rgba(14,165,233,0.7) !important;
+  box-shadow: 0 20px 45px rgba(14, 165, 233, 0.22), 0 0 35px rgba(14, 165, 233, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
+}
+
+.video-bg-container .glass-gold {
+  background: linear-gradient(135deg, rgba(13,148,136,0.18) 0%, rgba(6, 12, 16, 0.42) 100%) !important;
+  backdrop-filter: blur(24px) saturate(190%) !important;
+  border: 1px solid rgba(13,148,136,0.42) !important;
+  box-shadow:
+    0 16px 45px -10px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.4s ease, box-shadow 0.4s ease !important;
+}
+.video-bg-container .glass-gold:hover {
+  transform: translateY(-6px) scale(1.012) !important;
+  border-color: rgba(255, 215, 0, 0.6) !important;
+  box-shadow: 0 20px 45px rgba(255, 215, 0, 0.22), 0 0 35px rgba(255, 215, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
+}
+
+/* Featured Plan Card Overrides inside video background */
+.video-bg-container #plans [class*="from-abyss"] {
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.12) 0%, rgba(13, 27, 34, 0.35) 100%) !important;
+  backdrop-filter: blur(20px) saturate(180%) !important;
+  border-color: rgba(255, 215, 0, 0.6) !important;
+  box-shadow: 0 0 24px rgba(255, 215, 0, 0.25), 0 12px 40px -10px rgba(0, 0, 0, 0.45) !important;
+}
+
+.video-bg-container #intl-plans [class*="from-abyss"] {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.12) 0%, rgba(13, 27, 34, 0.35) 100%) !important;
+  backdrop-filter: blur(20px) saturate(180%) !important;
+  border-color: rgba(16, 185, 129, 0.6) !important;
+  box-shadow: 0 0 24px rgba(16, 185, 129, 0.25), 0 12px 40px -10px rgba(0, 0, 0, 0.45) !important;
+}
+
+/* FAQ & Promise Box Overrides inside video background */
+.video-bg-container .faq-section {
+  background: transparent !important;
+}
+
+.video-bg-container .faq-wrapper {
+  background: rgba(13, 27, 34, 0.38) !important;
+  border: 1px solid rgba(13, 148, 136, 0.32) !important;
+  backdrop-filter: blur(20px) saturate(180%) !important;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.55) !important;
+}
+
+.video-bg-container .faq-card {
+  background: rgba(18, 35, 43, 0.22) !important;
+  border: 1px solid rgba(13, 148, 136, 0.22) !important;
+  backdrop-filter: blur(12px) !important;
+  box-shadow: 0 12px 45px rgba(0, 0, 0, 0.35) !important;
+}
+
+.video-bg-container .faq-card h3 {
+  color: #ffffff !important;
+  text-shadow: none !important;
+}
+
+.video-bg-container .faq-card p {
+  color: #e2e8f0 !important;
+}
+
+.video-bg-container .promise-box {
+  background: linear-gradient(135deg, rgba(13, 148, 136, 0.65), rgba(0, 229, 212, 0.45)) !important;
+  border: 1px solid rgba(0, 229, 212, 0.35) !important;
+}
+
+/* Cinematic Top Transition — Smooth merge from Hero cosmos into video */
+.video-bg-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 320px;
+  background: linear-gradient(
+    to bottom,
+    var(--color-cosmos) 0%,
+    var(--color-cosmos) 15%,
+    color-mix(in srgb, var(--color-cosmos) 80%, transparent) 35%,
+    color-mix(in srgb, var(--color-cosmos) 40%, transparent) 55%,
+    color-mix(in srgb, var(--color-cosmos) 15%, transparent) 75%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 20;
+}
+
+/* Bottom Transition — Smooth fade back to cosmos */
+.video-bg-container::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 280px;
+  background: linear-gradient(
+    to top,
+    var(--color-cosmos) 0%,
+    var(--color-cosmos) 15%,
+    color-mix(in srgb, var(--color-cosmos) 80%, transparent) 35%,
+    color-mix(in srgb, var(--color-cosmos) 40%, transparent) 55%,
+    color-mix(in srgb, var(--color-cosmos) 15%, transparent) 75%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 20;
+}
+
+/* Headings — Luminous white with drop shadow on dark video background */
+.video-bg-container h2,
+.video-bg-container h3 {
+  color: #ffffff !important;
+  font-weight: 850 !important;
+  text-shadow: 0 3px 12px rgba(0, 0, 0, 0.7) !important;
+}
+
+/* Restored shimmer/gradient text on video sections with vibrant colors for dark mode */
+.video-bg-container .gold-shimmer {
+  background: linear-gradient(90deg, #00f5d4 0%, #a855f7 25%, #00d9ff 50%, #a855f7 75%, #00f5d4 100%) !important;
+  background-size: 200% auto !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+  animation: shimmer 6s linear infinite !important;
+  text-shadow: none !important;
+}
+
+.video-bg-container .gradient-neon {
+  background: linear-gradient(135deg, #00d9ff 0%, #a855f7 100%) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+  text-shadow: none !important;
+}
+
+/* Force standard body text to comfortable ivory/light gray on dark sections */
+.video-bg-container p,
+.video-bg-container li,
+.video-bg-container .text-ink {
+  color: #e2e8f0 !important;
+}
+
+/* Also override specific slate/ink text colors inside dark cards to light cream/white */
+.video-bg-container .text-slate-950,
+.video-bg-container .text-slate-900,
+.video-bg-container .text-slate-850,
+.video-bg-container .text-slate-800,
+.video-bg-container .text-slate-700,
+.video-bg-container [class*="text-ink/"],
+.video-bg-container [class*="text-ink\\/"] {
+  color: #f1f5f9 !important;
+}
+
+/* Accent colors — brightened neon variants for high contrast on dark video background */
+.video-bg-container .neon-gold,
+.video-bg-container .text-neon-gold {
+  color: #00f5d4 !important; /* Luminous brand teal */
+  text-shadow: 0 0 8px rgba(0, 245, 212, 0.2) !important;
+}
+.video-bg-container .neon-cyan,
+.video-bg-container .text-cyan {
+  color: #00d9ff !important; /* Luminous cyan */
+  text-shadow: 0 0 8px rgba(0, 217, 255, 0.2) !important;
+}
+
+/* Labels & small badge tags — extra bold for clarity */
+.video-bg-container .text-\[11px\],
+.video-bg-container .text-\[10px\] {
+  font-weight: 700 !important;
+}
+
+/* Remove text-shadow inside glass cards (already readable on opaque bg) */
+.video-bg-container .glass h2,
+.video-bg-container .glass h3,
+.video-bg-container .glass p,
+.video-bg-container .glass span,
+.video-bg-container .glass li,
+.video-bg-container .glass div,
+.video-bg-container .glass-gold h2,
+.video-bg-container .glass-gold h3,
+.video-bg-container .glass-gold p,
+.video-bg-container .glass-gold span,
+.video-bg-container .glass-gold div,
+.video-bg-container .glass-cyan h2,
+.video-bg-container .glass-cyan h3,
+.video-bg-container .glass-cyan p,
+.video-bg-container .glass-cyan span,
+.video-bg-container .glass-cyan div,
+.video-bg-container .glass-light h2,
+.video-bg-container .glass-light h3,
+.video-bg-container .glass-light p,
+.video-bg-container .glass-light span,
+.video-bg-container .glass-light div {
+  text-shadow: none !important;
+  -webkit-text-stroke: 0 !important;
+}
+
+/* Neon borders glow stronger on video */
+.video-bg-container .neon-border-cyan {
+  box-shadow: 0 0 24px rgba(14, 165, 233, 0.3), 0 0 60px rgba(14, 165, 233, 0.1) !important;
+}
+.video-bg-container .neon-border-gold {
+  box-shadow: 0 0 24px rgba(13, 148, 136, 0.3), 0 0 60px rgba(13, 148, 136, 0.1) !important;
+}
+.video-bg-container .neon-border-violet {
+  box-shadow: 0 0 24px rgba(139, 92, 246, 0.3), 0 0 60px rgba(139, 92, 246, 0.1) !important;
+}
+
+
+/* Global overflow and header offsets */
+html {
+  overflow-x: hidden;
+}
+
+section {
+  scroll-margin-top: 100px;
+}
+
+/* Premium FAQ Section styling with waterfall background & overlay */
+.faq-section {
+  position: relative;
+  padding: 110px 24px 80px;
+  background-image:
+    linear-gradient(
+      180deg,
+      rgba(240, 255, 252, 0.82),
+      rgba(220, 255, 248, 0.68),
+      rgba(255, 255, 255, 0.88)
+    ),
+    url("/images/waterfall_bg.png");
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+}
+
+.faq-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at top left, rgba(0, 229, 212, 0.22), transparent 35%),
+    radial-gradient(circle at bottom right, rgba(157, 78, 221, 0.16), transparent 38%);
+  pointer-events: none;
+}
+
+.faq-wrapper {
+  position: relative;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 48px 40px;
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.58);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(18px);
+  box-shadow: 0 24px 80px rgba(15, 23, 42, 0.16);
+}
+
+.faq-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.faq-card {
+  padding: 28px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.12);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.faq-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(13, 148, 136, 0.35) !important;
+  box-shadow: 0 24px 60px rgba(13, 148, 136, 0.15);
+}
+
+.faq-card h3 {
+  color: #071833 !important;
+  font-size: 18px;
+  font-weight: 800 !important;
+  margin-bottom: 12px;
+}
+
+.faq-card p {
+  color: #172033 !important;
+  font-size: 15px;
+  line-height: 1.7;
+  font-weight: 600 !important;
+}
+
+.promise-box {
+  position: relative;
+  max-width: 1180px;
+  margin: 48px auto 0;
+  padding: 28px 36px;
+  border-radius: 24px;
+  background: linear-gradient(
+    135deg,
+    rgba(13, 148, 136, 0.88),
+    rgba(0, 229, 212, 0.65)
+  );
+  backdrop-filter: blur(14px);
+  box-shadow: 0 20px 60px rgba(0, 128, 120, 0.24);
+}
+
+.choose-btn {
+  position: fixed;
+  right: 24px;
+  bottom: 28px;
+  z-index: 100;
+}
+
+@media (max-width: 768px) {
+  .faq-section {
+    padding: 90px 16px 60px;
+  }
+
+  .faq-wrapper {
+    padding: 32px 20px;
+  }
+
+  .faq-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .faq-card {
+    padding: 22px;
+  }
+
+  .choose-btn {
+    right: 16px;
+    bottom: 18px;
+  }
+}
+
+/* --- Subtle floating, rotating, and pulsing animations --- */
+
+@keyframes float-up-down-1 {
+  0%, 100% { transform: translateY(0px) rotate(1deg); }
+  50% { transform: translateY(-16px) rotate(-1.5deg); }
+}
+@keyframes float-up-down-2 {
+  0%, 100% { transform: translateY(0px) rotate(-1.5deg); }
+  50% { transform: translateY(-22px) rotate(2deg); }
+}
+@keyframes float-up-down-3 {
+  0%, 100% { transform: translateY(0px) rotate(2deg); }
+  50% { transform: translateY(-12px) rotate(-1deg); }
+}
+
+.float-card-1 {
+  animation: float-up-down-1 7s ease-in-out infinite;
+}
+.float-card-2 {
+  animation: float-up-down-2 9s ease-in-out infinite;
+}
+.float-card-3 {
+  animation: float-up-down-3 8s ease-in-out infinite;
+}
+
+@keyframes compass-rotate-clockwise {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+@keyframes compass-rotate-counter {
+  0% { transform: rotate(360deg); }
+  100% { transform: rotate(0deg); }
+}
+@keyframes needle-wobble-anim {
+  0%, 100% { transform: rotate(-5deg); }
+  50% { transform: rotate(5deg); }
+}
+
+.compass-ring-slow {
+  animation: compass-rotate-clockwise 30s linear infinite;
+  transform-origin: 50% 50%;
+}
+.compass-ring-reverse {
+  animation: compass-rotate-counter 45s linear infinite;
+  transform-origin: 50% 50%;
+}
+.compass-needle-wobble {
+  animation: needle-wobble-anim 6s ease-in-out infinite;
+  transform-origin: 50% 50%;
+}
+
+/* Composited pulse glow for buttons using transform + opacity (avoiding paint-triggering box-shadow changes) */
+.breathe-glow {
+  position: relative;
+}
+.breathe-glow::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: inherit;
+  opacity: 0.5;
+  z-index: -1;
+  pointer-events: none;
+  animation: pulse-glow-composited 2s cubic-bezier(0.25, 0, 0, 1) infinite;
+}
+
+@keyframes pulse-glow-composited {
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(1.16, 1.32);
+    opacity: 0;
+  }
+}
+
+/* Hide scrollbar utility for Destinations carousel */
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-none {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+/* Custom styles for page route line draw animation */
+.route-line-svg {
+  filter: drop-shadow(0 0 8px rgba(13, 148, 136, 0.2));
+}
+
+/* Card zoom on hover */
+.zoom-hover-img img {
+  transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+}
+.zoom-hover-img:hover img {
+  transform: scale(1.08);
+}
+
+/* --- prefers-reduced-motion support for users with motion sensitivity --- */
+@media (prefers-reduced-motion: reduce) {
+  /* Disable keyframe animations */
+  .float-card-1, .float-card-2, .float-card-3,
+  .compass-ring-slow, .compass-ring-reverse, .compass-needle-wobble,
+  .breathe-glow::after, .route-airplane-tracker {
+    animation: none !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  
+  /* Disable hover scales */
+  .zoom-hover-img img,
+  .zoom-hover-img:hover img {
+    transform: none !important;
+    transition: none !important;
+  }
+
+  /* Disable view transition API morphing effect */
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+
+  /* Hide custom cursor */
+  .cursor-dot, .cursor-ring, .cursor-trail {
+    display: none !important;
+  }
+  body {
+    cursor: auto !important;
+  }
+}
+
+/* ============ UPGRADES: Accessibility & UX Polish ============ */
+
+/* Pause marquee on hover so users can easily read stories */
+.marquee-track:hover {
+  animation-play-state: paused !important;
+}
+
+/* Premium neon glow ring for keyboard accessibility focus */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+[data-magnetic]:focus-visible {
+  outline: 2px solid #00d9ff !important;
+  outline-offset: 4px;
+  box-shadow: 0 0 14px rgba(0, 217, 255, 0.6) !important;
+}
+

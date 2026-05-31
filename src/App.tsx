@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
-import { motion, AnimatePresence, useScroll, useSpring, useInView } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useSpring, useInView, useTransform } from 'framer-motion';
 import {
   Compass, Sparkles, Gift, CreditCard, Award, ShieldCheck,
-  ChevronRight, CheckCircle2, Star,
+  ChevronRight, CheckCircle2, Check, Star,
   Phone, Calendar, MapPin, Hotel, Train, Plane,
   FileCheck2, Banknote, ArrowRight, Menu, X, MessageCircle,
   Download, Lock, BarChart3, Eye, Target, TrendingUp, Crown,
@@ -11,6 +11,7 @@ import {
   Heart, Globe, Users, Rocket, Wallet, History, IndianRupee, Info, AlertTriangle,
   Coins, ArrowUpDown, Shield, HeartHandshake
 } from 'lucide-react';
+
 
 
 
@@ -112,14 +113,25 @@ const AUDIT_REPORTS = [
 ];
 
 const DESTINATIONS = [
-  { name: 'Kashmir', tag: 'Srinagar · Gulmarg · Pahalgam', duration: '4N/5D', rating: 4.9, season: 'Mar – Oct', img: '/images/kashmir_dal_lake_1779521728036.png' },
-  { name: 'Rajasthan Royal', tag: 'Jaipur · Udaipur · Jaisalmer', duration: '5N/6D', rating: 4.8, season: 'Oct – Mar', img: '/images/rajasthan_palace_1779521744228.png' },
-  { name: 'Kerala', tag: 'Munnar · Alleppey · Kovalam', duration: '4N/5D', rating: 4.9, season: 'Sep – Mar', img: '/images/kerala_houseboat_1779521772928.png' },
-  { name: 'Himachal', tag: 'Shimla · Manali · Solang', duration: '4N/5D', rating: 4.7, season: 'Mar – Jun', img: '/images/himachal_hills.png' },
-  { name: 'Darjeeling', tag: 'Tiger Hill · Tea Gardens', duration: '3N/4D', rating: 4.8, season: 'Mar – May', img: '/images/darjeeling_tea_1779521805614.png' },
-  { name: 'Sundarbans', tag: 'Tiger Reserve · Boat Safari', duration: '2N/3D', rating: 4.6, season: 'Oct – Mar', img: '/images/sundarbans_mangrove_1779521789593.png' },
-  { name: 'Goa Beaches', tag: 'North · South · Island Hopping', duration: '3N/4D', rating: 4.7, season: 'Nov – Feb', img: '/images/goa_beaches.png' },
-  { name: 'Tropical Coast', tag: 'Palm Beaches · Sunsets', duration: '3N/4D', rating: 4.8, season: 'Year-round', img: '/images/tropical_coast.png' },
+  // Weekend Escapes
+  { name: 'Sundarbans', tag: 'Tiger Reserve · Mangrove Boats', duration: '2N/3D', rating: 4.7, season: 'Oct – Mar', img: '/images/sundarbans_mangrove_premium.png', category: 'escapes', planBadge: 'Silver+' },
+  { name: 'Bakkhali Beach', tag: 'Casuarina Shore · Delta Sunset', duration: '1N/2D', rating: 4.6, season: 'Oct – Apr', img: '/images/bakkhali_beach_premium.png', category: 'escapes', planBadge: 'Silver+' },
+  { name: 'Mousuni Island', tag: 'Seaside Camp · Huts & Palms', duration: '1N/2D', rating: 4.5, season: 'Nov – Mar', img: '/images/mousuni_island_premium.png', category: 'escapes', planBadge: 'Silver+' },
+
+  // Hill & Tea Trails
+  { name: 'Darjeeling', tag: 'Tiger Hill Sunrise · Tea Estates', duration: '3N/4D', rating: 4.8, season: 'Mar – Jun', img: '/images/darjeeling_tea_1779521805614.png', category: 'trails', planBadge: 'Gold+' },
+  { name: 'Dooars Safari', tag: 'Forest Huts · River Wilds', duration: '2N/3D', rating: 4.6, season: 'Sep – Apr', img: '/images/dooars_safari.png', category: 'trails', planBadge: 'Gold+' },
+  { name: 'Shimla & Manali', tag: 'Mall Road · Solang Valley Adventure', duration: '5N/6D', rating: 4.9, season: 'Oct – May', img: '/images/himachal_hills.png', category: 'trails', planBadge: 'Platinum+' },
+
+  // Royal India Tours
+  { name: 'Rajasthan Royal', tag: 'Jaipur · Udaipur · Desert Dunes', duration: '5N/6D', rating: 4.8, season: 'Oct – Mar', img: '/images/rajasthan_palace_1779521744228.png', category: 'royal', planBadge: 'Gold+' },
+  { name: 'Kerala Backwaters', tag: 'Houseboats · Munnar Hills', duration: '4N/5D', rating: 4.9, season: 'Sep – Mar', img: '/images/kerala_houseboat_1779521772928.png', category: 'royal', planBadge: 'Gold+' },
+  { name: 'Puri & Konark', tag: 'Sun Temple · Golden Beach', duration: '3N/4D', rating: 4.7, season: 'Oct – Mar', img: '/images/puri_konark.png', category: 'royal', planBadge: 'Silver+' },
+
+  // Premium International Trips
+  { name: 'Dubai', tag: 'Burj Khalifa · Desert Safaris', duration: '4N/5D', rating: 4.9, season: 'Nov – Mar', img: '/images/dubai_skyline_1779539448313.png', category: 'intl', planBadge: 'Platinum+' },
+  { name: 'Singapore', tag: 'Sentosa · Gardens by the Bay', duration: '4N/5D', rating: 4.8, season: 'Year-round', img: '/images/singapore_skyline_1779539502293.png', category: 'intl', planBadge: 'Platinum+' },
+  { name: 'Maldives', tag: 'Overwater Bungalows · Reefs', duration: '4N/5D', rating: 4.9, season: 'Nov – Apr', img: '/images/maldives_overwater_1779539482305.png', category: 'intl', planBadge: 'Platinum+' },
 ];
 
 const WINNERS_DATA = [
@@ -139,11 +151,16 @@ const JOURNEY_IMAGES = [
 ];
 
 /* ---------- Helpers ---------- */
-function Reveal({ children, delay = 0, y = 30 }: { children: React.ReactNode; delay?: number; y?: number }) {
+function Reveal({ children, delay = 0, y = 80 }: { children: React.ReactNode; delay?: number; y?: number }) {
   const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: '-60px' });
+  const inView = useInView(ref, { once: true, margin: '-80px' });
   return (
-    <motion.div ref={ref} initial={{ opacity: 0, y }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.8, delay, ease: [0.22, 1, 0.36, 1] }}>
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y, scale: 0.94, filter: 'blur(8px)' }}
+      animate={inView ? { opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' } : {}}
+      transition={{ duration: 1, delay, ease: [0.16, 1, 0.3, 1] }}
+    >
       {children}
     </motion.div>
   );
@@ -153,7 +170,7 @@ function GoldCheck({ size = 18, variant = 'gold' }: { size?: number; variant?: '
   const checkClass = variant === 'cyan' ? 'cyan-check' : variant === 'violet' ? 'violet-check' : 'gold-check';
   return (
     <span className={`inline-flex items-center justify-center rounded-full ${checkClass} shrink-0`} style={{ width: size, height: size }}>
-      <CheckCircle2 className="text-cosmos" style={{ width: size * 0.7, height: size * 0.7 }} strokeWidth={3} />
+      <Check className="text-cosmos" style={{ width: size * 0.6, height: size * 0.6 }} strokeWidth={3.5} />
     </span>
   );
 }
@@ -703,20 +720,25 @@ function Hero() {
   }, []);
 
   const slide = HERO_SLIDES[currentSlideIndex];
+  
+  const { scrollY } = useScroll();
+  const yParallax = useTransform(scrollY, [0, 800], [0, 150]);
 
   return (
     <section id="top" className="relative min-h-screen flex items-center bg-cosmos overflow-hidden">
-      <div className="absolute inset-0 z-0 overflow-hidden">
+      {/* Background with Parallax */}
+      <div className="absolute inset-0 z-0 overflow-hidden bg-cosmos">
         <AnimatePresence mode="popLayout">
           <motion.div
             key={currentSlideIndex}
+            style={{ y: yParallax }}
             initial={{ scale: 1.12, opacity: 0 }}
             animate={{ scale: 1, opacity: 0.85 }}
             exit={{ scale: 0.96, opacity: 0 }}
             transition={{ duration: 1.6, ease: [0.25, 1, 0.5, 1] }}
             className="absolute inset-0"
           >
-            <img src={slide.image} alt={slide.tagline} className="w-full h-full object-cover" />
+            <img src={slide.image} alt={slide.tagline} className="w-full h-full object-cover" fetchpriority="high" width="1920" height="1080" />
           </motion.div>
         </AnimatePresence>
         <div className="absolute inset-0 bg-gradient-to-b from-cosmos/30 via-transparent to-cosmos/50 z-[2]" />
@@ -725,78 +747,90 @@ function Hero() {
 
       <div className="absolute inset-0 grid-pattern opacity-15 z-[1]" />
 
-      <div className="relative max-w-7xl mx-auto px-5 lg:px-8 pt-32 pb-24 w-full z-10 grid lg:grid-cols-12 gap-12 items-center">
-        <div className="lg:col-span-7 text-left text-ink flex flex-col justify-center">
-          <div className="min-h-[220px] flex flex-col justify-center">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={currentSlideIndex}
-                initial={{ opacity: 0, y: 25 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -25 }}
-                transition={{ duration: 0.7, ease: [0.215, 0.61, 0.355, 1] }}
-                className="flex flex-col text-left"
-              >
-                <div className="mb-2">
-                  <span className="font-pacifico text-3xl md:text-4xl text-cyan-deep drop-shadow-[0_1px_2px_rgba(0,180,216,0.2)]">
-                    {slide.tagline}
-                  </span>
-                </div>
-                <h1 className="font-display font-black text-5xl sm:text-7xl lg:text-8xl tracking-tight leading-[1.0] text-ink uppercase">
-                  {slide.title1}<br />
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-deep to-cyan">{slide.title2}</span>
-                </h1>
-                <p className="text-sm sm:text-base text-ink/80 mt-4 max-w-xl leading-relaxed font-medium">
-                  {slide.desc}
-                </p>
-              </motion.div>
-            </AnimatePresence>
+      <div className="relative max-w-7xl mx-auto px-5 lg:px-8 pt-32 pb-24 w-full z-10 grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+        {/* Left Column: Headline, Pitch, and Pulse CTA Button */}
+        <div className="lg:col-span-6 text-left text-ink flex flex-col justify-center">
+          <div className="mb-2 flex flex-col gap-1">
+            <span className="text-[11px] uppercase tracking-[0.35em] text-cyan font-mono font-bold leading-none">// Welcome to Beduine Tour & Travels</span>
+            <span className="font-pacifico text-2xl md:text-3xl text-teal-600 drop-shadow-[0_1px_2px_rgba(13,148,136,0.15)] leading-relaxed">
+              "Safar Jo Yaad Rahe"
+            </span>
           </div>
+          <h1 className="font-display font-black text-5xl sm:text-6xl lg:text-7xl tracking-tight leading-[1.0] text-ink uppercase mb-4 animate-fade-in">
+            Premium Tour Packages &<br />
+            <span className="gold-shimmer">Custom Trips.</span>
+          </h1>
+          <div className="h-0.5 w-20 bg-gradient-to-r from-teal-600 to-cyan mb-5 rounded-full" />
+          <h2 className="text-xl lg:text-2xl font-extrabold text-[#0D9488] mb-4">
+            Guaranteed Safety Net, Unlimited Value.
+          </h2>
+          <p className="text-sm sm:text-base text-ink/80 leading-relaxed font-semibold max-w-lg mb-8">
+            Explore India and the world through our premium travel club. Enjoy weekly lucky draws, guaranteed discounts, and 100%+ value recovery on every plan.
+          </p>
 
-          <div className="mt-6 flex flex-col sm:flex-row gap-4 items-start sm:items-center">
-            <a href="#plans" className="cursor-pointer">
-              <button className="px-8 py-4 bg-cyan hover:bg-cyan-deep text-white font-bold rounded-full shadow-lg hover:shadow-cyan/30 hover:-translate-y-0.5 transition-all text-base flex items-center gap-2 uppercase tracking-wider group cursor-pointer border-none">
-                Book Now <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+          <div className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center">
+            <a href="#destinations" className="cursor-pointer">
+              <button className="w-full sm:w-auto px-8 py-4 bg-teal-600 hover:bg-teal-700 text-white font-bold rounded-full shadow-lg breathe-glow hover:-translate-y-0.5 transition-all text-base flex items-center justify-center gap-2.5 uppercase tracking-wider border-none cursor-pointer">
+                Explore Packages <ArrowRight className="w-5 h-5" />
+              </button>
+            </a>
+            <a href="https://wa.me/918768903565" target="_blank" rel="noreferrer" className="cursor-pointer">
+              <button className="w-full sm:w-auto px-8 py-4 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-full shadow-lg hover:-translate-y-0.5 transition-all text-base flex items-center justify-center gap-2.5 uppercase tracking-wider border-none cursor-pointer">
+                WhatsApp Us <MessageCircle className="w-5 h-5 fill-current" />
               </button>
             </a>
           </div>
-
-          <div className="relative h-48 mt-6 w-full hidden sm:block">
-            <motion.div initial={{ opacity: 0, x: -30, rotate: -20 }} animate={{ opacity: 1, x: 0, rotate: -12 }} transition={{ duration: 1, delay: 0.5 }} className="absolute left-0 bottom-2 bg-white p-3 pb-5 shadow-2xl rounded-sm w-44 border border-slate-200">
-              <img src="/images/kashmir_dal_lake_1779521728036.png" alt="Kashmir Dal Lake" className="w-full h-28 object-cover rounded-sm" />
-              <div className="text-[11px] text-slate-800 font-pacifico mt-2 text-center">Kashmir Dal Lake</div>
-            </motion.div>
-            <motion.div initial={{ opacity: 0, x: 30, rotate: 20 }} animate={{ opacity: 1, x: 140, rotate: 6 }} transition={{ duration: 1, delay: 0.7 }} className="absolute bottom-4 bg-white p-3 pb-5 shadow-2xl rounded-sm w-44 border border-slate-200 z-10">
-              <img src="/images/darjeeling_tea_1779521805614.png" alt="Darjeeling Tea" className="w-full h-28 object-cover rounded-sm" />
-              <div className="text-[11px] text-slate-800 font-pacifico mt-2 text-center">Darjeeling Tea</div>
-            </motion.div>
-          </div>
         </div>
 
-        <div className="lg:col-span-5 relative flex items-center justify-center min-h-[480px]">
-          <div className="w-[280px] h-[430px] sm:w-[300px] sm:h-[450px] rounded-[150px] border-[10px] border-white shadow-2xl overflow-hidden relative bg-sky-200 z-20">
-            <img src="/images/maldives_overwater_1779539482305.png" alt="Maldives overwater villa" className="w-full h-full object-cover" />
-            <div className="absolute inset-0 bg-gradient-to-t from-sky-400/20 via-transparent to-transparent pointer-events-none" />
+        {/* Right Column: Floating collage + route line + airplane */}
+        <div className="lg:col-span-6 relative flex items-center justify-center min-h-[440px]">
+          {/* Dashboard Route Overlay */}
+          <div className="absolute inset-0 z-0 pointer-events-none opacity-40">
+            <svg viewBox="0 0 300 400" className="w-full h-full" fill="none">
+              <path
+                d="M 50,300 C 150,350 200,100 250,50"
+                stroke="rgba(13, 148, 136, 0.4)"
+                strokeWidth="2"
+                strokeDasharray="4,6"
+                strokeLinecap="round"
+              />
+            </svg>
           </div>
-          <motion.div animate={{ y: [0, -8, 0] }} transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }} className="absolute -right-4 top-16 w-72 h-72 z-30 pointer-events-none">
-            <img src="/images/airplane_nobg.png" alt="Airplane" className="w-full h-full object-contain filter drop-shadow-[0_15px_15px_rgba(0,0,0,0.2)]" style={{ transform: 'rotate(45deg) scale(1.15)' }} />
-          </motion.div>
-          <motion.div animate={{ x: [-15, 15, -15] }} transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }} className="absolute -left-12 bottom-20 w-44 h-14 bg-white/95 rounded-full blur-[3px] shadow-lg z-[25] opacity-90" />
-          <motion.div animate={{ x: [15, -15, 15] }} transition={{ duration: 14, repeat: Infinity, ease: 'easeInOut' }} className="absolute -right-8 top-12 w-48 h-14 bg-white/90 rounded-full blur-[4px] shadow-lg z-[35] opacity-90" />
-          <motion.div animate={{ y: [0, -12, 0], rotate: [0, 8, 0] }} transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }} className="absolute left-6 top-32 z-[35] pointer-events-none">
-            <Heart className="w-12 h-12 text-rose-500 fill-rose-500 filter drop-shadow-[0_4px_8px_rgba(244,63,94,0.3)]" />
-          </motion.div>
-          <motion.div animate={{ y: [0, -16, 0], rotate: [0, -10, 0] }} transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut', delay: 1 }} className="absolute right-2 bottom-24 z-[35] pointer-events-none">
-            <Heart className="w-14 h-14 text-cyan fill-cyan filter drop-shadow-[0_4px_8px_rgba(0,180,216,0.3)]" />
-          </motion.div>
-          <motion.div animate={{ y: [0, -10, 0], rotate: [0, 6, 0] }} transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut', delay: 2 }} className="absolute right-16 bottom-6 z-[35] pointer-events-none">
-            <Heart className="w-10 h-10 text-cyan fill-cyan filter drop-shadow-[0_4px_8px_rgba(14,165,233,0.3)]" />
+
+          {/* Floating Collage Cards */}
+          <div className="relative w-full h-[360px] flex items-center justify-center">
+            {/* Card 1: Darjeeling Tea (Back/Left) */}
+            <div className="float-card-1 absolute left-2 top-4 bg-white p-2.5 pb-4 shadow-xl rounded-lg w-36 border border-slate-100 rotate-[-8deg] z-10">
+              <img src="/images/darjeeling_tea_1779521805614.png" alt="Darjeeling Tea" className="w-full h-24 object-cover rounded-sm" />
+              <div className="text-[10px] text-slate-800 font-pacifico mt-1.5 text-center">Darjeeling Hills</div>
+            </div>
+
+            {/* Card 2: Kerala Houseboat (Middle/Right) */}
+            <div className="float-card-2 absolute right-2 top-8 bg-white p-2.5 pb-4 shadow-xl rounded-lg w-38 border border-slate-100 rotate-[6deg] z-10">
+              <img src="/images/kerala_houseboat_1779521772928.png" alt="Kerala Houseboat" className="w-full h-26 object-cover rounded-sm" />
+              <div className="text-[10px] text-slate-800 font-pacifico mt-1.5 text-center">Kerala Backwaters</div>
+            </div>
+
+            {/* Card 3: Dubai Skyline (Front/Center) */}
+            <div className="float-card-3 absolute left-12 bottom-2 bg-white p-3 pb-5 shadow-2xl rounded-lg w-40 border border-slate-100 rotate-[-2deg] z-20">
+              <img src="/images/dubai_skyline_1779539448313.png" alt="Dubai Skyline" className="w-full h-28 object-cover rounded-sm" />
+              <div className="text-[10px] text-slate-800 font-pacifico mt-2 text-center">Dubai Marina</div>
+            </div>
+          </div>
+
+          {/* Floating airplane on top */}
+          <motion.div
+            animate={{ y: [0, -8, 0], x: [0, 4, 0] }}
+            transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+            className="absolute -right-4 top-16 w-52 h-52 z-30 pointer-events-none"
+          >
+            <img src="/images/airplane_nobg.png" alt="Airplane" className="w-full h-full object-contain filter drop-shadow-[0_15px_15px_rgba(0,0,0,0.18)]" style={{ transform: 'rotate(42deg) scale(1.1)' }} />
           </motion.div>
         </div>
       </div>
 
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-2 text-ink/40 text-[10px] tracking-[0.3em] uppercase">
-        <span>Scroll</span><div className="w-px h-10 bg-gradient-to-b from-cyan to-transparent" />
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-2 text-ink/40 text-[10px] tracking-[0.3em] uppercase z-10">
+        <span>Scroll</span><div className="w-px h-10 bg-gradient-to-b from-teal-600 to-transparent" />
       </div>
     </section>
   );
@@ -914,14 +948,7 @@ function AboutUs() {
       points: ['Winners enjoy luxury tours free', 'Non-winners always get assured discounts', 'Fair, transparent, community-driven'] },
   ];
   return (
-    <section id="about" className="relative py-24 lg:py-32 bg-void overflow-hidden">
-      <StarField count={50} />
-      <AuroraBackground variant="gold" />
-      <FloatingOrbs count={4} variant="mixed" />
-      <MorphBlobs />
-      <div className="absolute inset-0 grid-pattern opacity-30" />
-      <div className="absolute top-20 right-10 w-96 h-96 rounded-full bg-neon-gold/10 blur-[120px]" />
-      <div className="absolute bottom-20 left-10 w-96 h-96 rounded-full bg-cyan/10 blur-[120px]" />
+    <section id="about" className="relative py-24 lg:py-32 overflow-hidden">
 
       <div className="max-w-7xl mx-auto px-5 lg:px-8 relative z-10">
         {/* Header */}
@@ -941,10 +968,10 @@ function AboutUs() {
           {pillars.map((p, i) => (
             <Reveal key={p.title} delay={i * 0.12}>
               <TiltCard className="h-full" intensity={6}>
-                <div className={`glass rounded-3xl overflow-hidden border border-slate-line ${p.accent === 'cyan' ? 'hover:neon-border-cyan' : p.accent === 'gold' ? 'hover:neon-border-gold' : 'hover:neon-border-violet'} transition-all h-full tilt-inner flex flex-col group`}>
+                <div className={`glass rounded-3xl overflow-hidden border border-slate-line ${p.accent === 'cyan' ? 'hover:neon-border-cyan' : (p.accent === 'teal' || p.accent === 'gold') ? 'hover:neon-border-gold' : 'hover:neon-border-violet'} transition-all h-full tilt-inner flex flex-col group`}>
                   <div className="relative h-44 overflow-hidden">
                     <img src={p.image} alt={p.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-cosmos via-cosmos/40 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0d1b22] via-[#0d1b22]/40 to-transparent" />
                     <div className="absolute top-4 left-4">
                       <FloatingIcon delay={i * 0.5}>
                         <div className={`w-12 h-12 rounded-xl flex items-center justify-center shadow-lg ${p.accent === 'cyan' ? 'bg-gradient-to-br from-cyan to-violet shadow-cyan/30' : p.accent === 'teal' ? 'bg-gradient-to-br from-teal-400 to-emerald-600 shadow-teal/30' : 'bg-gradient-to-br from-violet to-fuchsia-500 shadow-violet/30'}`}>
@@ -955,10 +982,10 @@ function AboutUs() {
                     <Rocket className="absolute top-4 right-4 w-5 h-5 text-ink/20" />
                   </div>
                   <div className="p-8 pt-5 flex-1 flex flex-col">
-                    <h3 className="font-display text-xl font-bold text-ink mb-3">{p.title}</h3>
-                    <p className="text-sm text-ink/65 leading-relaxed mb-5 flex-1">{p.text}</p>
+                    <h3 className="font-display text-xl font-black text-slate-950 mb-3">{p.title}</h3>
+                    <p className="text-sm text-slate-800 leading-relaxed mb-5 flex-1 font-semibold">{p.text}</p>
                     <ul className="space-y-2.5 pt-5 border-t border-slate-line">
-                      {p.points.map((pt) => <li key={pt} className="flex items-center gap-2.5 text-sm text-ink/80"><GoldCheck size={16} variant={p.accent as any} /><span>{pt}</span></li>)}
+                      {p.points.map((pt) => <li key={pt} className="flex items-center gap-2.5 text-sm text-slate-900 font-bold"><GoldCheck size={16} variant={p.accent as any} /><span>{pt}</span></li>)}
                     </ul>
                   </div>
                 </div>
@@ -990,8 +1017,8 @@ function AboutUs() {
               </div>
               <div className="relative min-h-[300px] lg:min-h-full overflow-hidden group">
                 <img src="/images/office_setup.png" alt="Beduine Fulia Office" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-                <div className="absolute inset-0 bg-gradient-to-t from-cosmos via-cosmos/30 to-transparent" />
-                <div className="absolute bottom-5 left-5 right-5 z-10 p-4 glass rounded-2xl border border-white/10 backdrop-blur-md">
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-slate-950/20 to-transparent" />
+                <div className="absolute bottom-5 left-5 right-5 z-10 p-4 bg-slate-950/75 border border-white/10 rounded-2xl backdrop-blur-md">
                   <div className="text-xs text-neon-gold font-mono">// Fulia HQ Setup</div>
                   <div className="font-display font-semibold text-white text-sm mt-0.5">Welcome to Beduine Tour & Travels</div>
                 </div>
@@ -1012,13 +1039,7 @@ function HowItWorks() {
     { n: '03', icon: Gift, title: 'Win Tour — or Use Credit', desc: 'Selected members get a luxury journey. Everyone else gets guaranteed credits.', details: ['Luxury tour covered', '₹500 – ₹2,000 in credits', 'Never empty-handed'], img: '/images/happy_travelers_family_1779521684057.png' },
   ];
   return (
-    <section id="how" className="relative py-24 lg:py-32 cosmic-bg overflow-hidden">
-      <StarField count={50} />
-      <AuroraBackground variant="cyan" />
-      <FloatingOrbs count={5} variant="cyan" />
-      <MorphBlobs />
-      <FlowingLines count={4} />
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] rounded-full bg-violet/10 blur-[120px]" />
+    <section id="how" className="relative py-24 lg:py-32 overflow-hidden">
       <div className="max-w-7xl mx-auto px-5 lg:px-8 relative z-10">
         <Reveal>
           <div className="text-center mb-16 max-w-3xl mx-auto">
@@ -1076,11 +1097,154 @@ function HowItWorks() {
   );
 }
 
+/* ---------- Silver Plan 3D Character Interaction (₹499 Pulling Child) ---------- */
+function SilverPullingChild({ hovered }: { hovered: boolean }) {
+  // Leaning and tugging physics based on card hover state!
+  const tugAnim = {
+    animate: hovered ? {
+      x: [0, 4, -1, 5, -0.5, 3, 0],
+      y: [0, -0.5, 1, -1.2, 0.4, -0.8, 0],
+      rotate: [0, 2, -1, 3, -0.5, 1.5, 0],
+      transition: {
+        repeat: Infinity,
+        duration: 0.8,
+        ease: "easeInOut"
+      }
+    } : {
+      x: [0, 1.5, -0.5, 2.0, -0.2, 1.0, 0],
+      y: [0, -0.2, 0.4, -0.5, 0.2, -0.3, 0],
+      rotate: [0, 0.8, -0.4, 1.0, -0.2, 0.5, 0],
+      transition: {
+        repeat: Infinity,
+        duration: 1.8,
+        ease: "easeInOut"
+      }
+    }
+  };
+
+  return (
+    <motion.div
+      variants={tugAnim}
+      animate="animate"
+      className="absolute -right-3.5 -top-7 w-32 h-36 z-20 pointer-events-none overflow-visible filter drop-shadow-[0_12px_24px_rgba(2,6,23,0.45)]"
+    >
+      <svg viewBox="0 0 120 140" className="w-full h-full overflow-visible">
+        <defs>
+          <linearGradient id="childSkin3D" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#FFF4EB" />
+            <stop offset="50%" stopColor="#FED6BA" />
+            <stop offset="100%" stopColor="#F3A77C" />
+          </linearGradient>
+          <linearGradient id="shirtRed3D" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#ff6b6b" />
+            <stop offset="60%" stopColor="#ee5253" />
+            <stop offset="100%" stopColor="#c0392b" />
+          </linearGradient>
+          <linearGradient id="jeansBlue3D" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#54a0ff" />
+            <stop offset="60%" stopColor="#2e86de" />
+            <stop offset="100%" stopColor="#130cb7" />
+          </linearGradient>
+          <filter id="childShadow" x="-10%" y="-10%" width="120%" height="120%">
+            <feDropShadow dx="2" dy="8" stdDeviation="3.5" floodColor="#020617" floodOpacity="0.45" />
+          </filter>
+        </defs>
+
+        {/* 3D floor shadow */}
+        <ellipse cx="60" cy="128" rx="28" ry="4.5" fill="rgba(2,6,23,0.4)" filter="blur(2.5px)" />
+
+        {/* The Body (Leaning backwards to the right!) */}
+        <g filter="url(#childShadow)" className="overflow-visible">
+          {/* Legs (Stretched forward, resisting the pull!) */}
+          <rect x="42" y="104" width="9" height="20" rx="2" fill="url(#jeansBlue3D)" transform="rotate(-30 42 104)" />
+          <rect x="52" y="106" width="9" height="20" rx="2" fill="url(#jeansBlue3D)" transform="rotate(-20 52 106)" />
+          
+          {/* Sneakers */}
+          <rect x="26" y="112" width="10" height="6" rx="2" fill="#ffffff" stroke="#ee5253" strokeWidth="0.8" />
+          <rect x="38" y="114" width="10" height="6" rx="2" fill="#ffffff" stroke="#ee5253" strokeWidth="0.8" />
+
+          {/* Torso / Shirt */}
+          <path d="M 52,82 C 52,74 72,74 72,82 L 80,112 L 48,112 Z" fill="url(#shirtRed3D)" transform="rotate(18 60 97)" />
+
+          {/* Glowing Star Graphic on Shirt */}
+          <polygon points="62,90 63.2,92.5 65.8,92.5 63.8,94 64.5,96.5 62,95 59.5,96.5 60.2,94 58.2,92.5 60.8,92.5" fill="#fef08a" transform="rotate(18 60 97)" />
+
+          {/* Head (Facing slightly left toward the price tag, gritting teeth and winking!) */}
+          <g transform="rotate(12 60 62)">
+            <rect x="57" y="68" width="6" height="8" fill="url(#childSkin3D)" />
+            <circle cx="60" cy="58" r="13" fill="url(#childSkin3D)" />
+            
+            {/* Cute Hair */}
+            <path d="M 46,58 C 46,42 74,42 74,58 C 74,72 46,72 46,58 Z" fill="#3B2314" opacity="0.95" />
+
+            {/* Winking struggling eyes */}
+            <path d="M 50,54 L 54,58 M 54,54 L 50,58" stroke="#1E1008" strokeWidth="1.8" strokeLinecap="round" />
+            <path d="M 64,54 Q 67,51 70,54" stroke="#1E1008" strokeWidth="1.8" fill="none" strokeLinecap="round" />
+
+            {/* Gritting struggling cute mouth */}
+            <path d="M 54,66 Q 60,69 66,65" stroke="#9a3412" strokeWidth="1.8" fill="none" strokeLinecap="round" />
+            <line x1="55" y1="65.5" x2="65" y2="65" stroke="#ffffff" strokeWidth="1.2" />
+
+            {/* Blushing Cheeks */}
+            <circle cx="49" cy="62" r="2.2" fill="#ff7a90" opacity="0.6" />
+            <circle cx="71" cy="62" r="2.2" fill="#ff7a90" opacity="0.6" />
+
+            {/* Backward Cap with Visor */}
+            <path d="M 50,49 C 50,40 70,40 70,49 Z" fill="#1e293b" />
+            <path d="M 52,48 L 38,45" stroke="#1e293b" strokeWidth="3" strokeLinecap="round" />
+          </g>
+
+          {/* Grabbing Hands stretching to the left to hold onto the price */}
+          <path d="M 56,88 Q 32,84 2,82" stroke="url(#childSkin3D)" strokeWidth="6.5" strokeLinecap="round" fill="none" />
+          <path d="M 56,92 Q 34,92 2,90" stroke="url(#childSkin3D)" strokeWidth="6.5" strokeLinecap="round" fill="none" />
+
+          {/* Little fingers gripping the card/price edge */}
+          <g transform="translate(0, 0)">
+            <circle cx="2" cy="82" r="4.5" fill="url(#childSkin3D)" />
+            <circle cx="3" cy="78" r="1.5" fill="#fecaca" />
+            <circle cx="4.5" cy="80" r="1.5" fill="#fecaca" />
+            <circle cx="5" cy="82" r="1.5" fill="#fecaca" />
+            <circle cx="4.5" cy="84" r="1.5" fill="#fecaca" />
+
+            <circle cx="2" cy="90" r="4.5" fill="url(#childSkin3D)" />
+            <circle cx="3" cy="86" r="1.5" fill="#fecaca" />
+            <circle cx="4.5" cy="88" r="1.5" fill="#fecaca" />
+            <circle cx="5" cy="90" r="1.5" fill="#fecaca" />
+            <circle cx="4.5" cy="92" r="1.5" fill="#fecaca" />
+          </g>
+        </g>
+      </svg>
+    </motion.div>
+  );
+}
+
 /* ---------- Plan Card ---------- */
 function PlanCard({ plan, index, onSelectPlan }: { plan: typeof PLANS[number]; index: number; onSelectPlan: (planName: string) => void }) {
   const [hovered, setHovered] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
   const [imgStyle, setImgStyle] = useState<React.CSSProperties>({});
+  const priceTug = {
+    animate: hovered ? {
+      x: [0, 2, -1, 3, -0.5, 2, 0],
+      y: [0, -0.5, 0.5, -0.8, 0.2, -0.5, 0],
+      skewX: [0, 1.2, -0.6, 1.8, -0.3, 0.9, 0],
+      transition: {
+        repeat: Infinity,
+        duration: 0.8,
+        ease: "easeInOut"
+      }
+    } : {
+      x: [0, 0.6, -0.3, 0.8, -0.1, 0.5, 0],
+      y: [0, -0.2, 0.2, -0.3, 0.1, -0.2, 0],
+      skewX: [0, 0.4, -0.2, 0.5, -0.1, 0.3, 0],
+      transition: {
+        repeat: Infinity,
+        duration: 1.8,
+        ease: "easeInOut"
+      }
+    }
+  };
+
   const onMove = (e: React.MouseEvent) => {
     if (!cardRef.current) return;
     const rect = cardRef.current.getBoundingClientRect();
@@ -1104,38 +1268,48 @@ function PlanCard({ plan, index, onSelectPlan }: { plan: typeof PLANS[number]; i
               <div className="flex items-center justify-between">
                 <div>
                   <div className="text-[11px] text-cyan-deep uppercase tracking-widest font-bold drop-shadow-sm">{plan.tagline}</div>
-                  <div className="font-display text-3xl font-bold text-ink mt-0.5 drop-shadow-sm">{plan.name}</div>
+                  <div className="font-display text-3xl font-black text-slate-950 mt-0.5 drop-shadow-sm">{plan.name}</div>
                 </div>
                 <plan.icon className="w-10 h-10 text-neon-gold drop-shadow-md" strokeWidth={1.8} />
               </div>
-              <motion.div initial={false} animate={{ opacity: hovered ? 1 : 0.8 }} transition={{ duration: 0.3 }} className="flex items-center gap-2 text-xs text-neon-gold font-semibold drop-shadow-sm">
+              <motion.div initial={false} animate={{ opacity: hovered ? 1 : 0.8 }} transition={{ duration: 0.3 }} className="flex items-center gap-2 text-xs text-neon-gold font-bold drop-shadow-sm">
                 <MapPin className="w-3.5 h-3.5" /> {plan.imageLabel}
               </motion.div>
             </div>
           </div>
 
-          <div className="p-7 border-b border-slate-line">
-            <div className="flex items-baseline gap-1">
-              <span className="text-neon-gold text-lg font-semibold">₹</span>
-              <span className="font-display text-5xl font-bold text-ink tabular">{plan.price}</span>
-              <span className="text-ink/50 text-sm">/ 12 mo</span>
-            </div>
-            <div className="mt-2 text-sm text-ink/60">Winner tour value up to <span className="font-semibold text-ink">₹{plan.tourValue.toLocaleString('en-IN')}</span> · {plan.duration}</div>
+          <div className="p-7 border-b border-slate-line relative overflow-visible">
+            {plan.name === 'Silver' ? (
+              <div className="relative overflow-visible">
+                <div className="flex items-baseline gap-1 relative z-10">
+                  <span className="text-neon-gold text-lg font-bold">₹</span>
+                  <span className="font-display text-5xl font-black text-slate-950 tracking-tight tabular">{plan.price}</span>
+                  <span className="text-slate-900 font-extrabold text-sm">/ 12 mo</span>
+                </div>
+              </div>
+            ) : (
+              <div className="flex items-baseline gap-1">
+                <span className="text-neon-gold text-lg font-bold">₹</span>
+                <span className="font-display text-5xl font-black text-slate-950 tracking-tight tabular">{plan.price}</span>
+                <span className="text-slate-900 font-extrabold text-sm">/ 12 mo</span>
+              </div>
+            )}
+            <div className="mt-2 text-sm text-slate-900 font-bold">Winner tour value up to <span className="font-extrabold text-slate-950">₹{plan.tourValue.toLocaleString('en-IN')}</span> · {plan.duration}</div>
           </div>
 
           <div className="p-7 border-b border-slate-line">
-            <div className="flex items-center gap-2 mb-3"><MapPin className="w-4 h-4 text-cyan" /><div className="text-[11px] uppercase tracking-widest text-cyan font-semibold">Winner Destinations</div></div>
-            <ul className="space-y-2">{plan.destinations.map((d) => <li key={d} className="flex items-start gap-2 text-sm text-ink/80"><GoldCheck size={15} /><span>{d}</span></li>)}</ul>
+            <div className="flex items-center gap-2 mb-3"><MapPin className="w-4 h-4 text-cyan" /><div className="text-[11px] uppercase tracking-widest text-cyan font-bold">Winner Destinations</div></div>
+            <ul className="space-y-2">{plan.destinations.map((d) => <li key={d} className="flex items-start gap-2 text-sm text-slate-950 font-bold"><GoldCheck size={15} /><span>{d}</span></li>)}</ul>
           </div>
 
-          <div className="p-7 space-y-2.5">{plan.benefits.map((b) => <div key={b} className="flex items-start gap-2.5 text-sm text-ink/80"><GoldCheck size={16} /><span>{b}</span></div>)}</div>
+          <div className="p-7 space-y-2.5">{plan.benefits.map((b) => <div key={b} className="flex items-start gap-2.5 text-sm text-slate-950 font-bold"><GoldCheck size={16} /><span>{b}</span></div>)}</div>
 
           <div className="px-7 pb-5">
             <div className="grid grid-cols-2 gap-2">
               {[{ l: 'Discount Credits', v: `${plan.discountCredits} × ₹500` }, { l: 'Paid Tour Off', v: `Up to ${plan.paidDiscount}` }, { l: 'Insurance', v: plan.insurance }, { l: 'Name Change', v: plan.nameChange }].map((c) => (
                 <div key={c.l} className="glass-light rounded-lg p-2.5">
-                  <div className="text-[9px] uppercase tracking-widest text-ink/50">{c.l}</div>
-                  <div className="text-xs font-semibold text-ink mt-0.5">{c.v}</div>
+                  <div className="text-[9px] uppercase tracking-widest text-slate-900 font-bold">{c.l}</div>
+                  <div className="text-xs font-black text-slate-950 mt-0.5">{c.v}</div>
                 </div>
               ))}
             </div>
@@ -1149,7 +1323,7 @@ function PlanCard({ plan, index, onSelectPlan }: { plan: typeof PLANS[number]; i
             >
               {plan.featured ? 'Lock Platinum Entry' : `Choose ${plan.name}`}
             </ParticleButton>
-            <div className="text-center text-[11px] text-ink/45 mt-3 font-mono">// 12-mo validity · pickup included</div>
+            <div className="text-center text-[11px] text-slate-900 font-bold mt-3 font-mono">// 12-mo validity · pickup included</div>
           </div>
         </div>
       </TiltCard>
@@ -1159,12 +1333,7 @@ function PlanCard({ plan, index, onSelectPlan }: { plan: typeof PLANS[number]; i
 
 function Plans({ onSelectPlan }: { onSelectPlan: (planName: string) => void }) {
   return (
-    <section id="plans" className="relative py-24 lg:py-32 bg-void overflow-hidden">
-      <StarField count={60} />
-      <AuroraBackground variant="gold" />
-      <div className="absolute inset-0 grid-pattern opacity-40" />
-      <div className="absolute top-40 right-10 w-96 h-96 rounded-full bg-neon-gold/10 blur-[120px]" />
-      <div className="absolute bottom-40 left-10 w-96 h-96 rounded-full bg-cyan/10 blur-[120px]" />
+    <section id="plans" className="relative py-24 lg:py-32 overflow-hidden">
       <div className="relative max-w-7xl mx-auto px-5 lg:px-8 z-10">
         {/* Header */}
         <Reveal>
@@ -1255,11 +1424,11 @@ function IntlPlanCard({ plan, index, onSelectPlan }: { plan: typeof INTL_PLANS[n
               <div className="flex items-center justify-between">
                 <div>
                   <div className="text-[11px] text-cyan-deep uppercase tracking-widest font-bold drop-shadow-sm">{plan.tagline}</div>
-                  <div className="font-display text-3xl font-bold text-ink mt-0.5 drop-shadow-sm">{plan.name}</div>
+                  <div className="font-display text-3xl font-black text-slate-950 mt-0.5 drop-shadow-sm">{plan.name}</div>
                 </div>
                 <plan.icon className="w-10 h-10 text-cyan drop-shadow-md" strokeWidth={1.8} />
               </div>
-              <motion.div initial={false} animate={{ opacity: hovered ? 1 : 0.8 }} transition={{ duration: 0.3 }} className="flex items-center gap-2 text-xs text-cyan font-semibold drop-shadow-sm">
+              <motion.div initial={false} animate={{ opacity: hovered ? 1 : 0.8 }} transition={{ duration: 0.3 }} className="flex items-center gap-2 text-xs text-cyan font-bold drop-shadow-sm">
                 <Plane className="w-3.5 h-3.5" /> {plan.imageLabel}
               </motion.div>
             </div>
@@ -1267,26 +1436,26 @@ function IntlPlanCard({ plan, index, onSelectPlan }: { plan: typeof INTL_PLANS[n
 
           <div className="p-7 border-b border-slate-line">
             <div className="flex items-baseline gap-1">
-              <span className="text-cyan text-lg font-semibold">₹</span>
-              <span className="font-display text-5xl font-bold text-ink tabular">{plan.price.toLocaleString('en-IN')}</span>
-              <span className="text-ink/50 text-sm">/ 12 mo</span>
+              <span className="text-cyan text-lg font-bold">₹</span>
+              <span className="font-display text-5xl font-black text-slate-950 tracking-tight tabular">{plan.price.toLocaleString('en-IN')}</span>
+              <span className="text-slate-900 font-extrabold text-sm">/ 12 mo</span>
             </div>
-            <div className="mt-2 text-sm text-ink/60">Winner tour value up to <b className="neon-cyan">₹{plan.tourValue.toLocaleString('en-IN')}</b> · {plan.duration}</div>
+            <div className="mt-2 text-sm text-slate-900 font-bold">Winner tour value up to <span className="font-extrabold text-slate-950">₹{plan.tourValue.toLocaleString('en-IN')}</span> · {plan.duration}</div>
           </div>
 
           <div className="p-7 border-b border-slate-line">
-            <div className="flex items-center gap-2 mb-3"><Plane className="w-4 h-4 text-cyan" /><div className="text-[11px] uppercase tracking-widest neon-cyan font-semibold">International Destinations</div></div>
-            <ul className="space-y-2">{plan.destinations.map((d) => <li key={d} className="flex items-start gap-2 text-sm text-ink/80"><GoldCheck size={15} variant="cyan" /><span>{d}</span></li>)}</ul>
+            <div className="flex items-center gap-2 mb-3"><Plane className="w-4 h-4 text-cyan" /><div className="text-[11px] uppercase tracking-widest text-cyan font-bold">International Destinations</div></div>
+            <ul className="space-y-2">{plan.destinations.map((d) => <li key={d} className="flex items-start gap-2 text-sm text-slate-950 font-bold"><GoldCheck size={15} variant="cyan" /><span>{d}</span></li>)}</ul>
           </div>
 
-          <div className="p-7 space-y-2.5">{plan.benefits.map((b) => <div key={b} className="flex items-start gap-2.5 text-sm text-ink/80"><GoldCheck size={16} variant="cyan" /><span>{b}</span></div>)}</div>
+          <div className="p-7 space-y-2.5">{plan.benefits.map((b) => <div key={b} className="flex items-start gap-2.5 text-sm text-slate-950 font-bold"><GoldCheck size={16} variant="cyan" /><span>{b}</span></div>)}</div>
 
           <div className="px-7 pb-5">
             <div className="grid grid-cols-2 gap-2">
               {[{ l: 'Discount Credits', v: `${plan.discountCredits} × ₹500` }, { l: 'Tour Discount', v: `Up to ${plan.paidDiscount}` }, { l: 'Insurance', v: plan.insurance }, { l: 'Name Change', v: plan.nameChange }].map((c) => (
                 <div key={c.l} className="glass-light rounded-lg p-2.5">
-                  <div className="text-[9px] uppercase tracking-widest text-ink/50">{c.l}</div>
-                  <div className="text-xs font-semibold text-ink mt-0.5">{c.v}</div>
+                  <div className="text-[9px] uppercase tracking-widest text-slate-900 font-bold">{c.l}</div>
+                  <div className="text-xs font-black text-slate-950 mt-0.5">{c.v}</div>
                 </div>
               ))}
             </div>
@@ -1300,7 +1469,7 @@ function IntlPlanCard({ plan, index, onSelectPlan }: { plan: typeof INTL_PLANS[n
             >
               {plan.featured ? '✈ Lock Voyager Entry' : `Choose ${plan.name}`}
             </ParticleButton>
-            <div className="text-center text-[11px] text-ink/45 mt-3 font-mono">// 12-mo validity · visa assist included</div>
+            <div className="text-center text-[11px] text-slate-900 font-bold mt-3 font-mono">// 12-mo validity · visa assist included</div>
           </div>
         </div>
       </TiltCard>
@@ -1310,14 +1479,7 @@ function IntlPlanCard({ plan, index, onSelectPlan }: { plan: typeof INTL_PLANS[n
 
 function InternationalPlans({ onSelectPlan }: { onSelectPlan: (planName: string) => void }) {
   return (
-    <section id="intl-plans" className="relative py-24 lg:py-32 bg-cosmos overflow-hidden">
-      <StarField count={70} />
-      <AuroraBackground variant="cyan" />
-      <FloatingOrbs count={6} variant="cyan" />
-      <MorphBlobs />
-      <div className="absolute inset-0 grid-pattern opacity-40" />
-      <div className="absolute top-40 left-10 w-96 h-96 rounded-full bg-cyan/15 blur-[120px]" />
-      <div className="absolute bottom-40 right-10 w-96 h-96 rounded-full bg-violet/10 blur-[120px]" />
+    <section id="intl-plans" className="relative py-24 lg:py-32 overflow-hidden">
       <div className="relative max-w-7xl mx-auto px-5 lg:px-8 z-10">
         {/* Header */}
         <Reveal>
@@ -1357,12 +1519,7 @@ function InternationalPlans({ onSelectPlan }: { onSelectPlan: (planName: string)
 /* ---------- Services ---------- */
 function Services() {
   return (
-    <section id="services" className="relative py-24 lg:py-32 bg-cosmos overflow-hidden">
-      <StarField count={40} />
-      <GradientMesh />
-      <FloatingOrbs count={4} variant="mixed" />
-      <MorphBlobs />
-      <WaveBackground color="cyan" />
+    <section id="services" className="relative py-24 lg:py-32 overflow-hidden">
       <div className="max-w-7xl mx-auto px-5 lg:px-8 relative z-10">
         <Reveal>
           <div className="text-center mb-16 max-w-3xl mx-auto">
@@ -1395,12 +1552,7 @@ function Services() {
 /* ---------- Transparency ---------- */
 function Transparency() {
   return (
-    <section id="audit" className="relative py-24 lg:py-32 bg-void overflow-hidden">
-      <StarField count={50} />
-      <AuroraBackground variant="cyan" />
-      <FloatingOrbs count={5} variant="cyan" />
-      <FlowingLines count={5} />
-      <div className="absolute inset-0 grid-pattern opacity-40 grid-pulse" />
+    <section id="audit" className="relative py-24 lg:py-32 overflow-hidden">
       <div className="relative max-w-7xl mx-auto px-5 lg:px-8 z-10">
         <div className="grid lg:grid-cols-2 gap-12 items-start">
           <Reveal>
@@ -1460,15 +1612,19 @@ function Transparency() {
 function LuckyDrawSystem() {
   const phases = [
     { n: '01', icon: Scan, title: 'Data Verification', accent: 'cyan',
+      img: '/images/transparency_verification.png',
       desc: 'All subscription logins made up to Saturday 11:59 PM are collected. Every participant is assigned a unique ticket ID.',
       details: ['Duplicate entries & unverified payments are programmatically purged', 'Invalid accounts are filtered before pool freeze', 'Final subscriber list is frozen for that week\'s draw'] },
     { n: '02', icon: Bot, title: 'Random Selection Engine', accent: 'teal',
+      img: '/images/transparency_rng.png',
       desc: 'A secure Random Number Generator (RNG) system selects the winning ticket IDs with full transparency.',
       details: ['Uses Random.org or audit-locked in-house script', 'Selection streamed live or recorded with screen-share', 'Visible on Facebook & YouTube channels'] },
     { n: '03', icon: FileText, title: 'Reports & Audits', accent: 'violet',
+      img: '/images/transparency_audit.png',
       desc: 'A comprehensive draw report containing all pool metrics is compiled weekly and archived.',
       details: ['PDF/CSV with total pool, winning IDs & timestamps', 'RNG seed logs included for verification', 'Archived for transparent internal & external audits'] },
     { n: '04', icon: Send, title: 'Winner Announcement', accent: 'cyan',
+      img: '/images/transparency_winner.png',
       desc: 'Winners are announced every Sunday evening across all company channels with unique digital coupons.',
       details: ['Website Winners Page + Social Media posts', 'SMS & Email notification with coupon code', 'Unique QR/UUID codes — impossible to duplicate'] },
   ];
@@ -1481,15 +1637,7 @@ function LuckyDrawSystem() {
   ];
 
   return (
-    <section id="luckydraw" className="relative py-24 lg:py-32 bg-cosmos overflow-hidden">
-      <StarField count={70} />
-      <AuroraBackground variant="cyan" />
-      <FloatingOrbs count={6} variant="mixed" />
-      <MorphBlobs />
-      <FlowingLines count={5} />
-      <div className="absolute inset-0 grid-pattern opacity-40 grid-pulse" />
-      <div className="absolute top-20 left-10 w-[500px] h-[500px] rounded-full bg-cyan/15 blur-[120px]" />
-      <div className="absolute bottom-20 right-10 w-[500px] h-[500px] rounded-full bg-violet/10 blur-[120px]" />
+    <section id="luckydraw" className="relative py-24 lg:py-32 overflow-hidden">
 
       <div className="max-w-7xl mx-auto px-5 lg:px-8 relative z-10">
         {/* Header */}
@@ -1583,93 +1731,39 @@ function LuckyDrawSystem() {
               <TiltCard className="h-full" intensity={5}>
                 <div className="glass rounded-3xl p-7 border border-slate-line hover:neon-border-cyan transition-all h-full tilt-inner">
                   <div className="flex items-center gap-4 mb-5">
-                    <div className="font-display text-4xl font-bold text-cyan/20 tabular">{p.n}</div>
+                    <div className="font-display text-4xl font-extrabold text-cyan/30 tabular">{p.n}</div>
                     <FloatingIcon delay={i * 0.3}>
                       <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg ${p.accent === 'cyan' ? 'bg-gradient-to-br from-cyan to-blue-500 shadow-cyan/30' : p.accent === 'teal' ? 'bg-gradient-to-br from-teal-400 to-emerald-600 shadow-teal/30' : 'bg-gradient-to-br from-violet to-fuchsia-500 shadow-violet/30'}`}>
                         <p.icon className="w-7 h-7 text-cosmos" strokeWidth={2} />
                       </div>
                     </FloatingIcon>
                     <div className="flex-1">
-                      <h3 className="font-display text-lg font-bold text-ink">{p.title}</h3>
+                      <h3 className="font-display text-lg font-black text-slate-900">{p.title}</h3>
                     </div>
                   </div>
-                  <p className="text-sm text-ink/65 leading-relaxed mb-5">{p.desc}</p>
+                  <p className="text-sm text-ink/70 leading-relaxed mb-5">{p.desc}</p>
 
-                  {/* Micro-illustration slot */}
-                  {p.n === '01' && (
-                    <div className="relative rounded-2xl overflow-hidden border border-cyan-500/10 mb-5 h-28 bg-white/5 flex flex-col justify-between p-3.5 font-mono text-[9px] text-ink/70">
-                      <div className="absolute inset-0 bg-gradient-to-b from-cyan/5 to-transparent pointer-events-none" />
-                      <div className="absolute inset-x-0 h-0.5 bg-cyan/30 blur-[1px] animate-bounce top-0" style={{ animationDuration: '4s' }} />
-                      <div className="flex justify-between items-center text-[8px] uppercase tracking-wider text-cyan border-b border-slate-line/50 pb-1.5 font-bold">
-                        <span>Database Pool</span>
-                        <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" /> Live Verification</span>
-                      </div>
-                      <div className="space-y-1 my-1.5 flex-1 justify-center flex flex-col">
-                        <div className="flex justify-between items-center"><span>User BD-92841: Verified payment</span><span className="text-emerald-500 font-bold">PASS</span></div>
-                        <div className="flex justify-between items-center"><span>User BD-38104: Duplicate account</span><span className="text-rose-500 font-bold">PURGED</span></div>
-                        <div className="flex justify-between items-center"><span>User BD-47201: Active subscriber</span><span className="text-emerald-500 font-bold">PASS</span></div>
-                      </div>
-                      <div className="text-[8px] text-ink/40 text-right mt-1 border-t border-slate-line/30 pt-1">
-                        Pool freeze: Saturday 11:59 PM
-                      </div>
+                  {/* Real Photo illustration */}
+                  <div className="relative rounded-2xl overflow-hidden mb-5 h-36 bg-cosmos shadow-inner group-hover:scale-[1.02] transition-transform duration-500">
+                    <img src={p.img} alt={p.title} className="w-full h-full object-cover opacity-90" loading="lazy" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-void/90 via-void/10 to-transparent" />
+                    
+                    {/* Floating badge inside picture */}
+                    <div className="absolute bottom-3 left-3 right-3 flex justify-between items-center bg-void/85 backdrop-blur-md px-3 py-1.5 rounded-xl border border-slate-line/50 text-[10px] font-mono text-ink">
+                      <span className="flex items-center gap-1.5 font-bold">
+                        <span className={`w-1.5 h-1.5 rounded-full animate-pulse ${p.n === '01' ? 'bg-cyan' : p.n === '02' ? 'bg-teal-500' : p.n === '03' ? 'bg-violet' : 'bg-rose-500'}`} />
+                        {p.n === '01' ? 'Verification Live' : p.n === '02' ? 'Secure Entropy' : p.n === '03' ? 'Certified Logs' : 'Winner Declared'}
+                      </span>
+                      <span className="font-bold opacity-60">Step {p.n}</span>
                     </div>
-                  )}
-
-                  {p.n === '02' && (
-                    <div className="relative rounded-2xl overflow-hidden border border-teal-500/10 mb-5 h-28 bg-white/5 flex items-center justify-between p-4">
-                      <div className="absolute inset-0 bg-gradient-to-b from-teal/5 to-transparent pointer-events-none" />
-                      <div className="relative w-18 h-18 shrink-0 flex items-center justify-center">
-                        <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 10, ease: 'linear' }}
-                          className="absolute inset-0 rounded-full border border-dashed border-teal-500/40" />
-                        <div className="absolute w-12 h-12 rounded-full border border-teal-500/20 bg-cosmos flex items-center justify-center shadow-lg shadow-teal-500/10">
-                          <Bot className="w-6 h-6 text-teal" />
-                        </div>
-                      </div>
-                      <div className="flex-1 pl-4 flex flex-col justify-center text-left font-mono">
-                        <div className="text-[8px] uppercase tracking-wider text-teal font-bold mb-1">RNG selection</div>
-                        <div className="text-lg font-black text-ink tracking-tight font-display leading-none">BD-47201</div>
-                        <div className="text-[8px] text-ink/50 mt-1 uppercase tracking-widest">Entropy: Verified</div>
-                      </div>
-                    </div>
-                  )}
-
-                  {p.n === '03' && (
-                    <div className="relative rounded-2xl overflow-hidden border border-violet-500/10 mb-5 h-28 bg-white/5 flex flex-col justify-between p-3.5 font-mono text-[9px] text-ink/70">
-                      <div className="absolute inset-0 bg-gradient-to-b from-violet/5 to-transparent pointer-events-none" />
-                      <div className="flex justify-between items-center text-[8px] uppercase tracking-wider text-violet border-b border-slate-line/50 pb-1.5 font-bold">
-                        <span>Audit Logs</span>
-                        <span>SECURE RECORD</span>
-                      </div>
-                      <div className="my-1.5 flex items-center gap-3">
-                        <FileText className="w-10 h-10 text-violet/70 shrink-0" strokeWidth={1.5} />
-                        <div className="text-left font-mono">
-                          <div className="text-ink font-semibold">WeeklyReport_W42.pdf</div>
-                          <div className="text-[8px] text-ink/50">SHA-256: 8a76baff...fe2f2eba</div>
-                        </div>
-                      </div>
-                      <div className="flex justify-between items-center text-[8px] text-ink/50 border-t border-slate-line/30 pt-1">
-                        <span>Total Pool: 1,492 entries</span>
-                        <span className="text-emerald-500 font-bold flex items-center gap-0.5">● Certified</span>
-                      </div>
-                    </div>
-                  )}
-
-                  {p.n === '04' && (
-                    <div className="relative rounded-2xl overflow-hidden border border-cyan-500/10 mb-5 h-28 bg-white/5 flex flex-col justify-between p-3.5 text-center">
-                      <div className="absolute inset-0 bg-gradient-to-b from-cyan/5 to-transparent pointer-events-none" />
-                      <div className="text-[8px] uppercase tracking-wider text-cyan font-bold font-mono">Live Announcement</div>
-                      <div className="my-1 flex flex-col items-center">
-                        <div className="text-[10px] font-display font-bold text-ink flex items-center gap-1.5 bg-emerald-500/10 text-emerald-600 px-3 py-1 rounded-full border border-emerald-500/15">
-                          <Crown className="w-3.5 h-3.5 fill-current animate-bounce" /> Congratulations Winner!
-                        </div>
-                      </div>
-                      <div className="text-[8px] text-ink/50 uppercase tracking-widest font-mono">
-                        SMS & Email notifications dispatched
-                      </div>
-                    </div>
-                  )}
+                  </div>
                   <ul className="space-y-2.5 pt-5 border-t border-slate-line">
-                    {p.details.map((d) => <li key={d} className="flex items-start gap-2.5 text-sm text-ink/80"><GoldCheck size={15} /><span>{d}</span></li>)}
+                    {p.details.map((d) => (
+                      <li key={d} className="flex items-start gap-2.5 text-sm text-ink/80">
+                        <GoldCheck size={15} variant={p.accent === 'cyan' ? 'cyan' : p.accent === 'violet' ? 'violet' : 'gold'} />
+                        <span>{d}</span>
+                      </li>
+                    ))}
                   </ul>
                 </div>
               </TiltCard>
@@ -1747,34 +1841,36 @@ function LuckyDrawSystem() {
 }
 
 /* ---------- Credit Architecture System ---------- */
-/* ---------- Credit Architecture System ---------- */
-function CreditArchitecture() {
+function CreditArchitecture({ activePlan, ldcTokens, discountCredits }: { activePlan: string | null; ldcTokens: number; discountCredits: number }) {
+  const [activeTab, setActiveTab] = useState<'domestic' | 'intl'>('domestic');
+
   const credits = [
     { type: 'LDC', name: 'Lucky Draw Credit', icon: Sparkles, accent: 'cyan',
       desc: '1 Credit is issued per subscription. This credit acts as a token that the user manually spends on the mobile app/web portal on Sunday to lock their participation in that week\'s draw.',
       rule: '1 Credit = 1 Entry in the weekly Lucky Draw',
       details: ['Automatically added upon payment verification', 'Used every Sunday to activate draw entry', 'Ticket ID confirmed and locked for that week', 'No extra credits can be purchased — fair chance for all'] },
     { type: 'DC', name: 'Discount Credits', icon: CreditCard, accent: 'teal',
-      desc: 'These act as the protective floor for non-winners. If a user does not win, these credits allow them to claim a flat ₹500 off per domestic tour booking.',
-      rule: '1 Domestic Tour Booking = 1 Discount Credit applied',
-      details: ['Silver: 1 DC → ₹500 off on 1 tour', 'Emerald: 2 DC → ₹500 × 2 = ₹1,000 off on 2 tours', 'Platinum: 4 DC → ₹500 × 4 = ₹2,000 off on 4 tours', 'Credits visible on your digital dashboard'] },
+      desc: 'These act as the protective floor for non-winners. If a user does not win, these credits allow them to claim a flat ₹500 off per tour booking.',
+      rule: '1 Tour Booking = 1 Discount Credit applied',
+      details: ['Domestic: ₹500 discount per credit (Up to ₹2,000 safety floor)', 'International: ₹500 discount per credit (Up to ₹7,500 safety floor)', 'Credits never expire and stack across bookings', 'Credits visible on your digital dashboard'] },
   ];
 
-  const creditTable = [
-    { plan: 'Silver', price: '₹499', ldc: '1', dc: '1 × ₹500', total: '₹500', color: 'from-slate-500 to-slate-700' },
-    { plan: 'Emerald', price: '₹799', ldc: '1', dc: '2 × ₹500', total: '₹1,000', color: 'from-teal-400 to-emerald-600' },
-    { plan: 'Platinum', price: '₹1,499', ldc: '1', dc: '4 × ₹500', total: '₹2,000', color: 'from-indigo-400 to-purple-500' },
+  const domesticCredits = [
+    { plan: 'Silver', price: '₹499', ldc: '1', dc: '1 × ₹500', total: '₹500', color: 'from-slate-500 to-slate-700', image: '/images/sundarbans_mangrove_1779521789593.png' },
+    { plan: 'Emerald', price: '₹799', ldc: '1', dc: '2 × ₹500', total: '₹1,000', color: 'from-teal-400 to-emerald-600', image: '/images/darjeeling_tea_1779521805614.png' },
+    { plan: 'Platinum', price: '₹1,499', ldc: '1', dc: '4 × ₹500', total: '₹2,000', color: 'from-indigo-400 to-purple-500', image: '/images/kashmir_dal_lake_1779521728036.png' },
   ];
+
+  const intlCredits = [
+    { plan: 'Explorer', price: '₹4,999', ldc: '1 (Monthly)', dc: '5 × ₹500', total: '₹2,500', color: 'from-sky-400 to-blue-600', image: '/images/dubai_skyline_1779539448313.png' },
+    { plan: 'Voyager', price: '₹7,999', ldc: '1 (Monthly)', dc: '8 × ₹500', total: '₹4,000', color: 'from-emerald-400 to-teal-600', image: '/images/maldives_overwater_1779539482305.png' },
+    { plan: 'Globetrotter', price: '₹14,999', ldc: '1 (Monthly)', dc: '15 × ₹500', total: '₹7,500', color: 'from-rose-400 via-pink-500 to-violet-600', image: '/images/singapore_skyline_1779539502293.png' },
+  ];
+
+  const currentCredits = activeTab === 'domestic' ? domesticCredits : intlCredits;
 
   return (
-    <section id="credits" className="relative py-24 lg:py-32 bg-void overflow-hidden">
-      <StarField count={50} />
-      <AuroraBackground variant="gold" />
-      <FloatingOrbs count={5} variant="gold" />
-      <FlowingLines count={4} />
-      <WaveBackground color="gold" />
-      <div className="absolute inset-0 grid-pattern opacity-30" />
-      <div className="absolute top-40 right-10 w-96 h-96 rounded-full bg-neon-gold/15 blur-[120px]" />
+    <section id="credits" className="relative py-24 lg:py-32 overflow-hidden">
 
       <div className="max-w-7xl mx-auto px-5 lg:px-8 relative z-10">
         {/* Header */}
@@ -1803,14 +1899,17 @@ function CreditArchitecture() {
                       </div>
                     </FloatingIcon>
                     <div>
-                      <div className={`font-mono text-xs font-bold tracking-wider ${c.accent === 'cyan' ? 'neon-cyan' : 'neon-gold'}`}>{c.type}</div>
-                      <div className="font-display text-xl font-bold text-ink">{c.name}</div>
+                      <div className={`font-mono text-xs font-extrabold tracking-wider ${c.accent === 'cyan' ? 'text-cyan-deep' : 'text-teal-700'}`}>{c.type}</div>
+                      <div className="font-display text-xl font-black text-slate-900">{c.name}</div>
                     </div>
                   </div>
 
-                  {/* Rule badge */}
-                  <div className={`rounded-xl p-3 mb-5 ${c.accent === 'cyan' ? 'glass-cyan' : 'glass-gold'}`}>
-                    <div className={`text-sm font-semibold ${c.accent === 'cyan' ? 'neon-cyan' : 'neon-gold'}`}>⚡ {c.rule}</div>
+                  {/* Rule badge - Full Black and Stylish */}
+                  <div className={`rounded-xl p-3 mb-5 border ${c.accent === 'cyan' ? 'bg-cyan/5 border-cyan/30' : 'bg-teal-500/5 border-teal-500/30'}`}>
+                    <div className="text-sm font-bold flex items-center gap-1.5">
+                      <span className={c.accent === 'cyan' ? 'text-cyan-deep' : 'text-teal-600'}>⚡</span>
+                      <span className="font-extrabold text-slate-900 tracking-tight">{c.rule}</span>
+                    </div>
                   </div>
 
                   {/* Visual illustration slot */}
@@ -1840,46 +1939,53 @@ function CreditArchitecture() {
                       </div>
                     </div>
                   ) : (
-                    /* Discount Credit Voucher (CSS Holographic Card) */
-                    <div className="relative rounded-2xl overflow-hidden border border-teal-500/20 group shadow-2xl mb-6 h-40 bg-gradient-to-br from-teal-500/5 via-cosmos to-teal-500/10 flex flex-col justify-between p-5 shrink-0">
-                      <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-teal-400/5 to-transparent pointer-events-none group-hover:scale-105 transition-transform duration-700" />
+                    /* Discount Credit Voucher (CSS Holographic Card - Dark Premium) */
+                    <div className="relative rounded-2xl overflow-hidden border border-teal-500/30 group shadow-2xl mb-6 h-40 bg-slate-950 flex flex-col justify-between p-5 shrink-0">
+                      <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-teal-500/10 to-transparent pointer-events-none group-hover:scale-105 transition-transform duration-700" />
+                      <div className="absolute -top-12 -left-12 w-24 h-24 rounded-full bg-teal-500/5 blur-xl pointer-events-none" />
+                      <div className="absolute -bottom-12 -right-12 w-24 h-24 rounded-full bg-cyan-500/5 blur-xl pointer-events-none" />
                       
                       <div className="flex justify-between items-start relative z-10">
-                        <span className="text-[10px] font-mono tracking-widest text-teal-600 font-bold">
+                        <span className="text-[10px] font-mono tracking-widest text-teal-400 font-bold">
                           DISCOUNT VOUCHER
                         </span>
-                        <span className="text-teal-600/80 font-mono text-[9px] animate-pulse">
-                          ● redeemable
+                        <span className="text-teal-400 font-mono text-[9px] animate-pulse flex items-center gap-1">
+                          <span className="w-1 h-1 rounded-full bg-teal-400" /> redeemable
                         </span>
                       </div>
 
                       <div className="flex items-center justify-between my-2 relative z-10">
                         <div className="text-left">
-                          <div className="text-[10px] uppercase tracking-widest text-ink/40 font-mono">Value</div>
-                          <div className="text-3xl font-display font-black text-teal-600 tracking-tight leading-none font-sans">
+                          <div className="text-[9px] uppercase tracking-widest text-slate-400 font-mono">Value</div>
+                          <div className="text-3xl font-display font-black text-teal-400 tracking-tight leading-none">
                             ₹500
                           </div>
                         </div>
                         <div className="h-10 w-px border-l border-dashed border-teal-500/30" />
                         <div className="text-right">
-                          <div className="text-[9px] uppercase tracking-widest text-ink/40 font-mono">Applicable on</div>
-                          <div className="text-xs font-bold text-ink mt-0.5">
+                          <div className="text-[9px] uppercase tracking-widest text-slate-400 font-mono">Applicable on</div>
+                          <div className="text-xs font-bold text-white mt-0.5">
                             Domestic Tours
                           </div>
                         </div>
                       </div>
 
-                      <div className="flex justify-between items-center text-[10px] font-mono text-teal-700/80 font-semibold relative z-10 pt-2 border-t border-teal-500/10">
+                      <div className="flex justify-between items-center text-[10px] font-mono text-teal-400/80 font-semibold relative z-10 pt-2 border-t border-slate-800">
                         <span>SECURE CREDITS</span>
-                        <span>100% SECURED</span>
+                        <span className="text-white/80">100% SECURED</span>
                       </div>
                     </div>
                   )}
 
-                  <p className="text-sm text-ink/65 leading-relaxed mb-6 flex-1">{c.desc}</p>
+                  <p className="text-sm text-slate-700 leading-relaxed mb-6 flex-1 font-medium">{c.desc}</p>
 
                   <ul className="space-y-2.5 pt-5 border-t border-slate-line">
-                    {c.details.map((d) => <li key={d} className="flex items-start gap-2.5 text-sm text-ink/80"><GoldCheck size={15} /><span>{d}</span></li>)}
+                    {c.details.map((d) => (
+                      <li key={d} className="flex items-start gap-2.5 text-sm text-slate-900 font-semibold">
+                        <GoldCheck size={15} variant={c.accent === 'cyan' ? 'cyan' : 'gold'} />
+                        <span className="text-slate-900 font-bold">{d}</span>
+                      </li>
+                    ))}
                   </ul>
                 </div>
               </TiltCard>
@@ -1898,8 +2004,8 @@ function CreditArchitecture() {
                       <Fingerprint className="w-8 h-8 text-cosmos" strokeWidth={2} />
                     </div>
                     <div>
-                      <div className="font-mono text-xs font-bold tracking-wider text-cyan">// BEDUINE DIGITAL PASS</div>
-                      <div className="font-display text-xl font-bold text-ink">Beduine Member Pass</div>
+                      <div className="font-mono text-xs font-extrabold tracking-wider text-teal-700">// BEDUINE DIGITAL PASS</div>
+                      <div className="font-display text-xl font-black text-slate-900">Beduine Member Pass</div>
                     </div>
                   </div>
                   
@@ -1928,14 +2034,14 @@ function CreditArchitecture() {
                     </div>
                   </div>
                   
-                  <p className="text-sm text-ink/70 leading-relaxed mb-6">
+                  <p className="text-sm text-slate-700 leading-relaxed mb-6 font-medium">
                     Your virtual membership card stores your draw tokens and discount credits. Accessible instantly from your phone.
                   </p>
                 </div>
                 
-                <div className="rounded-xl p-3 bg-white/5 border border-slate-line flex items-center justify-between text-xs font-mono text-ink/80">
+                <div className="rounded-xl p-3 bg-slate-100 border border-slate-200 flex items-center justify-between text-xs font-mono text-slate-900 font-bold">
                   <span>Lucky Draw entry included</span>
-                  <span className="text-emerald-500 font-bold">
+                  <span className="text-teal-600 font-black">
                     Guaranteed Discounts
                   </span>
                 </div>
@@ -1948,36 +2054,61 @@ function CreditArchitecture() {
         {/* Credit Comparison Table */}
         <Reveal>
           <div className="glass rounded-3xl p-6 lg:p-8 border border-slate-line mb-12">
-            <div className="text-center mb-6">
-              <div className="text-[11px] uppercase tracking-widest neon-cyan font-semibold mb-2 font-mono">// Credit Allocation by Plan</div>
-              <div className="font-display text-xl lg:text-2xl font-bold text-ink">What you get — guaranteed</div>
+            <div className="text-center mb-8">
+              <div className="text-[11px] uppercase tracking-widest text-cyan font-semibold mb-2 font-mono">// Credit Allocation by Plan</div>
+              <div className="font-display text-xl lg:text-2xl font-bold text-ink mb-6">What you get — guaranteed</div>
+              
+              {/* Premium Segmented Switcher */}
+              <div className="inline-flex p-1 rounded-full bg-cosmos border border-slate-line/50 shadow-inner">
+                <button
+                  onClick={() => setActiveTab('domestic')}
+                  className={`px-6 py-2.5 rounded-full text-xs font-bold font-display tracking-wider transition-all duration-300 ${activeTab === 'domestic' ? 'bg-gradient-to-r from-neon-gold to-gold text-white shadow-md' : 'text-ink/60 hover:text-ink'}`}
+                >
+                  Domestic Plans
+                </button>
+                <button
+                  onClick={() => setActiveTab('intl')}
+                  className={`px-6 py-2.5 rounded-full text-xs font-bold font-display tracking-wider transition-all duration-300 ${activeTab === 'intl' ? 'bg-gradient-to-r from-cyan to-cyan-deep text-white shadow-md' : 'text-ink/60 hover:text-ink'}`}
+                >
+                  International Plans
+                </button>
+              </div>
             </div>
+            
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-slate-line">
                     <th className="py-3 px-4 text-left text-[10px] uppercase tracking-widest text-ink/50 font-mono">Plan</th>
                     <th className="py-3 px-4 text-center text-[10px] uppercase tracking-widest text-ink/50 font-mono">Price</th>
-                    <th className="py-3 px-4 text-center text-[10px] uppercase tracking-widest neon-cyan font-mono">LDC</th>
-                    <th className="py-3 px-4 text-center text-[10px] uppercase tracking-widest neon-gold font-mono">Discount Credits</th>
-                    <th className="py-3 px-4 text-center text-[10px] uppercase tracking-widest text-emerald-400 font-mono">Min Value</th>
+                    <th className="py-3 px-4 text-center text-[10px] uppercase tracking-widest text-cyan font-mono">LDC</th>
+                    <th className="py-3 px-4 text-center text-[10px] uppercase tracking-widest text-cyan font-mono">Discount Credits</th>
+                    <th className="py-3 px-4 text-center text-[10px] uppercase tracking-widest text-emerald-600 font-mono">Min Value</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {creditTable.map((r) => (
+                  {currentCredits.map((r) => (
                     <tr key={r.plan} className="border-b border-slate-line/50 hover:bg-white/[0.02] transition-colors">
                       <td className="py-4 px-4">
                         <div className="flex items-center gap-3">
-                          <div className={`w-8 h-8 rounded-lg bg-gradient-to-br ${r.color} flex items-center justify-center`}>
-                            <Star className="w-4 h-4 text-white/80" />
-                          </div>
+                          {r.image ? (
+                            <img
+                              src={r.image}
+                              alt={r.plan}
+                              className="w-10 h-10 rounded-full object-cover border border-cyan/30 shadow-md shadow-cyan/10"
+                            />
+                          ) : (
+                            <div className={`w-8 h-8 rounded-lg bg-gradient-to-br ${r.color} flex items-center justify-center shadow-sm`}>
+                              <Star className="w-4 h-4 text-white/80" />
+                            </div>
+                          )}
                           <span className="font-display font-bold text-ink">{r.plan}</span>
                         </div>
                       </td>
                       <td className="py-4 px-4 text-center font-display font-bold text-ink">{r.price}</td>
                       <td className="py-4 px-4 text-center"><span className="px-2.5 py-1 rounded-full glass-cyan text-cyan text-xs font-semibold">{r.ldc}</span></td>
-                      <td className="py-4 px-4 text-center"><span className="px-2.5 py-1 rounded-full glass-gold text-neon-gold text-xs font-semibold">{r.dc}</span></td>
-                      <td className="py-4 px-4 text-center font-display font-bold text-emerald-400">{r.total}</td>
+                      <td className="py-4 px-4 text-center"><span className="px-2.5 py-1 rounded-full glass-cyan text-cyan text-xs font-semibold">{r.dc}</span></td>
+                      <td className="py-4 px-4 text-center font-display font-bold text-emerald-600">{r.total}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -2056,15 +2187,8 @@ function NonWinnerGuarantee() {
   ];
 
   return (
-    <section id="nonwinner" className="relative py-24 lg:py-32 bg-cosmos overflow-hidden">
-      <StarField count={60} />
-      <AuroraBackground variant="gold" />
-      <FloatingOrbs count={5} variant="gold" />
-      <MorphBlobs />
-      <FlowingLines count={4} />
-      <div className="absolute inset-0 grid-pattern opacity-30" />
-      <div className="absolute top-20 left-10 w-[500px] h-[500px] rounded-full bg-neon-gold/15 blur-[120px]" />
-      <div className="absolute bottom-20 right-10 w-[500px] h-[500px] rounded-full bg-emerald-500/10 blur-[120px]" />
+    <>
+      <section id="nonwinner" className="relative py-24 lg:py-32 overflow-hidden">
 
       <div className="max-w-7xl mx-auto px-5 lg:px-8 relative z-10">
         {/* Header */}
@@ -2222,107 +2346,196 @@ function NonWinnerGuarantee() {
             </Reveal>
           ))}
         </div>
+      </div>
+    </section>
 
-        {/* FAQ Mini-Section */}
-        <Reveal>
-          <div className="glass rounded-3xl p-6 lg:p-8 border border-slate-line">
-            <div className="text-center mb-8">
-              <div className="text-[11px] uppercase tracking-widest neon-gold font-semibold mb-2 font-mono">// Frequently Asked Questions</div>
-              <div className="font-display text-xl lg:text-2xl font-bold text-ink">Common questions about non-winner benefits</div>
-            </div>
-            <div className="grid md:grid-cols-2 gap-5">
-              {faqs.map((faq, i) => (
-                <Reveal key={i} delay={i * 0.08}>
-                  <div className="glass-light rounded-2xl p-5 border border-slate-line hover:neon-border-cyan transition-all h-full">
-                    <div className="flex items-start gap-3 mb-3">
-                      <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-cyan to-blue-500 flex items-center justify-center shrink-0 mt-0.5">
-                        <span className="text-cosmos text-xs font-bold">Q</span>
-                      </div>
-                      <div className="font-display font-bold text-ink text-sm leading-snug">{faq.q}</div>
-                    </div>
-                    <div className="pl-10 text-sm text-ink/65 leading-relaxed">{faq.a}</div>
+    {/* Dedicated FAQ & Promise Section with Waterfall Background */}
+    <section id="faq" className="faq-section">
+      <div className="faq-wrapper">
+        <div className="text-center mb-10">
+          <div className="text-[11px] uppercase tracking-[0.25em] text-[#0D9488] font-extrabold mb-2 font-mono">// Frequently Asked Questions</div>
+          <h2 className="font-display text-2xl lg:text-4xl font-extrabold text-[#071833] leading-snug">Common questions about non-winner benefits</h2>
+        </div>
+        
+        <div className="faq-grid">
+          {faqs.map((faq, i) => (
+            <Reveal key={i} delay={i * 0.08}>
+              <div className="faq-card">
+                <div className="flex items-start gap-4">
+                  <div className="w-8 h-8 rounded-xl bg-[#0D9488] flex items-center justify-center shrink-0 mt-0.5 shadow-md shadow-teal-500/20">
+                    <span className="text-white text-sm font-black">Q</span>
                   </div>
-                </Reveal>
-              ))}
-            </div>
-          </div>
-        </Reveal>
+                  <div className="flex-1">
+                    <h3>{faq.q}</h3>
+                    <p>{faq.a}</p>
+                  </div>
+                </div>
+              </div>
+            </Reveal>
+          ))}
+        </div>
 
-        {/* Value Proposition Callout */}
+        {/* Value Proposition Callout / Promise Box */}
         <Reveal>
-          <div className="mt-12 glass-gold rounded-2xl p-6 lg:p-8 border border-neon-gold/40 neon-border-gold">
+          <div className="promise-box">
             <div className="flex flex-col lg:flex-row items-center gap-6 text-center lg:text-left">
               <FloatingIcon>
-                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center shadow-2xl shadow-emerald-500/40 shrink-0">
-                  <HeartHandshake className="w-8 h-8 text-cosmos" />
+                <div className="w-16 h-16 rounded-full bg-white/95 flex items-center justify-center shadow-2xl shadow-teal-500/20 shrink-0">
+                  <HeartHandshake className="w-8 h-8 text-[#0D9488]" />
                 </div>
               </FloatingIcon>
               <div className="flex-1">
-                <div className="font-display text-lg lg:text-xl font-bold text-ink mb-1">The Beduine Promise</div>
-                <p className="text-ink/80 leading-relaxed font-serif italic gold-shimmer text-lg">
+                <div className="font-display text-lg lg:text-xl font-extrabold text-white mb-1.5">The Beduine Promise</div>
+                <p className="text-white/90 leading-relaxed font-semibold italic text-base">
                   "Every Sunday, Beduine runs a fair digital draw. If I win, I travel free. If not, I still get discounts. Either way, I gain."
                 </p>
               </div>
-              <a href="#plans"><ParticleButton variant="gold" className="px-6 py-3 rounded-full font-bold text-sm shrink-0 inline-flex items-center gap-2"><Crown className="w-4 h-4" />Choose Plan<ChevronRight className="w-4 h-4" /></ParticleButton></a>
+              <a href="#plans" className="shrink-0"><ParticleButton variant="gold" className="px-6 py-3.5 rounded-full font-extrabold text-sm inline-flex items-center gap-2 shadow-lg hover:scale-105 transition-transform"><Crown className="w-4 h-4" />Choose Plan<ChevronRight className="w-4 h-4" /></ParticleButton></a>
             </div>
           </div>
         </Reveal>
       </div>
     </section>
+    </>
   );
 }
 
 /* ---------- Destinations Showcase ---------- */
 function Destinations() {
+  const [activeTab, setActiveTab] = useState<'escapes' | 'trails' | 'royal' | 'intl'>('escapes');
+  const filtered = DESTINATIONS.filter(d => d.category === activeTab);
+  const carouselRef = useRef<HTMLDivElement>(null);
+
+  const handleTabChange = (tabId: any) => {
+    if (document.startViewTransition) {
+      document.startViewTransition(() => {
+        setActiveTab(tabId);
+      });
+    } else {
+      setActiveTab(tabId);
+    }
+  };
+
+  const scroll = (direction: 'left' | 'right') => {
+    if (carouselRef.current) {
+      const { scrollLeft, clientWidth } = carouselRef.current;
+      const scrollAmount = clientWidth * 0.75;
+      carouselRef.current.scrollTo({
+        left: direction === 'left' ? scrollLeft - scrollAmount : scrollLeft + scrollAmount,
+        behavior: 'smooth'
+      });
+    }
+  };
+
   return (
-    <section id="destinations" className="relative py-24 lg:py-32 bg-void overflow-hidden">
-      <StarField count={60} />
-      <FloatingOrbs count={6} variant="mixed" />
-      <AuroraBackground variant="gold" />
+    <section id="destinations" className="relative py-24 lg:py-32 overflow-hidden">
       <div className="max-w-7xl mx-auto px-5 lg:px-8 relative z-10">
         <Reveal>
-          <div className="text-center mb-16 max-w-3xl mx-auto">
+          <div className="text-center mb-12 max-w-3xl mx-auto">
             <div className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.3em] neon-gold font-semibold mb-4"><div className="w-8 h-px bg-neon-gold" /> Destinations <div className="w-8 h-px bg-neon-gold" /></div>
             <h2 className="font-display text-4xl lg:text-6xl font-bold text-ink leading-tight">
               <KineticText text="Where we take" />
               <br /><span className="gold-shimmer"><KineticText text="you." delay={0.3} /></span>
             </h2>
-            <p className="mt-6 text-ink/70 text-lg">Hand-picked journeys across India — each one a cinematic experience, not just a trip.</p>
+            <p className="mt-6 text-ink/70 text-lg">Hand-picked journeys across the globe — each one a cinematic experience, not just a trip.</p>
           </div>
         </Reveal>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {DESTINATIONS.map((d, i) => (
-            <Reveal key={d.name} delay={(i % 4) * 0.08}>
-              <TiltCard intensity={5}>
-                <div className="group relative h-80 rounded-3xl overflow-hidden border border-slate-line hover:neon-border-gold transition-all tilt-inner">
-                  <div className="absolute inset-0 slow-zoom">
-                    <img src={d.img} alt={d.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy" />
-                  </div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-cosmos via-cosmos/40 to-transparent" />
-                  <div className="absolute inset-0 bg-gradient-to-br from-transparent to-cosmos/50 opacity-0 group-hover:opacity-100 transition-opacity" />
 
-                  {/* Top badges */}
-                  <div className="absolute top-4 left-4 right-4 flex items-start justify-between z-10">
-                    <div className="px-3 py-1.5 rounded-full glass-gold text-neon-gold text-[10px] font-bold uppercase tracking-widest">{d.duration}</div>
-                    <div className="flex items-center gap-1 px-2.5 py-1 rounded-full glass text-ink text-xs"><Star className="w-3 h-3 fill-gold text-gold" /> {d.rating}</div>
-                  </div>
+        {/* Premium Filters Tab & Map Pin Hover Animation */}
+        <Reveal>
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-6 mb-12 border-b border-slate-line/50 pb-6">
+            <div className="inline-flex flex-wrap p-1 rounded-2xl bg-cosmos border border-slate-line/50 shadow-inner">
+              {[
+                { id: 'escapes', label: 'Weekend Escapes' },
+                { id: 'trails', label: 'Hill & Tea Trails' },
+                { id: 'royal', label: 'Royal India Tours' },
+                { id: 'intl', label: 'Premium International Trips' },
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => handleTabChange(tab.id as any)}
+                  className={`px-5 py-2.5 rounded-xl text-xs font-bold font-display tracking-wider transition-all duration-300 ${activeTab === tab.id ? 'bg-gradient-to-r from-neon-gold to-gold text-white shadow-md' : 'text-ink/65 hover:text-ink'}`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
 
-                  {/* Bottom info */}
-                  <div className="absolute inset-x-0 bottom-0 p-5 z-10">
-                    <div className="text-[10px] uppercase tracking-widest neon-cyan font-semibold mb-1.5 font-mono">// Best: {d.season}</div>
-                    <h3 className="font-display text-2xl font-bold text-ink">{d.name}</h3>
-                    <p className="text-xs text-ink/70 mt-0.5">{d.tag}</p>
-                    <div className="mt-3 flex items-center gap-1.5 text-xs font-semibold text-neon-gold opacity-0 group-hover:opacity-100 transition-opacity">
-                      Explore itinerary <ArrowRight className="w-3.5 h-3.5" />
+            {/* Map Pin Hover Animation Badge */}
+            <div className="flex items-center gap-2.5 px-4 py-2.5 rounded-full bg-white border border-slate-line text-xs font-bold text-teal-600 group cursor-pointer hover:neon-border-cyan transition-all shadow-sm">
+              <div className="relative flex items-center justify-center">
+                <MapPin className="w-4 h-4 text-teal-600 group-hover:animate-bounce transition-all duration-300" />
+                <span className="absolute w-6 h-6 rounded-full bg-teal-500/20 scale-150 animate-ping group-hover:scale-[2] duration-700" />
+              </div>
+              <span className="font-mono tracking-tight uppercase">Live Travel Map Pin</span>
+            </div>
+          </div>
+        </Reveal>
+
+        {/* Horizontal Carousel View */}
+        <div className="relative px-2">
+          {/* Navigation Controls */}
+          <button
+            onClick={() => scroll('left')}
+            className="absolute left-[-16px] lg:left-[-24px] top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white border border-slate-line/70 hover:border-teal-600 transition-all flex items-center justify-center shadow-lg z-30 cursor-pointer text-teal-600 active:scale-95 border-none"
+            title="Scroll Left"
+          >
+            <ChevronRight className="w-5 h-5 rotate-180" />
+          </button>
+          <button
+            onClick={() => scroll('right')}
+            className="absolute right-[-16px] lg:right-[-24px] top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white border border-slate-line/70 hover:border-teal-600 transition-all flex items-center justify-center shadow-lg z-30 cursor-pointer text-teal-600 active:scale-95 border-none"
+            title="Scroll Right"
+          >
+            <ChevronRight className="w-5 h-5" />
+          </button>
+
+          <div
+            ref={carouselRef}
+            className="flex gap-6 overflow-x-auto scrollbar-none snap-x snap-mandatory py-4 px-2 scroll-smooth"
+            style={{ WebkitOverflowScrolling: 'touch' }}
+          >
+            {filtered.map((d, i) => (
+              <div key={d.name} className="flex-shrink-0 w-[290px] sm:w-[330px] snap-start">
+                <Reveal delay={i * 0.08}>
+                  <TiltCard intensity={5} className="h-full">
+                    <div className="group relative h-[380px] rounded-3xl overflow-hidden border border-slate-line hover:neon-border-gold transition-all duration-300 zoom-hover-img cursor-pointer bg-white">
+                      {/* Image zoom-in */}
+                      <div className="absolute inset-0 overflow-hidden">
+                        <img src={d.img} alt={d.name} className="w-full h-full object-cover" loading="lazy" />
+                      </div>
+                      <div className="absolute inset-0 bg-gradient-to-t from-cosmos via-cosmos/25 to-transparent" />
+                      <div className="absolute inset-0 bg-gradient-to-br from-transparent to-cosmos/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+                      {/* Top Badges */}
+                      <div className="absolute top-4 left-4 right-4 flex items-start justify-between z-10">
+                        <div className="flex gap-1.5">
+                          <div className="px-3 py-1.5 rounded-full glass-gold text-neon-gold text-[10px] font-black uppercase tracking-widest">{d.duration}</div>
+                          <div className="px-2.5 py-1.5 rounded-full bg-teal-600 text-white text-[9px] font-black uppercase tracking-wider shadow-sm">{d.planBadge}</div>
+                        </div>
+                        <div className="flex items-center gap-1 px-2.5 py-1 rounded-full glass text-[#071833] text-xs font-black shadow-sm">
+                          <Star className="w-3 h-3 fill-gold text-gold" /> {d.rating}
+                        </div>
+                      </div>
+
+                      {/* Bottom Info Details */}
+                      <div className="absolute inset-x-0 bottom-0 p-6 z-10">
+                        <div className="text-[10px] uppercase tracking-widest text-teal-600 font-black mb-1.5 font-mono">// Season: {d.season}</div>
+                        <h3 className="font-display text-2xl font-black text-[#071833] leading-snug">{d.name}</h3>
+                        <p className="text-xs text-ink/75 font-semibold mt-1">{d.tag}</p>
+                        <div className="mt-4 flex items-center gap-1.5 text-xs font-black text-teal-600 opacity-0 group-hover:opacity-100 transition-all transform translate-y-2 group-hover:translate-y-0 duration-300">
+                          Explore itinerary <ArrowRight className="w-3.5 h-3.5" />
+                        </div>
+                      </div>
+
+                      {/* Corner shine glow */}
+                      <div className="absolute -top-20 -right-20 w-40 h-40 rounded-full bg-neon-gold/15 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity" />
                     </div>
-                  </div>
-
-                  {/* Corner shine */}
-                  <div className="absolute -top-20 -right-20 w-40 h-40 rounded-full bg-neon-gold/20 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity" />
-                </div>
-              </TiltCard>
-            </Reveal>
-          ))}
+                  </TiltCard>
+                </Reveal>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -2339,11 +2552,7 @@ function Winners() {
   const t = { d: Math.floor(seconds / 86400), h: Math.floor((seconds % 86400) / 3600), m: Math.floor((seconds % 3600) / 60), s: seconds % 60 };
 
   return (
-    <section className="relative py-24 lg:py-32 bg-cosmos overflow-hidden">
-      <StarField count={70} />
-      <FloatingOrbs count={5} variant="cyan" />
-      <MorphBlobs />
-      <WaveBackground color="mixed" />
+    <section className="relative py-24 lg:py-32 overflow-hidden">
       <div className="max-w-7xl mx-auto px-5 lg:px-8 relative z-10">
         <Reveal>
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12">
@@ -2403,10 +2612,7 @@ function Winners() {
 /* ---------- Journey Section (Image collage) ---------- */
 function Journey() {
   return (
-    <section className="relative py-24 lg:py-32 bg-void overflow-hidden">
-      <StarField count={40} />
-      <FloatingOrbs count={4} variant="gold" />
-      <FlowingLines count={6} />
+    <section className="relative py-24 lg:py-32 overflow-hidden">
       <div className="max-w-7xl mx-auto px-5 lg:px-8 relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <Reveal>
@@ -2473,14 +2679,7 @@ function Journey() {
 /* ---------- CTA Banner ---------- */
 function CTABanner() {
   return (
-    <section id="contact" className="py-24 lg:py-32 bg-cosmos relative overflow-hidden">
-      <StarField count={60} />
-      <AuroraBackground variant="gold" />
-      <FloatingOrbs count={5} variant="gold" />
-      <MorphBlobs />
-      <WaveBackground color="gold" />
-      <FlowingLines count={4} />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-neon-gold/10 blur-[120px]" />
+    <section id="contact" className="py-24 lg:py-32 relative overflow-hidden">
       <div className="relative max-w-4xl mx-auto px-5 lg:px-8 text-center z-10">
         <Reveal>
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-gold text-neon-gold text-[11px] uppercase tracking-widest font-semibold mb-6"><Zap className="w-3.5 h-3.5" /> Lock Your Entry</div>
@@ -2554,7 +2753,7 @@ function Footer() {
 
 function FloatingButtons() {
   return (
-    <div className="hidden lg:flex fixed right-6 bottom-6 flex-col gap-3 z-40">
+    <div className="hidden lg:flex fixed left-6 bottom-6 flex-col gap-3 z-40">
       <a href="https://wa.me/918768903565" target="_blank" rel="noreferrer" data-magnetic className="w-13 h-13 rounded-full bg-emerald-500 text-white flex items-center justify-center shadow-xl shadow-emerald-500/40 hover:scale-110 transition-transform" title="WhatsApp" style={{ width: 52, height: 52 }}><MessageCircle className="w-5 h-5" /></a>
       <a href="tel:+918768903565" data-magnetic className="w-13 h-13 rounded-full bg-gradient-to-br from-neon-gold to-gold-deep text-cosmos flex items-center justify-center shadow-xl shadow-neon-gold/40 hover:scale-110 transition-transform" title="Call" style={{ width: 52, height: 52 }}><Phone className="w-5 h-5" /></a>
     </div>
@@ -2570,6 +2769,624 @@ function MobileSticky() {
         <a href="#plans" className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-gradient-to-r from-neon-gold to-gold text-cosmos text-xs font-bold"><Crown className="w-4 h-4" /> Join</a>
       </div>
     </div>
+  );
+}
+
+function ScrollRouteLine() {
+  const { scrollYProgress } = useScroll();
+  const pathLength = useSpring(scrollYProgress, { stiffness: 50, damping: 25 });
+  const y = useTransform(scrollYProgress, [0, 1], ['0%', '98%']);
+
+  return (
+    <div className="hidden xl:block absolute left-[3%] top-[110vh] bottom-[10vh] w-1 z-20 pointer-events-none animate-fade-in" style={{ minHeight: 'calc(100% - 120vh)' }}>
+      <div className="sticky top-[25vh] h-[50vh] w-8 overflow-visible flex flex-col items-center">
+        <svg className="w-8 h-full overflow-visible route-line-svg" fill="none">
+          {/* Base path */}
+          <line
+            x1="16"
+            y1="0"
+            x2="16"
+            y2="400"
+            stroke="rgba(13, 148, 136, 0.15)"
+            strokeWidth="3"
+            strokeDasharray="6,6"
+            strokeLinecap="round"
+          />
+          {/* Draw path */}
+          <motion.path
+            d="M 16 0 V 400"
+            stroke="#0D9488"
+            strokeWidth="3.5"
+            strokeLinecap="round"
+            style={{ pathLength }}
+          />
+        </svg>
+        <motion.div
+          style={{ y }}
+          className="route-airplane-tracker absolute left-2 top-0 w-8 h-8 rounded-full bg-cosmos border-2 border-teal-600 flex items-center justify-center shadow-lg shadow-teal-500/20 z-30"
+        >
+          <Plane className="w-4 h-4 text-teal-600 rotate-90" />
+        </motion.div>
+      </div>
+    </div>
+  );
+}
+
+/* ---------- Family Travel Scroll Animation (3D Layered Vector) ---------- */
+function FamilyTravelScrollAnimation() {
+  const { scrollYProgress } = useScroll();
+  const [reducedMotion, setReducedMotion] = useState(false);
+  const [emotion, setEmotion] = useState<'excited' | 'wonder' | 'cool' | 'happy'>('excited');
+
+  // Detect accessibility motion preferences
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setReducedMotion(mediaQuery.matches);
+    const listener = (e: MediaQueryListEvent) => setReducedMotion(e.matches);
+    mediaQuery.addEventListener('change', listener);
+    return () => mediaQuery.removeEventListener('change', listener);
+  }, []);
+
+  // Update family emotions dynamically on scroll progress!
+  // 'wonder' emotion = Plans section → child reaches for Silver ₹499!
+  useEffect(() => {
+    return scrollYProgress.on("change", (latest) => {
+      if (latest < 0.18) {
+        setEmotion('excited'); // Hero: excited anticipation!
+      } else if (latest < 0.52) {
+        setEmotion('wonder');  // Plans/Destinations: child grabs Silver ₹499!
+      } else if (latest < 0.80) {
+        setEmotion('cool');    // Guarantee/Services: confident trust!
+      } else {
+        setEmotion('happy');   // Contact/Footer: warm loving farewell!
+      }
+    });
+  }, [scrollYProgress]);
+
+  // Scroll position path — during 'wonder'/Plans range (0.18–0.52),
+  // family moves near Silver card (LEFT card in plans grid) from the RIGHT side.
+  // Silver card is roughly at left:0–33% of viewport, so family hovers just right of it.
+  const x = useTransform(scrollYProgress,
+    [0,    0.12,  0.22,  0.34,  0.47,  0.56,  0.72,  1.0],
+    ['82%','4%',  '28%', '30%', '28%', '8%',  '78%', '82%']
+  );
+  const y = useTransform(scrollYProgress,
+    [0,    0.12,  0.22,  0.34,  0.47,  0.56,  0.72,  1.0],
+    ['30vh','40vh','50vh','52vh','50vh','58vh','66vh','76vh']
+  );
+  const scale = useTransform(scrollYProgress,
+    [0,    0.12,  0.22,  0.34,  0.47,  0.56,  0.72,  1.0],
+    [0.85, 0.98,  1.10,  1.12,  1.10,  0.96,  0.88,  0.82]
+  );
+  const rotate = useTransform(scrollYProgress,
+    [0,    0.12,  0.22,  0.34,  0.47,  0.56,  0.72,  1.0],
+    [-4,   8,    -3,    -5,    -3,     5,    -4,     0]
+  );
+
+  // High performance spring physics for butter-smooth 60fps renders
+  const sX = useSpring(x, { stiffness: 40, damping: 16 });
+  const sY = useSpring(y, { stiffness: 40, damping: 16 });
+  const sScale = useSpring(scale, { stiffness: 40, damping: 16 });
+  const sRotate = useSpring(rotate, { stiffness: 40, damping: 16 });
+
+  // Suitcase wheels rotate dynamically based on scroll distance (reverse when scrolling up)
+  const wheelRotate = useTransform(scrollYProgress, [0, 1], [0, 2880]);
+  const sWheelRotate = useSpring(wheelRotate, { stiffness: 50, damping: 12 });
+
+  if (reducedMotion) {
+    // Static premium fallback for motion sensitive users
+    return (
+      <div className="hidden xl:block fixed right-[4%] top-[40vh] w-38 h-46 z-30 pointer-events-none opacity-85">
+        <div className="w-full h-full relative">
+          <FamilyVector emotion="excited" scrollProgress={0} wheelRotate={0} />
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="hidden xl:block fixed inset-0 z-30 pointer-events-none overflow-hidden">
+      <motion.div
+        style={{
+          left: sX,
+          top: sY,
+          scale: sScale,
+          rotate: sRotate,
+        }}
+        className="absolute w-38 h-46 transform -translate-x-1/2 -translate-y-1/2 select-none pointer-events-none filter drop-shadow-[0_15px_30px_rgba(2,6,23,0.3)]"
+      >
+        <FamilyVector emotion={emotion} scrollProgress={scrollYProgress} wheelRotate={sWheelRotate} />
+      </motion.div>
+    </div>
+  );
+}
+
+/* High Fidelity 3D Layered Travel Family Vector Illustration */
+function FamilyVector({ emotion = 'excited', scrollProgress, wheelRotate }: { emotion?: 'excited' | 'wonder' | 'cool' | 'happy'; scrollProgress: any; wheelRotate: any }) {
+  return (
+    <svg viewBox="0 0 200 240" className="w-full h-full text-teal-600 relative overflow-visible">
+      <style>{`
+        @keyframes motherWaving {
+          0%, 100% { transform: rotate(0deg); }
+          50% { transform: rotate(14deg); }
+        }
+        @keyframes fatherSwaying {
+          0%, 100% { transform: translate(0px, 0px) rotate(0deg); }
+          50% { transform: translate(1px, -1.2px) rotate(-0.8deg); }
+        }
+        @keyframes childBouncing {
+          0%, 100% { transform: translate(0px, 0px) scale(1); }
+          50% { transform: translate(0px, -3.2px) scale(1.015); }
+        }
+        @keyframes luggageVibing {
+          0%, 100% { transform: translate(0px, 0px) rotate(0deg); }
+          25% { transform: translate(0.4px, -0.2px) rotate(0.1deg); }
+          75% { transform: translate(-0.4px, 0.2px) rotate(-0.1deg); }
+        }
+        .animate-mother-wave {
+          animation: motherWaving 0.65s ease-in-out infinite;
+          transform-origin: 110px 98px;
+        }
+        .animate-father-torso {
+          animation: fatherSwaying 1.05s ease-in-out infinite;
+          transform-origin: 56px 148px;
+        }
+        .animate-child-bounce {
+          animation: childBouncing 0.5s ease-in-out infinite;
+          transform-origin: 81px 176px;
+        }
+        .animate-luggage-vibe {
+          animation: luggageVibing 0.05s linear infinite;
+          transform-origin: 15px 194px;
+        }
+        @keyframes ticketEntrance {
+          0% { transform: scale(0) translate(-10px, 10px); opacity: 0; }
+          100% { transform: scale(1) translate(0, 0); opacity: 1; }
+        }
+        .animate-silver-ticket {
+          animation: ticketEntrance 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+          transform-origin: 78px 120px;
+        }
+      `}</style>
+      <defs>
+        {/* Premium Silver Metallic & Glow definitions */}
+        <linearGradient id="silverMetallic" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#ffffff" />
+          <stop offset="25%" stopColor="#f1f5f9" />
+          <stop offset="50%" stopColor="#94a3b8" />
+          <stop offset="75%" stopColor="#cbd5e1" />
+          <stop offset="100%" stopColor="#475569" />
+        </linearGradient>
+        <filter id="silverGlow" x="-20%" y="-20%" width="140%" height="140%">
+          <feGaussianBlur stdDeviation="2.5" result="blur" />
+          <feComponentTransfer in="blur" result="glow">
+            <feFuncA type="linear" slope="2.5" />
+          </feComponentTransfer>
+          <feMerge>
+            <feMergeNode in="glow" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+        {/* Gradients for ultra-realistic 3D rendering */}
+        <linearGradient id="parentSkin" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#FFF2E6" />
+          <stop offset="60%" stopColor="#FED2B1" />
+          <stop offset="100%" stopColor="#E99F72" />
+        </linearGradient>
+        <linearGradient id="suitCaseGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#00f5d4" />
+          <stop offset="40%" stopColor="#0ea5e9" />
+          <stop offset="100%" stopColor="#0f766e" />
+        </linearGradient>
+        <linearGradient id="jacketBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#38bdf8" />
+          <stop offset="50%" stopColor="#0ea5e9" />
+          <stop offset="100%" stopColor="#0369a1" />
+        </linearGradient>
+        <linearGradient id="dressGold" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#FDE047" />
+          <stop offset="50%" stopColor="#EAB308" />
+          <stop offset="100%" stopColor="#A16207" />
+        </linearGradient>
+        <linearGradient id="hairDark" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#4A2F1B" />
+          <stop offset="100%" stopColor="#1A0D05" />
+        </linearGradient>
+        <linearGradient id="wheelGray" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#64748b" />
+          <stop offset="100%" stopColor="#1e293b" />
+        </linearGradient>
+        <linearGradient id="spectacleFrame" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#fbbf24" />
+          <stop offset="100%" stopColor="#d97706" />
+        </linearGradient>
+        <filter id="shadowFilter" x="-15%" y="-15%" width="130%" height="130%">
+          <feDropShadow dx="0" dy="6" stdDeviation="4.0" floodColor="#020617" floodOpacity="0.4" />
+        </filter>
+      </defs>
+
+      {/* Dynamic floor shadow */}
+      <ellipse cx="100" cy="225" rx="55" ry="7" fill="rgba(2,6,23,0.55)" filter="blur(3px)" />
+
+      {/* ── FATHER (Left - Proportional Height 175px) ── */}
+      <g id="father" className="animate-float-gentle animate-father-torso" style={{ animationDelay: '0.2s' }} filter="url(#shadowFilter)">
+        {/* Detailed Backpack */}
+        <rect x="34" y="88" width="16" height="34" rx="4" fill="#334155" />
+        <rect x="38" y="91" width="8" height="28" rx="2" fill="#1e293b" />
+        
+        {/* Body (Jacket with zipper details) */}
+        <path d="M 40,94 C 40,82 72,82 72,94 L 74,148 L 36,148 Z" fill="url(#jacketBlue)" />
+        {/* Jacket Zipper Line */}
+        <line x1="56" y1="94" x2="56" y2="148" stroke="#f8fafc" strokeWidth="1.5" strokeDasharray="1,3" className="opacity-80" />
+        <rect x="54" y="104" width="4" height="6" rx="1" fill="#cbd5e1" />
+
+        {/* Legs / Jeans */}
+        <rect x="42" y="148" width="11" height="54" rx="3" fill="#1e293b" />
+        <rect x="57" y="148" width="11" height="54" rx="3" fill="#1e293b" />
+        <rect x="42" y="191" width="11" height="5" fill="#475569" />
+        <rect x="57" y="191" width="11" height="5" fill="#475569" />
+
+        {/* Shoes */}
+        <path d="M 40,206 L 55,206 L 53,199 L 42,199 Z" fill="#ffffff" stroke="#cbd5e1" strokeWidth="0.5" />
+        <path d="M 57,206 L 72,206 L 70,199 L 59,199 Z" fill="#ffffff" stroke="#cbd5e1" strokeWidth="0.5" />
+
+        {/* Arm Pulling Trolley */}
+        <path d="M 42,98 Q 30,115 22,136" stroke="url(#parentSkin)" strokeWidth="6" strokeLinecap="round" fill="none" />
+        {/* Hand gripping the handle */}
+        <circle cx="22" cy="136" r="3.5" fill="url(#parentSkin)" />
+
+        {/* Father's Right Arm - Holding Child's Hand (CONNECTED POSE!) */}
+        <path d="M 68,98 Q 73,115 76,128" stroke="url(#parentSkin)" strokeWidth="6" strokeLinecap="round" fill="none" />
+
+        {/* Head & Neck */}
+        <rect x="52" y="74" width="8" height="10" fill="url(#parentSkin)" />
+        <circle cx="56" cy="62" r="14.5" fill="url(#parentSkin)" />
+        
+        {/* Ears */}
+        <circle cx="41.5" cy="62" r="3" fill="url(#parentSkin)" />
+        <circle cx="70.5" cy="62" r="3" fill="url(#parentSkin)" />
+
+        {/* DYNAMIC SCROLLING EXPRESSIONS */}
+        {/* Eyebrows */}
+        {emotion === 'wonder' ? (
+          <>
+            <path d="M 45,49 Q 50,44 55,49" stroke="#3B2314" strokeWidth="1.5" fill="none" />
+            <path d="M 57,49 Q 62,44 67,49" stroke="#3B2314" strokeWidth="1.5" fill="none" />
+          </>
+        ) : emotion === 'cool' ? (
+          <>
+            <path d="M 46,52 L 54,52" stroke="#3B2314" strokeWidth="1.8" fill="none" />
+            <path d="M 58,52 L 66,52" stroke="#3B2314" strokeWidth="1.8" fill="none" />
+          </>
+        ) : (
+          <>
+            <path d="M 46,51 Q 50,48 54,51" stroke="#3B2314" strokeWidth="1.5" fill="none" />
+            <path d="M 58,51 Q 62,48 66,51" stroke="#3B2314" strokeWidth="1.5" fill="none" />
+          </>
+        )}
+
+        {/* Eyes / Glasses */}
+        {emotion === 'wonder' ? (
+          <>
+            {/* Wide surprised eyes */}
+            <circle cx="50" cy="56.5" r="3.8" fill="#ffffff" stroke="#1E1008" strokeWidth="0.8" />
+            <circle cx="50" cy="56.5" r="1.8" fill="#1E1008" />
+            <circle cx="62" cy="56.5" r="3.8" fill="#ffffff" stroke="#1E1008" strokeWidth="0.8" />
+            <circle cx="62" cy="56.5" r="1.8" fill="#1E1008" />
+          </>
+        ) : emotion === 'cool' ? (
+          <>
+            {/* Cool blue gradient transparent aviator shades */}
+            <ellipse cx="50" cy="56.5" rx="2.2" ry="2.2" fill="#1E1008" />
+            <ellipse cx="62" cy="56.5" rx="2.2" ry="2.2" fill="#1E1008" />
+            <rect x="44" y="51" width="11" height="8.5" rx="2" fill="rgba(14,165,233,0.4)" stroke="url(#spectacleFrame)" strokeWidth="1" />
+            <rect x="57" y="51" width="11" height="8.5" rx="2" fill="rgba(14,165,233,0.4)" stroke="url(#spectacleFrame)" strokeWidth="1" />
+            <line x1="55" y1="55" x2="57" y2="55" stroke="url(#spectacleFrame)" strokeWidth="1" />
+          </>
+        ) : (
+          <>
+            {/* Sparkly Happy Eyes */}
+            <ellipse cx="50" cy="56.5" rx="2.2" ry="3" fill="#1E1008" />
+            <circle cx="51" cy="55.2" r="0.7" fill="#ffffff" />
+            <ellipse cx="62" cy="56.5" rx="2.2" ry="3" fill="#1E1008" />
+            <circle cx="63" cy="55.2" r="0.7" fill="#ffffff" />
+            {/* Premium Gold Spectacles */}
+            <rect x="45" y="52" width="10" height="8" rx="2" fill="none" stroke="url(#spectacleFrame)" strokeWidth="1" />
+            <rect x="57" y="52" width="10" height="8" rx="2" fill="none" stroke="url(#spectacleFrame)" strokeWidth="1" />
+            <line x1="55" y1="56" x2="57" y2="56" stroke="url(#spectacleFrame)" strokeWidth="1" />
+          </>
+        )}
+
+        {/* Cute Nose */}
+        <path d="M 56,56 L 56,61 Q 56,62.5 57.5,62.5" stroke="#e99f72" strokeWidth="1.2" strokeLinecap="round" fill="none" />
+
+        {/* Mouth / Smile */}
+        {emotion === 'wonder' ? (
+          <circle cx="56" cy="69.5" r="4.5" fill="#9a3412" />
+        ) : emotion === 'cool' ? (
+          <path d="M 51,68 Q 56,71 61,68" stroke="#9a3412" strokeWidth="2.2" strokeLinecap="round" fill="none" />
+        ) : (
+          <>
+            <path d="M 50,67 Q 56,76 62,67 Z" fill="#9a3412" />
+            <path d="M 51,67 Q 56,70 61,67 Z" fill="#ffffff" />
+          </>
+        )}
+
+        {/* Friendly Rosy Cheeks */}
+        <circle cx="45" cy="64" r="2.5" fill="#ff7a90" opacity="0.45" />
+        <circle cx="67" cy="64" r="2.5" fill="#ff7a90" opacity="0.45" />
+
+        {/* Cap with Visor */}
+        <path d="M 42,52 C 42,39 70,39 70,52 Z" fill="#0d9488" />
+        <path d="M 58,45 L 78,47" stroke="#0d9488" strokeWidth="3.5" strokeLinecap="round" />
+      </g>
+
+      {/* ── MOTHER (Right - Proportional Height 168px) ── */}
+      <g id="mother" className="animate-float-gentle" style={{ animationDelay: '0.8s' }} filter="url(#shadowFilter)">
+        {/* Body (Gold Dress) */}
+        <path d="M 86,98 C 86,86 112,86 112,98 L 117,162 L 82,162 Z" fill="url(#dressGold)" />
+        {/* Elegant Belt Ribbon */}
+        <rect x="84" y="118" width="30" height="4.5" fill="#be123c" rx="1" />
+
+        {/* Legs */}
+        <rect x="89" y="162" width="7.5" height="42" rx="2" fill="url(#parentSkin)" />
+        <rect x="99" y="162" width="7.5" height="42" rx="2" fill="url(#parentSkin)" />
+
+        {/* Sandals */}
+        <rect x="86" y="202" width="11.5" height="4.5" rx="1.5" fill="#78350f" />
+        <rect x="97" y="202" width="11.5" height="4.5" rx="1.5" fill="#78350f" />
+
+        {/* Mother's Right Arm - Holding Child's Hand (CONNECTED POSE!) */}
+        <path d="M 88,98 Q 84,115 81,128" stroke="url(#parentSkin)" strokeWidth="5.5" strokeLinecap="round" fill="none" />
+
+        {/* Arm waving (Left) */}
+        <g className="animate-mother-wave">
+          <path d="M 110,98 C 122,86 126,72 124,56" stroke="url(#parentSkin)" strokeWidth="5.5" strokeLinecap="round" fill="none" />
+          <circle cx="124" cy="56" r="3" fill="url(#parentSkin)" />
+        </g>
+
+        {/* Head & Neck */}
+        <rect x="95" y="76" width="8" height="10" fill="url(#parentSkin)" />
+        <circle cx="99" cy="66" r="14" fill="url(#parentSkin)" />
+        
+        {/* Gorgeous Hair Flow */}
+        <path d="M 85,66 C 85,50 113,50 113,66 C 113,81 85,81 85,66 Z" fill="url(#hairDark)" />
+        <circle cx="99" cy="62" r="3" fill="#be123c" />
+
+        {/* DYNAMIC SCROLLING EXPRESSIONS */}
+        {/* Eyebrows */}
+        {emotion === 'wonder' ? (
+          <>
+            <path d="M 89,53 Q 94,48 98,52" stroke="#1E1008" strokeWidth="1.2" fill="none" />
+            <path d="M 100,52 Q 104,48 109,53" stroke="#1E1008" strokeWidth="1.2" fill="none" />
+          </>
+        ) : emotion === 'cool' ? (
+          <>
+            <path d="M 90,56 Q 94,52 97,54" stroke="#1E1008" strokeWidth="1.2" fill="none" />
+            <path d="M 101,54 Q 104,51 108,55" stroke="#1E1008" strokeWidth="1.5" fill="none" />
+          </>
+        ) : (
+          <>
+            <path d="M 90,56 Q 94,53 97,55" stroke="#1E1008" strokeWidth="1.2" fill="none" />
+            <path d="M 101,55 Q 104,53 108,56" stroke="#1E1008" strokeWidth="1.2" fill="none" />
+          </>
+        )}
+
+        {/* Eyes */}
+        {emotion === 'wonder' ? (
+          <>
+            <ellipse cx="93.5" cy="60.5" rx="3" ry="3.5" fill="#1E1008" />
+            <circle cx="94.5" cy="59" r="0.9" fill="#ffffff" />
+            <ellipse cx="104.5" cy="60.5" rx="3" ry="3.5" fill="#1E1008" />
+            <circle cx="105.5" cy="59" r="0.9" fill="#ffffff" />
+          </>
+        ) : emotion === 'cool' ? (
+          <>
+            {/* Elegant rose-tinted transparent cat-eye shades */}
+            <polygon points="88,58 96,55 97,62 90,63" fill="rgba(244,63,94,0.45)" stroke="#e11d48" strokeWidth="0.8" />
+            <polygon points="98,55 106,58 104,63 98,62" fill="rgba(244,63,94,0.45)" stroke="#e11d48" strokeWidth="0.8" />
+            <line x1="89" y1="59" x2="92" y2="56" stroke="#ffffff" strokeWidth="0.8" className="opacity-75" />
+          </>
+        ) : (
+          <>
+            <ellipse cx="93.5" cy="60.5" rx="2.3" ry="3" fill="#1E1008" />
+            <circle cx="94.5" cy="59.2" r="0.7" fill="#ffffff" />
+            <path d="M 91,59 Q 93,57.5 95,59" stroke="#1E1008" strokeWidth="0.8" fill="none" />
+            <ellipse cx="104.5" cy="60.5" rx="2.3" ry="3" fill="#1E1008" />
+            <circle cx="105.5" cy="59.2" r="0.7" fill="#ffffff" />
+            <path d="M 103,59 Q 105,57.5 107,59" stroke="#1E1008" strokeWidth="0.8" fill="none" />
+          </>
+        )}
+
+        {/* Cute nose */}
+        <path d="M 99,60 L 99,65 Q 99,66.5 100.5,66.5" stroke="#e99f72" strokeWidth="1.0" strokeLinecap="round" fill="none" />
+
+        {/* Mouth */}
+        {emotion === 'wonder' ? (
+          <path d="M 93,68 Q 99,78 105,68 Z" fill="#9a3412" />
+        ) : emotion === 'cool' ? (
+          <path d="M 94,70 Q 98,73 103,69" stroke="#9a3412" strokeWidth="2.2" strokeLinecap="round" fill="none" />
+        ) : (
+          <>
+            <path d="M 94,69 Q 99,77 104,69 Z" fill="#9a3412" />
+            <path d="M 95,69 Q 99,72 103,69 Z" fill="#ffffff" />
+          </>
+        )}
+
+        {/* Beautiful Blush */}
+        <circle cx="89" cy="68" r="2.8" fill="#ff7a90" opacity="0.45" />
+        <circle cx="109" cy="68" r="2.8" fill="#ff7a90" opacity="0.45" />
+
+        {/* Sun Hat with Ribbon */}
+        <ellipse cx="99" cy="52" rx="24" ry="5.5" fill="#fef08a" />
+        <path d="M 86,52 C 86,41 112,41 112,52 Z" fill="#fef08a" />
+        <ellipse cx="99" cy="52" rx="24" ry="5.5" fill="none" stroke="#be123c" strokeWidth="1.5" style={{ clipPath: 'inset(3px 0 0 0)' }} />
+      </g>
+
+      {/* ── CHILD (Center Front - Proportional Height 105px) ── */}
+      {/* When emotion='wonder' (Plans section), child PULLS toward Silver ₹499 card on the LEFT! */}
+      <g id="child"
+        className={emotion === 'wonder'
+          ? 'animate-float-gentle animate-child-pulling'
+          : 'animate-float-gentle animate-child-bounce'
+        }
+        style={{ animationDelay: '1.4s' }}
+        filter="url(#shadowFilter)"
+      >
+        {/* Body (T-Shirt with customized graphics) */}
+        <path d="M 72,136 C 72,128 90,128 90,136 L 91,176 L 71,176 Z" fill="#ef4444" />
+        {/* Yellow Star graphic on chest */}
+        <polygon points="81,140 83,144 87,144 84,147 85,151 81,148 77,151 78,147 75,144 79,144" fill="#fef08a" />
+
+        {/* Legs / Shorts */}
+        <rect x="73" y="176" width="7" height="26" rx="2" fill="#0284c7" />
+        <rect x="82" y="176" width="7" height="26" rx="2" fill="#0284c7" />
+        <rect x="73" y="195" width="7" height="4" fill="#38bdf8" />
+        <rect x="82" y="195" width="7" height="4" fill="#38bdf8" />
+
+        {/* Sneakers */}
+        <rect x="71" y="200" width="9" height="5" rx="1.5" fill="#ffffff" stroke="#ef4444" strokeWidth="0.5" />
+        <rect x="82" y="200" width="9" height="5" rx="1.5" fill="#ffffff" stroke="#ef4444" strokeWidth="0.5" />
+
+        {/* Child's Arms — during 'wonder' (Plans section) both arms stretch LEFT to grab Silver ₹499!
+            Family stands to the right of Silver card, so child reaches LEFT toward the price. */}
+        {emotion === 'wonder' ? (
+          <>
+            {/* Top arm reaching LEFT toward Silver price */}
+            <path d="M 73,134 Q 54,124 34,118" stroke="url(#parentSkin)" strokeWidth="5" strokeLinecap="round" fill="none" />
+            {/* Bottom arm gripping */}
+            <path d="M 73,140 Q 54,133 34,128" stroke="url(#parentSkin)" strokeWidth="5" strokeLinecap="round" fill="none" />
+            {/* Gripping hands on the price text (left side!) */}
+            <circle cx="34" cy="118" r="4.5" fill="url(#parentSkin)" />
+            <circle cx="37" cy="115" r="1.8" fill="#FED2B1" />
+            <circle cx="34" cy="114" r="1.8" fill="#FED2B1" />
+            <circle cx="31" cy="115" r="1.8" fill="#FED2B1" />
+            <circle cx="34" cy="128" r="4.5" fill="url(#parentSkin)" />
+            <circle cx="37" cy="125" r="1.8" fill="#FED2B1" />
+            <circle cx="34" cy="124" r="1.8" fill="#FED2B1" />
+            <circle cx="31" cy="125" r="1.8" fill="#FED2B1" />
+          </>
+        ) : (
+          <>
+            {/* Normal pose: Connected to parents' hands */}
+            <path d="M 73,136 L 76,128" stroke="url(#parentSkin)" strokeWidth="4.5" strokeLinecap="round" fill="none" />
+            <path d="M 89,136 L 81,128" stroke="url(#parentSkin)" strokeWidth="4.5" strokeLinecap="round" fill="none" />
+            {/* Hand connection points */}
+            <circle cx="76" cy="128" r="2.5" fill="url(#parentSkin)" />
+            <circle cx="81" cy="128" r="2.5" fill="url(#parentSkin)" />
+          </>
+        )}
+
+        {/* Head & Neck */}
+        <rect x="78" y="120" width="6" height="7" fill="url(#parentSkin)" />
+        <circle cx="81" cy="114" r="10.5" fill="url(#parentSkin)" />
+
+        {/* DYNAMIC CHILD SCROLLING EXPRESSIONS */}
+        {/* Cute Eyebrows */}
+        <path d="M 75,106 Q 77,104 79,105" stroke="#1E1008" strokeWidth="1" fill="none" />
+        <path d="M 83,105 Q 85,104 87,106" stroke="#1E1008" strokeWidth="1" fill="none" />
+
+        {/* Eyes */}
+        {emotion === 'wonder' ? (
+          <>
+            {/* Twinkly yellow stars! */}
+            <polygon points="76.5,107 77.2,109 79.5,109 77.7,110.5 78.4,112.5 76.5,111 74.6,112.5 75.3,110.5 73.5,109 75.8,109" fill="#fef08a" />
+            <polygon points="85.5,107 86.2,109 88.5,109 86.7,110.5 87.4,112.5 85.5,111 83.6,112.5 84.3,110.5 82.5,109 84.8,109" fill="#fef08a" />
+          </>
+        ) : emotion === 'cool' ? (
+          <>
+            {/* Cute mini transparent green shades */}
+            <rect x="72" y="106" width="9" height="7" rx="1.5" fill="rgba(34,197,94,0.45)" stroke="#16a34a" strokeWidth="0.8" />
+            <rect x="81" y="106" width="9" height="7" rx="1.5" fill="rgba(34,197,94,0.45)" stroke="#16a34a" strokeWidth="0.8" />
+            <line x1="80" y1="109" x2="81" y2="109" stroke="#16a34a" strokeWidth="0.8" />
+          </>
+        ) : (
+          <>
+            <ellipse cx="76.5" cy="110" rx="2.2" ry="2.6" fill="#1E1008" />
+            <circle cx="77.2" cy="108.8" r="0.6" fill="#ffffff" />
+            <ellipse cx="85.5" cy="110" rx="2.2" ry="2.6" fill="#1E1008" />
+            <circle cx="86.2" cy="108.8" r="0.6" fill="#ffffff" />
+          </>
+        )}
+
+        {/* Button nose */}
+        <path d="M 81,110 L 81,112.5" stroke="#e99f72" strokeWidth="0.8" strokeLinecap="round" fill="none" />
+
+        {/* Mouth */}
+        {emotion === 'wonder' ? (
+          <circle cx="81" cy="116.5" r="3.2" fill="#9a3412" />
+        ) : emotion === 'cool' ? (
+          <path d="M 77,115 Q 81,117.5 85,114" stroke="#9a3412" strokeWidth="1.8" strokeLinecap="round" fill="none" />
+        ) : (
+          <>
+            <path d="M 77,115 Q 81,123 85,115 Z" fill="#9a3412" />
+            <path d="M 78,115 Q 81,118 84,115 Z" fill="#ffffff" />
+          </>
+        )}
+
+        {/* Bright rosy red cheeks */}
+        <circle cx="73.5" cy="114" r="2.2" fill="#ff7a90" opacity="0.55" />
+        <circle cx="88.5" cy="114" r="2.2" fill="#ff7a90" opacity="0.55" />
+
+        {/* Cap visor */}
+        <path d="M 72,109 C 72,100 89,100 89,109 Z" fill="#1e293b" />
+        <path d="M 77,106 L 93,108" stroke="#1e293b" strokeWidth="2.5" strokeLinecap="round" />
+
+        {/* Camera around neck */}
+        <rect x="75" y="139" width="11" height="8.5" rx="2" fill="#0f172a" />
+        <circle cx="80.5" cy="143" r="2.5" fill="#00D9FF" />
+        <circle cx="84" cy="141" r="0.8" fill="#ef4444" />
+      </g>
+
+      {/* ── LOVING DECORATION (FLOATING RED HEARTS - ACTIVE ONLY DURING HAPPY/FOOTER EMOTION) ── */}
+      {emotion === 'happy' && (
+        <g className="animate-bounce" style={{ transformOrigin: '100px 30px' }}>
+          <path d="M 96,28 C 94,26 91,26 89,28 C 87,30 87,33 89,35 L 96,41 L 103,35 C 105,33 105,30 103,28 C 101,26 98,26 96,28 Z" fill="#ff2e51" />
+          <path d="M 124,34 C 122.5,32.5 120.2,32.5 118.7,34 C 117.2,35.5 117.2,37.8 118.7,39.3 L 124,44 L 129.3,39.3 C 130.8,37.8 130.8,35.5 129.3,34 C 127.8,32.5 125.5,32.5 124,34 Z" fill="#ff2e51" transform="scale(0.8) translate(30px, 5px)" />
+        </g>
+      )}
+
+      {/* Silver ticket removed — child interacts with ₹499 card via arm pose only */}
+
+      {/* ── PREMIUM LUGGAGE (TROLLEY WITH GLOSS REFLECTION) ── */}
+      <g id="luggage" className="animate-float-gentle animate-luggage-vibe" style={{ animationDelay: '0.4s' }} filter="url(#shadowFilter)">
+        {/* Trolley Handle Connection Bars */}
+        <line x1="24" y1="136" x2="16" y2="152" stroke="#475569" strokeWidth="3" />
+        <line x1="20" y1="138" x2="12" y2="154" stroke="#475569" strokeWidth="3" />
+        {/* Telescoping Handle Grips */}
+        <circle cx="24" cy="136" r="2.5" fill="#0f172a" />
+        <rect x="18" y="134" width="8" height="3" rx="1" fill="#0f172a" />
+        
+        {/* Suitcase Body */}
+        <rect x="4" y="152" width="22" height="38" rx="5" fill="url(#suitCaseGlow)" stroke="#0f766e" strokeWidth="1.5" />
+        {/* Glossy vertical reflection line */}
+        <path d="M 6,155 L 6,187" stroke="#ffffff" strokeWidth="1.5" strokeLinecap="round" className="opacity-40" />
+        
+        {/* Zippers and Side locks */}
+        <rect x="25" y="166" width="2" height="8" rx="0.5" fill="#94a3b8" />
+        
+        {/* Protective Ridges on Suitcase */}
+        <line x1="8" y1="160" x2="22" y2="160" stroke="#0ea5e9" strokeWidth="2.2" strokeLinecap="round" className="opacity-80" />
+        <line x1="8" y1="168" x2="22" y2="168" stroke="#0ea5e9" strokeWidth="2.2" strokeLinecap="round" className="opacity-80" />
+        <line x1="8" y1="176" x2="22" y2="176" stroke="#0ea5e9" strokeWidth="2.2" strokeLinecap="round" className="opacity-80" />
+        <line x1="8" y1="184" x2="22" y2="184" stroke="#0ea5e9" strokeWidth="2.2" strokeLinecap="round" className="opacity-80" />
+
+        {/* Dynamic Spinning Wheels */}
+        <motion.g style={{ rotate: wheelRotate, transformOrigin: '8px 194px' }}>
+          <circle cx="8" cy="194" r="5.5" fill="url(#wheelGray)" />
+          <circle cx="8" cy="194" r="2.5" fill="#cbd5e1" />
+          <line x1="8" y1="189" x2="8" y2="199" stroke="#f8fafc" strokeWidth="0.8" />
+          <line x1="3" y1="194" x2="13" y2="194" stroke="#f8fafc" strokeWidth="0.8" />
+        </motion.g>
+
+        <motion.g style={{ rotate: wheelRotate, transformOrigin: '22px 194px' }}>
+          <circle cx="22" cy="194" r="5.5" fill="url(#wheelGray)" />
+          <circle cx="22" cy="194" r="2.5" fill="#cbd5e1" />
+          <line x1="22" y1="189" x2="22" y2="199" stroke="#f8fafc" strokeWidth="0.8" />
+          <line x1="17" y1="194" x2="27" y2="194" stroke="#f8fafc" strokeWidth="0.8" />
+        </motion.g>
+      </g>
+    </svg>
   );
 }
 
@@ -2589,28 +3406,74 @@ export default function App() {
       <AnimatePresence>{!introComplete && <CinematicIntro onComplete={handleIntroComplete} />}</AnimatePresence>
       <ScrollProgress />
       <CustomCursor />
+      <ScrollRouteLine />
+      <FamilyTravelScrollAnimation />
       <div className="noise fixed inset-0 pointer-events-none z-30" />
       <Navbar />
-      <main>
+
+
+      <main className="relative z-10 flex flex-col gap-8 lg:gap-12">
         <Hero />
         <TrustStrip />
-        <AboutUs />
-        <Journey />
-        <HowItWorks />
-        <Plans onSelectPlan={handleSelectPlan} />
-        <InternationalPlans onSelectPlan={handleSelectPlan} />
-        <LuckyDrawSystem />
-        <CreditArchitecture />
-        <NonWinnerGuarantee />
-        <Destinations />
-        <Winners />
-        <Services />
-        <Transparency />
-        <CTABanner />
+        
+        <div className="relative video-bg-container" style={{ overflow: 'hidden' }}>
+          {/* ── CINEMATIC FIXED BACKGROUND VIDEO: constrained to screen width/height to prevent stretching and pixelation ── */}
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="fixed inset-0 w-full h-full object-cover pointer-events-none"
+            style={{ zIndex: 0, filter: 'contrast(1.15) brightness(0.65) saturate(1.2)' }}
+          >
+            <source src="/images/hero_bg_video.mp4" type="video/mp4" />
+          </video>
+          {/* Cinematic dark overlay with teal tint for premium look */}
+          <div
+            className="fixed inset-0 pointer-events-none"
+            style={{
+              zIndex: 1,
+              background: `
+                linear-gradient(180deg, rgba(2,6,23,0.55) 0%, rgba(2,6,23,0.15) 15%, rgba(2,6,23,0.05) 40%, rgba(2,6,23,0.05) 60%, rgba(2,6,23,0.20) 85%, rgba(2,6,23,0.60) 100%),
+                radial-gradient(ellipse at center, transparent 60%, rgba(2,6,23,0.25) 100%)
+              `,
+            }}
+          />
+          {/* Subtle teal atmosphere glow */}
+          <div
+            className="fixed inset-0 pointer-events-none"
+            style={{
+              zIndex: 1,
+              background: 'radial-gradient(ellipse at 50% 30%, rgba(13,148,136,0.08) 0%, transparent 80%)',
+              mixBlendMode: 'screen',
+            }}
+          />
+
+          <div className="relative z-10 flex flex-col gap-8 lg:gap-12">
+            <AboutUs />
+            <Journey />
+            <HowItWorks />
+            <Plans onSelectPlan={handleSelectPlan} />
+            <InternationalPlans onSelectPlan={handleSelectPlan} />
+            <LuckyDrawSystem />
+            <CreditArchitecture />
+            <NonWinnerGuarantee />
+            <Destinations />
+            <Winners />
+            <Services />
+            <Transparency />
+            <CTABanner />
+          </div>
+        </div>
       </main>
       <Footer />
       <FloatingButtons />
       <MobileSticky />
+      <a href="#plans" className="choose-btn hidden lg:inline-flex">
+        <ParticleButton variant="gold" className="px-5 py-3 rounded-full font-bold text-sm shadow-xl shadow-neon-gold/30 flex items-center gap-1.5 hover:scale-110 transition-transform">
+          <Crown className="w-4 h-4" /> Choose Plan
+        </ParticleButton>
+      </a>
     </div>
   );
 }

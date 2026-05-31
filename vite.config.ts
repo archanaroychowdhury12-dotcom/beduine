@@ -16,4 +16,12 @@ export default defineConfig({
       "@": path.resolve(__dirname, "src"),
     },
   },
+  server: {
+    allowedHosts: true,
+    cors: true,
+  },
+  preview: {
+    allowedHosts: true,
+    cors: true,
+  },
 });
