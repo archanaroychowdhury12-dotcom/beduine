@@ -861,7 +861,7 @@ input[type="range"]::-moz-range-thumb {
 
 /* Premium frosted glass for cards ON video — Translucent & Highly Readable */
 .video-bg-container .glass {
-  background: rgba(6, 12, 16, 0.42) !important;
+  background: rgba(6, 12, 16, 0.76) !important;
   backdrop-filter: blur(24px) saturate(190%) !important;
   border: 1px solid rgba(13, 148, 136, 0.38) !important;
   box-shadow:
@@ -876,7 +876,7 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .video-bg-container .glass-light {
-  background: rgba(9, 18, 23, 0.38) !important;
+  background: rgba(9, 18, 23, 0.72) !important;
   backdrop-filter: blur(20px) saturate(170%) !important;
   border: 1px solid rgba(13, 148, 136, 0.28) !important;
   box-shadow:
@@ -891,7 +891,7 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .video-bg-container .glass-cyan {
-  background: linear-gradient(135deg, rgba(14,165,233,0.18) 0%, rgba(6, 12, 16, 0.42) 100%) !important;
+  background: linear-gradient(135deg, rgba(14,165,233,0.25) 0%, rgba(6, 12, 16, 0.76) 100%) !important;
   backdrop-filter: blur(24px) saturate(190%) !important;
   border: 1px solid rgba(14,165,233,0.45) !important;
   box-shadow:
@@ -906,7 +906,7 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .video-bg-container .glass-gold {
-  background: linear-gradient(135deg, rgba(13,148,136,0.18) 0%, rgba(6, 12, 16, 0.42) 100%) !important;
+  background: linear-gradient(135deg, rgba(13,148,136,0.25) 0%, rgba(6, 12, 16, 0.76) 100%) !important;
   backdrop-filter: blur(24px) saturate(190%) !important;
   border: 1px solid rgba(13,148,136,0.42) !important;
   box-shadow:
@@ -922,14 +922,14 @@ input[type="range"]::-moz-range-thumb {
 
 /* Featured Plan Card Overrides inside video background */
 .video-bg-container #plans [class*="from-abyss"] {
-  background: linear-gradient(135deg, rgba(255, 215, 0, 0.12) 0%, rgba(13, 27, 34, 0.35) 100%) !important;
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.16) 0%, rgba(13, 27, 34, 0.76) 100%) !important;
   backdrop-filter: blur(20px) saturate(180%) !important;
   border-color: rgba(255, 215, 0, 0.6) !important;
   box-shadow: 0 0 24px rgba(255, 215, 0, 0.25), 0 12px 40px -10px rgba(0, 0, 0, 0.45) !important;
 }
 
 .video-bg-container #intl-plans [class*="from-abyss"] {
-  background: linear-gradient(135deg, rgba(16, 185, 129, 0.12) 0%, rgba(13, 27, 34, 0.35) 100%) !important;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.16) 0%, rgba(13, 27, 34, 0.76) 100%) !important;
   backdrop-filter: blur(20px) saturate(180%) !important;
   border-color: rgba(16, 185, 129, 0.6) !important;
   box-shadow: 0 0 24px rgba(16, 185, 129, 0.25), 0 12px 40px -10px rgba(0, 0, 0, 0.45) !important;
@@ -941,14 +941,14 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .video-bg-container .faq-wrapper {
-  background: rgba(13, 27, 34, 0.38) !important;
+  background: rgba(13, 27, 34, 0.76) !important;
   border: 1px solid rgba(13, 148, 136, 0.32) !important;
   backdrop-filter: blur(20px) saturate(180%) !important;
   box-shadow: 0 24px 80px rgba(0, 0, 0, 0.55) !important;
 }
 
 .video-bg-container .faq-card {
-  background: rgba(18, 35, 43, 0.22) !important;
+  background: rgba(18, 35, 43, 0.6) !important;
   border: 1px solid rgba(13, 148, 136, 0.22) !important;
   backdrop-filter: blur(12px) !important;
   box-shadow: 0 12px 45px rgba(0, 0, 0, 0.35) !important;
