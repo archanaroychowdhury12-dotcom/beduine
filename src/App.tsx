@@ -8,7 +8,8 @@ import {
   Download, Lock, Eye, Target, TrendingUp, Crown,
   Video, Camera, Send, Tv, Share2, FileText,
   BadgeCheck, Zap, Bot, Fingerprint, Scan,
-  Heart, Globe, Users, Rocket, Wallet, Shield, HeartHandshake
+  Heart, Globe, Users, Rocket, Wallet, Shield, HeartHandshake,
+  Volume2
 } from 'lucide-react';
 import ScatteredShowcase from './ScatteredShowcase';
 
@@ -507,99 +508,84 @@ function ScrollProgress() {
 
 /* ============ 3-SECOND CINEMATIC INTRO ============ */
 function CinematicIntro({ onComplete }: { onComplete: () => void }) {
-  const [phase, setPhase] = useState(0);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isMuted, setIsMuted] = useState(false);
+  const [showUnmuteHint, setShowUnmuteHint] = useState(false);
+  const [videoError, setVideoError] = useState(false);
+
   useEffect(() => {
-    const t1 = setTimeout(() => setPhase(1), 50);
-    const t2 = setTimeout(() => setPhase(2), 900);
-    const t3 = setTimeout(() => setPhase(3), 1900);
-    const t4 = setTimeout(() => setPhase(4), 2700);
-    const t5 = setTimeout(() => onComplete(), 3100);
-    return () => [t1, t2, t3, t4, t5].forEach(clearTimeout);
+    const video = videoRef.current;
+    if (video) {
+      // Attempt to play with sound
+      video.muted = false;
+      const playPromise = video.play();
+
+      if (playPromise !== undefined) {
+        playPromise.catch((error) => {
+          console.log("Autoplay with sound was blocked. Muted playback started.", error);
+          video.muted = true;
+          setIsMuted(true);
+          setShowUnmuteHint(true);
+          video.play().catch((err) => {
+            console.error("Muted playback failed too:", err);
+            setVideoError(true);
+          });
+        });
+      }
+    }
+
+    // Safety fallback: if video fails or is blocked completely, transition after 9 seconds
+    const fallbackTimer = setTimeout(() => {
+      onComplete();
+    }, 9000);
+
+    return () => clearTimeout(fallbackTimer);
   }, [onComplete]);
 
-  const particles = useMemo(() => Array.from({ length: 40 }).map((_, i) => {
-    const angle = (i / 40) * Math.PI * 2;
-    const radius = 400 + Math.random() * 200;
-    return { id: i, startX: Math.cos(angle) * radius, startY: Math.sin(angle) * radius, isCyan: i % 3 === 0, delay: i * 0.015 };
-  }), []);
+  const handleUnmute = () => {
+    if (videoRef.current) {
+      videoRef.current.muted = false;
+      setIsMuted(false);
+      setShowUnmuteHint(false);
+    }
+  };
 
   return (
-    <motion.div className="fixed inset-0 z-[300] bg-cosmos overflow-hidden cinematic-stage" exit={{ opacity: 0 }} transition={{ duration: 0.6 }}>
-      <StarField count={120} />
-      <div className="absolute inset-0 grid-pattern opacity-50" />
-
-      {/* Shockwaves */}
-      <AnimatePresence>
-        {phase === 2 && (
-          <>
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="intro-shockwave" />
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="intro-shockwave" style={{ animationDelay: '0.3s' }} />
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="intro-flash" />
-          </>
-        )}
-      </AnimatePresence>
-
-      {/* Phase 1: Particle swarm */}
-      {phase >= 1 && (
-        <div className="absolute inset-0 flex items-center justify-center">
-          {particles.map((p) => (
-            <motion.div key={p.id}
-              initial={{ x: p.startX, y: p.startY, scale: 0, opacity: 0 }}
-              animate={{ x: [p.startX, p.startX * 0.3, 0], y: [p.startY, p.startY * 0.3, 0], scale: [0, 1.5, 0], opacity: [0, 1, 0] }}
-              transition={{ duration: 0.9, delay: p.delay, ease: [0.22, 1, 0.36, 1] }}
-              className={`intro-particle ${p.isCyan ? 'intro-particle-cyan' : ''}`} />
-          ))}
+    <motion.div 
+      className="fixed inset-0 z-[300] bg-black overflow-hidden flex items-center justify-center" 
+      exit={{ opacity: 0 }} 
+      transition={{ duration: 0.6 }}
+    >
+      {!videoError ? (
+        <video
+          ref={videoRef}
+          src="/images/Beduine_Logo_Last_Clean_Sound_Adjusted.mp4"
+          playsInline
+          className="w-full h-full object-contain bg-black"
+          onEnded={onComplete}
+          onError={() => setVideoError(true)}
+        />
+      ) : (
+        <div className="text-center text-[#D8E4EA] font-mono text-sm">
+          Loading BEDUINE experience...
         </div>
       )}
 
-      {/* Phase 2: 3D Compass + SAFAR */}
-      <AnimatePresence>
-        {phase >= 2 && phase < 4 && (
-          <motion.div key="phase2" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, scale: 1.1 }} transition={{ duration: 0.4 }} className="absolute inset-0 flex flex-col items-center justify-center">
-            {/* 3D rotating compass */}
-            <motion.div initial={{ rotateY: -180, rotateX: 20, scale: 0.3, opacity: 0 }} animate={{ rotateY: 0, rotateX: 0, scale: 1, opacity: 1 }} transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }} className="relative mb-10" style={{ perspective: '1200px', transformStyle: 'preserve-3d' }}>
-              <motion.div animate={{ rotate: 360 }} transition={{ duration: 8, ease: 'linear', repeat: Infinity }} className="relative">
-                <div className="absolute -inset-10 rounded-full border border-gold/30" style={{ boxShadow: '0 0 60px rgba(255,209,102,0.4)' }} />
-                <div className="absolute -inset-20 rounded-full border border-cyan/20" />
-                <div className="absolute -inset-32 rounded-full border border-gold/10" />
-                <div className="relative w-32 h-32 rounded-full flex items-center justify-center overflow-hidden bg-cosmos/80 shadow-lg border border-cyan/20" style={{ background: 'radial-gradient(circle, rgba(255,209,102,0.15) 0%, rgba(13,148,136,0.1) 70%, transparent 100%)', boxShadow: '0 0 80px rgba(0,217,255,0.3), inset 0 0 40px rgba(0,217,255,0.2)' }}>
-                  <div className="absolute inset-2 rounded-full border-2 border-cyan/30 z-20 pointer-events-none" />
-                  <div className="absolute inset-6 rounded-full border border-cyan/20 z-20 pointer-events-none" />
-                  <img src="/images/bedune_logo_cropped.png" alt="BEDUINE Logo" className="w-4/5 h-4/5 object-contain relative z-10 scale-110" />
-                </div>
-                <div className="orbit absolute top-1/2 left-1/2 w-3 h-3 rounded-full bg-cyan" style={{ ['--r' as any]: '80px', boxShadow: '0 0 15px #00D9FF' }} />
-                <div className="orbit absolute top-1/2 left-1/2 w-2 h-2 rounded-full bg-gold" style={{ ['--r' as any]: '140px', animationDelay: '-5s', boxShadow: '0 0 12px #FFD166' }} />
-              </motion.div>
-            </motion.div>
+      {showUnmuteHint && (
+        <button
+          onClick={handleUnmute}
+          className="absolute top-8 left-1/2 -translate-x-1/2 z-[310] px-5 py-2.5 rounded-full bg-[#18D7F2]/10 border border-[#18D7F2]/30 text-[#18D7F2] text-xs font-semibold uppercase tracking-widest backdrop-blur-md flex items-center gap-2 hover:bg-[#18D7F2]/20 transition-all active:scale-95 cursor-pointer shadow-lg shadow-[#18D7F2]/10"
+        >
+          <Volume2 className="w-4 h-4" /> Tap for sound
+        </button>
+      )}
 
-            {/* SAFAR 3D text */}
-            <motion.div initial={{ y: 60, opacity: 0, scale: 0.7, rotateX: -40 }} animate={{ y: 0, opacity: 1, scale: 1, rotateX: 0 }} transition={{ delay: 0.4, duration: 0.8, ease: [0.22, 1, 0.36, 1] }} className="font-display text-7xl lg:text-9xl font-bold tracking-[0.3em] intro-text-3d" style={{ transformStyle: 'preserve-3d' }}>
-              SAFAR
-            </motion.div>
-
-            <motion.div initial={{ width: 0, opacity: 0 }} animate={{ width: '300px', opacity: 1 }} transition={{ delay: 0.7, duration: 0.6 }} className="h-px bg-gradient-to-r from-transparent via-gold to-transparent mt-6" />
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Phase 3: "jo yaad rahe" */}
-      <AnimatePresence>
-        {phase >= 3 && phase < 4 && (
-          <motion.div key="phase3" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, scale: 1.1 }} transition={{ duration: 0.4 }} className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-            <motion.div initial={{ scale: 0.5, opacity: 0, y: -120 }} animate={{ scale: 1, opacity: 1, y: -120 }} transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }} className="font-display text-7xl lg:text-9xl font-bold tracking-[0.3em] intro-text-3d">SAFAR</motion.div>
-            <motion.div initial={{ width: 0, opacity: 0 }} animate={{ width: '300px', opacity: 1 }} transition={{ delay: 0.1, duration: 0.5 }} className="h-px bg-gradient-to-r from-transparent via-gold to-transparent" />
-            <motion.div initial={{ opacity: 0, y: 30, scale: 0.9 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ delay: 0.3, duration: 0.8, ease: [0.22, 1, 0.36, 1] }} className="font-serif italic text-4xl lg:text-6xl gold-shimmer mt-6">jo yaad rahe</motion.div>
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.9, duration: 0.4 }} className="mt-8 text-xs uppercase tracking-[0.5em] text-cyan/80 font-mono">BEDUINE Tour & Travels</motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Phase 4: Exit */}
-      <AnimatePresence>
-        {phase >= 4 && <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }} className="absolute inset-0 bg-cosmos" />}
-      </AnimatePresence>
-
-      <button onClick={onComplete} className="absolute bottom-8 right-8 px-4 py-2 rounded-full glass text-ink/60 hover:text-ink text-xs uppercase tracking-widest z-10 border border-slate-line">Skip Intro</button>
+      <button 
+        onClick={onComplete} 
+        className="absolute bottom-8 right-8 px-4 py-2 rounded-full glass text-white/60 hover:text-white text-xs uppercase tracking-widest z-[310] border border-white/10"
+      >
+        Skip Intro
+      </button>
     </motion.div>
   );
 }
@@ -2650,7 +2636,8 @@ function Journey() {
         rotate: 0,
         scale: 1.18,
         zIndex: 100,
-        opacity: 1
+        opacity: 1,
+        filter: 'brightness(1.1) saturate(1.15)'
       };
     }
 
@@ -2661,7 +2648,8 @@ function Journey() {
         rotate: baseRotate,
         scale: 0.9,
         zIndex,
-        opacity: 0.45
+        opacity: 0.8,
+        filter: 'brightness(0.95) saturate(1.0)'
       };
     }
 
@@ -2671,7 +2659,8 @@ function Journey() {
       rotate: baseRotate,
       scale: 1,
       zIndex,
-      opacity: 1
+      opacity: 1,
+      filter: 'brightness(1.05) saturate(1.1)'
     };
   };
 
@@ -2770,8 +2759,8 @@ function Journey() {
                         loading="lazy"
                       />
 
-                      {/* Atmospheric overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent opacity-90 group-hover:opacity-100 transition-opacity" />
+                      {/* Bottom-focused shadow gradient for contrast readability of text, keeping the top half bright and saturated */}
+                      <div className="absolute inset-x-0 bottom-0 h-[50%] bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent opacity-85 group-hover:opacity-95 transition-opacity duration-300 pointer-events-none z-10" />
 
                       {/* Content overlays */}
                       <div className="absolute inset-x-0 bottom-0 p-4 pt-12 z-20 flex flex-col justify-end">

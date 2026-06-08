@@ -1,10 +1,9 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Volume2, VolumeX, Camera, Sun, Moon, Sunrise, 
-  MapPin, RotateCcw, Play, Pause, ChevronRight, 
-  Compass, Sliders, Eye, Sparkles, SlidersHorizontal,
-  Flame, HelpCircle, AlertCircle
+import {
+  Volume2, VolumeX, Camera, Sun, Moon, Sunrise,
+  MapPin, RotateCcw, Play, Pause, ChevronRight,
+  Compass, Eye, Sparkles, SlidersHorizontal
 } from 'lucide-react';
 
 /* ---------- Enhanced Sound Synthesizer via Native Web Audio API ---------- */
@@ -13,7 +12,7 @@ class AmbientSoundscapeSynth {
   private filterNode: BiquadFilterNode | null = null;
   private gainNode: GainNode | null = null;
   private masterVolume: number = 0.45;
-  
+
   // Node tracking for sub-oscillators to allow proper cleanup
   private soundNodes: Array<AudioNode | AudioScheduledSourceNode> = [];
   private oscillationInterval: any = null;
@@ -23,24 +22,24 @@ class AmbientSoundscapeSynth {
   start(type: 'wind' | 'waves' | 'chimes', volume: number) {
     this.stop();
     this.masterVolume = volume;
-    
+
     const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
     if (!AudioContextClass) return;
-    
+
     this.ctx = new AudioContextClass();
-    
+
     // Main Gain Node
     this.gainNode = this.ctx.createGain();
     this.gainNode.gain.setValueAtTime(0, this.ctx.currentTime);
     this.gainNode.connect(this.ctx.destination);
-    
+
     // Master Filter
     this.filterNode = this.ctx.createBiquadFilter();
     this.filterNode.type = 'lowpass';
     this.filterNode.frequency.setValueAtTime(400, this.ctx.currentTime);
     this.filterNode.Q.setValueAtTime(2.0, this.ctx.currentTime);
     this.filterNode.connect(this.gainNode);
-    
+
     // Synthesize White Noise Buffer for ambient beds
     const bufferSize = 2 * this.ctx.sampleRate;
     const noiseBuffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
@@ -48,134 +47,134 @@ class AmbientSoundscapeSynth {
     for (let i = 0; i < bufferSize; i++) {
       output[i] = Math.random() * 2 - 1;
     }
-    
+
     const noiseSource = this.ctx.createBufferSource();
     noiseSource.buffer = noiseBuffer;
     noiseSource.loop = true;
     noiseSource.connect(this.filterNode);
     noiseSource.start(0);
     this.soundNodes.push(noiseSource);
-    
+
     // Fade in main gain
     this.gainNode.gain.linearRampToValueAtTime(this.masterVolume, this.ctx.currentTime + 1.5);
-    
+
     if (type === 'wind') {
       // --- KASHMIR ALPINE WIND + GUSTY HOWLS ---
       this.filterNode.type = 'bandpass';
       this.filterNode.Q.setValueAtTime(7.0, this.ctx.currentTime);
-      
+
       let phase = 0;
       this.oscillationInterval = setInterval(() => {
         if (!this.ctx || !this.filterNode || !this.gainNode) return;
         phase += 0.06;
-        
+
         // Dynamic base frequency sweeps (200Hz to 600Hz)
         const baseFreq = 360 + Math.sin(phase) * 150 + Math.sin(phase * 0.35) * 80;
         this.filterNode.frequency.setValueAtTime(baseFreq, this.ctx.currentTime);
-        
+
         // Simulating howls (higher pitch sweeps on random peaks)
         if (Math.sin(phase * 2.1) > 0.82) {
           const howlFreq = baseFreq + 350 * Math.sin(phase * 2.1);
           this.filterNode.frequency.exponentialRampToValueAtTime(howlFreq, this.ctx.currentTime + 0.1);
         }
-        
+
         // Wind gusts amplitude scaling
         const gustVolume = this.masterVolume * (0.6 + Math.sin(phase) * 0.4);
         this.gainNode.gain.setValueAtTime(gustVolume, this.ctx.currentTime);
       }, 70);
-      
+
     } else if (type === 'waves') {
       // --- KERALA RAIN OR SUNDARBANS CRICKETS + WAVES ---
       this.filterNode.type = 'lowpass';
       this.filterNode.frequency.setValueAtTime(200, this.ctx.currentTime);
       this.filterNode.Q.setValueAtTime(1.0, this.ctx.currentTime);
-      
+
       let phase = 0;
       // 1. Wave ocean swells
       this.oscillationInterval = setInterval(() => {
         if (!this.ctx || !this.gainNode || !this.filterNode) return;
         phase += 0.02; // Slow rhythmic breathing swell
         const swell = Math.sin(phase);
-        
+
         const swellVolume = this.masterVolume * (0.35 + (swell + 1) * 0.35);
         this.gainNode.gain.linearRampToValueAtTime(swellVolume, this.ctx.currentTime + 0.2);
-        
+
         const sweepFreq = 160 + (swell + 1) * 120;
         this.filterNode.frequency.setValueAtTime(sweepFreq, this.ctx.currentTime);
       }, 120);
-      
+
     } else if (type === 'chimes') {
       // --- DARJEELING WIND CHIMES + LOW TOY TRAIN RUMBLE ---
       this.filterNode.type = 'lowpass';
       this.filterNode.frequency.setValueAtTime(1200, this.ctx.currentTime);
-      
+
       // 1. Chime Bell Trigger
       const playChimeNode = () => {
         if (!this.ctx || !this.gainNode) return;
         const now = this.ctx.currentTime;
-        
+
         const frequencies = [392.00, 440.00, 523.25, 587.33, 659.25, 783.99, 880.00, 1046.50]; // Pentatonic bells
         const chimeFreq = frequencies[Math.floor(Math.random() * frequencies.length)];
-        
+
         const chimeOsc = this.ctx.createOscillator();
         const overtoneOsc = this.ctx.createOscillator();
         const chimeGain = this.ctx.createGain();
         const overtoneGain = this.ctx.createGain();
-        
+
         chimeOsc.type = 'sine';
         chimeOsc.frequency.setValueAtTime(chimeFreq, now);
-        
+
         overtoneOsc.type = 'sine';
         overtoneOsc.frequency.setValueAtTime(chimeFreq * 2.016, now); // Metallic ring detuning
-        
+
         chimeGain.gain.setValueAtTime(0, now);
         chimeGain.gain.linearRampToValueAtTime(this.masterVolume * 0.38, now + 0.03);
         chimeGain.gain.exponentialRampToValueAtTime(0.0001, now + 3.5);
-        
+
         overtoneGain.gain.setValueAtTime(0, now);
         overtoneGain.gain.linearRampToValueAtTime(this.masterVolume * 0.15, now + 0.03);
         overtoneGain.gain.exponentialRampToValueAtTime(0.0001, now + 1.8);
-        
+
         chimeOsc.connect(chimeGain);
         overtoneOsc.connect(overtoneGain);
         chimeGain.connect(this.gainNode!);
         overtoneGain.connect(this.gainNode!);
-        
+
         chimeOsc.start(now);
         overtoneOsc.start(now);
-        
+
         chimeOsc.stop(now + 3.6);
         overtoneOsc.stop(now + 2.0);
       };
-      
+
       playChimeNode();
       this.oscillationInterval = setInterval(playChimeNode, 2600);
-      
+
       // 2. Toy Train low frequency rumble synth overlay
       try {
         const trainOsc = this.ctx.createOscillator();
         const trainGain = this.ctx.createGain();
         trainOsc.type = 'triangle';
         trainOsc.frequency.setValueAtTime(36, this.ctx.currentTime); // Deep hum
-        
+
         // Track wheel clicks via LFO modulation
         const modOsc = this.ctx.createOscillator();
         modOsc.type = 'sawtooth';
         modOsc.frequency.setValueAtTime(3.8, this.ctx.currentTime); // Rhythmic click rate
-        
+
         const modGain = this.ctx.createGain();
         modGain.gain.setValueAtTime(0.012, this.ctx.currentTime);
-        
+
         modOsc.connect(modGain);
         modGain.connect(trainGain.gain);
-        
+
         trainGain.gain.setValueAtTime(this.masterVolume * 0.18, this.ctx.currentTime);
         trainOsc.connect(trainGain);
         trainGain.connect(this.gainNode!);
-        
+
         trainOsc.start(0);
         modOsc.start(0);
-        
+
         this.soundNodes.push(trainOsc, modOsc, trainGain, modGain);
       } catch (e) {
         console.error("Train rumble synthesis error:", e);
@@ -193,12 +192,12 @@ class AmbientSoundscapeSynth {
       const playCricketChirp = () => {
         if (!this.ctx || !this.gainNode) return;
         const now = this.ctx.currentTime;
-        
+
         const chirpOsc = this.ctx.createOscillator();
         const chirpGain = this.ctx.createGain();
         chirpOsc.type = 'sine';
         chirpOsc.frequency.setValueAtTime(3400 + Math.random() * 200, now);
-        
+
         // High frequency vibration pulse sequence
         chirpGain.gain.setValueAtTime(0, now);
         for (let i = 0; i < 7; i++) {
@@ -206,43 +205,43 @@ class AmbientSoundscapeSynth {
           chirpGain.gain.setValueAtTime(this.masterVolume * 0.045, t);
           chirpGain.gain.exponentialRampToValueAtTime(0.0001, t + 0.055);
         }
-        
+
         chirpOsc.connect(chirpGain);
         chirpGain.connect(this.gainNode);
         chirpOsc.start(now);
         chirpOsc.stop(now + 0.6);
       };
-      
+
       playCricketChirp();
       this.subInterval1 = setInterval(playCricketChirp, 3300);
-      
+
     } else if (type === 'kerala') {
       // --- KERALA RAIN PATTER CLICKS ---
       const playRaindrops = () => {
         if (!this.ctx || !this.gainNode) return;
         const now = this.ctx.currentTime;
-        
+
         // Synthesize 12 individual drop taps
         for (let i = 0; i < 12; i++) {
           const dropTime = now + Math.random() * 1.8;
           const dropOsc = this.ctx.createOscillator();
           const dropGain = this.ctx.createGain();
-          
+
           dropOsc.type = 'triangle';
           // Filter resonance frequency mimicking rain hitting hollow bamboo/leaves
           dropOsc.frequency.setValueAtTime(1000 + Math.random() * 700, dropTime);
-          
+
           dropGain.gain.setValueAtTime(this.masterVolume * 0.024, dropTime);
           dropGain.gain.exponentialRampToValueAtTime(0.0001, dropTime + 0.025);
-          
+
           dropOsc.connect(dropGain);
           dropGain.connect(this.gainNode);
-          
+
           dropOsc.start(dropTime);
           dropOsc.stop(dropTime + 0.03);
         }
       };
-      
+
       playRaindrops();
       this.subInterval2 = setInterval(playRaindrops, 1600);
     }
@@ -266,7 +265,7 @@ class AmbientSoundscapeSynth {
       clearInterval(this.oscillationInterval);
       this.oscillationInterval = null;
     }
-    
+
     // Stop all sub oscillator nodes
     this.soundNodes.forEach((node) => {
       try {
@@ -380,14 +379,14 @@ const CINEMATIC_DESTINATIONS = [
 export default function CinematicShowreel() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [grading, setGrading] = useState<'natural' | 'dawn' | 'golden' | 'midnight'>('natural');
-  const [exposure, setExposure] = useState(100); 
-  const [saturation, setSaturation] = useState(100); 
+  const [exposure, setExposure] = useState(100);
+  const [saturation, setSaturation] = useState(100);
   const [widescreen, setWidescreen] = useState(true);
-  
+
   // Custom Slider Overlays for Cinematic Feel
   const [grainOpacity, setGrainOpacity] = useState(15); // film grain density (0% to 50%)
   const [vignetteStrength, setVignetteStrength] = useState(45); // lens vignette falloff (0% to 100%)
-  
+
   const [isPlayingSound, setIsPlayingSound] = useState(false);
   const [volume, setVolume] = useState(0.4);
   const [timecode, setTimecode] = useState("00:12:00:00");
@@ -483,7 +482,7 @@ export default function CinematicShowreel() {
     } else if (grading === 'midnight') {
       style += "contrast(1.22) brightness(0.35) saturate(0.65) hue-rotate(180deg) ";
     }
-    
+
     style += `brightness(${exposure / 100}) saturate(${saturation / 100})`;
     return style;
   }, [grading, exposure, saturation]);
@@ -493,7 +492,7 @@ export default function CinematicShowreel() {
 
   return (
     <section id="cinematic-showreel" className="relative py-16 lg:py-24 bg-slate-950 text-white overflow-hidden border-y border-slate-900">
-      
+
       {/* Dynamic CSS Styling Injector for unique modular keyframes */}
       <style dangerouslySetInnerHTML={{__html: `
         @keyframes dust-drift {
@@ -569,7 +568,7 @@ export default function CinematicShowreel() {
       <div className="absolute bottom-1/4 right-1/4 w-[350px] h-[350px] bg-amber-500/5 blur-[130px] rounded-full pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-5 lg:px-8 relative z-10">
-        
+
         {/* Header Block */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 lg:mb-16 gap-6">
           <div className="max-w-2xl">
@@ -586,17 +585,17 @@ export default function CinematicShowreel() {
             </p>
           </div>
           <div className="flex items-center gap-3">
-            <button 
+            <button
               onClick={handleResetFilters}
               className="px-4 py-2.5 rounded-full border border-slate-800 bg-slate-900/30 text-xs font-mono font-bold tracking-wider text-slate-300 hover:text-white hover:border-slate-700 transition-all flex items-center gap-2"
             >
               <RotateCcw className="w-3.5 h-3.5" /> Reset Grading
             </button>
-            <button 
+            <button
               onClick={() => setWidescreen(!widescreen)}
               className={`px-4.5 py-2.5 rounded-full border text-xs font-mono font-bold tracking-wider uppercase transition-all duration-300 flex items-center gap-2 select-none shrink-0 ${
-                widescreen 
-                  ? 'border-cyan-400/50 bg-cyan-400/10 text-cyan' 
+                widescreen
+                  ? 'border-cyan-400/50 bg-cyan-400/10 text-cyan'
                   : 'border-slate-800 bg-slate-900/40 text-slate-400 hover:border-slate-700 hover:text-white'
               }`}
             >
@@ -608,11 +607,11 @@ export default function CinematicShowreel() {
 
         {/* Main Workspace Interface */}
         <div className="grid lg:grid-cols-12 gap-8 items-start">
-          
+
           {/* LEFT COLUMN: Vertical Film Strip Select (3 cols) */}
           <div className="lg:col-span-3 flex lg:flex-col gap-4 overflow-x-auto lg:overflow-x-visible pb-4 lg:pb-0 scrollbar-none snap-x snap-mandatory">
             <div className="hidden lg:block text-[10px] font-mono font-black tracking-widest text-slate-500 uppercase mb-2">// 35MM REELS STRIP</div>
-            
+
             {CINEMATIC_DESTINATIONS.map((dest, idx) => {
               const isActive = activeIndex === idx;
               return (
@@ -625,8 +624,8 @@ export default function CinematicShowreel() {
                     }
                   }}
                   className={`relative flex-shrink-0 w-[240px] lg:w-full p-4 rounded-2xl text-left border transition-all duration-500 overflow-hidden flex items-center gap-4 snap-center select-none group cursor-pointer ${
-                    isActive 
-                      ? 'bg-slate-900/20 shadow-2xl' 
+                    isActive
+                      ? 'bg-slate-900/20 shadow-2xl'
                       : 'border-slate-850 bg-slate-950/40 hover:border-slate-800 hover:bg-slate-900/10'
                   }`}
                   style={{
@@ -645,9 +644,9 @@ export default function CinematicShowreel() {
 
                   {/* Thumbnail container */}
                   <div className="w-12 h-16 rounded-lg overflow-hidden shrink-0 bg-slate-900 relative border border-slate-800/80">
-                    <img 
-                      src={dest.image} 
-                      alt={dest.name} 
+                    <img
+                      src={dest.image}
+                      alt={dest.name}
                       className={`w-full h-full object-cover transition-transform duration-700 ${isActive ? 'scale-115' : 'group-hover:scale-105'}`}
                       loading="lazy"
                     />
@@ -675,14 +674,14 @@ export default function CinematicShowreel() {
 
           {/* RIGHT COLUMN: Cinematic Theater Viewport & Panel (9 cols) */}
           <div className="lg:col-span-9 flex flex-col gap-6 w-full">
-            
+
             {/* 1. Viewport Layer (with Film noise, scratches, vignette filters) */}
-            <div 
+            <div
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
               className={`relative w-full aspect-video rounded-3xl overflow-hidden border bg-black shadow-2xl transition-all duration-500 group ${activeDest.glowClass}`}
             >
-              
+
               {/* Dynamic Widescreen Letterbox top/bottom bars */}
               <div className={`absolute inset-x-0 top-0 bg-slate-950 z-20 pointer-events-none transition-all duration-500 ${widescreen ? 'h-[10%]' : 'h-0'}`} />
               <div className={`absolute inset-x-0 bottom-0 bg-slate-950 z-20 pointer-events-none transition-all duration-500 ${widescreen ? 'h-[10%]' : 'h-0'}`} />
@@ -690,13 +689,13 @@ export default function CinematicShowreel() {
               {/* [NEW FILM EFFECT OVERLAYS] */}
               {/* Adjustable Film Grain layer */}
               <div className="film-noise-overlay" style={{ opacity: grainOpacity / 100 }} />
-              
+
               {/* Dynamic Lens Vignette shadow overlay */}
-              <div 
-                className="vignette-shadow" 
-                style={{ 
-                  background: `radial-gradient(circle at center, transparent ${80 - vignetteStrength * 0.4}%, rgba(2, 6, 23, ${vignetteStrength / 100}) 100%)` 
-                }} 
+              <div
+                className="vignette-shadow"
+                style={{
+                  background: `radial-gradient(circle at center, transparent ${80 - vignetteStrength * 0.4}%, rgba(2, 6, 23, ${vignetteStrength / 100}) 100%)`
+                }}
               />
 
               {/* Floating dust specifications (simulating 35mm projector particles) */}
@@ -706,7 +705,7 @@ export default function CinematicShowreel() {
                 <div className="dust-spec" style={{ top: '40%', left: '30%', animationDelay: '3.2s', animationDuration: '8s' }} />
                 <div className="dust-spec" style={{ top: '75%', left: '15%', animationDelay: '0.8s', animationDuration: '6s', width: '4px', height: '4px' }} />
                 <div className="dust-spec" style={{ top: '25%', left: '60%', animationDelay: '2.5s', animationDuration: '10s' }} />
-                
+
                 {/* Randomly flashing vertical scratch lines */}
                 <div className="scratch-line-1" />
                 <div className="scratch-line-2" />
@@ -720,14 +719,14 @@ export default function CinematicShowreel() {
                     src={activeDest.image}
                     alt={activeDest.name}
                     initial={{ scale: 1.15, opacity: 0.25, filter: 'blur(12px)' }}
-                    animate={{ 
-                      scale: isHovered ? 1.025 : 1.055, 
-                      opacity: 1, 
-                      filter: 'blur(0px)' 
+                    animate={{
+                      scale: isHovered ? 1.025 : 1.055,
+                      opacity: 1,
+                      filter: 'blur(0px)'
                     }}
                     exit={{ scale: 1.15, opacity: 0.25, filter: 'blur(12px)' }}
-                    transition={{ 
-                      duration: 1.2, 
+                    transition={{
+                      duration: 1.2,
                       ease: [0.16, 1, 0.3, 1],
                       scale: { duration: 18, ease: 'easeOut', repeat: Infinity, repeatType: 'reverse' }
                     }}
@@ -788,7 +787,7 @@ export default function CinematicShowreel() {
 
               {/* TRANSFUSING EXPLORER LOG (Translucent Diary Card) */}
               <div className="absolute bottom-10 left-6 z-20 max-w-xs sm:max-w-md pointer-events-auto">
-                <motion.div 
+                <motion.div
                   key={activeDest.id}
                   initial={{ opacity: 0, y: 15 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -812,7 +811,7 @@ export default function CinematicShowreel() {
 
             {/* 2. Control adjustments & Audio Panel */}
             <div className="grid md:grid-cols-12 gap-6">
-              
+
               {/* Synthesized Soundscape controller (5 cols) */}
               <div className="md:col-span-5 glass p-5 rounded-3xl border border-slate-800/80 flex flex-col gap-4">
                 <div className="flex items-center justify-between">
@@ -824,7 +823,7 @@ export default function CinematicShowreel() {
                 </div>
 
                 <div className="flex items-center gap-4 py-2 px-3.5 rounded-2xl bg-slate-950/80 border border-slate-900/60">
-                  <button 
+                  <button
                     onClick={toggleSound}
                     className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 shadow-lg cursor-pointer transition-all duration-300 hover:scale-105"
                     style={{
@@ -837,16 +836,16 @@ export default function CinematicShowreel() {
                   >
                     {isPlayingSound ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5 fill-current ml-0.5" />}
                   </button>
-                  
+
                   <div className="flex-1 min-w-0">
                     <div className="text-xs font-bold text-white truncate">
                       {isPlayingSound ? `Synthesizing soundbed...` : `Audio engine standby`}
                     </div>
                     <div className="text-[9.5px] text-slate-400 truncate mt-0.5 font-mono">
-                      {activeDest.soundType === 'wind' 
-                        ? 'Lowpass hum + gust sweeps' 
-                        : activeDest.soundType === 'waves' 
-                          ? `Slow LFO ocean swells` 
+                      {activeDest.soundType === 'wind'
+                        ? 'Lowpass hum + gust sweeps'
+                        : activeDest.soundType === 'waves'
+                          ? `Slow LFO ocean swells`
                           : 'Chord-frequencies bell chime'}
                       {activeDest.subOverlay && isPlayingSound && (
                         <span className="block text-[8px] text-cyan-400 font-black tracking-tighter uppercase mt-0.5">
@@ -930,7 +929,7 @@ export default function CinematicShowreel() {
 
                 {/* Adjustments Fine-Tuning Sliders */}
                 <div className="grid grid-cols-2 gap-x-4 gap-y-3 pt-2">
-                  
+
                   {/* Saturation */}
                   <div className="flex flex-col gap-1.5">
                     <div className="flex items-center justify-between text-[10px] font-mono text-slate-450 font-bold uppercase">

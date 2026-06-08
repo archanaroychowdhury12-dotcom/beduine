@@ -12,18 +12,17 @@ export default function SilverPriceScrollInteraction({ cardRef }: SilverPriceScr
   const containerRef = useRef<HTMLDivElement>(null);
   const childRef = useRef<SVGSVGElement>(null);
   const shadowRef = useRef<SVGEllipseElement>(null);
-  
+
   useEffect(() => {
     if (!cardRef.current || !containerRef.current) return;
 
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const isMobile = window.innerWidth < 768;
-    
+
     // Find the price element inside the Silver card
     const priceEl = cardRef.current.querySelector('.silver-price');
-    const childEl = childRef.current;
     const shadowEl = shadowRef.current;
-    
+
     if (prefersReducedMotion) {
       // Static state: just render child at fully visible, holding price, no movement
       gsap.set(containerRef.current, { opacity: 1, scale: isMobile ? 0.75 : 1, x: 0, y: 0 });
@@ -41,7 +40,7 @@ export default function SilverPriceScrollInteraction({ cardRef }: SilverPriceScr
       y: isMobile ? 10 : 25,
       rotate: 15
     });
-    
+
     if (shadowEl) {
       gsap.set(shadowEl, { opacity: 0, scale: 0.5 });
     }
@@ -119,7 +118,7 @@ export default function SilverPriceScrollInteraction({ cardRef }: SilverPriceScr
     // After the scroll timeline finishes, register a subtle looping tug animation for premium touch
     // We only trigger this looping idle vibe when scroll progress is highly active or card is in viewport
     let idleTween: gsap.core.Tween | null = null;
-    
+
     const triggerIdleTug = () => {
       if (idleTween) return;
       idleTween = gsap.to(containerRef.current, {
@@ -191,14 +190,14 @@ export default function SilverPriceScrollInteraction({ cardRef }: SilverPriceScr
             <stop offset="60%" stopColor="#FED8BE" />
             <stop offset="100%" stopColor="#E99263" />
           </radialGradient>
-          
+
           {/* Shaded metallic child t-shirt gradient */}
           <linearGradient id="kidShirt3D" x1="10%" y1="0%" x2="90%" y2="100%">
             <stop offset="0%" stopColor="#F87171" />
             <stop offset="50%" stopColor="#EF4444" />
             <stop offset="100%" stopColor="#991B1B" />
           </linearGradient>
-          
+
           {/* Jeans 3D denim texture gradient */}
           <linearGradient id="kidJeans3D" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stopColor="#60A5FA" />
@@ -255,7 +254,7 @@ export default function SilverPriceScrollInteraction({ cardRef }: SilverPriceScr
           <g transform="rotate(14 66 64)">
             <rect x="63" y="69" width="7" height="9" fill="url(#kidSkin3D)" />
             <circle cx="66" cy="59" r="14.5" fill="url(#kidSkin3D)" />
-            
+
             {/* Detailed Brown Hair */}
             <path d="M 51.5,58 C 51.5,41 79.5,41 79.5,58 C 79.5,71 51.5,71 51.5,58 Z" fill="url(#kidHair3D)" />
 
