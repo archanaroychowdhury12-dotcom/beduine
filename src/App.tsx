@@ -5,12 +5,13 @@ import {
   ChevronRight, CheckCircle2, Check, Star,
   Phone, Calendar, MapPin, Hotel, Train, Plane,
   FileCheck2, Banknote, ArrowRight, Menu, X, MessageCircle,
-  Download, Lock, BarChart3, Eye, Target, TrendingUp, Crown,
+  Download, Lock, Eye, Target, TrendingUp, Crown,
   Video, Camera, Send, Tv, Share2, FileText,
   BadgeCheck, Zap, Bot, Fingerprint, Scan,
-  Heart, Globe, Users, Rocket, Wallet, History, IndianRupee, Info, AlertTriangle,
-  Coins, ArrowUpDown, Shield, HeartHandshake
+  Heart, Globe, Users, Rocket, Wallet, Shield, HeartHandshake
 } from 'lucide-react';
+import ScatteredShowcase from './ScatteredShowcase';
+
 
 
 
@@ -29,6 +30,14 @@ const NAV = [
   { id: 'contact', label: 'Contact' },
 ];
 
+const DESKTOP_NAV = [
+  { id: 'about', label: 'About' },
+  { id: 'plans', label: 'Plans' },
+  { id: 'destinations', label: 'Destinations' },
+  { id: 'audit', label: 'Trust' },
+  { id: 'contact', label: 'Contact' },
+];
+
 const PLANS = [
   {
     name: 'Silver', price: 499, tagline: 'Smart Starter', icon: Star,
@@ -36,9 +45,9 @@ const PLANS = [
     tourValue: 3000, duration: '2N / 3D', discountCredits: 1, discountValue: 500,
     paidDiscount: 'Member rate', insurance: 'Payable', nameChange: 'Not available',
     image: '/images/sundarbans_mangrove_1779521789593.png',
-    imageLabel: 'Sundarbans · Boat Safari',
+    imageLabel: 'Sundarbans - Boat Safari',
     destinations: ['Sundarbans (Boat Safari + Tiger Reserve)', 'Bakkhali (Beach Escape)', 'Mousuni Island (Sea & Camping)', 'Mukutmanipur (Dam, Hills & Lake)'],
-    benefits: ['1 Weekly Reward Draw entry', 'Winner tour value up to ₹3,000', '1 × ₹500 discount credit if not selected', 'Member-only rates on paid tours', '12-month subscription validity', 'Pickup & drop from selected points'],
+    benefits: ['1 Weekly Reward Draw entry', 'Winner tour value up to Rs.3,000', '1 x Rs.500 discount credit if not selected', 'Member-only rates on paid tours', '12-month subscription validity', 'Pickup & drop from selected points'],
   },
   {
     name: 'Emerald', price: 799, tagline: 'Balanced Choice', icon: Award,
@@ -46,20 +55,20 @@ const PLANS = [
     tourValue: 5000, duration: '2N / 3D', discountCredits: 2, discountValue: 1000,
     paidDiscount: 'Member rate', insurance: '50% off', nameChange: 'One time',
     image: '/images/darjeeling_tea_1779521805614.png',
-    imageLabel: 'Darjeeling · Tea Gardens',
+    imageLabel: 'Darjeeling - Tea Gardens',
     destinations: ['Darjeeling (Toy Train + Tiger Hill Sunrise)', 'Dooars (Jungle Safari + Tea Gardens)', 'Puri + Konark (Jagannath + Sun Temple)', 'Vizag + Araku Valley (Beach + Hills)'],
-    benefits: ['1 Weekly Reward Draw entry', 'Winner tour value up to ₹5,000', '2 × ₹500 discount credits if not selected', 'Member-only rates on paid tours', 'Travel insurance at 50% off', 'One-time family name change allowed'],
+    benefits: ['1 Weekly Reward Draw entry', 'Winner tour value up to Rs.5,000', '2 x Rs.500 discount credits if not selected', 'Member-only rates on paid tours', 'Travel insurance at 50% off', 'One-time family name change allowed'],
   },
   {
     name: 'Platinum', price: 1499, tagline: 'Premium Experience', icon: Crown,
-    color: 'from-indigo-400 via-purple-500 to-fuchsia-500', glow: 'purple',
+    color: 'from-neon-gold via-gold to-gold-deep', glow: 'gold',
     featured: true, tourValue: 10000, duration: '3N / 4D',
     discountCredits: 4, discountValue: 2000,
     paidDiscount: 'Member rate', insurance: 'Included free', nameChange: 'Two times',
     image: '/images/kashmir_dal_lake_1779521728036.png',
-    imageLabel: 'Kashmir · Dal Lake',
-    destinations: ['Kashmir (Srinagar · Gulmarg · Pahalgam)', 'Rajasthan (Jaipur · Udaipur · Jaisalmer)', 'Kerala (Munnar · Alleppey · Kovalam)', 'Himachal (Shimla · Manali Circuit)'],
-    benefits: ['1 Weekly Reward Draw entry', 'Winner tour value up to ₹10,000', '4 × ₹500 discount credits if not selected', 'Member-only rates on paid tours', 'Complimentary travel insurance', 'Two family name changes allowed', 'Priority quarterly tour batching'],
+    imageLabel: 'Kashmir - Dal Lake',
+    destinations: ['Kashmir (Srinagar - Gulmarg - Pahalgam)', 'Rajasthan (Jaipur - Udaipur - Jaisalmer)', 'Kerala (Munnar - Alleppey - Kovalam)', 'Himachal (Shimla - Manali Circuit)'],
+    benefits: ['1 Weekly Reward Draw entry', 'Winner tour value up to Rs.10,000', '4 x Rs.500 discount credits if not selected', 'Member-only rates on paid tours', 'Complimentary travel insurance', 'Two family name changes allowed', 'Priority quarterly tour batching'],
   },
 ];
 
@@ -70,9 +79,9 @@ const INTL_PLANS = [
     tourValue: 25000, duration: '3N / 4D', discountCredits: 5, discountValue: 2500,
     paidDiscount: 'Member rate', insurance: '50% off', nameChange: 'One time',
     image: '/images/dubai_skyline_1779539448313.png',
-    imageLabel: 'Dubai · Skyline & Dunes',
-    destinations: ['Dubai (Burj Khalifa · Desert Safari · Marina)', 'Thailand (Bangkok · Pattaya · Floating Market)', 'Sri Lanka (Colombo · Kandy · Sigiriya)', 'Nepal (Kathmandu · Pokhara · Chitwan)'],
-    benefits: ['1 Monthly Reward Draw entry', 'Winner tour value up to ₹25,000', '5 × ₹500 discount credits if not selected', 'Member-only rates on international tours', 'Travel insurance at 50% off', 'One-time name change allowed', 'Visa assistance included'],
+    imageLabel: 'Dubai - Skyline & Dunes',
+    destinations: ['Dubai (Burj Khalifa - Desert Safari - Marina)', 'Thailand (Bangkok - Pattaya - Floating Market)', 'Sri Lanka (Colombo - Kandy - Sigiriya)', 'Nepal (Kathmandu - Pokhara - Chitwan)'],
+    benefits: ['1 Monthly Reward Draw entry', 'Winner tour value up to Rs.25,000', '5 x Rs.500 discount credits if not selected', 'Member-only rates on international tours', 'Travel insurance at 50% off', 'One-time name change allowed', 'Visa assistance included'],
   },
   {
     name: 'Voyager', price: 7999, tagline: 'Premium Explorer', icon: Plane,
@@ -80,58 +89,71 @@ const INTL_PLANS = [
     featured: true, tourValue: 50000, duration: '4N / 5D', discountCredits: 8, discountValue: 4000,
     paidDiscount: 'VIP rate', insurance: 'Included free', nameChange: 'Two times',
     image: '/images/singapore_skyline_1779539502293.png',
-    imageLabel: 'Singapore · City of Future',
-    destinations: ['Singapore (Gardens by the Bay · Sentosa · Marina Bay)', 'Malaysia (Kuala Lumpur · Langkawi · Genting)', 'Bali (Ubud · Kuta · Tanah Lot · Uluwatu)', 'Vietnam (Hanoi · Ha Long Bay · Ho Chi Minh)'],
-    benefits: ['1 Monthly Reward Draw entry', 'Winner tour value up to ₹50,000', '8 × ₹500 discount credits if not selected', 'VIP rates on all international tours', 'Complimentary travel insurance', 'Two name changes allowed', 'Visa assistance + Airport lounge access', 'Priority tour batching'],
+    imageLabel: 'Singapore - City of Future',
+    destinations: ['Singapore (Gardens by the Bay - Sentosa - Marina Bay)', 'Malaysia (Kuala Lumpur - Langkawi - Genting)', 'Bali (Ubud - Kuta - Tanah Lot - Uluwatu)', 'Vietnam (Hanoi - Ha Long Bay - Ho Chi Minh)'],
+    benefits: ['1 Monthly Reward Draw entry', 'Winner tour value up to Rs.50,000', '8 x Rs.500 discount credits if not selected', 'VIP rates on all international tours', 'Complimentary travel insurance', 'Two name changes allowed', 'Visa assistance + Airport lounge access', 'Priority tour batching'],
   },
   {
     name: 'Globetrotter', price: 14999, tagline: 'Ultimate World Pass', icon: Rocket,
-    color: 'from-rose-400 via-pink-500 to-violet-600', glow: 'pink',
+    color: 'from-cyan via-cyan-bright to-cyan-deep', glow: 'cyan',
     tourValue: 100000, duration: '5N / 6D', discountCredits: 15, discountValue: 7500,
     paidDiscount: 'VIP rate', insurance: 'Included free', nameChange: 'Unlimited',
     image: '/images/maldives_overwater_1779539482305.png',
-    imageLabel: 'Maldives · Paradise',
-    destinations: ['Maldives (Overwater Villa · Snorkeling · Sunset Cruise)', 'Europe (Paris · Switzerland · Rome · Barcelona)', 'Turkey (Istanbul · Cappadocia · Pamukkale)', 'Japan (Tokyo · Kyoto · Osaka · Mount Fuji)'],
-    benefits: ['1 Monthly Reward Draw entry', 'Winner tour value up to ₹1,00,000', '15 × ₹500 discount credits if not selected', 'VIP rates on all international tours', 'Premium travel insurance', 'Unlimited name changes', 'Full visa processing + Airport lounge', 'Dedicated travel concierge', 'Priority booking & upgrades'],
+    imageLabel: 'Maldives - Paradise',
+    destinations: ['Maldives (Overwater Villa - Snorkeling - Sunset Cruise)', 'Europe (Paris - Switzerland - Rome - Barcelona)', 'Turkey (Istanbul - Cappadocia - Pamukkale)', 'Japan (Tokyo - Kyoto - Osaka - Mount Fuji)'],
+    benefits: ['1 Monthly Reward Draw entry', 'Winner tour value up to Rs.1,00,000', '15 x Rs.500 discount credits if not selected', 'VIP rates on all international tours', 'Premium travel insurance', 'Unlimited name changes', 'Full visa processing + Airport lounge', 'Dedicated travel concierge', 'Priority booking & upgrades'],
   },
 ];
 
 const SERVICES = [
-  { icon: Compass, title: 'Customized Tour Packages', desc: 'AI-curated itineraries built around your pace, interests, and travel style.' },
-  { icon: Hotel, title: 'Hotel Booking', desc: 'Curated stays from boutique hideaways to five-star retreats, worldwide.' },
-  { icon: Train, title: 'Train Ticket Booking', desc: 'Seamless IRCTC reservations with confirmed berths and instant PNR updates.' },
-  { icon: Plane, title: 'Flight Ticket Booking', desc: 'Best fares across domestic and international carriers with flexible options.' },
-  { icon: FileCheck2, title: 'Visa Application', desc: 'End-to-end documentation, interview prep, and embassy coordination.' },
-  { icon: Banknote, title: 'Currency Exchange', desc: 'Competitive forex rates with doorstep delivery and zero hidden fees.' },
+  { icon: Compass, title: 'Customized Tour Packages', desc: 'AI-curated itineraries built around your pace, interests, and travel style.', image: '/images/service_tours.png' },
+  { icon: Hotel, title: 'Hotel Booking', desc: 'Curated stays from boutique hideaways to five-star retreats, worldwide.', image: '/images/service_hotels.png' },
+  { icon: Train, title: 'Train Ticket Booking', desc: 'Seamless IRCTC reservations with confirmed berths and instant PNR updates.', image: '/images/service_trains.png' },
+  { icon: Plane, title: 'Flight Ticket Booking', desc: 'Best fares across domestic and international carriers with flexible options.', image: '/images/service_flights.png' },
+  { icon: FileCheck2, title: 'Visa Application', desc: 'End-to-end documentation, interview prep, and embassy coordination.', image: '/images/service_visas.png' },
+  { icon: Banknote, title: 'Currency Exchange', desc: 'Competitive forex rates with doorstep delivery and zero hidden fees.', image: '/images/service_currency.png' },
 ];
 
 const AUDIT_REPORTS = [
-  { week: 'Week 42 · 2026', status: 'Published', date: '19 Oct 2026' },
-  { week: 'Week 41 · 2026', status: 'Published', date: '12 Oct 2026' },
-  { week: 'Week 40 · 2026', status: 'Published', date: '05 Oct 2026' },
-  { week: 'Week 39 · 2026', status: 'Published', date: '28 Sep 2026' },
+  { week: 'Week 42 - 2026', status: 'Published', date: '19 Oct 2026' },
+  { week: 'Week 41 - 2026', status: 'Published', date: '12 Oct 2026' },
+  { week: 'Week 40 - 2026', status: 'Published', date: '05 Oct 2026' },
+  { week: 'Week 39 - 2026', status: 'Published', date: '28 Sep 2026' },
 ];
 
 const DESTINATIONS = [
   // Weekend Escapes
-  { name: 'Sundarbans', tag: 'Tiger Reserve · Mangrove Boats', duration: '2N/3D', rating: 4.7, season: 'Oct – Mar', img: '/images/sundarbans_mangrove_premium.png', category: 'escapes', planBadge: 'Silver+' },
-  { name: 'Bakkhali Beach', tag: 'Casuarina Shore · Delta Sunset', duration: '1N/2D', rating: 4.6, season: 'Oct – Apr', img: '/images/bakkhali_beach_premium.png', category: 'escapes', planBadge: 'Silver+' },
-  { name: 'Mousuni Island', tag: 'Seaside Camp · Huts & Palms', duration: '1N/2D', rating: 4.5, season: 'Nov – Mar', img: '/images/mousuni_island_premium.png', category: 'escapes', planBadge: 'Silver+' },
+  { name: 'Sundarbans', tag: 'Tiger Reserve - Mangrove Boats', duration: '2N/3D', rating: 4.7, season: 'Oct - Mar', img: '/images/sundarbans_mangrove_premium.png', category: 'escapes', planBadge: 'Silver+' },
+  { name: 'Bakkhali Beach', tag: 'Casuarina Shore - Delta Sunset', duration: '1N/2D', rating: 4.6, season: 'Oct - Apr', img: '/images/bakkhali_beach_premium.png', category: 'escapes', planBadge: 'Silver+' },
+  { name: 'Mousuni Island', tag: 'Seaside Camp - Huts & Palms', duration: '1N/2D', rating: 4.5, season: 'Nov - Mar', img: '/images/mousuni_island_premium.png', category: 'escapes', planBadge: 'Silver+' },
+  { name: 'Mukutmanipur', tag: 'Hills, Forests & Kangsabati Dam', duration: '1N/2D', rating: 4.5, season: 'Oct - Mar', img: '/images/mukutmanipur_premium.png', category: 'escapes', planBadge: 'Silver+' },
 
   // Hill & Tea Trails
-  { name: 'Darjeeling', tag: 'Tiger Hill Sunrise · Tea Estates', duration: '3N/4D', rating: 4.8, season: 'Mar – Jun', img: '/images/darjeeling_tea_1779521805614.png', category: 'trails', planBadge: 'Gold+' },
-  { name: 'Dooars Safari', tag: 'Forest Huts · River Wilds', duration: '2N/3D', rating: 4.6, season: 'Sep – Apr', img: '/images/dooars_safari.png', category: 'trails', planBadge: 'Gold+' },
-  { name: 'Shimla & Manali', tag: 'Mall Road · Solang Valley Adventure', duration: '5N/6D', rating: 4.9, season: 'Oct – May', img: '/images/himachal_hills.png', category: 'trails', planBadge: 'Platinum+' },
+  { name: 'Darjeeling', tag: 'Tiger Hill Sunrise - Tea Estates', duration: '3N/4D', rating: 4.8, season: 'Mar - Jun', img: '/images/darjeeling_tea_1779521805614.png', category: 'trails', planBadge: 'Gold+' },
+  { name: 'Dooars Safari', tag: 'Forest Huts - River Wilds', duration: '2N/3D', rating: 4.6, season: 'Sep - Apr', img: '/images/dooars_safari.png', category: 'trails', planBadge: 'Gold+' },
+  { name: 'Shimla & Manali', tag: 'Mall Road - Solang Valley Adventure', duration: '5N/6D', rating: 4.9, season: 'Oct - May', img: '/images/himachal_hills.png', category: 'trails', planBadge: 'Platinum+' },
+  { name: 'Kashmir', tag: 'Paradise on Earth - Dal Lake & Houseboats', duration: '4N/5D', rating: 4.9, season: 'Apr - Oct', img: '/images/kashmir_dal_lake_1779521728036.png', category: 'trails', planBadge: 'Platinum+' },
+  { name: 'Vizag & Araku', tag: 'Araku Coffee Gardens & Borra Caves', duration: '3N/4D', rating: 4.7, season: 'Oct - Mar', img: '/images/vizag_araku.png', category: 'trails', planBadge: 'Gold+' },
 
   // Royal India Tours
-  { name: 'Rajasthan Royal', tag: 'Jaipur · Udaipur · Desert Dunes', duration: '5N/6D', rating: 4.8, season: 'Oct – Mar', img: '/images/rajasthan_palace_1779521744228.png', category: 'royal', planBadge: 'Gold+' },
-  { name: 'Kerala Backwaters', tag: 'Houseboats · Munnar Hills', duration: '4N/5D', rating: 4.9, season: 'Sep – Mar', img: '/images/kerala_houseboat_1779521772928.png', category: 'royal', planBadge: 'Gold+' },
-  { name: 'Puri & Konark', tag: 'Sun Temple · Golden Beach', duration: '3N/4D', rating: 4.7, season: 'Oct – Mar', img: '/images/puri_konark.png', category: 'royal', planBadge: 'Silver+' },
+  { name: 'Rajasthan Royal', tag: 'Jaipur - Udaipur - Desert Dunes', duration: '5N/6D', rating: 4.8, season: 'Oct - Mar', img: '/images/rajasthan_palace_1779521744228.png', category: 'royal', planBadge: 'Gold+' },
+  { name: 'Kerala Backwaters', tag: 'Houseboats - Munnar Hills', duration: '4N/5D', rating: 4.9, season: 'Sep - Mar', img: '/images/kerala_houseboat_1779521772928.png', category: 'royal', planBadge: 'Gold+' },
+  { name: 'Puri & Konark', tag: 'Sun Temple - Golden Beach', duration: '3N/4D', rating: 4.7, season: 'Oct - Mar', img: '/images/puri_konark.png', category: 'royal', planBadge: 'Silver+' },
+  { name: 'Goa', tag: 'Sun-kissed Beaches - Heritage & Nightlife', duration: '3N/4D', rating: 4.8, season: 'Oct - May', img: '/images/goa_beaches.png', category: 'royal', planBadge: 'Gold+' },
 
   // Premium International Trips
-  { name: 'Dubai', tag: 'Burj Khalifa · Desert Safaris', duration: '4N/5D', rating: 4.9, season: 'Nov – Mar', img: '/images/dubai_skyline_1779539448313.png', category: 'intl', planBadge: 'Platinum+' },
-  { name: 'Singapore', tag: 'Sentosa · Gardens by the Bay', duration: '4N/5D', rating: 4.8, season: 'Year-round', img: '/images/singapore_skyline_1779539502293.png', category: 'intl', planBadge: 'Platinum+' },
-  { name: 'Maldives', tag: 'Overwater Bungalows · Reefs', duration: '4N/5D', rating: 4.9, season: 'Nov – Apr', img: '/images/maldives_overwater_1779539482305.png', category: 'intl', planBadge: 'Platinum+' },
+  { name: 'Dubai', tag: 'Burj Khalifa - Desert Safaris', duration: '4N/5D', rating: 4.9, season: 'Nov - Mar', img: '/images/dubai_skyline_1779539448313.png', category: 'intl', planBadge: 'Platinum+' },
+  { name: 'Singapore', tag: 'Sentosa - Gardens by the Bay', duration: '4N/5D', rating: 4.8, season: 'Year-round', img: '/images/singapore_skyline_1779539502293.png', category: 'intl', planBadge: 'Platinum+' },
+  { name: 'Maldives', tag: 'Overwater Bungalows - Reefs', duration: '4N/5D', rating: 4.9, season: 'Nov - Apr', img: '/images/maldives_overwater_1779539482305.png', category: 'intl', planBadge: 'Platinum+' },
+  { name: 'Thailand', tag: 'Bangkok Temples & Pattaya Beaches', duration: '4N/5D', rating: 4.7, season: 'Nov - Apr', img: '/images/thailand.png', category: 'intl', planBadge: 'Platinum+' },
+  { name: 'Sri Lanka', tag: 'Sigiriya Rock Fortress & Kandy Hills', duration: '4N/5D', rating: 4.6, season: 'Dec - Apr', img: '/images/sri_lanka.png', category: 'intl', planBadge: 'Platinum+' },
+  { name: 'Nepal', tag: 'Kathmandu Valley & Himalayan Pokhara', duration: '3N/4D', rating: 4.7, season: 'Sep - Nov', img: '/images/nepal.png', category: 'intl', planBadge: 'Platinum+' },
+  { name: 'Malaysia', tag: 'Kuala Lumpur Skyline & Langkawi', duration: '4N/5D', rating: 4.7, season: 'Year-round', img: '/images/malaysia.png', category: 'intl', planBadge: 'Platinum+' },
+  { name: 'Bali', tag: 'Ubud Rice Terraces & Uluwatu Temple', duration: '4N/5D', rating: 4.9, season: 'Apr - Oct', img: '/images/bali.png', category: 'intl', planBadge: 'Platinum+' },
+  { name: 'Vietnam', tag: 'Halong Bay Cruise & Hanoi Old Quarter', duration: '5N/6D', rating: 4.8, season: 'Nov - Apr', img: '/images/vietnam.png', category: 'intl', planBadge: 'Platinum+' },
+  { name: 'Europe', tag: 'Paris Eiffel Tower & Swiss Alps', duration: '7N/8D', rating: 4.9, season: 'May - Sep', img: '/images/europe.png', category: 'intl', planBadge: 'Platinum+' },
+  { name: 'Turkey', tag: 'Cappadocia Balloons & Pamukkale Pools', duration: '5N/6D', rating: 4.8, season: 'Apr - Oct', img: '/images/turkey.png', category: 'intl', planBadge: 'Platinum+' },
+  { name: 'Japan', tag: 'Tokyo Neon & Kyoto Cherry Blossoms', duration: '6N/7D', rating: 4.9, season: 'Mar - May', img: '/images/japan.png', category: 'intl', planBadge: 'Platinum+' },
 ];
 
 const WINNERS_DATA = [
@@ -144,10 +166,11 @@ const WINNERS_DATA = [
 ];
 
 const JOURNEY_IMAGES = [
-  { src: '/images/happy_travelers_family_1779521684057.png', label: 'Happy Beduine Families' },
-  { src: '/images/rajasthan_palace_1779521744228.png', label: 'Royal Rajasthan Tours' },
-  { src: '/images/kerala_houseboat_1779521772928.png', label: 'Kerala Backwaters' },
-  { src: '/images/sundarbans_mangrove_1779521789593.png', label: 'Sundarbans Safari' },
+  { src: '/images/happy_family_travelers.png', label: 'Happy Families', desc: 'Crafting lifetime memories', badge: 'Silver+', theme: 'cyan' },
+  { src: '/images/rajasthan_palace_1779521744228.png', label: 'Royal Rajasthan', desc: 'Golden sands & majestic palaces', badge: 'Gold+', theme: 'gold' },
+  { src: '/images/kerala_houseboat_1779521772928.png', label: 'Kerala Backwaters', desc: 'Serene houseboats & palms', badge: 'Silver+', theme: 'cyan' },
+  { src: '/images/sundarbans_mangrove_1779521789593.png', label: 'Sundarbans Safari', desc: 'Mysterious mangrove boat trails', badge: 'Silver+', theme: 'gold' },
+  { src: '/images/kashmir_dal_lake_1779521728036.png', label: 'Heavenly Kashmir', desc: 'Misty peaks & shikara rides', badge: 'Platinum+', theme: 'cyan' }
 ];
 
 /* ---------- Helpers ---------- */
@@ -166,8 +189,68 @@ function Reveal({ children, delay = 0, y = 80 }: { children: React.ReactNode; de
   );
 }
 
-function GoldCheck({ size = 18, variant = 'gold' }: { size?: number; variant?: 'gold' | 'cyan' | 'violet' }) {
-  const checkClass = variant === 'cyan' ? 'cyan-check' : variant === 'violet' ? 'violet-check' : 'gold-check';
+function ScrollRoundedSection({ children }: { children: React.ReactNode }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [radiusValue, setRadiusValue] = useState("90px");
+
+  useEffect(() => {
+    const handleResize = () => {
+      setRadiusValue(window.innerWidth < 768 ? "32px" : "90px");
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"]
+  });
+
+  const borderTopLeftRadius = useTransform(scrollYProgress, [0, 0.18, 0.82, 1.0], [radiusValue, "0px", "0px", "0px"]);
+  const borderTopRightRadius = useTransform(scrollYProgress, [0, 0.18, 0.82, 1.0], [radiusValue, "0px", "0px", "0px"]);
+  const borderBottomLeftRadius = useTransform(scrollYProgress, [0, 0.18, 0.82, 1.0], ["0px", "0px", "0px", radiusValue]);
+  const borderBottomRightRadius = useTransform(scrollYProgress, [0, 0.18, 0.82, 1.0], ["0px", "0px", "0px", radiusValue]);
+
+  const scale = useTransform(scrollYProgress, [0, 0.18, 0.82, 1.0], [0.95, 1.0, 1.0, 0.95]);
+  const opacity = useTransform(scrollYProgress, [0, 0.12, 0.88, 1.0], [0.65, 1.0, 1.0, 0.65]);
+
+  return (
+    <motion.div
+      ref={containerRef}
+      style={{
+        borderTopLeftRadius,
+        borderTopRightRadius,
+        borderBottomLeftRadius,
+        borderBottomRightRadius,
+        scale,
+        opacity,
+        overflow: 'hidden',
+        transformOrigin: 'center center'
+      }}
+      className="relative z-10 w-full"
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+
+function SubSectionBadge({ text, theme = 'cyan' }: { text: string; theme?: 'cyan' | 'gold' }) {
+  const dotColor = theme === 'cyan' ? 'bg-[#00F5D4]' : 'bg-[#FBBF24]';
+  const textColor = theme === 'cyan' ? 'text-[#00F5D4]' : 'text-amber-400';
+  const slashColor = theme === 'cyan' ? 'text-[#00F5D4]' : 'text-amber-400';
+
+  return (
+    <div className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/45 border border-white/10 text-[10px] sm:text-[11px] font-mono font-bold tracking-widest ${textColor} backdrop-blur-md shadow-lg`}>
+      <span className={`${dotColor} w-1.5 h-1.5 rounded-full animate-pulse`} />
+      <span className={slashColor}>//</span> {text}
+    </div>
+  );
+}
+
+function GoldCheck({ size = 18, variant = 'gold' }: { size?: number; variant?: 'gold' | 'cyan' }) {
+  const checkClass = variant === 'cyan' ? 'cyan-check' : 'gold-check';
   return (
     <span className={`inline-flex items-center justify-center rounded-full ${checkClass} shrink-0`} style={{ width: size, height: size }}>
       <Check className="text-cosmos" style={{ width: size * 0.6, height: size * 0.6 }} strokeWidth={3.5} />
@@ -198,89 +281,40 @@ function StarField({ count = 80 }: { count?: number }) {
   );
 }
 
-function AuroraBackground({ variant = 'cyan' }: { variant?: 'cyan' | 'gold' }) {
-  return <div className={`aurora ${variant === 'gold' ? 'aurora-gold' : ''}`} />;
-}
-
-function GradientMesh() {
-  return <div className="gradient-mesh"><span /><span /><span /></div>;
-}
-
-/* ---------- Floating Orbs (animated background) ---------- */
-function FloatingOrbs({ count = 5, variant = 'mixed' }: { count?: number; variant?: 'cyan' | 'gold' | 'mixed' }) {
-  const orbs = useMemo(() => Array.from({ length: count }).map((_, i) => {
-    const colors = variant === 'cyan' ? ['#00D9FF', '#67E8F9'] : variant === 'gold' ? ['#2DD4BF', '#8B5CF6'] : ['#00D9FF', '#2DD4BF', '#A855F7', '#67E8F9', '#8B5CF6'];
-    return {
-      id: i,
-      size: 200 + Math.random() * 300,
-      top: Math.random() * 80,
-      left: Math.random() * 80,
-      color: colors[i % colors.length],
-      delay: i * 2,
-      duration: 15 + Math.random() * 10,
-    };
-  }), [count, variant]);
-  return (
-    <div className="floating-orbs">
-      {orbs.map((o) => (
-        <div key={o.id} className="orb-particle" style={{
-          width: `${o.size}px`, height: `${o.size}px`,
-          top: `${o.top}%`, left: `${o.left}%`,
-          background: o.color,
-          animationDelay: `${o.delay}s`,
-          animationDuration: `${o.duration}s`,
-        }} />
-      ))}
-    </div>
-  );
-}
-
-/* ---------- Wave Background (animated SVG waves) ---------- */
-function WaveBackground({ color = 'cyan' }: { color?: 'cyan' | 'gold' | 'mixed' }) {
-  const stroke = color === 'cyan' ? '#00D9FF' : color === 'gold' ? '#8B5CF6' : '#A855F7';
-  return (
-    <div className="wave-bg">
-      <svg viewBox="0 0 1440 300" preserveAspectRatio="none">
-        <defs>
-          <linearGradient id="wave-grad" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#00D9FF" stopOpacity="0.3" />
-            <stop offset="50%" stopColor="#8B5CF6" stopOpacity="0.4" />
-            <stop offset="100%" stopColor="#00D9FF" stopOpacity="0.3" />
-          </linearGradient>
-        </defs>
-        <path d="M0,150 C240,220 480,80 720,150 C960,220 1200,80 1440,150 L1440,300 L0,300 Z" fill="url(#wave-grad)" opacity="0.5" />
-        <path d="M0,180 C240,250 480,110 720,180 C960,250 1200,110 1440,180 L1440,300 L0,300 Z" fill={stroke} opacity="0.15" />
-        <path d="M0,210 C240,280 480,140 720,210 C960,280 1200,140 1440,210 L1440,300 L0,300 Z" fill={stroke} opacity="0.1" />
-      </svg>
-    </div>
-  );
-}
-
-/* ---------- Morphing Blobs ---------- */
-function MorphBlobs() {
-  return (
-    <>
-      <div className="morph-blob" style={{ width: '500px', height: '500px', top: '-10%', left: '-10%', background: 'radial-gradient(circle, rgba(0,217,255,0.3), transparent 70%)', animationDelay: '0s' }} />
-      <div className="morph-blob" style={{ width: '400px', height: '400px', bottom: '10%', right: '-5%', background: 'radial-gradient(circle, rgba(139,92,246,0.25), transparent 70%)', animationDelay: '5s' }} />
-      <div className="morph-blob" style={{ width: '450px', height: '450px', top: '40%', left: '30%', background: 'radial-gradient(circle, rgba(168,85,247,0.2), transparent 70%)', animationDelay: '10s' }} />
-    </>
-  );
-}
-
-/* ---------- Flowing Lines ---------- */
-function FlowingLines({ count = 5 }: { count?: number }) {
-  return (
-    <div className="flow-lines">
-      {Array.from({ length: count }).map((_, i) => (
-        <div key={i} className="flow-line" style={{ top: `${15 + i * 18}%`, animationDelay: `${i * 1.5}s`, animationDuration: `${6 + i}s`, transform: `rotate(${-5 + i * 3}deg)` }} />
-      ))}
-    </div>
-  );
-}
-
-function KineticText({ text, className = '', delay = 0 }: { text: string; className?: string; delay?: number }) {
+function KineticText({ text, className = '', delay = 0, mode = 'char' }: { text: string; className?: string; delay?: number; mode?: 'word' | 'char' }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-100px' });
+
+  if (mode === 'char') {
+    let charIndex = 0;
+    return (
+      <span ref={ref} className={className}>
+        {text.split(' ').map((word, wi) => (
+          <span key={wi} style={{ display: 'inline-block', whiteSpace: 'pre' }}>
+            {word.split('').map((char) => {
+              const ci = charIndex++;
+              return (
+                <span key={ci} className="kinetic-char-mask">
+                  <span
+                    className="kinetic-char"
+                    style={{
+                      animationDelay: `${delay + ci * 0.03}s`,
+                      animationPlayState: inView ? 'running' : 'paused',
+                      opacity: inView ? undefined : 0,
+                    }}
+                  >
+                    {char}
+                  </span>
+                </span>
+              );
+            })}
+            {wi < text.split(' ').length - 1 && <span style={{ display: 'inline-block', width: '0.25em' }} />}
+          </span>
+        ))}
+      </span>
+    );
+  }
+
   return (
     <span ref={ref} className={className}>
       {text.split(' ').map((word, wi) => (
@@ -326,18 +360,6 @@ function ParticleButton({ children, onClick, variant = 'gold', className = '', .
   );
 }
 
-function StaggerText({ text, className = '', delay = 0 }: { text: string; className?: string; delay?: number }) {
-  return (
-    <span className={className} aria-label={text}>
-      {text.split('').map((char, i) => (
-        <span key={i} className="stagger-letter" style={{ animationDelay: `${delay + i * 0.05}s` }}>
-          {char === ' ' ? '\u00A0' : char}
-        </span>
-      ))}
-    </span>
-  );
-}
-
 function TiltCard({ children, className = '', intensity = 8 }: { children: React.ReactNode; className?: string; intensity?: number }) {
   const ref = useRef<HTMLDivElement>(null);
   const [style, setStyle] = useState<React.CSSProperties>({});
@@ -354,21 +376,6 @@ function TiltCard({ children, className = '', intensity = 8 }: { children: React
   };
   const onLeave = () => setStyle({ transform: 'perspective(1200px) rotateX(0deg) rotateY(0deg)' });
   return <div ref={ref} onMouseMove={onMove} onMouseLeave={onLeave} className={`tilt-card ${className}`} style={style}>{children}</div>;
-}
-
-function LiquidFilter() {
-  return (
-    <svg className="absolute w-0 h-0" aria-hidden>
-      <defs>
-        <filter id="liquid-filter">
-          <feTurbulence type="fractalNoise" baseFrequency="0.015 0.02" numOctaves="2" seed="3">
-            <animate attributeName="baseFrequency" dur="15s" values="0.015 0.02; 0.02 0.025; 0.015 0.02" repeatCount="indefinite" />
-          </feTurbulence>
-          <feDisplacementMap in="SourceGraphic" scale="20" />
-        </filter>
-      </defs>
-    </svg>
-  );
 }
 
 /* Custom Cursor */
@@ -555,10 +562,10 @@ function CinematicIntro({ onComplete }: { onComplete: () => void }) {
                 <div className="absolute -inset-10 rounded-full border border-gold/30" style={{ boxShadow: '0 0 60px rgba(255,209,102,0.4)' }} />
                 <div className="absolute -inset-20 rounded-full border border-cyan/20" />
                 <div className="absolute -inset-32 rounded-full border border-gold/10" />
-                <div className="relative w-32 h-32 rounded-full flex items-center justify-center overflow-hidden" style={{ background: 'radial-gradient(circle, rgba(255,209,102,0.3) 0%, rgba(139,105,20,0.1) 70%, transparent 100%)', boxShadow: '0 0 80px rgba(255,209,102,0.5), inset 0 0 40px rgba(255,209,102,0.3)' }}>
-                  <div className="absolute inset-2 rounded-full border-2 border-gold/60 z-20 pointer-events-none" />
-                  <div className="absolute inset-6 rounded-full border border-cyan/40 z-20 pointer-events-none" />
-                  <img src="/images/office_logo.png" alt="Beduine Logo" className="w-full h-full object-cover scale-105 relative z-10" />
+                <div className="relative w-32 h-32 rounded-full flex items-center justify-center overflow-hidden bg-cosmos/80 shadow-lg border border-cyan/20" style={{ background: 'radial-gradient(circle, rgba(255,209,102,0.15) 0%, rgba(13,148,136,0.1) 70%, transparent 100%)', boxShadow: '0 0 80px rgba(0,217,255,0.3), inset 0 0 40px rgba(0,217,255,0.2)' }}>
+                  <div className="absolute inset-2 rounded-full border-2 border-cyan/30 z-20 pointer-events-none" />
+                  <div className="absolute inset-6 rounded-full border border-cyan/20 z-20 pointer-events-none" />
+                  <img src="/images/bedune_logo_cropped.png" alt="BEDUINE Logo" className="w-4/5 h-4/5 object-contain relative z-10 scale-110" />
                 </div>
                 <div className="orbit absolute top-1/2 left-1/2 w-3 h-3 rounded-full bg-cyan" style={{ ['--r' as any]: '80px', boxShadow: '0 0 15px #00D9FF' }} />
                 <div className="orbit absolute top-1/2 left-1/2 w-2 h-2 rounded-full bg-gold" style={{ ['--r' as any]: '140px', animationDelay: '-5s', boxShadow: '0 0 12px #FFD166' }} />
@@ -582,7 +589,7 @@ function CinematicIntro({ onComplete }: { onComplete: () => void }) {
             <motion.div initial={{ scale: 0.5, opacity: 0, y: -120 }} animate={{ scale: 1, opacity: 1, y: -120 }} transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }} className="font-display text-7xl lg:text-9xl font-bold tracking-[0.3em] intro-text-3d">SAFAR</motion.div>
             <motion.div initial={{ width: 0, opacity: 0 }} animate={{ width: '300px', opacity: 1 }} transition={{ delay: 0.1, duration: 0.5 }} className="h-px bg-gradient-to-r from-transparent via-gold to-transparent" />
             <motion.div initial={{ opacity: 0, y: 30, scale: 0.9 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ delay: 0.3, duration: 0.8, ease: [0.22, 1, 0.36, 1] }} className="font-serif italic text-4xl lg:text-6xl gold-shimmer mt-6">jo yaad rahe</motion.div>
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.9, duration: 0.4 }} className="mt-8 text-xs uppercase tracking-[0.5em] text-cyan/80 font-mono">· Beduine Tour & Travels ·</motion.div>
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.9, duration: 0.4 }} className="mt-8 text-xs uppercase tracking-[0.5em] text-cyan/80 font-mono">BEDUINE Tour & Travels</motion.div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -592,7 +599,7 @@ function CinematicIntro({ onComplete }: { onComplete: () => void }) {
         {phase >= 4 && <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }} className="absolute inset-0 bg-cosmos" />}
       </AnimatePresence>
 
-      <button onClick={onComplete} className="absolute bottom-8 right-8 px-4 py-2 rounded-full glass text-ink/60 hover:text-ink text-xs uppercase tracking-widest z-10 border border-slate-line">Skip Intro →</button>
+      <button onClick={onComplete} className="absolute bottom-8 right-8 px-4 py-2 rounded-full glass text-ink/60 hover:text-ink text-xs uppercase tracking-widest z-10 border border-slate-line">Skip Intro</button>
     </motion.div>
   );
 }
@@ -612,29 +619,37 @@ function Navbar() {
         <div className={`glass rounded-2xl transition-all duration-500 ${scrolled ? 'neon-border-cyan' : ''}`}>
           <div className="flex items-center justify-between px-4 lg:px-6 h-14 lg:h-16">
             <a href="#top" className="flex items-center gap-2.5" data-magnetic>
-              <div className="w-10 h-10 rounded-full overflow-hidden border border-cyan/30 shadow-lg shadow-cyan/20 bg-cosmos">
-                <img src="/images/office_logo.png" alt="Beduine Logo" className="w-full h-full object-cover scale-105" />
+              <div className="w-10 h-10 rounded-full overflow-hidden border border-cyan/30 shadow-lg shadow-cyan/20 bg-cosmos flex items-center justify-center p-1.5">
+                <img src="/images/bedune_logo_cropped.png" alt="BEDUINE Logo" className="w-full h-full object-contain" />
               </div>
               <div className="leading-tight">
                 <div className="font-display text-base font-bold text-ink tracking-tight">BEDUINE</div>
                 <div className="text-[9px] uppercase tracking-[0.22em] neon-cyan">Tour & Travels</div>
               </div>
             </a>
-            <nav className="hidden lg:flex items-center gap-8">
-              {NAV.map((n) => <a key={n.id} href={`#${n.id}`} data-magnetic className="text-sm text-ink/80 hover:neon-cyan transition-all font-medium">{n.label}</a>)}
+            <nav className="hidden lg:flex items-center gap-6">
+              {DESKTOP_NAV.map((n) => <a key={n.id} href={`#${n.id}`} data-magnetic className="text-sm text-[#7E919D] hover:text-[#18D7F2] hover:scale-105 transition-all font-medium whitespace-nowrap">{n.label}</a>)}
             </nav>
             <div className="hidden lg:flex items-center gap-3">
-              <a href="https://wa.me/918768903565?text=Hello%20Beduine%2C%20I%20want%20to%20inquire%20about%20my%20membership." target="_blank" rel="noreferrer" data-magnetic className="text-sm text-ink/75 hover:text-ink transition-colors font-medium px-3 py-2">Member Login</a>
+              <a href="https://wa.me/918768903565?text=Hello%20BEDUINE%2C%20I%20want%20to%20inquire%20about%20my%20membership." target="_blank" rel="noreferrer" data-magnetic className="text-sm text-[#7E919D] hover:text-[#18D7F2] transition-colors font-medium px-3 py-2 whitespace-nowrap">Member Login</a>
               <a href="#plans"><ParticleButton variant="cyan" className="px-4 py-2 rounded-full font-semibold text-sm inline-flex items-center gap-1.5">Choose Plan <ArrowRight className="w-3.5 h-3.5" /></ParticleButton></a>
             </div>
-            
+
             <div className="flex items-center gap-2">
-              <button className="lg:hidden text-ink p-2" onClick={() => setOpen(!open)}>{open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}</button>
+              <button
+                className="lg:hidden text-ink p-2"
+                onClick={() => setOpen(!open)}
+                aria-label={open ? 'Close menu' : 'Open menu'}
+                aria-expanded={open}
+                aria-controls="mobile-menu"
+              >
+                {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              </button>
             </div>
           </div>
           <AnimatePresence>
             {open && (
-              <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="lg:hidden overflow-hidden border-t border-slate-line">
+              <motion.div id="mobile-menu" initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="lg:hidden overflow-hidden border-t border-slate-line">
                 <div className="px-4 py-3 flex flex-col gap-1">
                   {NAV.map((n) => <a key={n.id} href={`#${n.id}`} onClick={() => setOpen(false)} className="py-2.5 text-ink/90 text-sm font-medium">{n.label}</a>)}
                   <a href="#plans" onClick={() => setOpen(false)} className="mt-2 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-gradient-to-r from-neon-gold to-gold text-cosmos font-semibold text-sm">Choose Plan <ArrowRight className="w-4 h-4" /></a>
@@ -653,7 +668,7 @@ function Navbar() {
 const HERO_SLIDES = [
   {
     image: '/images/beduine_travel_hero_1779521651766.png',
-    tagline: 'Beduine Tour & Travels',
+    tagline: 'BEDUINE Tour & Travels',
     title1: 'Journeys that',
     title2: 'stay with you.',
     desc: 'A futuristic travel subscription that combines AI-curated journeys, weekly reward draws, and guaranteed travel credits.',
@@ -720,191 +735,213 @@ function Hero() {
   }, []);
 
   const slide = HERO_SLIDES[currentSlideIndex];
-  
+
   const { scrollY } = useScroll();
   const yParallax = useTransform(scrollY, [0, 800], [0, 150]);
 
   return (
-    <section id="top" className="relative min-h-screen flex items-center bg-cosmos overflow-hidden">
-      {/* Background with Parallax */}
-      <div className="absolute inset-0 z-0 overflow-hidden bg-cosmos">
+    <section id="top" className="relative z-20 min-h-screen flex items-center bg-[#f4f7f6] overflow-hidden pt-28 pb-16">
+      {/* Background with Parallax (Brightened) */}
+      <div className="absolute inset-0 z-0 overflow-hidden bg-[#f4f7f6]">
         <AnimatePresence mode="popLayout">
           <motion.div
             key={currentSlideIndex}
             style={{ y: yParallax }}
-            initial={{ scale: 1.12, opacity: 0 }}
-            animate={{ scale: 1, opacity: 0.85 }}
-            exit={{ scale: 0.96, opacity: 0 }}
+            initial={{ scale: 1.1, opacity: 0 }}
+            animate={{ scale: 1, opacity: 0.95 }}
+            exit={{ scale: 0.95, opacity: 0 }}
             transition={{ duration: 1.6, ease: [0.25, 1, 0.5, 1] }}
             className="absolute inset-0"
           >
-            <img src={slide.image} alt={slide.tagline} className="w-full h-full object-cover" fetchpriority="high" width="1920" height="1080" />
+            <img src={slide.image} alt={slide.tagline} className="w-full h-full object-cover" fetchPriority="high" width="1920" height="1080" />
           </motion.div>
         </AnimatePresence>
-        <div className="absolute inset-0 bg-gradient-to-b from-cosmos/30 via-transparent to-cosmos/50 z-[2]" />
-        <div className="absolute inset-0 bg-gradient-to-r from-cosmos/50 via-transparent to-transparent z-[2]" />
+        {/* Soft, light overlays to guarantee high contrast without darkening the beautiful image */}
+        <div className="absolute inset-0 bg-gradient-to-b from-white/35 via-white/5 to-[#f4f7f6]/95 z-[2]" />
+        <div className="absolute inset-0 bg-gradient-to-r from-white/65 via-white/15 to-transparent z-[2]" />
       </div>
 
-      <div className="absolute inset-0 grid-pattern opacity-15 z-[1]" />
+      <div className="absolute inset-0 grid-pattern opacity-[0.03] z-[1]" />
 
-      <div className="relative max-w-7xl mx-auto px-5 lg:px-8 pt-32 pb-24 w-full z-10 grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-        {/* Left Column: Headline, Pitch, and Pulse CTA Button */}
-        <div className="lg:col-span-6 text-left text-ink flex flex-col justify-center">
-          <div className="mb-2 flex flex-col gap-1">
-            <span className="text-[11px] uppercase tracking-[0.35em] text-cyan font-mono font-bold leading-none">// Welcome to Beduine Tour & Travels</span>
-            <span className="font-pacifico text-2xl md:text-3xl text-teal-600 drop-shadow-[0_1px_2px_rgba(13,148,136,0.15)] leading-relaxed">
-              "Safar Jo Yaad Rahe"
-            </span>
-          </div>
-          <h1 className="font-display font-black text-5xl sm:text-6xl lg:text-7xl tracking-tight leading-[1.0] text-ink uppercase mb-4 animate-fade-in">
-            Premium Tour Packages &<br />
-            <span className="gold-shimmer">Custom Trips.</span>
-          </h1>
-          <div className="h-0.5 w-20 bg-gradient-to-r from-teal-600 to-cyan mb-5 rounded-full" />
-          <h2 className="text-xl lg:text-2xl font-extrabold text-[#0D9488] mb-4">
-            Guaranteed Safety Net, Unlimited Value.
-          </h2>
-          <p className="text-sm sm:text-base text-ink/80 leading-relaxed font-semibold max-w-lg mb-8">
-            Explore India and the world through our premium travel club. Enjoy weekly lucky draws, guaranteed discounts, and 100%+ value recovery on every plan.
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center">
-            <a href="#destinations" className="cursor-pointer">
-              <button className="w-full sm:w-auto px-8 py-4 bg-teal-600 hover:bg-teal-700 text-white font-bold rounded-full shadow-lg breathe-glow hover:-translate-y-0.5 transition-all text-base flex items-center justify-center gap-2.5 uppercase tracking-wider border-none cursor-pointer">
-                Explore Packages <ArrowRight className="w-5 h-5" />
-              </button>
-            </a>
-            <a href="https://wa.me/918768903565" target="_blank" rel="noreferrer" className="cursor-pointer">
-              <button className="w-full sm:w-auto px-8 py-4 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-full shadow-lg hover:-translate-y-0.5 transition-all text-base flex items-center justify-center gap-2.5 uppercase tracking-wider border-none cursor-pointer">
-                WhatsApp Us <MessageCircle className="w-5 h-5 fill-current" />
-              </button>
-            </a>
-          </div>
-        </div>
-
-        {/* Right Column: Floating collage + route line + airplane */}
-        <div className="lg:col-span-6 relative flex items-center justify-center min-h-[440px]">
-          {/* Dashboard Route Overlay */}
-          <div className="absolute inset-0 z-0 pointer-events-none opacity-40">
-            <svg viewBox="0 0 300 400" className="w-full h-full" fill="none">
-              <path
-                d="M 50,300 C 150,350 200,100 250,50"
-                stroke="rgba(13, 148, 136, 0.4)"
-                strokeWidth="2"
-                strokeDasharray="4,6"
-                strokeLinecap="round"
-              />
-            </svg>
-          </div>
-
-          {/* Floating Collage Cards */}
-          <div className="relative w-full h-[360px] flex items-center justify-center">
-            {/* Card 1: Darjeeling Tea (Back/Left) */}
-            <div className="float-card-1 absolute left-2 top-4 bg-white p-2.5 pb-4 shadow-xl rounded-lg w-36 border border-slate-100 rotate-[-8deg] z-10">
-              <img src="/images/darjeeling_tea_1779521805614.png" alt="Darjeeling Tea" className="w-full h-24 object-cover rounded-sm" />
-              <div className="text-[10px] text-slate-800 font-pacifico mt-1.5 text-center">Darjeeling Hills</div>
-            </div>
-
-            {/* Card 2: Kerala Houseboat (Middle/Right) */}
-            <div className="float-card-2 absolute right-2 top-8 bg-white p-2.5 pb-4 shadow-xl rounded-lg w-38 border border-slate-100 rotate-[6deg] z-10">
-              <img src="/images/kerala_houseboat_1779521772928.png" alt="Kerala Houseboat" className="w-full h-26 object-cover rounded-sm" />
-              <div className="text-[10px] text-slate-800 font-pacifico mt-1.5 text-center">Kerala Backwaters</div>
-            </div>
-
-            {/* Card 3: Dubai Skyline (Front/Center) */}
-            <div className="float-card-3 absolute left-12 bottom-2 bg-white p-3 pb-5 shadow-2xl rounded-lg w-40 border border-slate-100 rotate-[-2deg] z-20">
-              <img src="/images/dubai_skyline_1779539448313.png" alt="Dubai Skyline" className="w-full h-28 object-cover rounded-sm" />
-              <div className="text-[10px] text-slate-800 font-pacifico mt-2 text-center">Dubai Marina</div>
-            </div>
-          </div>
-
-          {/* Floating airplane on top */}
-          <motion.div
-            animate={{ y: [0, -8, 0], x: [0, 4, 0] }}
-            transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
-            className="absolute -right-4 top-16 w-52 h-52 z-30 pointer-events-none"
-          >
-            <img src="/images/airplane_nobg.png" alt="Airplane" className="w-full h-full object-contain filter drop-shadow-[0_15px_15px_rgba(0,0,0,0.18)]" style={{ transform: 'rotate(42deg) scale(1.1)' }} />
-          </motion.div>
-        </div>
-      </div>
-
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-2 text-ink/40 text-[10px] tracking-[0.3em] uppercase z-10">
-        <span>Scroll</span><div className="w-px h-10 bg-gradient-to-b from-teal-600 to-transparent" />
-      </div>
-    </section>
-  );
-}
-
-function LegacyHero() {
-  const [loaded, setLoaded] = useState(false);
-  useEffect(() => { const t = setTimeout(() => setLoaded(true), 300); return () => clearTimeout(t); }, []);
-  return (
-    <section id="top" className="relative min-h-screen flex items-center overflow-hidden">
-      <LiquidFilter />
-      <StarField count={100} />
-      <AuroraBackground variant="cyan" />
-      <GradientMesh />
-      <FloatingOrbs count={4} variant="mixed" />
-      <FlowingLines count={4} />
-      <WaveBackground color="mixed" />
-
-      {/* Cinematic background */}
-      <div className="absolute inset-0">
-        <motion.div initial={{ scale: 1.2, opacity: 0, filter: 'blur(30px)' }} animate={loaded ? { scale: 1, opacity: 1, filter: 'blur(0px)' } : {}} transition={{ duration: 2.5, ease: [0.22, 1, 0.36, 1] }} className="absolute inset-0" style={{ filter: 'url(#liquid-filter)' }}>
-          <img src="/images/beduin_travel_hero_1779521651766.png" alt="Beduine Travel Hero" className="w-full h-full object-cover" />
-        </motion.div>
-        <div className="absolute inset-0 bg-gradient-to-b from-cosmos/90 via-void/80 to-cosmos" />
-        <div className="absolute inset-0 bg-gradient-to-r from-cosmos via-cosmos/70 to-transparent" />
-      </div>
-
-      <div className="absolute inset-0 grid-pattern opacity-70" />
-      <div className="absolute top-1/4 right-10 w-[400px] h-[400px] rounded-full bg-cyan/15 blur-[120px]" />
-      <div className="absolute bottom-20 left-10 w-[400px] h-[400px] rounded-full bg-neon-gold/10 blur-[120px]" />
-
-      <div className="hero-floating-picture" aria-hidden="true">
-        <img src="/images/beduine-floating-plane.png" alt="" />
-      </div>
-
-      <div className="absolute top-1/2 right-1/4 hidden lg:block" style={{ width: 200, height: 200 }}>
-        <div className="absolute inset-0 rounded-full border border-cyan/20" />
-        <div className="absolute inset-6 rounded-full border border-neon-gold/20" />
-        <div className="orbit absolute top-1/2 left-1/2 w-2 h-2 rounded-full bg-cyan" style={{ ['--r' as any]: '100px' }} />
-      </div>
-
-      <div className="relative max-w-7xl mx-auto px-5 lg:px-8 pt-32 pb-24 w-full z-10">
-        <div className="max-w-4xl">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.3 }} className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full glass-cyan text-cyan text-xs uppercase tracking-widest font-semibold mb-8">
-            <span className="w-1.5 h-1.5 rounded-full bg-cyan animate-soft-pulse" />
-            <span>AI-Powered · 100% Transparent · Blockchain-Verified</span>
-          </motion.div>
-
-          <h1 className="font-display text-5xl sm:text-7xl lg:text-[6.5rem] font-bold text-ink leading-[0.95] tracking-tight">
-            <StaggerText text="Safar jo" delay={0.6} className="block" />
-            <span className="block gold-shimmer mt-2"><StaggerText text="yaad rahe." delay={1.2} /></span>
-          </h1>
-
-          <motion.p initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, delay: 2, ease: [0.22, 1, 0.36, 1] }} className="mt-8 text-lg lg:text-xl text-ink/80 max-w-2xl leading-relaxed">
-            A <span className="neon-cyan font-semibold">futuristic travel subscription</span> that combines AI-curated journeys, weekly reward draws, and guaranteed travel credits.
-          </motion.p>
-
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, delay: 2.3 }} className="mt-10 flex flex-col sm:flex-row gap-4">
-            <a href="#plans"><ParticleButton variant="gold" className="group inline-flex items-center justify-center gap-3 px-8 py-5 rounded-full font-bold text-base lg:text-lg"><Sparkles className="w-5 h-5" />Choose Your Plan. Try Your Luck. Travel Beyond Limits.<ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" /></ParticleButton></a>
-          </motion.div>
-
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1, delay: 2.6 }} className="mt-14 grid grid-cols-3 gap-4 lg:gap-10 max-w-2xl">
-            {[{ n: '100%', l: 'Operational Integrity' }, { n: '50+', l: 'Curated Destinations' }, { n: '12 mo', l: 'Subscription Life' }].map((s) => (
-              <div key={s.l} className="border-l-2 border-cyan/50 pl-4">
-                <div className="font-display text-2xl lg:text-4xl font-bold text-ink tabular">{s.n}</div>
-                <div className="text-[11px] lg:text-xs text-ink/60 mt-1 uppercase tracking-wider">{s.l}</div>
+      <div className="relative max-w-7xl mx-auto px-5 lg:px-8 w-full z-10 grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+        {/* Left Column: Cursive Tagline, Animated Heading, Description, and CTA */}
+        <div className="lg:col-span-6 text-left flex flex-col justify-center relative min-h-[440px]">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentSlideIndex}
+              initial={{ opacity: 0, x: -40 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 40 }}
+              transition={{ duration: 0.8, ease: [0.25, 1, 0.5, 1] }}
+              className="flex flex-col items-start"
+            >
+              {/* Tagline / Subtitle in cursive script */}
+              <div className="mb-2">
+                <span className="font-pacifico text-3xl md:text-4xl text-[#0096C7] leading-relaxed drop-shadow-[0_2px_4px_rgba(255,255,255,0.9)]">
+                  {slide.tagline}
+                </span>
               </div>
-            ))}
+
+              {/* Headline */}
+              <h1 className="font-display font-black text-5xl sm:text-6xl lg:text-7xl tracking-tight leading-[1.05] uppercase mb-4 flex flex-col">
+                <span className="text-[#0B1F2E] drop-shadow-[0_2px_8px_rgba(255,255,255,0.9)]">
+                  {slide.title1}
+                </span>
+                <span className="bg-gradient-to-r from-[#0096C7] via-[#00B4D8] to-[#0077B6] bg-clip-text text-transparent drop-shadow-[0_1.5px_4px_rgba(255,255,255,0.4)]">
+                  {slide.title2}
+                </span>
+              </h1>
+
+              {/* Description */}
+              <p className="text-sm sm:text-base text-slate-700/95 font-bold leading-relaxed max-w-md mb-6 drop-shadow-[0_1.5px_3px_rgba(255,255,255,0.9)]">
+                {slide.desc}
+              </p>
+
+              {/* Action Buttons */}
+              <div className="flex flex-wrap gap-4 items-center mb-8">
+                <a href="#plans" className="cursor-pointer">
+                  <button className="px-8 py-3.5 bg-gradient-to-r from-[#00A2FF] to-[#00D9FF] hover:from-[#0088D1] hover:to-[#00C2E6] text-white font-bold rounded-full shadow-lg shadow-cyan-500/20 hover:-translate-y-0.5 transition-all text-sm uppercase tracking-wider border-none cursor-pointer flex items-center gap-2">
+                    Book Now <ArrowRight className="w-4 h-4" />
+                  </button>
+                </a>
+              </div>
+
+              {/* Polaroid-Style Photo Prints Overlay in Bottom Left */}
+              <div className="flex items-center gap-3 mt-2 select-none pointer-events-none">
+                {/* Polaroid 1 */}
+                <div
+                  className="bg-white p-2.5 pb-4 shadow-[0_12px_24px_rgba(0,0,0,0.08)] rounded border border-slate-100/50 w-32 rotate-[-8deg] transform hover:rotate-[-4deg] transition-transform duration-300"
+                >
+                  <img
+                    src="/images/kashmir_dal_lake_1779521728036.png"
+                    alt="Kashmir"
+                    className="w-full h-18 object-cover rounded-sm"
+                  />
+                  <div className="text-[9px] text-slate-800 font-pacifico mt-1.5 text-center">Kashmir Dal Lake</div>
+                </div>
+
+                {/* Polaroid 2 */}
+                <div
+                  className="bg-white p-2.5 pb-4 shadow-[0_12px_24px_rgba(0,0,0,0.08)] rounded border border-slate-100/50 w-32 rotate-[6deg] -ml-5 transform hover:rotate-[2deg] transition-transform duration-300 z-10"
+                >
+                  <img
+                    src="/images/darjeeling_tea_1779521805614.png"
+                    alt="Darjeeling"
+                    className="w-full h-18 object-cover rounded-sm"
+                  />
+                  <div className="text-[9px] text-slate-800 font-pacifico mt-1.5 text-center">Darjeeling Tea</div>
+                </div>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+
+        {/* Right Column: Dynamic Circular/Oval Frame + Floating Airplane + Clouds + Hearts */}
+        <div className="lg:col-span-6 relative flex items-center justify-center min-h-[460px]">
+          {/* Animated clouds in the background */}
+          <div className="absolute inset-0 pointer-events-none overflow-visible z-0">
+            {/* Cloud 1 (Left-Top) */}
+            <motion.div
+              animate={{
+                x: [-15, 15, -15],
+                y: [-8, 8, -8]
+              }}
+              transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+              className="absolute left-[-20px] top-[15%] w-28 h-8 bg-white/45 backdrop-blur-md rounded-full filter blur-[1px] shadow-[0_4px_12px_rgba(255,255,255,0.4)] border border-white/30"
+            />
+
+            {/* Cloud 2 (Right-Bottom) */}
+            <motion.div
+              animate={{
+                x: [15, -15, 15],
+                y: [8, -8, 8]
+              }}
+              transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+              className="absolute right-[-10px] bottom-[20%] w-32 h-10 bg-white/50 backdrop-blur-md rounded-full filter blur-[1px] shadow-[0_4px_12px_rgba(255,255,255,0.4)] border border-white/30"
+            />
+          </div>
+
+          {/* Large Oval Frame with Active Slide Image */}
+          <div className="relative z-10 w-76 h-[360px] sm:w-84 sm:h-[400px] rounded-[150px] border-[10px] border-white shadow-[0_25px_50px_rgba(0,0,0,0.1)] overflow-hidden bg-white/10 backdrop-blur-sm">
+            <AnimatePresence mode="wait">
+              <motion.img
+                key={currentSlideIndex}
+                src={slide.image}
+                alt={slide.tagline}
+                initial={{ scale: 1.25, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.9, opacity: 0 }}
+                transition={{ duration: 0.9, ease: [0.25, 1, 0.5, 1] }}
+                className="w-full h-full object-cover"
+              />
+            </AnimatePresence>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent" />
+
+            {/* Red Heart on Left Frame Border */}
+            <motion.div
+              animate={{ scale: [1, 1.15, 1] }}
+              transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+              className="absolute left-[15px] top-[42%] z-20"
+            >
+              <Heart className="w-8 h-8 text-rose-500 fill-rose-500 drop-shadow-[0_4px_8px_rgba(244,63,94,0.45)]" />
+            </motion.div>
+          </div>
+
+          {/* Floating Hearts around the bottom-right frame */}
+          <div className="absolute inset-0 pointer-events-none z-20">
+            {/* Blue Heart 1 */}
+            <motion.div
+              animate={{
+                y: [0, -12, 0],
+                scale: [1, 1.1, 1],
+                opacity: [0.8, 1, 0.8]
+              }}
+              transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
+              className="absolute right-[15px] bottom-[28%]"
+            >
+              <Heart className="w-8 h-8 text-[#00D9FF] fill-[#00D9FF] drop-shadow-[0_4px_8px_rgba(0,217,255,0.4)]" />
+            </motion.div>
+
+            {/* Blue Heart 2 */}
+            <motion.div
+              animate={{
+                y: [0, -8, 0],
+                scale: [1, 1.05, 1],
+                opacity: [0.7, 0.9, 0.7]
+              }}
+              transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut', delay: 1.8 }}
+              className="absolute right-[45px] bottom-[15%]"
+            >
+              <Heart className="w-6 h-6 text-[#00A2FF] fill-[#00A2FF] drop-shadow-[0_3px_6px_rgba(0,162,255,0.3)]" />
+            </motion.div>
+          </div>
+
+          {/* Floating airplane flying out from the circular frame */}
+          <motion.div
+            animate={{
+              y: [-10, 10, -10],
+              x: [-5, 5, -5],
+              rotate: [1, 3, 1]
+            }}
+            transition={{
+              duration: 6,
+              repeat: Infinity,
+              ease: 'easeInOut'
+            }}
+            className="absolute right-[-40px] top-[15%] w-80 h-80 z-30 pointer-events-none drop-shadow-[0_20px_30px_rgba(0,0,0,0.22)]"
+          >
+            <img
+              src="/images/airplane_nobg.png"
+              alt="Airplane"
+              className="w-full h-full object-contain"
+              style={{ transform: 'rotate(-25deg) scaleX(-1)' }}
+            />
           </motion.div>
         </div>
       </div>
 
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-2 text-ink/40 text-[10px] tracking-[0.3em] uppercase">
-        <span>Scroll</span><div className="w-px h-10 bg-gradient-to-b from-cyan to-transparent" />
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-2 text-slate-800/40 text-[10px] tracking-[0.3em] uppercase z-10">
+        <span>Scroll</span><div className="w-px h-10 bg-gradient-to-b from-[#00A2FF] to-transparent" />
       </div>
     </section>
   );
@@ -918,13 +955,15 @@ function TrustStrip() {
     { icon: Bot, t: 'AI-Powered Curation' },
   ];
   return (
-    <section className="relative py-10 border-y border-slate-line bg-cosmos/60 scanline z-10">
+    <section className="trust-strip relative py-5 lg:py-6 border-y border-slate-line scanline z-20">
       <div className="max-w-7xl mx-auto px-5 lg:px-8">
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-4 lg:gap-6">
           {items.map((it) => (
             <div key={it.t} className="flex items-center gap-3 justify-center md:justify-start">
-              <div className="w-9 h-9 rounded-lg glass-cyan flex items-center justify-center shrink-0"><it.icon className="w-4 h-4 text-cyan" /></div>
-              <div className="text-xs lg:text-sm text-ink/75 font-medium">{it.t}</div>
+              <div className="w-10 h-10 rounded-full bg-cyan/12 border border-cyan/25 flex items-center justify-center shrink-0 shadow-sm shadow-cyan/10 transition-all duration-300 hover:scale-105 hover:bg-cyan/18">
+                <it.icon className="w-5 h-5 text-cyan" />
+              </div>
+              <div className="text-xs lg:text-sm font-semibold">{it.t}</div>
             </div>
           ))}
         </div>
@@ -938,28 +977,28 @@ function TrustStrip() {
 function AboutUs() {
   const pillars = [
     { icon: Heart, title: 'Our Mission', accent: 'cyan', image: '/images/about_mission.png',
-      text: 'Transform travel into an accessible, reliable, and rewarding experience for everyone. We offer carefully crafted tours that balance culture, comfort and adventure — delivering a subscription model where members enjoy weekly lucky draws and guaranteed discounts.',
+      text: 'Transform travel into an accessible, reliable, and rewarding experience for everyone. We offer carefully crafted tours that balance culture, comfort and adventure - delivering a subscription model where members enjoy weekly lucky draws and guaranteed discounts.',
       points: ['Curated tours for every traveller', 'Subscription model with guaranteed value', 'A trusted partner in creating memories'] },
     { icon: Globe, title: 'Our Vision', accent: 'teal', image: '/images/about_vision.png',
-      text: 'Revolutionize the travel industry with a sustainable, inclusive, and transparent model. Expand across India with a franchise and agent-driven network — integrating cutting-edge technology for seamless subscriptions and tour management.',
+      text: 'Revolutionize the travel industry with a sustainable, inclusive, and transparent model. Expand across India with a franchise and agent-driven network - integrating cutting-edge technology for seamless subscriptions and tour management.',
       points: ['Pan-India franchise network', 'Technology-first transparency', 'From domestic roots to global journeys'] },
-    { icon: Users, title: 'Our Promise', accent: 'violet', image: '/images/about_promise.png',
-      text: 'Every subscriber gets more value than their subscription fee — whether they win or not. We believe travel is not just about visiting destinations — it\'s about building stories, emotions, and connections that last a lifetime.',
+    { icon: Users, title: 'Our Promise', accent: 'gold', image: '/images/about_promise.png',
+      text: 'Every subscriber gets more value than their subscription fee - whether they win or not. We believe travel is not just about visiting destinations - it\'s about building stories, emotions, and connections that last a lifetime.',
       points: ['Winners enjoy luxury tours free', 'Non-winners always get assured discounts', 'Fair, transparent, community-driven'] },
   ];
   return (
-    <section id="about" className="relative py-24 lg:py-32 overflow-hidden">
+    <section id="about" className="relative py-14 lg:py-20 overflow-hidden">
 
       <div className="max-w-7xl mx-auto px-5 lg:px-8 relative z-10">
         {/* Header */}
         <Reveal>
           <div className="text-center mb-16 max-w-3xl mx-auto">
-            <div className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.3em] neon-gold font-semibold mb-4"><div className="w-8 h-px bg-neon-gold" /> About Beduine <div className="w-8 h-px bg-neon-gold" /></div>
+            <div className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.3em] neon-gold font-semibold mb-4"><div className="w-8 h-px bg-neon-gold" /> About BEDUINE <div className="w-8 h-px bg-neon-gold" /></div>
             <h2 className="font-display text-4xl lg:text-6xl font-bold text-ink leading-tight">
               <KineticText text="Safar jo" />
               <br /><span className="gold-shimmer"><KineticText text="yaad rahe." delay={0.3} /></span>
             </h2>
-            <p className="mt-6 text-ink/70 text-lg leading-relaxed max-w-2xl mx-auto">Beduine Tour & Travels is a customer-first travel company dedicated to crafting memorable journeys across India and beyond. We combine curated itineraries, transparent pricing, and a unique subscription model that rewards every member.</p>
+            <p className="mt-6 text-ink/70 text-lg leading-relaxed max-w-2xl mx-auto">BEDUINE Tour & Travels is a customer-first travel company dedicated to crafting memorable journeys across India and beyond. We combine curated itineraries, transparent pricing, and a unique subscription model that rewards every member.</p>
           </div>
         </Reveal>
 
@@ -968,13 +1007,13 @@ function AboutUs() {
           {pillars.map((p, i) => (
             <Reveal key={p.title} delay={i * 0.12}>
               <TiltCard className="h-full" intensity={6}>
-                <div className={`glass rounded-3xl overflow-hidden border border-slate-line ${p.accent === 'cyan' ? 'hover:neon-border-cyan' : (p.accent === 'teal' || p.accent === 'gold') ? 'hover:neon-border-gold' : 'hover:neon-border-violet'} transition-all h-full tilt-inner flex flex-col group`}>
+                <div className={`glass rounded-3xl overflow-hidden border border-slate-line ${p.accent === 'cyan' ? 'hover:neon-border-cyan' : 'hover:neon-border-gold'} transition-all h-full tilt-inner flex flex-col group`}>
                   <div className="relative h-44 overflow-hidden">
                     <img src={p.image} alt={p.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#0d1b22] via-[#0d1b22]/40 to-transparent" />
                     <div className="absolute top-4 left-4">
                       <FloatingIcon delay={i * 0.5}>
-                        <div className={`w-12 h-12 rounded-xl flex items-center justify-center shadow-lg ${p.accent === 'cyan' ? 'bg-gradient-to-br from-cyan to-violet shadow-cyan/30' : p.accent === 'teal' ? 'bg-gradient-to-br from-teal-400 to-emerald-600 shadow-teal/30' : 'bg-gradient-to-br from-violet to-fuchsia-500 shadow-violet/30'}`}>
+                        <div className={`w-12 h-12 rounded-xl flex items-center justify-center shadow-lg ${p.accent === 'cyan' ? 'bg-gradient-to-br from-cyan to-cyan-deep shadow-cyan/30' : p.accent === 'teal' ? 'bg-gradient-to-br from-teal-400 to-emerald-600 shadow-teal/30' : 'bg-gradient-to-br from-neon-gold to-gold-deep shadow-neon-gold/30'}`}>
                           <p.icon className="w-6 h-6 text-cosmos" strokeWidth={2.2} />
                         </div>
                       </FloatingIcon>
@@ -1004,10 +1043,10 @@ function AboutUs() {
                     <MapPin className="w-3.5 h-3.5" /> Registered Office
                   </div>
                   <h3 className="font-display text-2xl lg:text-4xl font-bold text-ink leading-tight mb-4">
-                    Fulia, Nadia,<br />West Bengal — 741402
+                    Fulia, Nadia,<br />West Bengal - 741402
                   </h3>
                   <p className="text-sm text-ink/75 leading-relaxed mb-6">
-                    Step inside Beduine Tour & Travels. Visit our head office in Fulia for customized tour planning, group holiday bookings, or to grab a hot cup of tea while we design your next memory.
+                    Step inside BEDUINE Tour & Travels. Visit our head office in Fulia for customized tour planning, group holiday bookings, or to grab a hot cup of tea while we design your next memory.
                   </p>
                 </div>
                 <div className="flex flex-col sm:flex-row gap-3 pt-6 border-t border-slate-line/50">
@@ -1016,11 +1055,11 @@ function AboutUs() {
                 </div>
               </div>
               <div className="relative min-h-[300px] lg:min-h-full overflow-hidden group">
-                <img src="/images/office_setup.png" alt="Beduine Fulia Office" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                <img src="/images/office_setup.png" alt="BEDUINE Fulia Office" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-slate-950/20 to-transparent" />
                 <div className="absolute bottom-5 left-5 right-5 z-10 p-4 bg-slate-950/75 border border-white/10 rounded-2xl backdrop-blur-md">
                   <div className="text-xs text-neon-gold font-mono">// Fulia HQ Setup</div>
-                  <div className="font-display font-semibold text-white text-sm mt-0.5">Welcome to Beduine Tour & Travels</div>
+                  <div className="font-display font-semibold text-white text-sm mt-0.5">Welcome to BEDUINE Tour & Travels</div>
                 </div>
               </div>
             </div>
@@ -1034,12 +1073,12 @@ function AboutUs() {
 /* ---------- How It Works ---------- */
 function HowItWorks() {
   const steps = [
-    { n: '01', icon: CreditCard, title: 'Choose Your Subscription', desc: 'Pick Silver, Gold, or Platinum — each valid for 12 months.', details: ['12-month validity', 'Digital dashboard', 'Instant credit allocation'], img: '/images/beduin_travel_hero_1779521651766.png' },
+    { n: '01', icon: CreditCard, title: 'Choose Your Subscription', desc: 'Pick Silver, Gold, or Platinum - each valid for 12 months.', details: ['12-month validity', 'Digital dashboard', 'Instant credit allocation'], img: '/images/beduin_travel_hero_1779521651766.png' },
     { n: '02', icon: Target, title: 'Enter the Weekly Draw', desc: 'Every Sunday, eligible subscribers enter a verified draw for a fully-paid luxury tour.', details: ['Certified RNG process', 'Live-streamed selection', 'Publicly archived results'], img: '/images/lucky_draw_ticket_1779521667122.png' },
-    { n: '03', icon: Gift, title: 'Win Tour — or Use Credit', desc: 'Selected members get a luxury journey. Everyone else gets guaranteed credits.', details: ['Luxury tour covered', '₹500 – ₹2,000 in credits', 'Never empty-handed'], img: '/images/happy_travelers_family_1779521684057.png' },
+    { n: '03', icon: Gift, title: 'Win Tour - or Use Credit', desc: 'Selected members get a luxury journey. Everyone else gets guaranteed credits.', details: ['Luxury tour covered', 'Rs.500 x Rs.2,000 in credits', 'Never empty-handed'], img: '/images/happy_family_travelers.png' },
   ];
   return (
-    <section id="how" className="relative py-24 lg:py-32 overflow-hidden">
+    <section id="how" className="relative py-14 lg:py-20 overflow-hidden">
       <div className="max-w-7xl mx-auto px-5 lg:px-8 relative z-10">
         <Reveal>
           <div className="text-center mb-16 max-w-3xl mx-auto">
@@ -1064,7 +1103,7 @@ function HowItWorks() {
                     <div className="absolute top-3 left-4 font-display text-5xl font-bold text-cyan/30 tabular">{s.n}</div>
                     <div className="absolute top-3 right-3">
                       <FloatingIcon delay={i * 0.5}>
-                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan to-violet flex items-center justify-center shadow-lg shadow-cyan/30"><s.icon className="w-6 h-6 text-cosmos" strokeWidth={2.2} /></div>
+                        <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${i === 0 ? 'from-cyan to-cyan-deep' : i === 1 ? 'from-teal-400 to-emerald-600' : 'from-neon-gold to-gold-deep'} flex items-center justify-center shadow-lg ${i === 0 ? 'shadow-cyan/30' : i === 1 ? 'shadow-teal/30' : 'shadow-neon-gold/30'}`}><s.icon className="w-6 h-6 text-cosmos" strokeWidth={2.2} /></div>
                       </FloatingIcon>
                     </div>
                   </div>
@@ -1097,153 +1136,11 @@ function HowItWorks() {
   );
 }
 
-/* ---------- Silver Plan 3D Character Interaction (₹499 Pulling Child) ---------- */
-function SilverPullingChild({ hovered }: { hovered: boolean }) {
-  // Leaning and tugging physics based on card hover state!
-  const tugAnim = {
-    animate: hovered ? {
-      x: [0, 4, -1, 5, -0.5, 3, 0],
-      y: [0, -0.5, 1, -1.2, 0.4, -0.8, 0],
-      rotate: [0, 2, -1, 3, -0.5, 1.5, 0],
-      transition: {
-        repeat: Infinity,
-        duration: 0.8,
-        ease: "easeInOut"
-      }
-    } : {
-      x: [0, 1.5, -0.5, 2.0, -0.2, 1.0, 0],
-      y: [0, -0.2, 0.4, -0.5, 0.2, -0.3, 0],
-      rotate: [0, 0.8, -0.4, 1.0, -0.2, 0.5, 0],
-      transition: {
-        repeat: Infinity,
-        duration: 1.8,
-        ease: "easeInOut"
-      }
-    }
-  };
-
-  return (
-    <motion.div
-      variants={tugAnim}
-      animate="animate"
-      className="absolute -right-3.5 -top-7 w-32 h-36 z-20 pointer-events-none overflow-visible filter drop-shadow-[0_12px_24px_rgba(2,6,23,0.45)]"
-    >
-      <svg viewBox="0 0 120 140" className="w-full h-full overflow-visible">
-        <defs>
-          <linearGradient id="childSkin3D" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#FFF4EB" />
-            <stop offset="50%" stopColor="#FED6BA" />
-            <stop offset="100%" stopColor="#F3A77C" />
-          </linearGradient>
-          <linearGradient id="shirtRed3D" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#ff6b6b" />
-            <stop offset="60%" stopColor="#ee5253" />
-            <stop offset="100%" stopColor="#c0392b" />
-          </linearGradient>
-          <linearGradient id="jeansBlue3D" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#54a0ff" />
-            <stop offset="60%" stopColor="#2e86de" />
-            <stop offset="100%" stopColor="#130cb7" />
-          </linearGradient>
-          <filter id="childShadow" x="-10%" y="-10%" width="120%" height="120%">
-            <feDropShadow dx="2" dy="8" stdDeviation="3.5" floodColor="#020617" floodOpacity="0.45" />
-          </filter>
-        </defs>
-
-        {/* 3D floor shadow */}
-        <ellipse cx="60" cy="128" rx="28" ry="4.5" fill="rgba(2,6,23,0.4)" filter="blur(2.5px)" />
-
-        {/* The Body (Leaning backwards to the right!) */}
-        <g filter="url(#childShadow)" className="overflow-visible">
-          {/* Legs (Stretched forward, resisting the pull!) */}
-          <rect x="42" y="104" width="9" height="20" rx="2" fill="url(#jeansBlue3D)" transform="rotate(-30 42 104)" />
-          <rect x="52" y="106" width="9" height="20" rx="2" fill="url(#jeansBlue3D)" transform="rotate(-20 52 106)" />
-          
-          {/* Sneakers */}
-          <rect x="26" y="112" width="10" height="6" rx="2" fill="#ffffff" stroke="#ee5253" strokeWidth="0.8" />
-          <rect x="38" y="114" width="10" height="6" rx="2" fill="#ffffff" stroke="#ee5253" strokeWidth="0.8" />
-
-          {/* Torso / Shirt */}
-          <path d="M 52,82 C 52,74 72,74 72,82 L 80,112 L 48,112 Z" fill="url(#shirtRed3D)" transform="rotate(18 60 97)" />
-
-          {/* Glowing Star Graphic on Shirt */}
-          <polygon points="62,90 63.2,92.5 65.8,92.5 63.8,94 64.5,96.5 62,95 59.5,96.5 60.2,94 58.2,92.5 60.8,92.5" fill="#fef08a" transform="rotate(18 60 97)" />
-
-          {/* Head (Facing slightly left toward the price tag, gritting teeth and winking!) */}
-          <g transform="rotate(12 60 62)">
-            <rect x="57" y="68" width="6" height="8" fill="url(#childSkin3D)" />
-            <circle cx="60" cy="58" r="13" fill="url(#childSkin3D)" />
-            
-            {/* Cute Hair */}
-            <path d="M 46,58 C 46,42 74,42 74,58 C 74,72 46,72 46,58 Z" fill="#3B2314" opacity="0.95" />
-
-            {/* Winking struggling eyes */}
-            <path d="M 50,54 L 54,58 M 54,54 L 50,58" stroke="#1E1008" strokeWidth="1.8" strokeLinecap="round" />
-            <path d="M 64,54 Q 67,51 70,54" stroke="#1E1008" strokeWidth="1.8" fill="none" strokeLinecap="round" />
-
-            {/* Gritting struggling cute mouth */}
-            <path d="M 54,66 Q 60,69 66,65" stroke="#9a3412" strokeWidth="1.8" fill="none" strokeLinecap="round" />
-            <line x1="55" y1="65.5" x2="65" y2="65" stroke="#ffffff" strokeWidth="1.2" />
-
-            {/* Blushing Cheeks */}
-            <circle cx="49" cy="62" r="2.2" fill="#ff7a90" opacity="0.6" />
-            <circle cx="71" cy="62" r="2.2" fill="#ff7a90" opacity="0.6" />
-
-            {/* Backward Cap with Visor */}
-            <path d="M 50,49 C 50,40 70,40 70,49 Z" fill="#1e293b" />
-            <path d="M 52,48 L 38,45" stroke="#1e293b" strokeWidth="3" strokeLinecap="round" />
-          </g>
-
-          {/* Grabbing Hands stretching to the left to hold onto the price */}
-          <path d="M 56,88 Q 32,84 2,82" stroke="url(#childSkin3D)" strokeWidth="6.5" strokeLinecap="round" fill="none" />
-          <path d="M 56,92 Q 34,92 2,90" stroke="url(#childSkin3D)" strokeWidth="6.5" strokeLinecap="round" fill="none" />
-
-          {/* Little fingers gripping the card/price edge */}
-          <g transform="translate(0, 0)">
-            <circle cx="2" cy="82" r="4.5" fill="url(#childSkin3D)" />
-            <circle cx="3" cy="78" r="1.5" fill="#fecaca" />
-            <circle cx="4.5" cy="80" r="1.5" fill="#fecaca" />
-            <circle cx="5" cy="82" r="1.5" fill="#fecaca" />
-            <circle cx="4.5" cy="84" r="1.5" fill="#fecaca" />
-
-            <circle cx="2" cy="90" r="4.5" fill="url(#childSkin3D)" />
-            <circle cx="3" cy="86" r="1.5" fill="#fecaca" />
-            <circle cx="4.5" cy="88" r="1.5" fill="#fecaca" />
-            <circle cx="5" cy="90" r="1.5" fill="#fecaca" />
-            <circle cx="4.5" cy="92" r="1.5" fill="#fecaca" />
-          </g>
-        </g>
-      </svg>
-    </motion.div>
-  );
-}
-
 /* ---------- Plan Card ---------- */
 function PlanCard({ plan, index, onSelectPlan }: { plan: typeof PLANS[number]; index: number; onSelectPlan: (planName: string) => void }) {
   const [hovered, setHovered] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
   const [imgStyle, setImgStyle] = useState<React.CSSProperties>({});
-  const priceTug = {
-    animate: hovered ? {
-      x: [0, 2, -1, 3, -0.5, 2, 0],
-      y: [0, -0.5, 0.5, -0.8, 0.2, -0.5, 0],
-      skewX: [0, 1.2, -0.6, 1.8, -0.3, 0.9, 0],
-      transition: {
-        repeat: Infinity,
-        duration: 0.8,
-        ease: "easeInOut"
-      }
-    } : {
-      x: [0, 0.6, -0.3, 0.8, -0.1, 0.5, 0],
-      y: [0, -0.2, 0.2, -0.3, 0.1, -0.2, 0],
-      skewX: [0, 0.4, -0.2, 0.5, -0.1, 0.3, 0],
-      transition: {
-        repeat: Infinity,
-        duration: 1.8,
-        ease: "easeInOut"
-      }
-    }
-  };
 
   const onMove = (e: React.MouseEvent) => {
     if (!cardRef.current) return;
@@ -1253,77 +1150,82 @@ function PlanCard({ plan, index, onSelectPlan }: { plan: typeof PLANS[number]; i
     setImgStyle({ transform: `scale(1.15) translate(${(x - 0.5) * -20}px, ${(y - 0.5) * -20}px)` });
   };
   const onLeave = () => setImgStyle({ transform: 'scale(1) translate(0,0)' });
+  const creditValue = plan.discountValue.toLocaleString('en-IN');
 
   return (
     <Reveal delay={index * 0.1}>
       <TiltCard intensity={6}>
-        <div ref={cardRef} onMouseMove={onMove} onMouseEnter={() => setHovered(true)} onMouseLeave={() => { setHovered(false); onLeave(); }} className={`relative rounded-3xl overflow-hidden h-full transition-all duration-500 tilt-inner ${plan.featured ? 'border-2 border-neon-gold/60 neon-border-gold bg-gradient-to-b from-abyss to-void' : 'glass border border-slate-line hover:neon-border-cyan'}`}>
+        <div ref={cardRef} onMouseMove={onMove} onMouseEnter={() => setHovered(true)} onMouseLeave={() => { setHovered(false); onLeave(); }} className={`relative rounded-3xl overflow-hidden h-full transition-all duration-500 tilt-inner bg-gradient-to-b from-slate-950 to-slate-900 border ${plan.featured ? 'border-2 border-neon-gold/80 shadow-2xl shadow-neon-gold/10' : 'border-slate-800/80 hover:border-cyan/50 hover:shadow-2xl hover:shadow-cyan/5'}`}>
           {plan.featured && <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-neon-gold via-cyan to-neon-gold z-10" />}
           {plan.featured && <div className="absolute top-5 right-5 z-20 px-3 py-1 rounded-full bg-gradient-to-r from-neon-gold to-gold text-cosmos text-[10px] font-bold uppercase tracking-widest flex items-center gap-1 shadow-lg"><Crown className="w-3 h-3 fill-current" /> Premium Choice</div>}
 
-          <div className="relative h-48 overflow-hidden bg-gradient-to-br from-abyss to-void">
-            <div className={`tilt-img absolute inset-0 bg-cover bg-center transition-all duration-700 ${hovered ? 'opacity-100 scale-105' : 'opacity-85'}`} style={{ ...imgStyle, backgroundImage: `url(${plan.image})` }} />
-            <div className="absolute inset-0 bg-gradient-to-t from-void/95 via-void/25 to-transparent" />
+          <div className="relative h-48 overflow-hidden bg-slate-950">
+            <div className={`tilt-img absolute inset-0 bg-cover bg-center transition-all duration-700 ${hovered ? 'opacity-100 scale-105' : 'opacity-80'}`} style={{ ...imgStyle, backgroundImage: `url(${plan.image})` }} />
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent" />
             <div className="relative p-7 h-full flex flex-col justify-between">
               <div className="flex items-center justify-between">
                 <div>
-                  <div className="text-[11px] text-cyan-deep uppercase tracking-widest font-bold drop-shadow-sm">{plan.tagline}</div>
-                  <div className="font-display text-3xl font-black text-slate-950 mt-0.5 drop-shadow-sm">{plan.name}</div>
+                  <div className="text-[11px] text-cyan-deep uppercase tracking-widest font-bold">{plan.tagline}</div>
+                  <div className="font-display text-3xl font-black text-white mt-0.5">{plan.name}</div>
                 </div>
-                <plan.icon className="w-10 h-10 text-neon-gold drop-shadow-md" strokeWidth={1.8} />
+                <plan.icon className="w-10 h-10 text-neon-gold" strokeWidth={1.8} />
               </div>
-              <motion.div initial={false} animate={{ opacity: hovered ? 1 : 0.8 }} transition={{ duration: 0.3 }} className="flex items-center gap-2 text-xs text-neon-gold font-bold drop-shadow-sm">
+              <motion.div initial={false} animate={{ opacity: hovered ? 1 : 0.8 }} transition={{ duration: 0.3 }} className="flex items-center gap-2 text-xs text-neon-gold font-bold">
                 <MapPin className="w-3.5 h-3.5" /> {plan.imageLabel}
               </motion.div>
             </div>
           </div>
 
-          <div className="p-7 border-b border-slate-line relative overflow-visible">
+          <div className="p-7 border-b border-slate-800/80 relative overflow-visible">
             {plan.name === 'Silver' ? (
               <div className="relative overflow-visible">
                 <div className="flex items-baseline gap-1 relative z-10">
-                  <span className="text-neon-gold text-lg font-bold">₹</span>
-                  <span className="font-display text-5xl font-black text-slate-950 tracking-tight tabular">{plan.price}</span>
-                  <span className="text-slate-900 font-extrabold text-sm">/ 12 mo</span>
+                  <span className="text-neon-gold text-lg font-bold">Rs.</span>
+                  <span className="font-display text-5xl font-black text-white tracking-tight tabular">{plan.price}</span>
+                  <span className="text-slate-400 font-extrabold text-sm">/ 12 mo</span>
                 </div>
               </div>
             ) : (
               <div className="flex items-baseline gap-1">
-                <span className="text-neon-gold text-lg font-bold">₹</span>
-                <span className="font-display text-5xl font-black text-slate-950 tracking-tight tabular">{plan.price}</span>
-                <span className="text-slate-900 font-extrabold text-sm">/ 12 mo</span>
+                <span className="text-neon-gold text-lg font-bold">Rs.</span>
+                <span className="font-display text-5xl font-black text-white tracking-tight tabular">{plan.price}</span>
+                <span className="text-slate-400 font-extrabold text-sm">/ 12 mo</span>
               </div>
             )}
-            <div className="mt-2 text-sm text-slate-900 font-bold">Winner tour value up to <span className="font-extrabold text-slate-950">₹{plan.tourValue.toLocaleString('en-IN')}</span> · {plan.duration}</div>
+            <div className="mt-2 text-sm text-slate-300 font-bold">Winner tour value up to <span className="font-extrabold text-white">Rs.{plan.tourValue.toLocaleString('en-IN')}</span> - {plan.duration}</div>
+            <div className="mt-4 flex items-start gap-2 rounded-xl border border-emerald-400/25 bg-emerald-400/10 p-3 text-sm font-black leading-snug text-emerald-100">
+              <Wallet className="mt-0.5 h-4 w-4 shrink-0 text-emerald-300" />
+              <span>Pay Rs.{plan.price.toLocaleString('en-IN')}. If not selected, use Rs.{creditValue} as travel credit.</span>
+            </div>
           </div>
 
-          <div className="p-7 border-b border-slate-line">
+          <div className="p-7 border-b border-slate-800/80">
             <div className="flex items-center gap-2 mb-3"><MapPin className="w-4 h-4 text-cyan" /><div className="text-[11px] uppercase tracking-widest text-cyan font-bold">Winner Destinations</div></div>
-            <ul className="space-y-2">{plan.destinations.map((d) => <li key={d} className="flex items-start gap-2 text-sm text-slate-950 font-bold"><GoldCheck size={15} /><span>{d}</span></li>)}</ul>
+            <ul className="space-y-2">{plan.destinations.map((d) => <li key={d} className="flex items-start gap-2 text-sm text-slate-200 font-bold"><GoldCheck size={15} /><span>{d}</span></li>)}</ul>
           </div>
 
-          <div className="p-7 space-y-2.5">{plan.benefits.map((b) => <div key={b} className="flex items-start gap-2.5 text-sm text-slate-950 font-bold"><GoldCheck size={16} /><span>{b}</span></div>)}</div>
+          <div className="p-7 space-y-2.5">{plan.benefits.slice(0, 4).map((b) => <div key={b} className="flex items-start gap-2.5 text-sm text-slate-200 font-bold"><GoldCheck size={16} /><span>{b}</span></div>)}</div>
 
           <div className="px-7 pb-5">
             <div className="grid grid-cols-2 gap-2">
-              {[{ l: 'Discount Credits', v: `${plan.discountCredits} × ₹500` }, { l: 'Paid Tour Off', v: `Up to ${plan.paidDiscount}` }, { l: 'Insurance', v: plan.insurance }, { l: 'Name Change', v: plan.nameChange }].map((c) => (
-                <div key={c.l} className="glass-light rounded-lg p-2.5">
-                  <div className="text-[9px] uppercase tracking-widest text-slate-900 font-bold">{c.l}</div>
-                  <div className="text-xs font-black text-slate-950 mt-0.5">{c.v}</div>
+              {[{ l: 'Discount Credits', v: `${plan.discountCredits} x Rs.500` }, { l: 'Paid Tour Off', v: `Up to ${plan.paidDiscount}` }, { l: 'Insurance', v: plan.insurance }, { l: 'Name Change', v: plan.nameChange }].map((c) => (
+                <div key={c.l} className="bg-slate-900/60 border border-slate-800/50 rounded-lg p-2.5">
+                  <div className="text-[9px] uppercase tracking-widest text-slate-400 font-bold">{c.l}</div>
+                  <div className="text-xs font-black text-slate-100 mt-0.5">{c.v}</div>
                 </div>
               ))}
             </div>
           </div>
 
           <div className="p-7 pt-0">
-            <ParticleButton 
-              onClick={() => onSelectPlan(plan.name)} 
-              variant={plan.featured ? 'gold' : 'cyan'} 
+            <ParticleButton
+              onClick={() => onSelectPlan(plan.name)}
+              variant={plan.featured ? 'gold' : 'cyan'}
               className="block text-center w-full py-3.5 rounded-full font-bold"
             >
               {plan.featured ? 'Lock Platinum Entry' : `Choose ${plan.name}`}
             </ParticleButton>
-            <div className="text-center text-[11px] text-slate-900 font-bold mt-3 font-mono">// 12-mo validity · pickup included</div>
+            <div className="text-center text-[11px] text-slate-400 font-bold mt-3 font-mono">// 12-mo validity - pickup included</div>
           </div>
         </div>
       </TiltCard>
@@ -1331,9 +1233,103 @@ function PlanCard({ plan, index, onSelectPlan }: { plan: typeof PLANS[number]; i
   );
 }
 
+/* ---------- Custom AI-Tech Premium Icon ---------- */
+function AIIcon({ type }: { type: string }) {
+  const getIconContent = () => {
+    switch (type) {
+      case 'calendar':
+        return (
+          <svg className="w-6 h-6 text-white drop-shadow-md" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="3" ry="3" />
+            <line x1="16" y1="2" x2="16" y2="6" />
+            <line x1="8" y1="2" x2="8" y2="6" />
+            <line x1="3" y1="10" x2="21" y2="10" />
+            <path d="M12 14v4M10 16h4" strokeWidth="2" strokeLinecap="round" />
+          </svg>
+        );
+      case 'mappin':
+        return (
+          <svg className="w-6 h-6 text-white drop-shadow-md" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+            <circle cx="12" cy="10" r="3" />
+          </svg>
+        );
+      case 'award':
+        return (
+          <svg className="w-6 h-6 text-white drop-shadow-md" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="12" cy="8" r="7" />
+            <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
+          </svg>
+        );
+      case 'barchart':
+        return (
+          <svg className="w-6 h-6 text-white drop-shadow-md" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="18" y1="20" x2="18" y2="10" />
+            <line x1="12" y1="20" x2="12" y2="4" />
+            <line x1="6" y1="20" x2="6" y2="14" />
+          </svg>
+        );
+      case 'filecheck':
+        return (
+          <svg className="w-6 h-6 text-white drop-shadow-md" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+            <polyline points="14 2 14 8 20 8" />
+            <polyline points="9 15 11 17 15 13" />
+          </svg>
+        );
+      case 'plane':
+        return (
+          <svg className="w-6 h-6 text-white drop-shadow-md" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+            <path d="M12 22V12" />
+            <path d="M12 12L7.5 7.5M12 12l4.5-4.5" />
+          </svg>
+        );
+      case 'shield':
+        return (
+          <svg className="w-6 h-6 text-white drop-shadow-md" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+            <path d="M9 16l2 2 4-4" />
+          </svg>
+        );
+      default:
+        // Default Sparkle star from user screenshot
+        return (
+          <svg className="w-6 h-6 text-white drop-shadow-md" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M10 2c.5 4 3 6.5 7 7-4 .5-6.5 3-7 7-.5-4-3-6.5-7-7 4-.5 6.5-3 7-7Z" />
+            <circle cx="5" cy="18" r="1.5" fill="currentColor" stroke="none" />
+            <path d="M19 6v3m-1.5-1.5h3" strokeLinecap="round" />
+          </svg>
+        );
+    }
+  };
+
+  return (
+    <div
+      className="w-12 h-12 rounded-[14px] bg-gradient-to-b from-[#00c6ff] to-[#0072ff] flex items-center justify-center shrink-0 relative group transition-transform duration-300 hover:scale-105"
+      style={{
+        boxShadow: '0 8px 16px -4px rgba(0, 114, 255, 0.4), inset 0 2px 4px rgba(255, 255, 255, 0.6), inset 0 -3px 6px rgba(0, 0, 0, 0.2)'
+      }}
+    >
+      {/* Glossy Top Highlight for 3D effect */}
+      <div className="absolute top-0 left-0 right-0 h-1/2 bg-gradient-to-b from-white/40 to-transparent rounded-t-[14px] pointer-events-none" />
+
+      {/* Soft Glow */}
+      <div className="absolute inset-0 bg-cyan-300/20 blur-[2px] pointer-events-none rounded-[14px]" />
+
+      {/* High-fidelity Glass Border */}
+      <div className="absolute inset-0 rounded-[14px] border-[1.5px] border-white/50 mix-blend-overlay pointer-events-none" />
+
+      <div className="relative z-10 flex items-center justify-center filter drop-shadow-[0_2px_3px_rgba(0,0,0,0.3)]">
+        {getIconContent()}
+      </div>
+    </div>
+  );
+}
+
 function Plans({ onSelectPlan }: { onSelectPlan: (planName: string) => void }) {
   return (
-    <section id="plans" className="relative py-24 lg:py-32 overflow-hidden">
+    <section id="plans" className="relative py-14 lg:py-20 overflow-hidden">
       <div className="relative max-w-7xl mx-auto px-5 lg:px-8 z-10">
         {/* Header */}
         <Reveal>
@@ -1353,7 +1349,7 @@ function Plans({ onSelectPlan }: { onSelectPlan: (planName: string) => void }) {
             whileInView={{ opacity: 1, scale: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-            className="relative flex flex-col sm:flex-row items-center gap-4 p-5 rounded-2xl glass-cyan border border-cyan/20 shadow-xl shadow-slate-200/50 mb-12 max-w-3xl mx-auto overflow-hidden group text-left"
+            className="relative flex flex-col sm:flex-row items-center gap-4 p-5 rounded-2xl glass-cyan border border-cyan/20 shadow-xl shadow-black/55 mb-12 max-w-3xl mx-auto overflow-hidden group text-left"
           >
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
             <div className="absolute -top-12 -left-12 w-24 h-24 rounded-full bg-cyan/10 blur-xl" />
@@ -1366,7 +1362,7 @@ function Plans({ onSelectPlan }: { onSelectPlan: (planName: string) => void }) {
                 Subscription Rules & Benefits
               </div>
               <div className="text-ink/75 mt-1">
-                <span className="font-semibold text-rose-700">No Cash Refunds.</span> Active subscribers are automatically entered into weekly draws to win a <span className="font-semibold text-ink">fully-paid tour package</span>. If you don't win, 100% of your subscription fee accumulates as <span className="font-semibold text-ink">Discount Credits</span> to book future tours.
+                <span className="font-semibold text-rose-700">No Cash Refunds.</span> Every active plan joins the draw. If you do not win, your plan value turns into <span className="font-semibold text-ink">travel credits</span> for future bookings.
               </div>
             </div>
           </motion.div>
@@ -1382,10 +1378,10 @@ function Plans({ onSelectPlan }: { onSelectPlan: (planName: string) => void }) {
           <div className="mt-14 glass rounded-2xl p-6 lg:p-8 border border-slate-line">
             <div className="text-center text-[11px] uppercase tracking-widest neon-cyan font-semibold mb-5">Included in every domestic plan</div>
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
-              {[{ i: Calendar, t: '12 Months Validity', d: 'Full subscription coverage' }, { i: MapPin, t: 'Pickup & Drop', d: 'From selected points' }, { i: Award, t: 'Quarterly Tours', d: 'Batched travel cycles' }, { i: BarChart3, t: 'Digital Dashboard', d: 'Track credits & draws' }].map((b) => (
-                <div key={b.t} className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl glass-cyan text-cyan flex items-center justify-center shrink-0 border border-slate-line"><b.i className="w-5 h-5" /></div>
-                  <div><div className="font-semibold text-ink text-sm">{b.t}</div><div className="text-xs text-ink/55">{b.d}</div></div>
+              {[{ type: 'calendar', t: '12 Months Validity', d: 'Full subscription coverage' }, { type: 'mappin', t: 'Pickup & Drop', d: 'From selected points' }, { type: 'award', t: 'Quarterly Tours', d: 'Batched travel cycles' }, { type: 'barchart', t: 'Digital Dashboard', d: 'Track credits & draws' }].map((b) => (
+                <div key={b.t} className="flex items-center gap-3.5">
+                  <AIIcon type={b.type} />
+                  <div><div className="font-bold text-white text-sm">{b.t}</div><div className="text-xs text-slate-400 mt-0.5">{b.d}</div></div>
                 </div>
               ))}
             </div>
@@ -1409,67 +1405,72 @@ function IntlPlanCard({ plan, index, onSelectPlan }: { plan: typeof INTL_PLANS[n
     setImgStyle({ transform: `scale(1.15) translate(${(x - 0.5) * -20}px, ${(y - 0.5) * -20}px)` });
   };
   const onLeave = () => setImgStyle({ transform: 'scale(1) translate(0,0)' });
+  const creditValue = plan.discountValue.toLocaleString('en-IN');
 
   return (
     <Reveal delay={index * 0.1}>
       <TiltCard intensity={6}>
-        <div ref={cardRef} onMouseMove={onMove} onMouseEnter={() => setHovered(true)} onMouseLeave={() => { setHovered(false); onLeave(); }} className={`relative rounded-3xl overflow-hidden h-full transition-all duration-500 tilt-inner ${plan.featured ? 'border-2 border-emerald-400/60 neon-border-cyan bg-gradient-to-b from-abyss to-void' : 'glass border border-slate-line hover:neon-border-cyan'}`}>
+        <div ref={cardRef} onMouseMove={onMove} onMouseEnter={() => setHovered(true)} onMouseLeave={() => { setHovered(false); onLeave(); }} className={`relative rounded-3xl overflow-hidden h-full transition-all duration-500 tilt-inner bg-gradient-to-b from-slate-950 to-slate-900 border ${plan.featured ? 'border-2 border-emerald-400/80 shadow-2xl shadow-cyan/10' : 'border-slate-800/80 hover:border-cyan/50 hover:shadow-2xl hover:shadow-cyan/5'}`}>
           {plan.featured && <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-emerald-400 via-cyan to-emerald-400 z-10" />}
           {plan.featured && <div className="absolute top-5 right-5 z-20 px-3 py-1 rounded-full bg-gradient-to-r from-emerald-400 to-teal-500 text-cosmos text-[10px] font-bold uppercase tracking-widest flex items-center gap-1 shadow-lg"><Plane className="w-3 h-3 fill-current" /> Best Value</div>}
 
-          <div className="relative h-48 overflow-hidden bg-gradient-to-br from-abyss to-void">
-            <div className={`tilt-img absolute inset-0 bg-cover bg-center transition-all duration-700 ${hovered ? 'opacity-100 scale-105' : 'opacity-85'}`} style={{ ...imgStyle, backgroundImage: `url(${plan.image})` }} />
-            <div className="absolute inset-0 bg-gradient-to-t from-void/95 via-void/25 to-transparent" />
+          <div className="relative h-48 overflow-hidden bg-slate-950">
+            <div className={`tilt-img absolute inset-0 bg-cover bg-center transition-all duration-700 ${hovered ? 'opacity-100 scale-105' : 'opacity-80'}`} style={{ ...imgStyle, backgroundImage: `url(${plan.image})` }} />
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent" />
             <div className="relative p-7 h-full flex flex-col justify-between">
               <div className="flex items-center justify-between">
                 <div>
-                  <div className="text-[11px] text-cyan-deep uppercase tracking-widest font-bold drop-shadow-sm">{plan.tagline}</div>
-                  <div className="font-display text-3xl font-black text-slate-950 mt-0.5 drop-shadow-sm">{plan.name}</div>
+                  <div className="text-[11px] text-cyan-deep uppercase tracking-widest font-bold">{plan.tagline}</div>
+                  <div className="font-display text-3xl font-black text-white mt-0.5">{plan.name}</div>
                 </div>
-                <plan.icon className="w-10 h-10 text-cyan drop-shadow-md" strokeWidth={1.8} />
+                <plan.icon className="w-10 h-10 text-cyan" strokeWidth={1.8} />
               </div>
-              <motion.div initial={false} animate={{ opacity: hovered ? 1 : 0.8 }} transition={{ duration: 0.3 }} className="flex items-center gap-2 text-xs text-cyan font-bold drop-shadow-sm">
+              <motion.div initial={false} animate={{ opacity: hovered ? 1 : 0.8 }} transition={{ duration: 0.3 }} className="flex items-center gap-2 text-xs text-cyan font-bold">
                 <Plane className="w-3.5 h-3.5" /> {plan.imageLabel}
               </motion.div>
             </div>
           </div>
 
-          <div className="p-7 border-b border-slate-line">
+          <div className="p-7 border-b border-slate-800/80">
             <div className="flex items-baseline gap-1">
-              <span className="text-cyan text-lg font-bold">₹</span>
-              <span className="font-display text-5xl font-black text-slate-950 tracking-tight tabular">{plan.price.toLocaleString('en-IN')}</span>
-              <span className="text-slate-900 font-extrabold text-sm">/ 12 mo</span>
+              <span className="text-cyan text-lg font-bold">?</span>
+              <span className="font-display text-5xl font-black text-white tracking-tight tabular">{plan.price.toLocaleString('en-IN')}</span>
+              <span className="text-slate-400 font-extrabold text-sm">/ 12 mo</span>
             </div>
-            <div className="mt-2 text-sm text-slate-900 font-bold">Winner tour value up to <span className="font-extrabold text-slate-950">₹{plan.tourValue.toLocaleString('en-IN')}</span> · {plan.duration}</div>
+            <div className="mt-2 text-sm text-slate-300 font-bold">Winner tour value up to <span className="font-extrabold text-white">Rs.{plan.tourValue.toLocaleString('en-IN')}</span> - {plan.duration}</div>
+            <div className="mt-4 flex items-start gap-2 rounded-xl border border-cyan/25 bg-cyan/10 p-3 text-sm font-black leading-snug text-cyan-bright">
+              <Wallet className="mt-0.5 h-4 w-4 shrink-0" />
+              <span>Pay Rs.{plan.price.toLocaleString('en-IN')}. If not selected, use Rs.{creditValue} as travel credit.</span>
+            </div>
           </div>
 
-          <div className="p-7 border-b border-slate-line">
+          <div className="p-7 border-b border-slate-800/80">
             <div className="flex items-center gap-2 mb-3"><Plane className="w-4 h-4 text-cyan" /><div className="text-[11px] uppercase tracking-widest text-cyan font-bold">International Destinations</div></div>
-            <ul className="space-y-2">{plan.destinations.map((d) => <li key={d} className="flex items-start gap-2 text-sm text-slate-950 font-bold"><GoldCheck size={15} variant="cyan" /><span>{d}</span></li>)}</ul>
+            <ul className="space-y-2">{plan.destinations.map((d) => <li key={d} className="flex items-start gap-2 text-sm text-slate-200 font-bold"><GoldCheck size={15} variant="cyan" /><span>{d}</span></li>)}</ul>
           </div>
 
-          <div className="p-7 space-y-2.5">{plan.benefits.map((b) => <div key={b} className="flex items-start gap-2.5 text-sm text-slate-950 font-bold"><GoldCheck size={16} variant="cyan" /><span>{b}</span></div>)}</div>
+          <div className="p-7 space-y-2.5">{plan.benefits.slice(0, 4).map((b) => <div key={b} className="flex items-start gap-2.5 text-sm text-slate-200 font-bold"><GoldCheck size={16} variant="cyan" /><span>{b}</span></div>)}</div>
 
           <div className="px-7 pb-5">
             <div className="grid grid-cols-2 gap-2">
-              {[{ l: 'Discount Credits', v: `${plan.discountCredits} × ₹500` }, { l: 'Tour Discount', v: `Up to ${plan.paidDiscount}` }, { l: 'Insurance', v: plan.insurance }, { l: 'Name Change', v: plan.nameChange }].map((c) => (
-                <div key={c.l} className="glass-light rounded-lg p-2.5">
-                  <div className="text-[9px] uppercase tracking-widest text-slate-900 font-bold">{c.l}</div>
-                  <div className="text-xs font-black text-slate-950 mt-0.5">{c.v}</div>
+              {[{ l: 'Discount Credits', v: `${plan.discountCredits} x Rs.500` }, { l: 'Tour Discount', v: `Up to ${plan.paidDiscount}` }, { l: 'Insurance', v: plan.insurance }, { l: 'Name Change', v: plan.nameChange }].map((c) => (
+                <div key={c.l} className="bg-slate-900/60 border border-slate-800/50 rounded-lg p-2.5">
+                  <div className="text-[9px] uppercase tracking-widest text-slate-400 font-bold">{c.l}</div>
+                  <div className="text-xs font-black text-slate-100 mt-0.5">{c.v}</div>
                 </div>
               ))}
             </div>
           </div>
 
           <div className="p-7 pt-0">
-            <ParticleButton 
-              onClick={() => onSelectPlan(plan.name)} 
-              variant={plan.featured ? 'cyan' : 'gold'} 
+            <ParticleButton
+              onClick={() => onSelectPlan(plan.name)}
+              variant={plan.featured ? 'cyan' : 'gold'}
               className="block text-center w-full py-3.5 rounded-full font-bold"
             >
-              {plan.featured ? '✈ Lock Voyager Entry' : `Choose ${plan.name}`}
+              {plan.featured ? 'Lock Voyager Entry' : `Choose ${plan.name}`}
             </ParticleButton>
-            <div className="text-center text-[11px] text-slate-900 font-bold mt-3 font-mono">// 12-mo validity · visa assist included</div>
+            <div className="text-center text-[11px] text-slate-400 font-bold mt-3 font-mono">// 12-mo validity - visa assist included</div>
           </div>
         </div>
       </TiltCard>
@@ -1479,7 +1480,7 @@ function IntlPlanCard({ plan, index, onSelectPlan }: { plan: typeof INTL_PLANS[n
 
 function InternationalPlans({ onSelectPlan }: { onSelectPlan: (planName: string) => void }) {
   return (
-    <section id="intl-plans" className="relative py-24 lg:py-32 overflow-hidden">
+    <section id="intl-plans" className="relative py-14 lg:py-20 overflow-hidden">
       <div className="relative max-w-7xl mx-auto px-5 lg:px-8 z-10">
         {/* Header */}
         <Reveal>
@@ -1502,10 +1503,10 @@ function InternationalPlans({ onSelectPlan }: { onSelectPlan: (planName: string)
           <div className="mt-14 glass rounded-2xl p-6 lg:p-8 border border-slate-line neon-border-cyan">
             <div className="text-center text-[11px] uppercase tracking-widest neon-cyan font-semibold mb-5">Included in every international plan</div>
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
-              {[{ i: Calendar, t: '12 Months Validity', d: 'Full subscription coverage' }, { i: FileCheck2, t: 'Visa Assistance', d: 'End-to-end documentation' }, { i: Plane, t: 'Airport Lounge', d: 'Premium access included' }, { i: ShieldCheck, t: 'Travel Insurance', d: 'International coverage' }].map((b) => (
-                <div key={b.t} className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl glass-cyan text-cyan flex items-center justify-center shrink-0 border border-cyan/30"><b.i className="w-5 h-5" /></div>
-                  <div><div className="font-semibold text-ink text-sm">{b.t}</div><div className="text-xs text-ink/55">{b.d}</div></div>
+              {[{ type: 'calendar', t: '12 Months Validity', d: 'Full subscription coverage' }, { type: 'filecheck', t: 'Visa Assistance', d: 'End-to-end documentation' }, { type: 'plane', t: 'Airport Lounge', d: 'Premium access included' }, { type: 'shield', t: 'Travel Insurance', d: 'International coverage' }].map((b) => (
+                <div key={b.t} className="flex items-center gap-3.5">
+                  <AIIcon type={b.type} />
+                  <div><div className="font-bold text-white text-sm">{b.t}</div><div className="text-xs text-slate-400 mt-0.5">{b.d}</div></div>
                 </div>
               ))}
             </div>
@@ -1519,7 +1520,7 @@ function InternationalPlans({ onSelectPlan }: { onSelectPlan: (planName: string)
 /* ---------- Services ---------- */
 function Services() {
   return (
-    <section id="services" className="relative py-24 lg:py-32 overflow-hidden">
+    <section id="services" className="relative py-14 lg:py-20 overflow-hidden">
       <div className="max-w-7xl mx-auto px-5 lg:px-8 relative z-10">
         <Reveal>
           <div className="text-center mb-16 max-w-3xl mx-auto">
@@ -1530,15 +1531,41 @@ function Services() {
             </h2>
           </div>
         </Reveal>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {SERVICES.map((s, i) => (
             <Reveal key={s.title} delay={(i % 3) * 0.08}>
-              <TiltCard intensity={5}>
-                <div className="glass rounded-2xl p-7 border border-slate-line hover:neon-border-cyan transition-all h-full tilt-inner">
-                  <FloatingIcon delay={i * 0.3}><div className="w-14 h-14 rounded-2xl glass-cyan flex items-center justify-center mb-5 border border-slate-line"><s.icon className="w-7 h-7 text-cyan" strokeWidth={1.8} /></div></FloatingIcon>
-                  <h3 className="font-display text-lg font-bold text-ink mb-2">{s.title}</h3>
-                  <p className="text-sm text-ink/65 leading-relaxed">{s.desc}</p>
-                  <div className="mt-5 pt-5 border-t border-slate-line flex items-center gap-2 text-xs font-semibold neon-cyan">Learn more <ArrowRight className="w-3.5 h-3.5" /></div>
+              <TiltCard intensity={4}>
+                <div className="glass rounded-2xl p-5 border border-slate-line hover:neon-border-cyan transition-all h-full tilt-inner flex flex-col justify-between group">
+                  <div>
+                    {/* Premium Card Header Image */}
+                    <div className="relative h-44 rounded-xl overflow-hidden mb-5 z-0">
+                      <img
+                        src={s.image}
+                        alt={s.title}
+                        className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-108"
+                        loading="lazy"
+                      />
+                      {/* Dark gradient shadow overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-slate-950/10 to-transparent pointer-events-none" />
+
+                      {/* Floating icon badge */}
+                      <div className="absolute bottom-3 left-3 z-10">
+                        <div className="w-10 h-10 rounded-xl glass-cyan flex items-center justify-center border border-slate-line/80 shadow-lg backdrop-blur-md">
+                          <s.icon className="w-5 h-5 text-cyan animate-pulse" strokeWidth={2} />
+                        </div>
+                      </div>
+                    </div>
+
+                    <h3 className="font-display text-lg font-bold text-ink mb-2 transition-colors duration-300 group-hover:text-cyan">
+                      {s.title}
+                    </h3>
+                    <p className="text-sm text-ink/65 leading-relaxed">{s.desc}</p>
+                  </div>
+
+                  <div className="mt-5 pt-4 border-t border-slate-line/40 flex items-center gap-2 text-xs font-semibold neon-cyan">
+                    <span>Learn more</span>
+                    <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" />
+                  </div>
                 </div>
               </TiltCard>
             </Reveal>
@@ -1551,54 +1578,94 @@ function Services() {
 
 /* ---------- Transparency ---------- */
 function Transparency() {
+  const features = [
+    { icon: Eye,       t: 'Live-streamed draws',      d: 'Every Sunday at 6 PM on YouTube & Facebook.',              color: 'from-cyan-500 to-[#00F5D4]', glow: 'rgba(0,245,212,0.25)' },
+    { icon: FileText,  t: 'Public audit reports',     d: 'PDF / CSV with verified draw records and winner list.',      color: 'from-amber-400 to-amber-600',   glow: 'rgba(245,158,11,0.25)' },
+    { icon: Lock,      t: 'Verifiable coupons',       d: 'Unique QR / UUID codes - impossible to duplicate.',          color: 'from-sky-500 to-cyan-600', glow: 'rgba(34,211,238,0.25)' },
+    { icon: TrendingUp,t: 'Fair selection process',   d: 'Results reviewed and published through official channels.',  color: 'from-teal-400 to-emerald-500', glow: 'rgba(16,185,129,0.25)' },
+  ];
+
   return (
-    <section id="audit" className="relative py-24 lg:py-32 overflow-hidden">
+    <section id="audit" className="audit-polish relative py-14 lg:py-20 overflow-hidden">
       <div className="relative max-w-7xl mx-auto px-5 lg:px-8 z-10">
-        <div className="grid lg:grid-cols-2 gap-12 items-start">
+
+        {/* Section Header */}
+        <Reveal>
+          <div className="text-center mb-12">
+            <SubSectionBadge text="Transparency Engine" theme="gold" />
+            <h2 className="font-display text-4xl lg:text-5xl font-bold text-white leading-tight mt-4">
+              <KineticText text="Every draw," />
+              <br /><span className="gold-shimmer"><KineticText text="fully documented." delay={0.3} /></span>
+            </h2>
+            <p className="mt-4 text-white/80 text-base lg:text-lg leading-relaxed max-w-2xl mx-auto">
+              Trust isn't claimed - it's proven. Our weekly reward draws use certified RNG, are live-streamed, and archived as downloadable audit reports.
+            </p>
+          </div>
+        </Reveal>
+
+        <div className="grid lg:grid-cols-2 gap-8 items-start">
+
+          {/* Left: Feature pills */}
           <Reveal>
-            <div>
-              <div className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.3em] neon-gold font-semibold mb-4"><div className="w-8 h-px bg-neon-gold" /> Transparency Engine <div className="w-8 h-px bg-neon-gold" /></div>
-              <h2 className="font-display text-4xl lg:text-5xl font-bold text-ink leading-tight">
-                <KineticText text="Every draw," />
-                <br /><span className="gold-shimmer"><KineticText text="fully documented." delay={0.3} /></span>
-              </h2>
-              <p className="mt-6 text-ink/70 text-lg leading-relaxed">Trust isn't claimed — it's proven. Our weekly reward draws use certified RNG, are live-streamed, and are archived as downloadable audit reports.</p>
-              <div className="mt-8 space-y-4">
-                {[{ icon: Eye, t: 'Live-streamed draws', d: 'Every Sunday at 6 PM on YouTube & Facebook.' }, { icon: FileText, t: 'Public audit reports', d: 'PDF / CSV with verified draw records and winner list.' }, { icon: Lock, t: 'Verifiable coupons', d: 'Unique QR / UUID codes — impossible to duplicate.' }, { icon: TrendingUp, t: 'Fair selection process', d: 'Results are reviewed and published through official channels.' }].map((f, i) => (
-                  <Reveal key={f.t} delay={i * 0.08}>
-                    <div className="flex items-start gap-4">
-                      <FloatingIcon delay={i * 0.4}><div className="w-11 h-11 rounded-xl glass-gold flex items-center justify-center shrink-0 border border-slate-line"><f.icon className="w-5 h-5 text-neon-gold" /></div></FloatingIcon>
-                      <div><div className="font-display font-bold text-ink">{f.t}</div><div className="text-sm text-ink/65 mt-0.5">{f.d}</div></div>
+            <div className="space-y-4">
+              {features.map((f, i) => (
+                <Reveal key={f.t} delay={i * 0.09}>
+                  <div className="audit-feature-card flex items-start gap-4 rounded-2xl bg-black/50 border border-white/10 p-4 backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.45)] hover:border-white/20 transition-all group">
+                    <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${f.color} flex items-center justify-center shrink-0 shadow-lg`}
+                      style={{ boxShadow: `0 0 18px ${f.glow}` }}>
+                      <f.icon className="w-5 h-5 text-white" />
                     </div>
-                  </Reveal>
-                ))}
-              </div>
+                    <div>
+                      <div className="font-display font-bold text-white text-sm leading-snug">{f.t}</div>
+                      <div className="text-white/65 text-sm mt-0.5 leading-relaxed">{f.d}</div>
+                    </div>
+                  </div>
+                </Reveal>
+              ))}
             </div>
           </Reveal>
 
+          {/* Right: Audit report card */}
           <Reveal delay={0.15}>
-            <div className="glass rounded-3xl p-6 lg:p-8 border border-slate-line neon-border-cyan">
-              <div className="flex items-center justify-between mb-6">
+            <div className="audit-report-card rounded-3xl bg-black/60 border border-white/10 backdrop-blur-xl shadow-[0_24px_64px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.08)] overflow-hidden">
+              {/* Card header */}
+              <div className="flex items-center justify-between px-6 pt-6 pb-4 border-b border-white/10">
                 <div>
-                  <div className="text-[11px] uppercase tracking-widest neon-cyan font-semibold mb-1 font-mono">// Digital Audit Archive</div>
-                  <div className="font-display text-xl font-bold text-ink">Recent Draw Reports</div>
+                  <SubSectionBadge text="Digital Audit Archive" theme="cyan" />
+                  <div className="font-display text-lg font-bold text-white mt-2">Recent Draw Reports</div>
                 </div>
-                <FloatingIcon><div className="w-10 h-10 rounded-xl glass-cyan flex items-center justify-center border border-cyan/30"><Scan className="w-5 h-5 text-cyan" /></div></FloatingIcon>
+                <FloatingIcon>
+                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-[#00F5D4] flex items-center justify-center shadow-lg shadow-cyan-500/30">
+                    <Scan className="w-5 h-5 text-white" />
+                  </div>
+                </FloatingIcon>
               </div>
-              <div className="space-y-3">
+
+              {/* Report rows */}
+              <div className="p-4 space-y-3">
                 {AUDIT_REPORTS.map((r) => (
-                  <div key={r.week} className="glass-light rounded-xl p-4 border border-slate-line hover:neon-border-gold transition-all">
-                    <div className="flex items-center justify-between mb-2"><div className="font-display font-semibold text-ink text-sm">{r.week}</div><div className="text-[10px] text-ink/50 font-mono">{r.date}</div></div>
-                    <div className="grid grid-cols-2 gap-2 mb-3">
-                      <div><div className="text-[9px] uppercase tracking-widest text-ink/50">Status</div><div className="text-sm font-semibold neon-gold tabular">{r.status}</div></div>
-                      <div><div className="text-[9px] uppercase tracking-widest text-ink/50">Format</div><div className="text-sm font-semibold text-ink tabular">PDF</div></div>
+                  <div key={r.week} className="audit-report-row flex items-center gap-3 rounded-xl bg-white/5 border border-white/8 hover:border-amber-400/30 hover:bg-white/8 transition-all p-3 group">
+                    {/* Status dot */}
+                    <div className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.7)] shrink-0" />
+                    <div className="flex-1 min-w-0">
+                      <div className="font-display font-semibold text-white text-sm">{r.week}</div>
+                      <div className="text-white/45 text-[11px] font-mono">{r.date}</div>
                     </div>
-                    <button data-magnetic className="w-full inline-flex items-center justify-center gap-2 py-2 rounded-lg bg-white/5 hover:bg-neon-gold/10 border border-slate-line hover:border-neon-gold/40 text-xs font-semibold text-ink hover:text-neon-gold transition-all"><Download className="w-3.5 h-3.5" /> Download Report (PDF)</button>
+                    <div className="flex items-center gap-2 shrink-0">
+                      <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">{r.status}</span>
+                      <button className="audit-download-btn w-7 h-7 rounded-lg bg-white/5 hover:bg-amber-400/15 border border-white/10 hover:border-amber-400/40 flex items-center justify-center transition-all group-hover:border-amber-400/40" aria-label={`Download ${r.week} audit report`}>
+                        <Download className="w-3.5 h-3.5 text-white/50 group-hover:text-amber-400 transition-colors" />
+                      </button>
+                    </div>
                   </div>
                 ))}
               </div>
-              <div className="mt-5 pt-5 border-t border-slate-line text-center">
-                <button className="text-xs font-semibold neon-cyan hover:text-cyan-bright inline-flex items-center gap-1.5 font-mono">&gt; view_full_archive() <ArrowRight className="w-3.5 h-3.5" /></button>
+
+              {/* Footer */}
+              <div className="px-6 pb-5 pt-2 border-t border-white/8">
+                <button className="w-full inline-flex items-center justify-center gap-2 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500/10 to-[#00F5D4]/10 border border-cyan-500/25 hover:border-cyan-400/50 text-[#00F5D4] text-xs font-bold font-mono tracking-widest hover:bg-cyan-500/15 transition-all">
+                  &gt; view_full_archive() <ArrowRight className="w-3.5 h-3.5" />
+                </button>
               </div>
             </div>
           </Reveal>
@@ -1607,6 +1674,7 @@ function Transparency() {
     </section>
   );
 }
+
 
 /* ---------- Lucky Draw Execution Strategy ---------- */
 function LuckyDrawSystem() {
@@ -1619,25 +1687,25 @@ function LuckyDrawSystem() {
       img: '/images/transparency_rng.png',
       desc: 'A secure Random Number Generator (RNG) system selects the winning ticket IDs with full transparency.',
       details: ['Uses Random.org or audit-locked in-house script', 'Selection streamed live or recorded with screen-share', 'Visible on Facebook & YouTube channels'] },
-    { n: '03', icon: FileText, title: 'Reports & Audits', accent: 'violet',
+    { n: '03', icon: FileText, title: 'Reports & Audits', accent: 'gold',
       img: '/images/transparency_audit.png',
       desc: 'A comprehensive draw report containing all pool metrics is compiled weekly and archived.',
       details: ['PDF/CSV with total pool, winning IDs & timestamps', 'RNG seed logs included for verification', 'Archived for transparent internal & external audits'] },
     { n: '04', icon: Send, title: 'Winner Announcement', accent: 'cyan',
       img: '/images/transparency_winner.png',
       desc: 'Winners are announced every Sunday evening across all company channels with unique digital coupons.',
-      details: ['Website Winners Page + Social Media posts', 'SMS & Email notification with coupon code', 'Unique QR/UUID codes — impossible to duplicate'] },
+      details: ['Website Winners Page + Social Media posts', 'SMS & Email notification with coupon code', 'Unique QR/UUID codes - impossible to duplicate'] },
   ];
 
   const schedule = [
-    { quarter: 'Jan – Mar', tour: 'July', color: 'from-cyan to-blue-500', img: '/images/sundarbans_mangrove_1779521789593.png' },
-    { quarter: 'Apr – Jun', tour: 'October', color: 'from-teal-400 to-emerald-600', img: '/images/darjeeling_tea_1779521805614.png' },
-    { quarter: 'Jul – Sep', tour: 'January', color: 'from-violet to-purple-500', img: '/images/kashmir_dal_lake_1779521728036.png' },
-    { quarter: 'Oct – Dec', tour: 'April', color: 'from-emerald-400 to-teal-500', img: '/images/kerala_houseboat_1779521772928.png' },
+    { quarter: 'Jan - Mar', tour: 'July', color: 'from-cyan to-blue-500', img: '/images/sundarbans_mangrove_1779521789593.png' },
+    { quarter: 'Apr - Jun', tour: 'October', color: 'from-teal-400 to-emerald-600', img: '/images/darjeeling_tea_1779521805614.png' },
+    { quarter: 'Jul - Sep', tour: 'January', color: 'from-neon-gold to-gold-deep', img: '/images/kashmir_dal_lake_1779521728036.png' },
+    { quarter: 'Oct - Dec', tour: 'April', color: 'from-emerald-400 to-teal-500', img: '/images/kerala_houseboat_1779521772928.png' },
   ];
 
   return (
-    <section id="luckydraw" className="relative py-24 lg:py-32 overflow-hidden">
+    <section id="luckydraw" className="relative py-14 lg:py-20 overflow-hidden">
 
       <div className="max-w-7xl mx-auto px-5 lg:px-8 relative z-10">
         {/* Header */}
@@ -1659,7 +1727,7 @@ function LuckyDrawSystem() {
               <div>
                 <div className="text-[11px] uppercase tracking-widest neon-gold font-semibold mb-2 font-mono">// Weekly Draw Experience</div>
                 <div className="font-display text-2xl lg:text-3xl font-bold text-ink mb-4">Simple, secure, and verified.</div>
-                <p className="text-sm text-ink/70 leading-relaxed mb-6">Members can follow the draw experience clearly. Results are checked, documented, and shared through official Beduine channels.</p>
+                <p className="text-sm text-ink/70 leading-relaxed mb-6">Members can follow the draw experience clearly. Results are checked, documented, and shared through official BEDUINE channels.</p>
                 <div className="grid sm:grid-cols-3 gap-3">
                   {['Eligible entries', 'Verified selection', 'Official result'].map((item) => (
                     <div key={item} className="glass-light rounded-xl p-3 border border-slate-line text-center">
@@ -1733,7 +1801,7 @@ function LuckyDrawSystem() {
                   <div className="flex items-center gap-4 mb-5">
                     <div className="font-display text-4xl font-extrabold text-cyan/30 tabular">{p.n}</div>
                     <FloatingIcon delay={i * 0.3}>
-                      <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg ${p.accent === 'cyan' ? 'bg-gradient-to-br from-cyan to-blue-500 shadow-cyan/30' : p.accent === 'teal' ? 'bg-gradient-to-br from-teal-400 to-emerald-600 shadow-teal/30' : 'bg-gradient-to-br from-violet to-fuchsia-500 shadow-violet/30'}`}>
+                      <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg ${p.accent === 'cyan' ? 'bg-gradient-to-br from-cyan to-blue-500 shadow-cyan/30' : p.accent === 'teal' ? 'bg-gradient-to-br from-teal-400 to-emerald-600 shadow-teal/30' : 'bg-gradient-to-br from-neon-gold to-gold-deep shadow-neon-gold/30'}`}>
                         <p.icon className="w-7 h-7 text-cosmos" strokeWidth={2} />
                       </div>
                     </FloatingIcon>
@@ -1747,11 +1815,11 @@ function LuckyDrawSystem() {
                   <div className="relative rounded-2xl overflow-hidden mb-5 h-36 bg-cosmos shadow-inner group-hover:scale-[1.02] transition-transform duration-500">
                     <img src={p.img} alt={p.title} className="w-full h-full object-cover opacity-90" loading="lazy" />
                     <div className="absolute inset-0 bg-gradient-to-t from-void/90 via-void/10 to-transparent" />
-                    
+
                     {/* Floating badge inside picture */}
                     <div className="absolute bottom-3 left-3 right-3 flex justify-between items-center bg-void/85 backdrop-blur-md px-3 py-1.5 rounded-xl border border-slate-line/50 text-[10px] font-mono text-ink">
                       <span className="flex items-center gap-1.5 font-bold">
-                        <span className={`w-1.5 h-1.5 rounded-full animate-pulse ${p.n === '01' ? 'bg-cyan' : p.n === '02' ? 'bg-teal-500' : p.n === '03' ? 'bg-violet' : 'bg-rose-500'}`} />
+                        <span className={`w-1.5 h-1.5 rounded-full animate-pulse ${p.n === '01' ? 'bg-cyan' : p.n === '02' ? 'bg-teal-500' : p.n === '03' ? 'bg-neon-gold' : 'bg-cyan'}`} />
                         {p.n === '01' ? 'Verification Live' : p.n === '02' ? 'Secure Entropy' : p.n === '03' ? 'Certified Logs' : 'Winner Declared'}
                       </span>
                       <span className="font-bold opacity-60">Step {p.n}</span>
@@ -1760,7 +1828,7 @@ function LuckyDrawSystem() {
                   <ul className="space-y-2.5 pt-5 border-t border-slate-line">
                     {p.details.map((d) => (
                       <li key={d} className="flex items-start gap-2.5 text-sm text-ink/80">
-                        <GoldCheck size={15} variant={p.accent === 'cyan' ? 'cyan' : p.accent === 'violet' ? 'violet' : 'gold'} />
+                        <GoldCheck size={15} variant={p.accent === 'cyan' ? 'cyan' : 'gold'} />
                         <span>{d}</span>
                       </li>
                     ))}
@@ -1777,17 +1845,17 @@ function LuckyDrawSystem() {
             <div className="grid lg:grid-cols-2 gap-10 items-center">
               <div>
                 <div className="text-[11px] uppercase tracking-widest neon-cyan font-semibold mb-2 font-mono">// Customer-End Draw Experience</div>
-                <div className="font-display text-2xl lg:text-3xl font-bold text-ink mb-4">You don't just wait — you <span className="gradient-neon">participate.</span></div>
-                <p className="text-sm text-ink/70 leading-relaxed mb-6">Every Sunday, subscribers log in to their Beduine account, use their Lucky Draw Credit to enter, and see results instantly. The draw is triggered by the system itself — not secretly by the company.</p>
+                <div className="font-display text-2xl lg:text-3xl font-bold text-ink mb-4">You don't just wait - you <span className="gradient-neon">participate.</span></div>
+                <p className="text-sm text-ink/70 leading-relaxed mb-6">Every Sunday, subscribers log in to their BEDUINE account, use their Lucky Draw Credit to enter, and see results instantly. The draw is triggered by the system itself - not secretly by the company.</p>
                 <div className="space-y-3">
                   {[
-                    { step: '1', t: 'Log in on Sunday', d: 'Open your Beduine app or web portal' },
+                    { step: '1', t: 'Log in on Sunday', d: 'Open your BEDUINE app or web portal' },
                     { step: '2', t: 'Activate your entry', d: 'Use your 1 Lucky Draw Credit to lock your ticket' },
                     { step: '3', t: 'Watch the draw', d: 'Digital scratch card or RNG animation reveals results' },
-                    { step: '4', t: 'Instant result', d: 'Win → Tour coupon | Not selected → Discount credits confirmed' },
+                    { step: '4', t: 'Instant result', d: 'Win -> Tour coupon | Not selected -> Discount credits confirmed' },
                   ].map((s) => (
                     <div key={s.step} className="flex items-start gap-4">
-                      <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan to-violet flex items-center justify-center shrink-0 text-cosmos font-bold text-sm">{s.step}</div>
+                      <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan to-cyan-deep flex items-center justify-center shrink-0 text-cosmos font-bold text-sm">{s.step}</div>
                       <div><div className="font-semibold text-ink text-sm">{s.t}</div><div className="text-xs text-ink/55">{s.d}</div></div>
                     </div>
                   ))}
@@ -1801,10 +1869,10 @@ function LuckyDrawSystem() {
                     <span className="px-2.5 py-1 rounded-full glass-cyan text-cyan text-[10px] font-bold uppercase tracking-widest border border-cyan/20">Active Draw</span>
                     <span className="text-xs font-mono neon-gold font-semibold flex items-center gap-1"><Sparkles className="w-3 h-3 animate-spin" /> Verifiable</span>
                   </div>
-                  
+
                   <div className="glass rounded-xl p-4 border border-neon-gold/30 backdrop-blur-md">
                     <div className="text-center mb-3">
-                      <div className="font-display text-sm font-semibold neon-gold tracking-wide">🏆 WEEKLY DRAW WINNER</div>
+                      <div className="font-display text-sm font-semibold neon-gold tracking-wide">WEEKLY DRAW WINNER</div>
                       <div className="text-xs text-ink/75 mt-0.5">Congratulations! Your entry won a free luxury tour.</div>
                     </div>
                     <div className="glass rounded-lg p-2.5 border border-neon-gold/20 bg-cosmos/80 text-center font-mono">
@@ -1812,7 +1880,7 @@ function LuckyDrawSystem() {
                       <div className="text-lg font-bold neon-cyan tracking-wider">BEDWIN-JULY-12345</div>
                     </div>
                   </div>
-                  
+
                   <div className="flex justify-between items-center text-[10px] text-white/60 font-mono">
                     <span>Ticket ID: BD-98421-2026</span>
                     <span>Verified: Oct 2026</span>
@@ -1831,7 +1899,7 @@ function LuckyDrawSystem() {
               <div className="text-[10px] uppercase tracking-widest neon-cyan font-semibold">Sample Winner SMS</div>
             </div>
             <div className="glass rounded-xl p-4 border border-cyan/20 text-sm text-ink/80 leading-relaxed font-mono">
-              ✓ Congratulations <span className="neon-gold">[Name]</span>! You are a Beduine Lucky Draw Winner! Your coupon: <span className="neon-cyan">BEDWIN-JULY-12345</span>. Call <span className="text-ink">+91 8768903565</span> for details.
+              Congratulations <span className="neon-gold">[Name]</span>! You are a BEDUINE Lucky Draw Winner! Your coupon: <span className="neon-cyan">BEDWIN-JULY-12345</span>. Call <span className="text-ink">+91 8768903565</span> for details.
             </div>
           </div>
         </Reveal>
@@ -1841,36 +1909,36 @@ function LuckyDrawSystem() {
 }
 
 /* ---------- Credit Architecture System ---------- */
-function CreditArchitecture({ activePlan, ldcTokens, discountCredits }: { activePlan: string | null; ldcTokens: number; discountCredits: number }) {
+function CreditArchitecture(_props: { activePlan: string | null; ldcTokens: number; discountCredits: number }) {
   const [activeTab, setActiveTab] = useState<'domestic' | 'intl'>('domestic');
 
   const credits = [
     { type: 'LDC', name: 'Lucky Draw Credit', icon: Sparkles, accent: 'cyan',
       desc: '1 Credit is issued per subscription. This credit acts as a token that the user manually spends on the mobile app/web portal on Sunday to lock their participation in that week\'s draw.',
       rule: '1 Credit = 1 Entry in the weekly Lucky Draw',
-      details: ['Automatically added upon payment verification', 'Used every Sunday to activate draw entry', 'Ticket ID confirmed and locked for that week', 'No extra credits can be purchased — fair chance for all'] },
+      details: ['Automatically added upon payment verification', 'Used every Sunday to activate draw entry', 'Ticket ID confirmed and locked for that week', 'No extra credits can be purchased - fair chance for all'] },
     { type: 'DC', name: 'Discount Credits', icon: CreditCard, accent: 'teal',
-      desc: 'These act as the protective floor for non-winners. If a user does not win, these credits allow them to claim a flat ₹500 off per tour booking.',
+      desc: 'These act as the protective floor for non-winners. If a user does not win, these credits allow them to claim a flat Rs.500 off per tour booking.',
       rule: '1 Tour Booking = 1 Discount Credit applied',
-      details: ['Domestic: ₹500 discount per credit (Up to ₹2,000 safety floor)', 'International: ₹500 discount per credit (Up to ₹7,500 safety floor)', 'Credits never expire and stack across bookings', 'Credits visible on your digital dashboard'] },
+      details: ['Domestic: Rs.500 discount per credit (Up to Rs.2,000 safety floor)', 'International: Rs.500 discount per credit (Up to Rs.7,500 safety floor)', 'Credits never expire and stack across bookings', 'Credits visible on your digital dashboard'] },
   ];
 
   const domesticCredits = [
-    { plan: 'Silver', price: '₹499', ldc: '1', dc: '1 × ₹500', total: '₹500', color: 'from-slate-500 to-slate-700', image: '/images/sundarbans_mangrove_1779521789593.png' },
-    { plan: 'Emerald', price: '₹799', ldc: '1', dc: '2 × ₹500', total: '₹1,000', color: 'from-teal-400 to-emerald-600', image: '/images/darjeeling_tea_1779521805614.png' },
-    { plan: 'Platinum', price: '₹1,499', ldc: '1', dc: '4 × ₹500', total: '₹2,000', color: 'from-indigo-400 to-purple-500', image: '/images/kashmir_dal_lake_1779521728036.png' },
+    { plan: 'Silver', price: 'Rs.499', ldc: '1', dc: '1 x Rs.500', total: 'Rs.500', color: 'from-slate-500 to-slate-700', image: '/images/sundarbans_mangrove_1779521789593.png' },
+    { plan: 'Emerald', price: 'Rs.799', ldc: '1', dc: '2 x Rs.500', total: 'Rs.1,000', color: 'from-teal-400 to-emerald-600', image: '/images/darjeeling_tea_1779521805614.png' },
+    { plan: 'Platinum', price: 'Rs.1,499', ldc: '1', dc: '4 x Rs.500', total: 'Rs.2,000', color: 'from-neon-gold to-gold-deep', image: '/images/kashmir_dal_lake_1779521728036.png' },
   ];
 
   const intlCredits = [
-    { plan: 'Explorer', price: '₹4,999', ldc: '1 (Monthly)', dc: '5 × ₹500', total: '₹2,500', color: 'from-sky-400 to-blue-600', image: '/images/dubai_skyline_1779539448313.png' },
-    { plan: 'Voyager', price: '₹7,999', ldc: '1 (Monthly)', dc: '8 × ₹500', total: '₹4,000', color: 'from-emerald-400 to-teal-600', image: '/images/maldives_overwater_1779539482305.png' },
-    { plan: 'Globetrotter', price: '₹14,999', ldc: '1 (Monthly)', dc: '15 × ₹500', total: '₹7,500', color: 'from-rose-400 via-pink-500 to-violet-600', image: '/images/singapore_skyline_1779539502293.png' },
+    { plan: 'Explorer', price: 'Rs.4,999', ldc: '1 (Monthly)', dc: '5 x Rs.500', total: 'Rs.2,500', color: 'from-sky-400 to-blue-600', image: '/images/dubai_skyline_1779539448313.png' },
+    { plan: 'Voyager', price: 'Rs.7,999', ldc: '1 (Monthly)', dc: '8 x Rs.500', total: 'Rs.4,000', color: 'from-emerald-400 to-teal-600', image: '/images/maldives_overwater_1779539482305.png' },
+    { plan: 'Globetrotter', price: 'Rs.14,999', ldc: '1 (Monthly)', dc: '15 x Rs.500', total: 'Rs.7,500', color: 'from-cyan via-cyan-bright to-cyan-deep', image: '/images/singapore_skyline_1779539502293.png' },
   ];
 
   const currentCredits = activeTab === 'domestic' ? domesticCredits : intlCredits;
 
   return (
-    <section id="credits" className="relative py-24 lg:py-32 overflow-hidden">
+    <section id="credits" className="relative py-14 lg:py-20 overflow-hidden">
 
       <div className="max-w-7xl mx-auto px-5 lg:px-8 relative z-10">
         {/* Header */}
@@ -1881,7 +1949,7 @@ function CreditArchitecture({ activePlan, ldcTokens, discountCredits }: { active
               <KineticText text="Two credits," />
               <br /><span className="gold-shimmer"><KineticText text="zero risk." delay={0.3} /></span>
             </h2>
-            <p className="mt-6 text-ink/70 text-lg leading-relaxed">Every subscriber receives two types of credits — one for the thrill of the draw, one as your guaranteed safety net. Win or not, you always gain.</p>
+            <p className="mt-6 text-ink/70 text-lg leading-relaxed">Every subscriber receives two types of credits - one for the thrill of the draw, one as your guaranteed safety net. Win or not, you always gain.</p>
           </div>
         </Reveal>
 
@@ -1907,7 +1975,7 @@ function CreditArchitecture({ activePlan, ldcTokens, discountCredits }: { active
                   {/* Rule badge - Full Black and Stylish */}
                   <div className={`rounded-xl p-3 mb-5 border ${c.accent === 'cyan' ? 'bg-cyan/5 border-cyan/30' : 'bg-teal-500/5 border-teal-500/30'}`}>
                     <div className="text-sm font-bold flex items-center gap-1.5">
-                      <span className={c.accent === 'cyan' ? 'text-cyan-deep' : 'text-teal-600'}>⚡</span>
+                      <CheckCircle2 className={c.accent === 'cyan' ? 'w-4 h-4 text-cyan-deep' : 'w-4 h-4 text-teal-600'} />
                       <span className="font-extrabold text-slate-900 tracking-tight">{c.rule}</span>
                     </div>
                   </div>
@@ -1944,7 +2012,7 @@ function CreditArchitecture({ activePlan, ldcTokens, discountCredits }: { active
                       <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-teal-500/10 to-transparent pointer-events-none group-hover:scale-105 transition-transform duration-700" />
                       <div className="absolute -top-12 -left-12 w-24 h-24 rounded-full bg-teal-500/5 blur-xl pointer-events-none" />
                       <div className="absolute -bottom-12 -right-12 w-24 h-24 rounded-full bg-cyan-500/5 blur-xl pointer-events-none" />
-                      
+
                       <div className="flex justify-between items-start relative z-10">
                         <span className="text-[10px] font-mono tracking-widest text-teal-400 font-bold">
                           DISCOUNT VOUCHER
@@ -1958,7 +2026,7 @@ function CreditArchitecture({ activePlan, ldcTokens, discountCredits }: { active
                         <div className="text-left">
                           <div className="text-[9px] uppercase tracking-widest text-slate-400 font-mono">Value</div>
                           <div className="text-3xl font-display font-black text-teal-400 tracking-tight leading-none">
-                            ₹500
+                            Rs.500
                           </div>
                         </div>
                         <div className="h-10 w-px border-l border-dashed border-teal-500/30" />
@@ -1997,7 +2065,7 @@ function CreditArchitecture({ activePlan, ldcTokens, discountCredits }: { active
             <TiltCard className="h-full" intensity={5}>
               <div className="rounded-3xl p-8 border h-full tilt-inner flex flex-col justify-between overflow-hidden relative transition-all duration-500 border-teal-500/30 glass shadow-teal-500/5">
                 <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent pointer-events-none" />
-                
+
                 <div>
                   <div className="flex items-center gap-4 mb-6">
                     <div className="w-16 h-16 rounded-2xl flex items-center justify-center bg-gradient-to-br from-cyan to-teal-deep shadow-lg shadow-cyan/20">
@@ -2005,10 +2073,10 @@ function CreditArchitecture({ activePlan, ldcTokens, discountCredits }: { active
                     </div>
                     <div>
                       <div className="font-mono text-xs font-extrabold tracking-wider text-teal-700">// BEDUINE DIGITAL PASS</div>
-                      <div className="font-display text-xl font-black text-slate-900">Beduine Member Pass</div>
+                      <div className="font-display text-xl font-black text-slate-900">BEDUINE Member Pass</div>
                     </div>
                   </div>
-                  
+
                   {/* Digital Pass Image */}
                   <div className="relative rounded-2xl overflow-hidden border border-white/10 group shadow-2xl mb-6 h-40">
                     <img src="/images/credit_card_holographic_1779521713449.png" alt="Holographic Credit Card" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
@@ -2024,7 +2092,7 @@ function CreditArchitecture({ activePlan, ldcTokens, discountCredits }: { active
                       </div>
                       <div>
                         <div className="text-white font-mono text-base tracking-widest mb-1">
-                          •••• •••• •••• 2026
+                          BEDUINE PASS 2026
                         </div>
                         <div className="flex justify-between items-center text-[10px] font-mono text-white/90">
                           <span>MEMBER PASS</span>
@@ -2033,12 +2101,12 @@ function CreditArchitecture({ activePlan, ldcTokens, discountCredits }: { active
                       </div>
                     </div>
                   </div>
-                  
+
                   <p className="text-sm text-slate-700 leading-relaxed mb-6 font-medium">
                     Your virtual membership card stores your draw tokens and discount credits. Accessible instantly from your phone.
                   </p>
                 </div>
-                
+
                 <div className="rounded-xl p-3 bg-slate-100 border border-slate-200 flex items-center justify-between text-xs font-mono text-slate-900 font-bold">
                   <span>Lucky Draw entry included</span>
                   <span className="text-teal-600 font-black">
@@ -2056,8 +2124,8 @@ function CreditArchitecture({ activePlan, ldcTokens, discountCredits }: { active
           <div className="glass rounded-3xl p-6 lg:p-8 border border-slate-line mb-12">
             <div className="text-center mb-8">
               <div className="text-[11px] uppercase tracking-widest text-cyan font-semibold mb-2 font-mono">// Credit Allocation by Plan</div>
-              <div className="font-display text-xl lg:text-2xl font-bold text-ink mb-6">What you get — guaranteed</div>
-              
+              <div className="font-display text-xl lg:text-2xl font-bold text-ink mb-6">What you get - guaranteed</div>
+
               {/* Premium Segmented Switcher */}
               <div className="inline-flex p-1 rounded-full bg-cosmos border border-slate-line/50 shadow-inner">
                 <button
@@ -2074,7 +2142,7 @@ function CreditArchitecture({ activePlan, ldcTokens, discountCredits }: { active
                 </button>
               </div>
             </div>
-            
+
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
@@ -2129,7 +2197,7 @@ function CreditArchitecture({ activePlan, ldcTokens, discountCredits }: { active
               <div className="flex-1">
                 <div className="font-display text-xl lg:text-2xl font-bold text-ink mb-2">The Ultimate Value Proposition</div>
                 <p className="text-lg text-ink/80 leading-relaxed font-serif italic gold-shimmer">
-                  "Every Sunday, Beduine runs a fair digital draw. If I win, I travel free. If not, I still get discounts. Either way, I gain."
+                  "Every Sunday, BEDUINE runs a fair digital draw. If I win, I travel free. If not, I still get discounts. Either way, I gain."
                 </p>
               </div>
               <a href="#plans"><ParticleButton variant="gold" className="px-8 py-4 rounded-full font-bold text-base shrink-0 inline-flex items-center gap-2"><Crown className="w-5 h-5" />Choose Your Plan<ChevronRight className="w-5 h-5" /></ParticleButton></a>
@@ -2149,10 +2217,10 @@ function NonWinnerGuarantee() {
       color: 'from-slate-400 to-slate-600', glow: 'slate',
       image: '/images/sundarbans_mangrove_1779521789593.png',
       tours: ['Sundarbans Boat Safari', 'Bakkhali Beach', 'Mousuni Island', 'Mukutmanipur'],
-      example: { 
-        name: 'Riya Das', 
+      example: {
+        name: 'Riya Das',
         avatar: '/images/winner_priya_sen.png',
-        story: 'Riya subscribed to Silver for ₹499. She didn\'t win the draw, but used her 1 Discount Credit to get ₹500 off her Sundarbans trip. She saved ₹1 more than she paid!' 
+        story: 'Riya subscribed to Silver for Rs.499. She didn\'t win the draw, but used her 1 Discount Credit to get Rs.500 off her Sundarbans trip. She saved Rs.1 more than she paid!'
       },
     },
     {
@@ -2160,35 +2228,35 @@ function NonWinnerGuarantee() {
       color: 'from-amber-400 to-yellow-600', glow: 'gold',
       image: '/images/darjeeling_tea_1779521805614.png',
       tours: ['Darjeeling', 'Dooars Safari', 'Puri + Konark', 'Vizag + Araku Valley'],
-      example: { 
-        name: 'Arjun Roy', 
+      example: {
+        name: 'Arjun Roy',
         avatar: '/images/winner_arjun_roy.png',
-        story: 'Arjun paid ₹799 for Gold. He didn\'t win, but used his 2 DCs on two separate tours — ₹500 off each. Total savings: ₹1,000 on a ₹799 investment!' 
+        story: 'Arjun paid Rs.799 for Gold. He didn\'t win, but used his 2 DCs on two separate tours - Rs.500 off each. Total savings: Rs.1,000 on a Rs.799 investment!'
       },
     },
     {
       plan: 'Platinum', price: 1499, dc: 4, dcValue: 2000, roi: 133,
-      color: 'from-indigo-400 via-purple-500 to-fuchsia-500', glow: 'purple',
+      color: 'from-neon-gold via-gold to-gold-deep', glow: 'gold',
       image: '/images/kashmir_dal_lake_1779521728036.png',
       tours: ['Kashmir', 'Rajasthan Royal', 'Kerala Backwaters', 'Shimla-Manali'],
-      example: { 
-        name: 'Priya Sen', 
+      example: {
+        name: 'Priya Sen',
         avatar: '/images/winner_ananya_das.png',
-        story: 'Priya invested ₹1,499 in Platinum. She didn\'t win, but received 4 DCs — ₹500 off on 4 different tours = ₹2,000 total savings. That\'s 133% return!' 
+        story: 'Priya invested Rs.1,499 in Platinum. She didn\'t win, but received 4 DCs - Rs.500 off on 4 different tours = Rs.2,000 total savings. That\'s 133% return!'
       },
     },
   ];
 
   const faqs = [
-    { q: 'What if I never win the lucky draw?', a: 'You still receive your full Discount Credits (DC). Each DC gives you ₹500 off on any domestic tour. Your subscription cost is always recovered — guaranteed.' },
-    { q: 'Can I use multiple DCs on one tour?', a: 'No — 1 DC per tour booking. But you can use them on separate tours throughout your 12-month subscription period.' },
+    { q: 'What if I never win the lucky draw?', a: 'You still receive your full Discount Credits (DC). Each DC gives you Rs.500 off on any domestic tour. Your subscription cost is always recovered - guaranteed.' },
+    { q: 'Can I use multiple DCs on one tour?', a: 'No - 1 DC per tour booking. But you can use them on separate tours throughout your 12-month subscription period.' },
     { q: 'Do Discount Credits expire?', a: 'DCs are valid for the entire 12-month subscription period. Use them anytime within that window.' },
-    { q: 'What happens if I DO win?', a: 'Winners get a fully paid tour (₹3,000–₹10,000 value depending on plan) with pickup, drop, hotel, and meals included. You travel free!' },
+    { q: 'What happens if I DO win?', a: 'Winners get a fully paid tour (Rs.3,000-Rs.10,000 value depending on plan) with pickup, drop, hotel, and meals included. You travel free!' },
   ];
 
   return (
     <>
-      <section id="nonwinner" className="relative py-24 lg:py-32 overflow-hidden">
+      <section id="nonwinner" className="relative py-14 lg:py-20 overflow-hidden">
 
       <div className="max-w-7xl mx-auto px-5 lg:px-8 relative z-10">
         {/* Header */}
@@ -2199,26 +2267,28 @@ function NonWinnerGuarantee() {
               <KineticText text="Didn't win?" />
               <br /><span className="gold-shimmer"><KineticText text="You still win." delay={0.3} /></span>
             </h2>
-            <p className="mt-6 text-ink/70 text-lg leading-relaxed">Every subscriber gets guaranteed value back through Discount Credits (DC). Each DC = ₹500 flat discount on any domestic tour. Your subscription cost is always fully recovered — and then some.</p>
+            <p className="mt-6 text-ink/70 text-lg leading-relaxed">Every subscriber gets guaranteed value back through Discount Credits (DC). Each DC = Rs.500 flat discount on any domestic tour. Your subscription cost is always fully recovered - and then some.</p>
           </div>
         </Reveal>
 
-        {/* ₹499 = ₹500 Guarantee Badge */}
+        {/* Rs.499 = Rs.500 Guarantee Badge */}
         <Reveal>
-          <div className="glass-gold rounded-3xl p-8 lg:p-12 border border-neon-gold/40 mb-16 neon-border-gold text-center relative overflow-hidden">
-            <div className="absolute -top-20 -left-20 w-60 h-60 rounded-full bg-neon-gold/15 blur-3xl" />
-            <div className="absolute -bottom-20 -right-20 w-60 h-60 rounded-full bg-emerald-500/10 blur-3xl" />
+          <div className="glass rounded-3xl p-8 lg:p-12 border border-amber-500/30 mb-16 shadow-[0_0_50px_-10px_rgba(245,158,11,0.22),inset_0_1px_0_rgba(255,255,255,0.06)] text-center relative overflow-hidden">
+            <div className="absolute -top-20 -left-20 w-60 h-60 rounded-full bg-amber-500/10 blur-3xl" />
+            <div className="absolute -bottom-20 -right-20 w-60 h-60 rounded-full bg-[#00F5D4]/8 blur-3xl" />
             <div className="relative z-10">
               <FloatingIcon>
-                <div className="w-20 h-20 rounded-full bg-gradient-to-br from-neon-gold to-gold-deep flex items-center justify-center shadow-2xl shadow-neon-gold/50 mx-auto mb-6">
-                  <Shield className="w-10 h-10 text-cosmos" />
+                <div className="w-20 h-20 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center shadow-2xl shadow-amber-500/40 mx-auto mb-6">
+                  <Shield className="w-10 h-10 text-white" />
                 </div>
               </FloatingIcon>
-              <div className="font-display text-4xl lg:text-6xl font-bold text-ink mb-4">
-                ₹499 <span className="neon-gold">=</span> ₹500
+              <div className="font-display text-4xl lg:text-6xl font-bold mb-4 flex items-center justify-center gap-3 select-none">
+                <span className="text-white">Rs.499</span>
+                <span className="text-amber-400 animate-pulse font-mono font-medium">=</span>
+                <span className="bg-gradient-to-r from-[#FFF6C3] via-[#FDE047] to-[#F59E0B] bg-clip-text text-transparent">Rs.500</span>
               </div>
-              <p className="text-lg text-ink/70 max-w-xl mx-auto leading-relaxed">Every ₹499 in your subscription maps directly to ₹500 of real tour discount value. <span className="text-neon-gold font-semibold">Zero loss. Guaranteed.</span></p>
-              <div className="mt-6 inline-flex items-center gap-2 px-5 py-2.5 rounded-full glass border border-emerald-500/30">
+              <p className="text-lg text-ink/75 max-w-xl mx-auto leading-relaxed">Every Rs.499 in your subscription maps directly to Rs.500 of real tour discount value. <span className="text-[#00F5D4] font-black">Zero loss. Guaranteed.</span></p>
+              <div className="mt-6 inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-black/45 border border-emerald-500/30 shadow-lg backdrop-blur-md">
                 <CheckCircle2 className="w-4 h-4 text-emerald-400" />
                 <span className="text-sm text-emerald-400 font-semibold">100%+ Value Recovery on Every Plan</span>
               </div>
@@ -2228,9 +2298,9 @@ function NonWinnerGuarantee() {
 
         {/* 3-Column ROI Cards */}
         <Reveal>
-          <div className="text-center mb-8">
-            <div className="text-[11px] uppercase tracking-widest neon-cyan font-semibold mb-2 font-mono">// Plan-wise Breakdown</div>
-            <div className="font-display text-2xl lg:text-3xl font-bold text-ink">What non-winners <span className="gradient-neon">actually receive</span></div>
+          <div className="text-center mb-6">
+            <SubSectionBadge text="Plan-wise Breakdown" theme="cyan" />
+            <div className="font-display text-2xl lg:text-3xl font-bold text-ink mt-3">What non-winners <span className="gradient-neon">actually receive</span></div>
           </div>
         </Reveal>
         <div className="grid md:grid-cols-3 gap-6 mb-16">
@@ -2248,23 +2318,23 @@ function NonWinnerGuarantee() {
                       </div>
                       <div>
                         <div className="font-display text-lg font-bold text-ink drop-shadow-sm">{card.plan}</div>
-                        <div className="text-[10px] text-ink/60 font-mono">₹{card.price} / 12 months</div>
+                        <div className="text-[10px] text-ink/60 font-mono">Rs.{card.price} / 12 months</div>
                       </div>
                     </div>
                   </div>
 
                   <div className="p-6 pt-4 flex-1 flex flex-col justify-between">
-                    {/* Amount Paid → Value Received */}
+                    {/* Amount Paid -> Value Received */}
                     <div className="rounded-xl p-4 glass-light border border-slate-line mb-4">
                       <div className="flex items-center justify-between mb-3">
                         <div className="text-center">
                           <div className="text-[9px] uppercase tracking-widest text-ink/40 mb-1">You Pay</div>
-                          <div className="font-display text-lg font-bold text-ink">₹{card.price}</div>
+                          <div className="font-display text-lg font-bold text-ink">Rs.{card.price}</div>
                         </div>
                         <ArrowRight className="w-5 h-5 text-neon-gold" />
                         <div className="text-center">
                           <div className="text-[9px] uppercase tracking-widest text-ink/40 mb-1">You Get Back</div>
-                          <div className="font-display text-lg font-bold text-emerald-400">₹{card.dcValue.toLocaleString()}</div>
+                          <div className="font-display text-lg font-bold text-emerald-400">Rs.{card.dcValue.toLocaleString()}</div>
                         </div>
                       </div>
                       {/* ROI Progress Bar */}
@@ -2290,7 +2360,7 @@ function NonWinnerGuarantee() {
                         <span className="text-sm font-bold text-neon-gold">{card.dc} Discount Credit{card.dc > 1 ? 's' : ''}</span>
                       </div>
                       <div className="text-xs text-ink/60 leading-relaxed">
-                        = {card.dc} × ₹500 = <span className="text-emerald-400 font-bold">₹{card.dcValue.toLocaleString()} off</span> on {card.dc} domestic tour{card.dc > 1 ? 's' : ''}
+                        = {card.dc} x Rs.500 = <span className="text-emerald-400 font-bold">Rs.{card.dcValue.toLocaleString()} off</span> on {card.dc} domestic tour{card.dc > 1 ? 's' : ''}
                       </div>
                     </div>
 
@@ -2340,7 +2410,7 @@ function NonWinnerGuarantee() {
                 </div>
                 <div className="rounded-xl p-3 bg-emerald-500/10 border border-emerald-500/20 flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                  <span className="text-xs text-emerald-400 font-semibold">Net ROI: {card.roi}% — Paid ₹{card.price}, got ₹{card.dcValue.toLocaleString()} value</span>
+                  <span className="text-xs text-emerald-400 font-semibold">Net ROI: {card.roi}% - Paid Rs.{card.price}, got Rs.{card.dcValue.toLocaleString()} value</span>
                 </div>
               </div>
             </Reveal>
@@ -2356,7 +2426,7 @@ function NonWinnerGuarantee() {
           <div className="text-[11px] uppercase tracking-[0.25em] text-[#0D9488] font-extrabold mb-2 font-mono">// Frequently Asked Questions</div>
           <h2 className="font-display text-2xl lg:text-4xl font-extrabold text-[#071833] leading-snug">Common questions about non-winner benefits</h2>
         </div>
-        
+
         <div className="faq-grid">
           {faqs.map((faq, i) => (
             <Reveal key={i} delay={i * 0.08}>
@@ -2385,9 +2455,9 @@ function NonWinnerGuarantee() {
                 </div>
               </FloatingIcon>
               <div className="flex-1">
-                <div className="font-display text-lg lg:text-xl font-extrabold text-white mb-1.5">The Beduine Promise</div>
+                <div className="font-display text-lg lg:text-xl font-extrabold text-white mb-1.5">The BEDUINE Promise</div>
                 <p className="text-white/90 leading-relaxed font-semibold italic text-base">
-                  "Every Sunday, Beduine runs a fair digital draw. If I win, I travel free. If not, I still get discounts. Either way, I gain."
+                  "Every Sunday, BEDUINE runs a fair digital draw. If I win, I travel free. If not, I still get discounts. Either way, I gain."
                 </p>
               </div>
               <a href="#plans" className="shrink-0"><ParticleButton variant="gold" className="px-6 py-3.5 rounded-full font-extrabold text-sm inline-flex items-center gap-2 shadow-lg hover:scale-105 transition-transform"><Crown className="w-4 h-4" />Choose Plan<ChevronRight className="w-4 h-4" /></ParticleButton></a>
@@ -2402,142 +2472,46 @@ function NonWinnerGuarantee() {
 
 /* ---------- Destinations Showcase ---------- */
 function Destinations() {
-  const [activeTab, setActiveTab] = useState<'escapes' | 'trails' | 'royal' | 'intl'>('escapes');
-  const filtered = DESTINATIONS.filter(d => d.category === activeTab);
-  const carouselRef = useRef<HTMLDivElement>(null);
-
-  const handleTabChange = (tabId: any) => {
-    if (document.startViewTransition) {
-      document.startViewTransition(() => {
-        setActiveTab(tabId);
-      });
-    } else {
-      setActiveTab(tabId);
-    }
-  };
-
-  const scroll = (direction: 'left' | 'right') => {
-    if (carouselRef.current) {
-      const { scrollLeft, clientWidth } = carouselRef.current;
-      const scrollAmount = clientWidth * 0.75;
-      carouselRef.current.scrollTo({
-        left: direction === 'left' ? scrollLeft - scrollAmount : scrollLeft + scrollAmount,
-        behavior: 'smooth'
-      });
-    }
-  };
-
   return (
-    <section id="destinations" className="relative py-24 lg:py-32 overflow-hidden">
+    <section id="destinations" className="relative py-14 lg:py-20 bg-cosmos">
+      {/* Cosmic background glows (isolated overflow container) */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] rounded-full bg-cyan-950/15 blur-[120px] animate-pulse-slow" />
+        <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] rounded-full bg-neon-gold/5 blur-[120px] animate-pulse-slow" style={{ animationDelay: '3s' }} />
+      </div>
+
       <div className="max-w-7xl mx-auto px-5 lg:px-8 relative z-10">
         <Reveal>
-          <div className="text-center mb-12 max-w-3xl mx-auto">
-            <div className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.3em] neon-gold font-semibold mb-4"><div className="w-8 h-px bg-neon-gold" /> Destinations <div className="w-8 h-px bg-neon-gold" /></div>
+          <div className="text-center mb-16 max-w-3xl mx-auto">
+            <div className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.3em] neon-gold font-semibold mb-4">
+              <div className="w-8 h-px bg-neon-gold" /> Destinations <div className="w-8 h-px bg-neon-gold" />
+            </div>
             <h2 className="font-display text-4xl lg:text-6xl font-bold text-ink leading-tight">
-              <KineticText text="Where we take" />
-              <br /><span className="gold-shimmer"><KineticText text="you." delay={0.3} /></span>
+              <KineticText text="Explore Cinematic" />
+              <br />
+              <span className="gold-shimmer">
+                <KineticText text="Travel Journeys" delay={0.3} />
+              </span>
             </h2>
-            <p className="mt-6 text-ink/70 text-lg">Hand-picked journeys across the globe — each one a cinematic experience, not just a trip.</p>
+            <p className="mt-6 text-slate-300/80 text-lg leading-relaxed">
+              Scroll through handpicked destinations crafted for unforgettable journeys.
+            </p>
           </div>
         </Reveal>
 
-        {/* Premium Filters Tab & Map Pin Hover Animation */}
+        {/* Total Destinations Count */}
         <Reveal>
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-6 mb-12 border-b border-slate-line/50 pb-6">
-            <div className="inline-flex flex-wrap p-1 rounded-2xl bg-cosmos border border-slate-line/50 shadow-inner">
-              {[
-                { id: 'escapes', label: 'Weekend Escapes' },
-                { id: 'trails', label: 'Hill & Tea Trails' },
-                { id: 'royal', label: 'Royal India Tours' },
-                { id: 'intl', label: 'Premium International Trips' },
-              ].map((tab) => (
-                <button
-                  key={tab.id}
-                  onClick={() => handleTabChange(tab.id as any)}
-                  className={`px-5 py-2.5 rounded-xl text-xs font-bold font-display tracking-wider transition-all duration-300 ${activeTab === tab.id ? 'bg-gradient-to-r from-neon-gold to-gold text-white shadow-md' : 'text-ink/65 hover:text-ink'}`}
-                >
-                  {tab.label}
-                </button>
-              ))}
-            </div>
-
-            {/* Map Pin Hover Animation Badge */}
-            <div className="flex items-center gap-2.5 px-4 py-2.5 rounded-full bg-white border border-slate-line text-xs font-bold text-teal-600 group cursor-pointer hover:neon-border-cyan transition-all shadow-sm">
-              <div className="relative flex items-center justify-center">
-                <MapPin className="w-4 h-4 text-teal-600 group-hover:animate-bounce transition-all duration-300" />
-                <span className="absolute w-6 h-6 rounded-full bg-teal-500/20 scale-150 animate-ping group-hover:scale-[2] duration-700" />
-              </div>
-              <span className="font-mono tracking-tight uppercase">Live Travel Map Pin</span>
+          <div className="flex justify-center mb-12 pb-6">
+            <div className="inline-flex items-center gap-2.5 px-4 py-2.5 rounded-full bg-slate-950/60 border border-slate-800/85 text-xs font-bold text-slate-400 select-none shadow-xl backdrop-blur-md">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#00D9FF] animate-pulse" />
+              <span className="font-mono uppercase tracking-wider">{DESTINATIONS.length} Cinematic Destinations</span>
             </div>
           </div>
         </Reveal>
-
-        {/* Horizontal Carousel View */}
-        <div className="relative px-2">
-          {/* Navigation Controls */}
-          <button
-            onClick={() => scroll('left')}
-            className="absolute left-[-16px] lg:left-[-24px] top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white border border-slate-line/70 hover:border-teal-600 transition-all flex items-center justify-center shadow-lg z-30 cursor-pointer text-teal-600 active:scale-95 border-none"
-            title="Scroll Left"
-          >
-            <ChevronRight className="w-5 h-5 rotate-180" />
-          </button>
-          <button
-            onClick={() => scroll('right')}
-            className="absolute right-[-16px] lg:right-[-24px] top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white border border-slate-line/70 hover:border-teal-600 transition-all flex items-center justify-center shadow-lg z-30 cursor-pointer text-teal-600 active:scale-95 border-none"
-            title="Scroll Right"
-          >
-            <ChevronRight className="w-5 h-5" />
-          </button>
-
-          <div
-            ref={carouselRef}
-            className="flex gap-6 overflow-x-auto scrollbar-none snap-x snap-mandatory py-4 px-2 scroll-smooth"
-            style={{ WebkitOverflowScrolling: 'touch' }}
-          >
-            {filtered.map((d, i) => (
-              <div key={d.name} className="flex-shrink-0 w-[290px] sm:w-[330px] snap-start">
-                <Reveal delay={i * 0.08}>
-                  <TiltCard intensity={5} className="h-full">
-                    <div className="group relative h-[380px] rounded-3xl overflow-hidden border border-slate-line hover:neon-border-gold transition-all duration-300 zoom-hover-img cursor-pointer bg-white">
-                      {/* Image zoom-in */}
-                      <div className="absolute inset-0 overflow-hidden">
-                        <img src={d.img} alt={d.name} className="w-full h-full object-cover" loading="lazy" />
-                      </div>
-                      <div className="absolute inset-0 bg-gradient-to-t from-cosmos via-cosmos/25 to-transparent" />
-                      <div className="absolute inset-0 bg-gradient-to-br from-transparent to-cosmos/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-                      {/* Top Badges */}
-                      <div className="absolute top-4 left-4 right-4 flex items-start justify-between z-10">
-                        <div className="flex gap-1.5">
-                          <div className="px-3 py-1.5 rounded-full glass-gold text-neon-gold text-[10px] font-black uppercase tracking-widest">{d.duration}</div>
-                          <div className="px-2.5 py-1.5 rounded-full bg-teal-600 text-white text-[9px] font-black uppercase tracking-wider shadow-sm">{d.planBadge}</div>
-                        </div>
-                        <div className="flex items-center gap-1 px-2.5 py-1 rounded-full glass text-[#071833] text-xs font-black shadow-sm">
-                          <Star className="w-3 h-3 fill-gold text-gold" /> {d.rating}
-                        </div>
-                      </div>
-
-                      {/* Bottom Info Details */}
-                      <div className="absolute inset-x-0 bottom-0 p-6 z-10">
-                        <div className="text-[10px] uppercase tracking-widest text-teal-600 font-black mb-1.5 font-mono">// Season: {d.season}</div>
-                        <h3 className="font-display text-2xl font-black text-[#071833] leading-snug">{d.name}</h3>
-                        <p className="text-xs text-ink/75 font-semibold mt-1">{d.tag}</p>
-                        <div className="mt-4 flex items-center gap-1.5 text-xs font-black text-teal-600 opacity-0 group-hover:opacity-100 transition-all transform translate-y-2 group-hover:translate-y-0 duration-300">
-                          Explore itinerary <ArrowRight className="w-3.5 h-3.5" />
-                        </div>
-                      </div>
-
-                      {/* Corner shine glow */}
-                      <div className="absolute -top-20 -right-20 w-40 h-40 rounded-full bg-neon-gold/15 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity" />
-                    </div>
-                  </TiltCard>
-                </Reveal>
-              </div>
-            ))}
-          </div>
-        </div>
       </div>
+
+      {/* 3D Scattered Scroll Showcase */}
+      <ScatteredShowcase destinations={DESTINATIONS} />
     </section>
   );
 }
@@ -2552,7 +2526,7 @@ function Winners() {
   const t = { d: Math.floor(seconds / 86400), h: Math.floor((seconds % 86400) / 3600), m: Math.floor((seconds % 3600) / 60), s: seconds % 60 };
 
   return (
-    <section className="relative py-24 lg:py-32 overflow-hidden">
+    <section className="relative py-14 lg:py-20 overflow-hidden">
       <div className="max-w-7xl mx-auto px-5 lg:px-8 relative z-10">
         <Reveal>
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12">
@@ -2584,13 +2558,13 @@ function Winners() {
               <div key={i} className="w-96 glass rounded-3xl overflow-hidden border border-slate-line hover:neon-border-gold transition-all group">
                 <div className="relative h-52 overflow-hidden">
                   <img src={w.destImg} alt={w.dest} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-cosmos via-cosmos/40 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent" />
                   <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-gradient-to-r from-neon-gold to-gold text-cosmos text-[10px] font-bold uppercase tracking-widest flex items-center gap-1 shadow-lg"><Award className="w-3 h-3" /> {w.plan} Winner</div>
                   <div className="absolute bottom-4 left-4 flex items-center gap-3">
                     <img src={w.img} alt={w.name} className="w-12 h-12 rounded-full border-2 border-neon-gold object-cover shadow-lg" loading="lazy" />
                     <div>
                       <div className="font-display font-bold text-ink">{w.name}</div>
-                      <div className="text-xs text-ink/70">Won · {w.dest}</div>
+                      <div className="text-xs text-ink/70">Won - {w.dest}</div>
                     </div>
                   </div>
                 </div>
@@ -2609,62 +2583,229 @@ function Winners() {
   );
 }
 
+const JOURNEY_FLOATS = [
+  { x: [0, 8, -6, 5, 0], y: [0, -10, 8, -6, 0], rotate: [0, 1.8, -1.2, 1.2, 0], scale: [1, 1, 1], duration: 9.5 },
+  { x: [0, -7, 8, -5, 0], y: [0, 12, -8, 6, 0], rotate: [0, -1.5, 2, -1, 0], scale: [1, 1, 1], duration: 11 },
+  { x: [0, 10, 0, -10, 0], y: [0, -5, 10, -5, 0], rotate: [0, 1.2, -1.8, 1.2, 0], scale: [1, 1, 1], duration: 12.5 },
+  { x: [0, -9, 6, -8, 0], y: [0, -8, 10, -7, 0], rotate: [0, -1.8, 1.5, -1, 0], scale: [1, 1, 1], duration: 10 },
+  { x: [0, 5, -7, 6, 0], y: [0, 10, -10, 5, 0], rotate: [0, 2.2, -2.2, 1.2, 0], scale: [1, 1.015, 0.985, 1.01, 1], duration: 13.5 }
+];
+
 /* ---------- Journey Section (Image collage) ---------- */
 function Journey() {
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [isDeckHovered, setIsDeckHovered] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 1024);
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const getCardStyle = (index: number) => {
+    const isHovered = hoveredIndex === index;
+    const isAnyHovered = hoveredIndex !== null;
+
+    // Stacked state (default overlapping fan stack at the center)
+    const stackedOffsets = isMobile ? [
+      { x: -15, y: -25, rotate: -5, z: 20 },
+      { x: 20, y: -10, rotate: 4, z: 15 },
+      { x: -5, y: 10, rotate: -2, z: 25 },
+      { x: -30, y: 35, rotate: -8, z: 10 },
+      { x: 30, y: 25, rotate: 6, z: 12 }
+    ] : [
+      { x: -30, y: -45, rotate: -8, z: 20 },
+      { x: 35, y: -20, rotate: 6, z: 15 },
+      { x: -10, y: 15, rotate: -3, z: 25 },
+      { x: -50, y: 60, rotate: -10, z: 10 },
+      { x: 55, y: 45, rotate: 9, z: 12 }
+    ];
+
+    // Fanned state offsets - gorgeous distribution spread in space
+    const fannedOffsets = isMobile ? [
+      { x: -65, y: -65, rotate: -10, z: 10 },
+      { x: 65, y: -55, rotate: 8, z: 12 },
+      { x: -45, y: 65, rotate: -5, z: 14 },
+      { x: 45, y: 75, rotate: 5, z: 16 },
+      { x: 0, y: 5, rotate: 0, z: 20 }
+    ] : [
+      { x: -140, y: -100, rotate: -12, z: 10 },
+      { x: 140, y: -80, rotate: 10, z: 12 },
+      { x: -80, y: 100, rotate: -5, z: 14 },
+      { x: 80, y: 120, rotate: 6, z: 16 },
+      { x: 0, y: 10, rotate: 0, z: 20 }
+    ];
+
+    let baseX = isDeckHovered ? fannedOffsets[index].x : stackedOffsets[index].x;
+    let baseY = isDeckHovered ? fannedOffsets[index].y : stackedOffsets[index].y;
+    let baseRotate = isDeckHovered ? fannedOffsets[index].rotate : stackedOffsets[index].rotate;
+    let zIndex = isDeckHovered ? fannedOffsets[index].z : stackedOffsets[index].z;
+
+    if (isHovered) {
+      return {
+        x: baseX,
+        y: baseY - 30, // floats up
+        rotate: 0,
+        scale: 1.18,
+        zIndex: 100,
+        opacity: 1
+      };
+    }
+
+    if (isAnyHovered) {
+      return {
+        x: baseX,
+        y: baseY,
+        rotate: baseRotate,
+        scale: 0.9,
+        zIndex,
+        opacity: 0.45
+      };
+    }
+
+    return {
+      x: baseX,
+      y: baseY,
+      rotate: baseRotate,
+      scale: 1,
+      zIndex,
+      opacity: 1
+    };
+  };
+
   return (
-    <section className="relative py-24 lg:py-32 overflow-hidden">
+    <section className="relative py-14 lg:py-20 overflow-hidden">
       <div className="max-w-7xl mx-auto px-5 lg:px-8 relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <Reveal>
             <div>
               <div className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.3em] neon-cyan font-semibold mb-4"><div className="w-8 h-px bg-cyan" /> Our Journey <div className="w-8 h-px bg-cyan" /></div>
-              <h2 className="font-display text-4xl lg:text-5xl font-bold text-ink leading-tight">
+              <h2 className="font-display text-4xl lg:text-5xl font-bold text-white leading-tight">
                 <KineticText text="Crafting memories," />
                 <br /><span className="gradient-neon"><KineticText text="one journey at a time." delay={0.3} /></span>
               </h2>
-              <p className="mt-6 text-ink/70 text-lg leading-relaxed">From the misty peaks of Kashmir to the sun-drenched beaches of Goa — every trip we craft becomes a chapter in your life's most beautiful story.</p>
+              <p className="mt-6 text-white/80 text-lg leading-relaxed">From the misty peaks of Kashmir to the sun-drenched beaches of Goa - every trip we craft becomes a chapter in your life's most beautiful story.</p>
               <div className="mt-8 grid grid-cols-3 gap-4">
                 {[{ n: '10K+', l: 'Happy Travelers' }, { n: '50+', l: 'Destinations' }, { n: '100%', l: 'Verified' }].map((s) => (
                   <div key={s.l} className="glass rounded-2xl p-4 border border-slate-line">
                     <div className="font-display text-2xl lg:text-3xl font-bold neon-gold tabular">{s.n}</div>
-                    <div className="text-[10px] uppercase tracking-widest text-ink/60 mt-1">{s.l}</div>
+                    <div className="text-[10px] uppercase tracking-widest text-white/60 mt-1">{s.l}</div>
                   </div>
                 ))}
               </div>
             </div>
           </Reveal>
 
-          {/* Image collage with parallax */}
+          {/* Dynamic 3D fanning-out gallery deck */}
           <Reveal delay={0.2}>
-            <div className="relative h-[500px] lg:h-[600px]">
-              {/* Decorative rotating ring */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rotate-slow opacity-30 hidden lg:block">
+            <div
+              className="relative h-[550px] lg:h-[650px] flex items-center justify-center select-none"
+              onMouseEnter={() => setIsDeckHovered(true)}
+              onMouseLeave={() => {
+                setIsDeckHovered(false);
+                setHoveredIndex(null);
+              }}
+              onTouchStart={() => setIsDeckHovered(true)}
+            >
+              {/* Decorative rotating ring behind the cards */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[480px] h-[480px] rotate-slow opacity-25 hidden lg:block pointer-events-none">
                 <div className="absolute inset-0 rounded-full border border-gold/30" />
                 <div className="absolute inset-10 rounded-full border border-cyan/20" />
                 <div className="absolute inset-20 rounded-full border border-gold/20" />
               </div>
 
-              {/* Image 1 - large */}
-              <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }} className="absolute top-0 left-0 w-3/5 h-3/5 rounded-3xl overflow-hidden border border-slate-line neon-border-cyan shadow-2xl parallax-drift">
-                <img src={JOURNEY_IMAGES[0].src} alt={JOURNEY_IMAGES[0].label} className="w-full h-full object-cover" loading="lazy" />
-                <div className="absolute bottom-3 left-3 px-2.5 py-1 rounded-full glass text-ink text-[10px] uppercase tracking-widest">{JOURNEY_IMAGES[0].label}</div>
-              </motion.div>
+              {/* Text instruction overlay */}
+              <div className="absolute top-4 text-center z-10 w-full pointer-events-none transition-opacity duration-300">
+                <span className="text-[10px] sm:text-xs font-semibold tracking-widest text-white/50 uppercase bg-black/45 px-3 py-1.5 rounded-full border border-white/5 backdrop-blur-md">
+                  {isDeckHovered ? 'Tap or hover cards to reveal' : 'Hover or tap to expand gallery'}
+                </span>
+              </div>
 
-              {/* Image 2 */}
-              <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8, delay: 0.2 }} className="absolute top-[35%] right-0 w-1/2 h-2/5 rounded-3xl overflow-hidden border border-slate-line neon-border-gold shadow-2xl parallax-drift" style={{ animationDelay: '3s' }}>
-                <img src={JOURNEY_IMAGES[1].src} alt={JOURNEY_IMAGES[1].label} className="w-full h-full object-cover" loading="lazy" />
-                <div className="absolute bottom-3 left-3 px-2.5 py-1 rounded-full glass text-ink text-[10px] uppercase tracking-widest">{JOURNEY_IMAGES[1].label}</div>
-              </motion.div>
+              {JOURNEY_IMAGES.map((img, i) => {
+                const isHovered = hoveredIndex === i;
+                return (
+                  <motion.div
+                    key={img.label}
+                    animate={getCardStyle(i)}
+                    transition={{
+                      type: 'spring',
+                      stiffness: isHovered ? 260 : 120,
+                      damping: isHovered ? 20 : 18
+                    }}
+                    onMouseEnter={() => setHoveredIndex(i)}
+                    onMouseLeave={() => setHoveredIndex(null)}
+                    onClick={() => setHoveredIndex(hoveredIndex === i ? null : i)}
+                    className={`absolute w-[200px] h-[285px] lg:w-[250px] lg:h-[355px] left-1/2 top-1/2 -ml-[100px] -mt-[142px] lg:-ml-[125px] lg:-mt-[177px] rounded-3xl overflow-hidden border bg-slate-900 cursor-pointer shadow-2xl transition-all duration-300 group
+                      ${img.theme === 'cyan' ? 'border-cyan/20 hover:border-cyan/80' : img.theme === 'gold' ? 'border-amber-400/20 hover:border-amber-400/80' : 'border-cyan/20 hover:border-cyan/80'}
+                    `}
+                  >
+                    <motion.div
+                      className="w-full h-full relative"
+                      animate={(hoveredIndex !== null || isDeckHovered) ? {
+                        x: 0,
+                        y: 0,
+                        rotate: 0,
+                        scale: 1,
+                        transition: { type: 'spring', stiffness: 200, damping: 20 }
+                      } : {
+                        x: JOURNEY_FLOATS[i].x,
+                        y: JOURNEY_FLOATS[i].y,
+                        rotate: JOURNEY_FLOATS[i].rotate,
+                        scale: JOURNEY_FLOATS[i].scale,
+                        transition: {
+                          duration: JOURNEY_FLOATS[i].duration,
+                          repeat: Infinity,
+                          ease: "easeInOut",
+                          delay: (i % 4) * 0.25
+                        }
+                      }}
+                    >
+                      {/* Image */}
+                      <img
+                        src={img.src}
+                        alt={img.label}
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        loading="lazy"
+                      />
 
-              {/* Image 3 - small floating */}
-              <motion.div initial={{ opacity: 0, scale: 0.8 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.8, delay: 0.4 }} className="absolute bottom-0 left-[20%] w-2/5 h-1/3 rounded-3xl overflow-hidden border border-slate-line shadow-2xl animate-float-gentle">
-                <img src={JOURNEY_IMAGES[2].src} alt={JOURNEY_IMAGES[2].label} className="w-full h-full object-cover" loading="lazy" />
-              </motion.div>
+                      {/* Atmospheric overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent opacity-90 group-hover:opacity-100 transition-opacity" />
+
+                      {/* Content overlays */}
+                      <div className="absolute inset-x-0 bottom-0 p-4 pt-12 z-20 flex flex-col justify-end">
+                        <span className={`text-[9px] font-bold uppercase tracking-widest font-mono mb-1 w-fit px-2 py-0.5 rounded-md bg-black/45 border
+                          ${img.theme === 'cyan' ? 'text-cyan border-cyan/20' : img.theme === 'gold' ? 'text-neon-gold border-amber-500/20' : 'text-cyan border-cyan/20'}
+                        `}>
+                          {img.badge}
+                        </span>
+                        <h4 className="font-display font-bold text-white text-sm sm:text-base leading-snug">
+                          {img.label}
+                        </h4>
+                        <p className="text-[11px] text-white/70 mt-1 leading-snug opacity-0 max-h-0 group-hover:opacity-100 group-hover:max-h-12 transition-all duration-300 overflow-hidden">
+                          {img.desc}
+                        </p>
+                      </div>
+
+                      {/* Hover indicator corner border */}
+                      <div className="absolute inset-0 border border-white/0 group-hover:border-white/20 rounded-3xl transition-colors pointer-events-none" />
+                    </motion.div>
+                  </motion.div>
+                );
+              })}
 
               {/* Floating badge */}
-              <motion.div initial={{ opacity: 0, scale: 0 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.6 }} className="absolute top-[25%] right-[15%] w-24 h-24 rounded-full bg-gradient-to-br from-neon-gold to-gold-deep flex items-center justify-center shadow-2xl shadow-neon-gold/40 animate-float-gentle" style={{ animationDelay: '1s' }}>
+              <motion.div
+                initial={{ opacity: 0, scale: 0 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.6 }}
+                className="absolute top-[80%] lg:top-[75%] right-[10%] lg:right-[15%] w-20 h-20 lg:w-24 lg:h-24 rounded-full bg-gradient-to-br from-neon-gold to-gold-deep flex items-center justify-center shadow-2xl shadow-neon-gold/40 z-30 animate-float-gentle pointer-events-none"
+                style={{ animationDelay: '1s' }}
+              >
                 <div className="text-center text-cosmos">
-                  <div className="font-display font-bold text-lg">5★</div>
+                  <div className="font-display font-bold text-lg">5-star</div>
                   <div className="text-[9px] uppercase tracking-widest font-semibold">Trusted</div>
                 </div>
               </motion.div>
@@ -2679,15 +2820,15 @@ function Journey() {
 /* ---------- CTA Banner ---------- */
 function CTABanner() {
   return (
-    <section id="contact" className="py-24 lg:py-32 relative overflow-hidden">
-      <div className="relative max-w-4xl mx-auto px-5 lg:px-8 text-center z-10">
+    <section id="contact" className="pt-12 pb-32 lg:pt-16 lg:pb-48 relative overflow-hidden">
+      <div className="relative max-w-4xl mx-auto px-5 lg:px-8 text-center z-10 -translate-y-10 lg:-translate-y-16">
         <Reveal>
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-gold text-neon-gold text-[11px] uppercase tracking-widest font-semibold mb-6"><Zap className="w-3.5 h-3.5" /> Lock Your Entry</div>
           <h2 className="font-display text-4xl lg:text-6xl font-bold text-ink leading-tight">
             <KineticText text="Your next story begins" />
             <br /><span className="gold-shimmer"><KineticText text="with a single subscription." delay={0.4} /></span>
           </h2>
-          <p className="mt-6 text-lg text-ink/70 max-w-2xl mx-auto">Join thousands of travelers who trust Beduine for AI-curated journeys, transparent draws, and guaranteed value.</p>
+          <p className="mt-6 text-lg text-ink/70 max-w-2xl mx-auto font-semibold">Join thousands of travelers who trust BEDUINE for AI-curated journeys, transparent draws, and guaranteed value.</p>
           <div className="mt-10 flex flex-col sm:flex-row gap-3 justify-center items-center">
             <a href="#plans"><ParticleButton variant="gold" className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full font-bold text-base"><Crown className="w-5 h-5" /> Lock Your Entry <ChevronRight className="w-5 h-5" /></ParticleButton></a>
             <a href="tel:+918768903565" data-magnetic><ParticleButton variant="cyan" className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full font-semibold"><Phone className="w-4 h-4" /> +91 87689 03565</ParticleButton></a>
@@ -2700,35 +2841,35 @@ function CTABanner() {
 
 /* ---------- Footer ---------- */
 function Footer() {
-  const company = ['About Beduine', 'Our Story', 'Leadership', 'Careers', 'Press & Media'];
+  const company = ['About BEDUINE', 'Our Story', 'Leadership', 'Careers', 'Press & Media'];
   const trust = ['Operational Integrity', 'Digital Audit Archive', 'Lucky Draw Rules', 'Regulatory Compliance', 'RNG Certification'];
   const support = ['Help Center', 'Refund Policy', 'Terms of Service', 'Privacy Policy', 'Grievance Officer'];
   return (
-    <footer className="bg-cosmos border-t border-slate-line pt-16 pb-10 relative">
-      <StarField count={30} />
+    <footer className="bg-[#030C15] border-t border-slate-900/80 pt-16 pb-10 relative z-20">
+      <StarField count={40} />
       <div className="max-w-7xl mx-auto px-5 lg:px-8 relative z-10">
-        <div className="grid lg:grid-cols-12 gap-10 pb-12 border-b border-slate-line">
+        <div className="grid lg:grid-cols-12 gap-10 pb-12 border-b border-slate-900/80">
           <div className="lg:col-span-4">
             <div className="flex items-center gap-3 mb-5">
-              <div className="w-12 h-12 rounded-full overflow-hidden border border-cyan/30 shadow-lg shadow-cyan/20 bg-cosmos">
-                <img src="/images/office_logo.png" alt="Beduine Logo" className="w-full h-full object-cover scale-105" />
+              <div className="w-12 h-12 rounded-full overflow-hidden border border-cyan/30 shadow-lg shadow-cyan/20 bg-cosmos flex items-center justify-center p-1.5">
+                <img src="/images/bedune_logo_cropped.png" alt="BEDUINE Logo" className="w-full h-full object-contain" />
               </div>
-              <div><div className="font-display text-xl font-bold text-ink">BEDUINE</div><div className="text-[10px] uppercase tracking-[0.22em] neon-cyan">Tour & Travels</div></div>
+              <div><div className="font-display text-xl font-bold text-white">BEDUINE</div><div className="text-[10px] uppercase tracking-[0.22em] neon-cyan">Tour & Travels</div></div>
             </div>
             <p className="font-serif italic text-neon-gold text-lg mb-3">Safar jo yaad rahe.</p>
-            <p className="text-sm text-ink/60 leading-relaxed max-w-sm mb-6">India's subscription-first travel company — built on transparency, guaranteed value, and journeys that live forever.</p>
-            <div className="flex items-start gap-3 p-4 glass-light rounded-xl border border-slate-line">
+            <p className="text-sm text-[#D8E4EA] leading-relaxed max-w-sm mb-6 opacity-85">India's subscription-first travel company - built on transparency, guaranteed value, and journeys that live forever.</p>
+            <div className="flex items-start gap-3 p-4 bg-white/5 border border-white/10 rounded-xl">
               <MapPin className="w-5 h-5 text-cyan shrink-0 mt-0.5" />
-              <div className="text-sm text-ink/75 leading-relaxed"><div className="font-semibold text-ink">Registered Office</div>Fulia, Nadia,<br />West Bengal, India<br />Pin — 741402</div>
+              <div className="text-sm text-[#D8E4EA] leading-relaxed"><div className="font-semibold text-white">Registered Office</div>Fulia, Nadia,<br />West Bengal, India<br />Pin - 741402</div>
             </div>
           </div>
-          <div className="lg:col-span-2"><div className="font-display font-bold text-ink mb-4 text-xs uppercase tracking-widest">Company</div><ul className="space-y-2.5">{company.map((l) => <li key={l}><a href="#" data-magnetic className="text-sm text-ink/60 hover:neon-cyan transition-all">{l}</a></li>)}</ul></div>
-          <div className="lg:col-span-2"><div className="font-display font-bold text-ink mb-4 text-xs uppercase tracking-widest">Trust</div><ul className="space-y-2.5">{trust.map((l) => <li key={l}><a href="#" data-magnetic className="text-sm text-ink/60 hover:neon-cyan transition-all">{l}</a></li>)}</ul></div>
-          <div className="lg:col-span-2"><div className="font-display font-bold text-ink mb-4 text-xs uppercase tracking-widest">Support</div><ul className="space-y-2.5">{support.map((l) => <li key={l}><a href="#" data-magnetic className="text-sm text-ink/60 hover:neon-cyan transition-all">{l}</a></li>)}</ul></div>
+          <div className="lg:col-span-2"><div className="font-display font-bold text-white mb-4 text-xs uppercase tracking-widest">Company</div><ul className="space-y-2.5">{company.map((l) => <li key={l}><a href="#" data-magnetic className="text-sm text-[#AFC0CA] hover:text-[#18D7F2] transition-all">{l}</a></li>)}</ul></div>
+          <div className="lg:col-span-2"><div className="font-display font-bold text-white mb-4 text-xs uppercase tracking-widest">Trust</div><ul className="space-y-2.5">{trust.map((l) => <li key={l}><a href="#" data-magnetic className="text-sm text-[#AFC0CA] hover:text-[#18D7F2] transition-all">{l}</a></li>)}</ul></div>
+          <div className="lg:col-span-2"><div className="font-display font-bold text-white mb-4 text-xs uppercase tracking-widest">Support</div><ul className="space-y-2.5">{support.map((l) => <li key={l}><a href="#" data-magnetic className="text-sm text-[#AFC0CA] hover:text-[#18D7F2] transition-all">{l}</a></li>)}</ul></div>
           <div className="lg:col-span-2">
-            <div className="font-display font-bold text-ink mb-4 text-xs uppercase tracking-widest flex items-center gap-2"><FileText className="w-3.5 h-3.5 text-neon-gold" /> Audit Archive</div>
+            <div className="font-display font-bold text-white mb-4 text-xs uppercase tracking-widest flex items-center gap-2"><FileText className="w-3.5 h-3.5 text-neon-gold" /> Audit Archive</div>
             <ul className="space-y-2.5">
-              {AUDIT_REPORTS.map((a) => <li key={a.week}><a href="#" data-magnetic className="group flex items-center gap-2 text-sm text-ink/60 hover:neon-gold transition-all"><Download className="w-3 h-3 opacity-50 group-hover:opacity-100" /><span className="text-xs font-mono">{a.week}</span></a></li>)}
+              {AUDIT_REPORTS.map((a) => <li key={a.week}><a href="#" data-magnetic className="group flex items-center gap-2 text-sm text-[#AFC0CA] hover:text-neon-gold transition-all"><Download className="w-3 h-3 opacity-50 group-hover:opacity-100" /><span className="text-xs font-mono">{a.week}</span></a></li>)}
               <li className="pt-2"><a href="#audit" className="text-xs font-semibold neon-cyan inline-flex items-center gap-1 font-mono">&gt; full_archive() <ArrowRight className="w-3 h-3" /></a></li>
             </ul>
           </div>
@@ -2736,16 +2877,16 @@ function Footer() {
 
         <div className="pt-8 flex flex-col lg:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-4">
-            <span className="text-xs text-ink/50 uppercase tracking-widest">Connect</span>
-            <div className="flex gap-2">{[Video, Camera, Send, Tv, Share2].map((Icon, i) => <a key={i} href="#" data-magnetic className="w-9 h-9 rounded-lg glass-light flex items-center justify-center hover:neon-border-cyan transition-all border border-slate-line"><Icon className="w-4 h-4" /></a>)}</div>
+            <span className="text-xs text-[#AFC0CA] uppercase tracking-widest">Connect</span>
+            <div className="flex gap-2">{[Video, Camera, Send, Tv, Share2].map((Icon, i) => <a key={i} href="#" data-magnetic className="w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center hover:border-cyan/50 hover:bg-cyan/10 transition-all text-[#D8E4EA]"><Icon className="w-4 h-4" /></a>)}</div>
           </div>
-          <div className="flex items-center gap-4 text-xs text-ink/45">
+          <div className="flex items-center gap-4 text-xs text-[#AFC0CA]/60">
             <span className="flex items-center gap-1.5"><ShieldCheck className="w-3.5 h-3.5 text-neon-gold" /> RNG Certified</span>
             <span className="flex items-center gap-1.5"><Lock className="w-3.5 h-3.5 text-cyan" /> E2E Encrypted</span>
             <span className="flex items-center gap-1.5"><BadgeCheck className="w-3.5 h-3.5 text-neon-gold" /> Audited</span>
           </div>
         </div>
-        <div className="mt-6 pt-6 border-t border-slate-line text-center text-xs text-ink/40 font-mono">© 2026 Beduine Tour & Travels. · <a href="#" className="hover:neon-cyan">terms</a> · <a href="#" className="hover:neon-cyan">privacy</a> · <a href="#" className="hover:neon-cyan">refunds</a></div>
+        <div className="mt-6 pt-6 border-t border-slate-900/80 text-center text-xs text-[#AFC0CA]/40 font-mono">(c) 2026 BEDUINE Tour & Travels. - <a href="#" className="hover:text-cyan">terms</a> - <a href="#" className="hover:text-cyan">privacy</a> - <a href="#" className="hover:text-cyan">refunds</a></div>
       </div>
     </footer>
   );
@@ -2766,629 +2907,14 @@ function MobileSticky() {
       <div className="glass rounded-2xl p-2 flex gap-2 shadow-2xl shadow-black/60 border border-slate-line">
         <a href="https://wa.me/918768903565" target="_blank" rel="noreferrer" className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-emerald-500 text-white text-xs font-bold"><MessageCircle className="w-4 h-4" /> WhatsApp</a>
         <a href="tel:+918768903565" className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl glass-light border border-slate-line text-ink text-xs font-bold"><Phone className="w-4 h-4" /> Call</a>
-        <a href="#plans" className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-gradient-to-r from-neon-gold to-gold text-cosmos text-xs font-bold"><Crown className="w-4 h-4" /> Join</a>
+        <a href="#plans" className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-gradient-to-r from-neon-gold to-gold text-[#0B1F2E] text-xs font-bold"><Crown className="w-4 h-4" /> Join</a>
       </div>
     </div>
   );
 }
 
-function ScrollRouteLine() {
-  const { scrollYProgress } = useScroll();
-  const pathLength = useSpring(scrollYProgress, { stiffness: 50, damping: 25 });
-  const y = useTransform(scrollYProgress, [0, 1], ['0%', '98%']);
 
-  return (
-    <div className="hidden xl:block absolute left-[3%] top-[110vh] bottom-[10vh] w-1 z-20 pointer-events-none animate-fade-in" style={{ minHeight: 'calc(100% - 120vh)' }}>
-      <div className="sticky top-[25vh] h-[50vh] w-8 overflow-visible flex flex-col items-center">
-        <svg className="w-8 h-full overflow-visible route-line-svg" fill="none">
-          {/* Base path */}
-          <line
-            x1="16"
-            y1="0"
-            x2="16"
-            y2="400"
-            stroke="rgba(13, 148, 136, 0.15)"
-            strokeWidth="3"
-            strokeDasharray="6,6"
-            strokeLinecap="round"
-          />
-          {/* Draw path */}
-          <motion.path
-            d="M 16 0 V 400"
-            stroke="#0D9488"
-            strokeWidth="3.5"
-            strokeLinecap="round"
-            style={{ pathLength }}
-          />
-        </svg>
-        <motion.div
-          style={{ y }}
-          className="route-airplane-tracker absolute left-2 top-0 w-8 h-8 rounded-full bg-cosmos border-2 border-teal-600 flex items-center justify-center shadow-lg shadow-teal-500/20 z-30"
-        >
-          <Plane className="w-4 h-4 text-teal-600 rotate-90" />
-        </motion.div>
-      </div>
-    </div>
-  );
-}
 
-/* ---------- Family Travel Scroll Animation (3D Layered Vector) ---------- */
-function FamilyTravelScrollAnimation() {
-  const { scrollYProgress } = useScroll();
-  const [reducedMotion, setReducedMotion] = useState(false);
-  const [emotion, setEmotion] = useState<'excited' | 'wonder' | 'cool' | 'happy'>('excited');
-
-  // Detect accessibility motion preferences
-  useEffect(() => {
-    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-    setReducedMotion(mediaQuery.matches);
-    const listener = (e: MediaQueryListEvent) => setReducedMotion(e.matches);
-    mediaQuery.addEventListener('change', listener);
-    return () => mediaQuery.removeEventListener('change', listener);
-  }, []);
-
-  // Update family emotions dynamically on scroll progress!
-  // 'wonder' emotion = Plans section → child reaches for Silver ₹499!
-  useEffect(() => {
-    return scrollYProgress.on("change", (latest) => {
-      if (latest < 0.18) {
-        setEmotion('excited'); // Hero: excited anticipation!
-      } else if (latest < 0.52) {
-        setEmotion('wonder');  // Plans/Destinations: child grabs Silver ₹499!
-      } else if (latest < 0.80) {
-        setEmotion('cool');    // Guarantee/Services: confident trust!
-      } else {
-        setEmotion('happy');   // Contact/Footer: warm loving farewell!
-      }
-    });
-  }, [scrollYProgress]);
-
-  // Scroll position path — during 'wonder'/Plans range (0.18–0.52),
-  // family moves near Silver card (LEFT card in plans grid) from the RIGHT side.
-  // Silver card is roughly at left:0–33% of viewport, so family hovers just right of it.
-  const x = useTransform(scrollYProgress,
-    [0,    0.12,  0.22,  0.34,  0.47,  0.56,  0.72,  1.0],
-    ['82%','4%',  '28%', '30%', '28%', '8%',  '78%', '82%']
-  );
-  const y = useTransform(scrollYProgress,
-    [0,    0.12,  0.22,  0.34,  0.47,  0.56,  0.72,  1.0],
-    ['30vh','40vh','50vh','52vh','50vh','58vh','66vh','76vh']
-  );
-  const scale = useTransform(scrollYProgress,
-    [0,    0.12,  0.22,  0.34,  0.47,  0.56,  0.72,  1.0],
-    [0.85, 0.98,  1.10,  1.12,  1.10,  0.96,  0.88,  0.82]
-  );
-  const rotate = useTransform(scrollYProgress,
-    [0,    0.12,  0.22,  0.34,  0.47,  0.56,  0.72,  1.0],
-    [-4,   8,    -3,    -5,    -3,     5,    -4,     0]
-  );
-
-  // High performance spring physics for butter-smooth 60fps renders
-  const sX = useSpring(x, { stiffness: 40, damping: 16 });
-  const sY = useSpring(y, { stiffness: 40, damping: 16 });
-  const sScale = useSpring(scale, { stiffness: 40, damping: 16 });
-  const sRotate = useSpring(rotate, { stiffness: 40, damping: 16 });
-
-  // Suitcase wheels rotate dynamically based on scroll distance (reverse when scrolling up)
-  const wheelRotate = useTransform(scrollYProgress, [0, 1], [0, 2880]);
-  const sWheelRotate = useSpring(wheelRotate, { stiffness: 50, damping: 12 });
-
-  if (reducedMotion) {
-    // Static premium fallback for motion sensitive users
-    return (
-      <div className="hidden xl:block fixed right-[4%] top-[40vh] w-38 h-46 z-30 pointer-events-none opacity-85">
-        <div className="w-full h-full relative">
-          <FamilyVector emotion="excited" scrollProgress={0} wheelRotate={0} />
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="hidden xl:block fixed inset-0 z-30 pointer-events-none overflow-hidden">
-      <motion.div
-        style={{
-          left: sX,
-          top: sY,
-          scale: sScale,
-          rotate: sRotate,
-        }}
-        className="absolute w-38 h-46 transform -translate-x-1/2 -translate-y-1/2 select-none pointer-events-none filter drop-shadow-[0_15px_30px_rgba(2,6,23,0.3)]"
-      >
-        <FamilyVector emotion={emotion} scrollProgress={scrollYProgress} wheelRotate={sWheelRotate} />
-      </motion.div>
-    </div>
-  );
-}
-
-/* High Fidelity 3D Layered Travel Family Vector Illustration */
-function FamilyVector({ emotion = 'excited', scrollProgress, wheelRotate }: { emotion?: 'excited' | 'wonder' | 'cool' | 'happy'; scrollProgress: any; wheelRotate: any }) {
-  return (
-    <svg viewBox="0 0 200 240" className="w-full h-full text-teal-600 relative overflow-visible">
-      <style>{`
-        @keyframes motherWaving {
-          0%, 100% { transform: rotate(0deg); }
-          50% { transform: rotate(14deg); }
-        }
-        @keyframes fatherSwaying {
-          0%, 100% { transform: translate(0px, 0px) rotate(0deg); }
-          50% { transform: translate(1px, -1.2px) rotate(-0.8deg); }
-        }
-        @keyframes childBouncing {
-          0%, 100% { transform: translate(0px, 0px) scale(1); }
-          50% { transform: translate(0px, -3.2px) scale(1.015); }
-        }
-        @keyframes luggageVibing {
-          0%, 100% { transform: translate(0px, 0px) rotate(0deg); }
-          25% { transform: translate(0.4px, -0.2px) rotate(0.1deg); }
-          75% { transform: translate(-0.4px, 0.2px) rotate(-0.1deg); }
-        }
-        .animate-mother-wave {
-          animation: motherWaving 0.65s ease-in-out infinite;
-          transform-origin: 110px 98px;
-        }
-        .animate-father-torso {
-          animation: fatherSwaying 1.05s ease-in-out infinite;
-          transform-origin: 56px 148px;
-        }
-        .animate-child-bounce {
-          animation: childBouncing 0.5s ease-in-out infinite;
-          transform-origin: 81px 176px;
-        }
-        .animate-luggage-vibe {
-          animation: luggageVibing 0.05s linear infinite;
-          transform-origin: 15px 194px;
-        }
-        @keyframes ticketEntrance {
-          0% { transform: scale(0) translate(-10px, 10px); opacity: 0; }
-          100% { transform: scale(1) translate(0, 0); opacity: 1; }
-        }
-        .animate-silver-ticket {
-          animation: ticketEntrance 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-          transform-origin: 78px 120px;
-        }
-      `}</style>
-      <defs>
-        {/* Premium Silver Metallic & Glow definitions */}
-        <linearGradient id="silverMetallic" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#ffffff" />
-          <stop offset="25%" stopColor="#f1f5f9" />
-          <stop offset="50%" stopColor="#94a3b8" />
-          <stop offset="75%" stopColor="#cbd5e1" />
-          <stop offset="100%" stopColor="#475569" />
-        </linearGradient>
-        <filter id="silverGlow" x="-20%" y="-20%" width="140%" height="140%">
-          <feGaussianBlur stdDeviation="2.5" result="blur" />
-          <feComponentTransfer in="blur" result="glow">
-            <feFuncA type="linear" slope="2.5" />
-          </feComponentTransfer>
-          <feMerge>
-            <feMergeNode in="glow" />
-            <feMergeNode in="SourceGraphic" />
-          </feMerge>
-        </filter>
-        {/* Gradients for ultra-realistic 3D rendering */}
-        <linearGradient id="parentSkin" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#FFF2E6" />
-          <stop offset="60%" stopColor="#FED2B1" />
-          <stop offset="100%" stopColor="#E99F72" />
-        </linearGradient>
-        <linearGradient id="suitCaseGlow" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#00f5d4" />
-          <stop offset="40%" stopColor="#0ea5e9" />
-          <stop offset="100%" stopColor="#0f766e" />
-        </linearGradient>
-        <linearGradient id="jacketBlue" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#38bdf8" />
-          <stop offset="50%" stopColor="#0ea5e9" />
-          <stop offset="100%" stopColor="#0369a1" />
-        </linearGradient>
-        <linearGradient id="dressGold" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#FDE047" />
-          <stop offset="50%" stopColor="#EAB308" />
-          <stop offset="100%" stopColor="#A16207" />
-        </linearGradient>
-        <linearGradient id="hairDark" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#4A2F1B" />
-          <stop offset="100%" stopColor="#1A0D05" />
-        </linearGradient>
-        <linearGradient id="wheelGray" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#64748b" />
-          <stop offset="100%" stopColor="#1e293b" />
-        </linearGradient>
-        <linearGradient id="spectacleFrame" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#fbbf24" />
-          <stop offset="100%" stopColor="#d97706" />
-        </linearGradient>
-        <filter id="shadowFilter" x="-15%" y="-15%" width="130%" height="130%">
-          <feDropShadow dx="0" dy="6" stdDeviation="4.0" floodColor="#020617" floodOpacity="0.4" />
-        </filter>
-      </defs>
-
-      {/* Dynamic floor shadow */}
-      <ellipse cx="100" cy="225" rx="55" ry="7" fill="rgba(2,6,23,0.55)" filter="blur(3px)" />
-
-      {/* ── FATHER (Left - Proportional Height 175px) ── */}
-      <g id="father" className="animate-float-gentle animate-father-torso" style={{ animationDelay: '0.2s' }} filter="url(#shadowFilter)">
-        {/* Detailed Backpack */}
-        <rect x="34" y="88" width="16" height="34" rx="4" fill="#334155" />
-        <rect x="38" y="91" width="8" height="28" rx="2" fill="#1e293b" />
-        
-        {/* Body (Jacket with zipper details) */}
-        <path d="M 40,94 C 40,82 72,82 72,94 L 74,148 L 36,148 Z" fill="url(#jacketBlue)" />
-        {/* Jacket Zipper Line */}
-        <line x1="56" y1="94" x2="56" y2="148" stroke="#f8fafc" strokeWidth="1.5" strokeDasharray="1,3" className="opacity-80" />
-        <rect x="54" y="104" width="4" height="6" rx="1" fill="#cbd5e1" />
-
-        {/* Legs / Jeans */}
-        <rect x="42" y="148" width="11" height="54" rx="3" fill="#1e293b" />
-        <rect x="57" y="148" width="11" height="54" rx="3" fill="#1e293b" />
-        <rect x="42" y="191" width="11" height="5" fill="#475569" />
-        <rect x="57" y="191" width="11" height="5" fill="#475569" />
-
-        {/* Shoes */}
-        <path d="M 40,206 L 55,206 L 53,199 L 42,199 Z" fill="#ffffff" stroke="#cbd5e1" strokeWidth="0.5" />
-        <path d="M 57,206 L 72,206 L 70,199 L 59,199 Z" fill="#ffffff" stroke="#cbd5e1" strokeWidth="0.5" />
-
-        {/* Arm Pulling Trolley */}
-        <path d="M 42,98 Q 30,115 22,136" stroke="url(#parentSkin)" strokeWidth="6" strokeLinecap="round" fill="none" />
-        {/* Hand gripping the handle */}
-        <circle cx="22" cy="136" r="3.5" fill="url(#parentSkin)" />
-
-        {/* Father's Right Arm - Holding Child's Hand (CONNECTED POSE!) */}
-        <path d="M 68,98 Q 73,115 76,128" stroke="url(#parentSkin)" strokeWidth="6" strokeLinecap="round" fill="none" />
-
-        {/* Head & Neck */}
-        <rect x="52" y="74" width="8" height="10" fill="url(#parentSkin)" />
-        <circle cx="56" cy="62" r="14.5" fill="url(#parentSkin)" />
-        
-        {/* Ears */}
-        <circle cx="41.5" cy="62" r="3" fill="url(#parentSkin)" />
-        <circle cx="70.5" cy="62" r="3" fill="url(#parentSkin)" />
-
-        {/* DYNAMIC SCROLLING EXPRESSIONS */}
-        {/* Eyebrows */}
-        {emotion === 'wonder' ? (
-          <>
-            <path d="M 45,49 Q 50,44 55,49" stroke="#3B2314" strokeWidth="1.5" fill="none" />
-            <path d="M 57,49 Q 62,44 67,49" stroke="#3B2314" strokeWidth="1.5" fill="none" />
-          </>
-        ) : emotion === 'cool' ? (
-          <>
-            <path d="M 46,52 L 54,52" stroke="#3B2314" strokeWidth="1.8" fill="none" />
-            <path d="M 58,52 L 66,52" stroke="#3B2314" strokeWidth="1.8" fill="none" />
-          </>
-        ) : (
-          <>
-            <path d="M 46,51 Q 50,48 54,51" stroke="#3B2314" strokeWidth="1.5" fill="none" />
-            <path d="M 58,51 Q 62,48 66,51" stroke="#3B2314" strokeWidth="1.5" fill="none" />
-          </>
-        )}
-
-        {/* Eyes / Glasses */}
-        {emotion === 'wonder' ? (
-          <>
-            {/* Wide surprised eyes */}
-            <circle cx="50" cy="56.5" r="3.8" fill="#ffffff" stroke="#1E1008" strokeWidth="0.8" />
-            <circle cx="50" cy="56.5" r="1.8" fill="#1E1008" />
-            <circle cx="62" cy="56.5" r="3.8" fill="#ffffff" stroke="#1E1008" strokeWidth="0.8" />
-            <circle cx="62" cy="56.5" r="1.8" fill="#1E1008" />
-          </>
-        ) : emotion === 'cool' ? (
-          <>
-            {/* Cool blue gradient transparent aviator shades */}
-            <ellipse cx="50" cy="56.5" rx="2.2" ry="2.2" fill="#1E1008" />
-            <ellipse cx="62" cy="56.5" rx="2.2" ry="2.2" fill="#1E1008" />
-            <rect x="44" y="51" width="11" height="8.5" rx="2" fill="rgba(14,165,233,0.4)" stroke="url(#spectacleFrame)" strokeWidth="1" />
-            <rect x="57" y="51" width="11" height="8.5" rx="2" fill="rgba(14,165,233,0.4)" stroke="url(#spectacleFrame)" strokeWidth="1" />
-            <line x1="55" y1="55" x2="57" y2="55" stroke="url(#spectacleFrame)" strokeWidth="1" />
-          </>
-        ) : (
-          <>
-            {/* Sparkly Happy Eyes */}
-            <ellipse cx="50" cy="56.5" rx="2.2" ry="3" fill="#1E1008" />
-            <circle cx="51" cy="55.2" r="0.7" fill="#ffffff" />
-            <ellipse cx="62" cy="56.5" rx="2.2" ry="3" fill="#1E1008" />
-            <circle cx="63" cy="55.2" r="0.7" fill="#ffffff" />
-            {/* Premium Gold Spectacles */}
-            <rect x="45" y="52" width="10" height="8" rx="2" fill="none" stroke="url(#spectacleFrame)" strokeWidth="1" />
-            <rect x="57" y="52" width="10" height="8" rx="2" fill="none" stroke="url(#spectacleFrame)" strokeWidth="1" />
-            <line x1="55" y1="56" x2="57" y2="56" stroke="url(#spectacleFrame)" strokeWidth="1" />
-          </>
-        )}
-
-        {/* Cute Nose */}
-        <path d="M 56,56 L 56,61 Q 56,62.5 57.5,62.5" stroke="#e99f72" strokeWidth="1.2" strokeLinecap="round" fill="none" />
-
-        {/* Mouth / Smile */}
-        {emotion === 'wonder' ? (
-          <circle cx="56" cy="69.5" r="4.5" fill="#9a3412" />
-        ) : emotion === 'cool' ? (
-          <path d="M 51,68 Q 56,71 61,68" stroke="#9a3412" strokeWidth="2.2" strokeLinecap="round" fill="none" />
-        ) : (
-          <>
-            <path d="M 50,67 Q 56,76 62,67 Z" fill="#9a3412" />
-            <path d="M 51,67 Q 56,70 61,67 Z" fill="#ffffff" />
-          </>
-        )}
-
-        {/* Friendly Rosy Cheeks */}
-        <circle cx="45" cy="64" r="2.5" fill="#ff7a90" opacity="0.45" />
-        <circle cx="67" cy="64" r="2.5" fill="#ff7a90" opacity="0.45" />
-
-        {/* Cap with Visor */}
-        <path d="M 42,52 C 42,39 70,39 70,52 Z" fill="#0d9488" />
-        <path d="M 58,45 L 78,47" stroke="#0d9488" strokeWidth="3.5" strokeLinecap="round" />
-      </g>
-
-      {/* ── MOTHER (Right - Proportional Height 168px) ── */}
-      <g id="mother" className="animate-float-gentle" style={{ animationDelay: '0.8s' }} filter="url(#shadowFilter)">
-        {/* Body (Gold Dress) */}
-        <path d="M 86,98 C 86,86 112,86 112,98 L 117,162 L 82,162 Z" fill="url(#dressGold)" />
-        {/* Elegant Belt Ribbon */}
-        <rect x="84" y="118" width="30" height="4.5" fill="#be123c" rx="1" />
-
-        {/* Legs */}
-        <rect x="89" y="162" width="7.5" height="42" rx="2" fill="url(#parentSkin)" />
-        <rect x="99" y="162" width="7.5" height="42" rx="2" fill="url(#parentSkin)" />
-
-        {/* Sandals */}
-        <rect x="86" y="202" width="11.5" height="4.5" rx="1.5" fill="#78350f" />
-        <rect x="97" y="202" width="11.5" height="4.5" rx="1.5" fill="#78350f" />
-
-        {/* Mother's Right Arm - Holding Child's Hand (CONNECTED POSE!) */}
-        <path d="M 88,98 Q 84,115 81,128" stroke="url(#parentSkin)" strokeWidth="5.5" strokeLinecap="round" fill="none" />
-
-        {/* Arm waving (Left) */}
-        <g className="animate-mother-wave">
-          <path d="M 110,98 C 122,86 126,72 124,56" stroke="url(#parentSkin)" strokeWidth="5.5" strokeLinecap="round" fill="none" />
-          <circle cx="124" cy="56" r="3" fill="url(#parentSkin)" />
-        </g>
-
-        {/* Head & Neck */}
-        <rect x="95" y="76" width="8" height="10" fill="url(#parentSkin)" />
-        <circle cx="99" cy="66" r="14" fill="url(#parentSkin)" />
-        
-        {/* Gorgeous Hair Flow */}
-        <path d="M 85,66 C 85,50 113,50 113,66 C 113,81 85,81 85,66 Z" fill="url(#hairDark)" />
-        <circle cx="99" cy="62" r="3" fill="#be123c" />
-
-        {/* DYNAMIC SCROLLING EXPRESSIONS */}
-        {/* Eyebrows */}
-        {emotion === 'wonder' ? (
-          <>
-            <path d="M 89,53 Q 94,48 98,52" stroke="#1E1008" strokeWidth="1.2" fill="none" />
-            <path d="M 100,52 Q 104,48 109,53" stroke="#1E1008" strokeWidth="1.2" fill="none" />
-          </>
-        ) : emotion === 'cool' ? (
-          <>
-            <path d="M 90,56 Q 94,52 97,54" stroke="#1E1008" strokeWidth="1.2" fill="none" />
-            <path d="M 101,54 Q 104,51 108,55" stroke="#1E1008" strokeWidth="1.5" fill="none" />
-          </>
-        ) : (
-          <>
-            <path d="M 90,56 Q 94,53 97,55" stroke="#1E1008" strokeWidth="1.2" fill="none" />
-            <path d="M 101,55 Q 104,53 108,56" stroke="#1E1008" strokeWidth="1.2" fill="none" />
-          </>
-        )}
-
-        {/* Eyes */}
-        {emotion === 'wonder' ? (
-          <>
-            <ellipse cx="93.5" cy="60.5" rx="3" ry="3.5" fill="#1E1008" />
-            <circle cx="94.5" cy="59" r="0.9" fill="#ffffff" />
-            <ellipse cx="104.5" cy="60.5" rx="3" ry="3.5" fill="#1E1008" />
-            <circle cx="105.5" cy="59" r="0.9" fill="#ffffff" />
-          </>
-        ) : emotion === 'cool' ? (
-          <>
-            {/* Elegant rose-tinted transparent cat-eye shades */}
-            <polygon points="88,58 96,55 97,62 90,63" fill="rgba(244,63,94,0.45)" stroke="#e11d48" strokeWidth="0.8" />
-            <polygon points="98,55 106,58 104,63 98,62" fill="rgba(244,63,94,0.45)" stroke="#e11d48" strokeWidth="0.8" />
-            <line x1="89" y1="59" x2="92" y2="56" stroke="#ffffff" strokeWidth="0.8" className="opacity-75" />
-          </>
-        ) : (
-          <>
-            <ellipse cx="93.5" cy="60.5" rx="2.3" ry="3" fill="#1E1008" />
-            <circle cx="94.5" cy="59.2" r="0.7" fill="#ffffff" />
-            <path d="M 91,59 Q 93,57.5 95,59" stroke="#1E1008" strokeWidth="0.8" fill="none" />
-            <ellipse cx="104.5" cy="60.5" rx="2.3" ry="3" fill="#1E1008" />
-            <circle cx="105.5" cy="59.2" r="0.7" fill="#ffffff" />
-            <path d="M 103,59 Q 105,57.5 107,59" stroke="#1E1008" strokeWidth="0.8" fill="none" />
-          </>
-        )}
-
-        {/* Cute nose */}
-        <path d="M 99,60 L 99,65 Q 99,66.5 100.5,66.5" stroke="#e99f72" strokeWidth="1.0" strokeLinecap="round" fill="none" />
-
-        {/* Mouth */}
-        {emotion === 'wonder' ? (
-          <path d="M 93,68 Q 99,78 105,68 Z" fill="#9a3412" />
-        ) : emotion === 'cool' ? (
-          <path d="M 94,70 Q 98,73 103,69" stroke="#9a3412" strokeWidth="2.2" strokeLinecap="round" fill="none" />
-        ) : (
-          <>
-            <path d="M 94,69 Q 99,77 104,69 Z" fill="#9a3412" />
-            <path d="M 95,69 Q 99,72 103,69 Z" fill="#ffffff" />
-          </>
-        )}
-
-        {/* Beautiful Blush */}
-        <circle cx="89" cy="68" r="2.8" fill="#ff7a90" opacity="0.45" />
-        <circle cx="109" cy="68" r="2.8" fill="#ff7a90" opacity="0.45" />
-
-        {/* Sun Hat with Ribbon */}
-        <ellipse cx="99" cy="52" rx="24" ry="5.5" fill="#fef08a" />
-        <path d="M 86,52 C 86,41 112,41 112,52 Z" fill="#fef08a" />
-        <ellipse cx="99" cy="52" rx="24" ry="5.5" fill="none" stroke="#be123c" strokeWidth="1.5" style={{ clipPath: 'inset(3px 0 0 0)' }} />
-      </g>
-
-      {/* ── CHILD (Center Front - Proportional Height 105px) ── */}
-      {/* When emotion='wonder' (Plans section), child PULLS toward Silver ₹499 card on the LEFT! */}
-      <g id="child"
-        className={emotion === 'wonder'
-          ? 'animate-float-gentle animate-child-pulling'
-          : 'animate-float-gentle animate-child-bounce'
-        }
-        style={{ animationDelay: '1.4s' }}
-        filter="url(#shadowFilter)"
-      >
-        {/* Body (T-Shirt with customized graphics) */}
-        <path d="M 72,136 C 72,128 90,128 90,136 L 91,176 L 71,176 Z" fill="#ef4444" />
-        {/* Yellow Star graphic on chest */}
-        <polygon points="81,140 83,144 87,144 84,147 85,151 81,148 77,151 78,147 75,144 79,144" fill="#fef08a" />
-
-        {/* Legs / Shorts */}
-        <rect x="73" y="176" width="7" height="26" rx="2" fill="#0284c7" />
-        <rect x="82" y="176" width="7" height="26" rx="2" fill="#0284c7" />
-        <rect x="73" y="195" width="7" height="4" fill="#38bdf8" />
-        <rect x="82" y="195" width="7" height="4" fill="#38bdf8" />
-
-        {/* Sneakers */}
-        <rect x="71" y="200" width="9" height="5" rx="1.5" fill="#ffffff" stroke="#ef4444" strokeWidth="0.5" />
-        <rect x="82" y="200" width="9" height="5" rx="1.5" fill="#ffffff" stroke="#ef4444" strokeWidth="0.5" />
-
-        {/* Child's Arms — during 'wonder' (Plans section) both arms stretch LEFT to grab Silver ₹499!
-            Family stands to the right of Silver card, so child reaches LEFT toward the price. */}
-        {emotion === 'wonder' ? (
-          <>
-            {/* Top arm reaching LEFT toward Silver price */}
-            <path d="M 73,134 Q 54,124 34,118" stroke="url(#parentSkin)" strokeWidth="5" strokeLinecap="round" fill="none" />
-            {/* Bottom arm gripping */}
-            <path d="M 73,140 Q 54,133 34,128" stroke="url(#parentSkin)" strokeWidth="5" strokeLinecap="round" fill="none" />
-            {/* Gripping hands on the price text (left side!) */}
-            <circle cx="34" cy="118" r="4.5" fill="url(#parentSkin)" />
-            <circle cx="37" cy="115" r="1.8" fill="#FED2B1" />
-            <circle cx="34" cy="114" r="1.8" fill="#FED2B1" />
-            <circle cx="31" cy="115" r="1.8" fill="#FED2B1" />
-            <circle cx="34" cy="128" r="4.5" fill="url(#parentSkin)" />
-            <circle cx="37" cy="125" r="1.8" fill="#FED2B1" />
-            <circle cx="34" cy="124" r="1.8" fill="#FED2B1" />
-            <circle cx="31" cy="125" r="1.8" fill="#FED2B1" />
-          </>
-        ) : (
-          <>
-            {/* Normal pose: Connected to parents' hands */}
-            <path d="M 73,136 L 76,128" stroke="url(#parentSkin)" strokeWidth="4.5" strokeLinecap="round" fill="none" />
-            <path d="M 89,136 L 81,128" stroke="url(#parentSkin)" strokeWidth="4.5" strokeLinecap="round" fill="none" />
-            {/* Hand connection points */}
-            <circle cx="76" cy="128" r="2.5" fill="url(#parentSkin)" />
-            <circle cx="81" cy="128" r="2.5" fill="url(#parentSkin)" />
-          </>
-        )}
-
-        {/* Head & Neck */}
-        <rect x="78" y="120" width="6" height="7" fill="url(#parentSkin)" />
-        <circle cx="81" cy="114" r="10.5" fill="url(#parentSkin)" />
-
-        {/* DYNAMIC CHILD SCROLLING EXPRESSIONS */}
-        {/* Cute Eyebrows */}
-        <path d="M 75,106 Q 77,104 79,105" stroke="#1E1008" strokeWidth="1" fill="none" />
-        <path d="M 83,105 Q 85,104 87,106" stroke="#1E1008" strokeWidth="1" fill="none" />
-
-        {/* Eyes */}
-        {emotion === 'wonder' ? (
-          <>
-            {/* Twinkly yellow stars! */}
-            <polygon points="76.5,107 77.2,109 79.5,109 77.7,110.5 78.4,112.5 76.5,111 74.6,112.5 75.3,110.5 73.5,109 75.8,109" fill="#fef08a" />
-            <polygon points="85.5,107 86.2,109 88.5,109 86.7,110.5 87.4,112.5 85.5,111 83.6,112.5 84.3,110.5 82.5,109 84.8,109" fill="#fef08a" />
-          </>
-        ) : emotion === 'cool' ? (
-          <>
-            {/* Cute mini transparent green shades */}
-            <rect x="72" y="106" width="9" height="7" rx="1.5" fill="rgba(34,197,94,0.45)" stroke="#16a34a" strokeWidth="0.8" />
-            <rect x="81" y="106" width="9" height="7" rx="1.5" fill="rgba(34,197,94,0.45)" stroke="#16a34a" strokeWidth="0.8" />
-            <line x1="80" y1="109" x2="81" y2="109" stroke="#16a34a" strokeWidth="0.8" />
-          </>
-        ) : (
-          <>
-            <ellipse cx="76.5" cy="110" rx="2.2" ry="2.6" fill="#1E1008" />
-            <circle cx="77.2" cy="108.8" r="0.6" fill="#ffffff" />
-            <ellipse cx="85.5" cy="110" rx="2.2" ry="2.6" fill="#1E1008" />
-            <circle cx="86.2" cy="108.8" r="0.6" fill="#ffffff" />
-          </>
-        )}
-
-        {/* Button nose */}
-        <path d="M 81,110 L 81,112.5" stroke="#e99f72" strokeWidth="0.8" strokeLinecap="round" fill="none" />
-
-        {/* Mouth */}
-        {emotion === 'wonder' ? (
-          <circle cx="81" cy="116.5" r="3.2" fill="#9a3412" />
-        ) : emotion === 'cool' ? (
-          <path d="M 77,115 Q 81,117.5 85,114" stroke="#9a3412" strokeWidth="1.8" strokeLinecap="round" fill="none" />
-        ) : (
-          <>
-            <path d="M 77,115 Q 81,123 85,115 Z" fill="#9a3412" />
-            <path d="M 78,115 Q 81,118 84,115 Z" fill="#ffffff" />
-          </>
-        )}
-
-        {/* Bright rosy red cheeks */}
-        <circle cx="73.5" cy="114" r="2.2" fill="#ff7a90" opacity="0.55" />
-        <circle cx="88.5" cy="114" r="2.2" fill="#ff7a90" opacity="0.55" />
-
-        {/* Cap visor */}
-        <path d="M 72,109 C 72,100 89,100 89,109 Z" fill="#1e293b" />
-        <path d="M 77,106 L 93,108" stroke="#1e293b" strokeWidth="2.5" strokeLinecap="round" />
-
-        {/* Camera around neck */}
-        <rect x="75" y="139" width="11" height="8.5" rx="2" fill="#0f172a" />
-        <circle cx="80.5" cy="143" r="2.5" fill="#00D9FF" />
-        <circle cx="84" cy="141" r="0.8" fill="#ef4444" />
-      </g>
-
-      {/* ── LOVING DECORATION (FLOATING RED HEARTS - ACTIVE ONLY DURING HAPPY/FOOTER EMOTION) ── */}
-      {emotion === 'happy' && (
-        <g className="animate-bounce" style={{ transformOrigin: '100px 30px' }}>
-          <path d="M 96,28 C 94,26 91,26 89,28 C 87,30 87,33 89,35 L 96,41 L 103,35 C 105,33 105,30 103,28 C 101,26 98,26 96,28 Z" fill="#ff2e51" />
-          <path d="M 124,34 C 122.5,32.5 120.2,32.5 118.7,34 C 117.2,35.5 117.2,37.8 118.7,39.3 L 124,44 L 129.3,39.3 C 130.8,37.8 130.8,35.5 129.3,34 C 127.8,32.5 125.5,32.5 124,34 Z" fill="#ff2e51" transform="scale(0.8) translate(30px, 5px)" />
-        </g>
-      )}
-
-      {/* Silver ticket removed — child interacts with ₹499 card via arm pose only */}
-
-      {/* ── PREMIUM LUGGAGE (TROLLEY WITH GLOSS REFLECTION) ── */}
-      <g id="luggage" className="animate-float-gentle animate-luggage-vibe" style={{ animationDelay: '0.4s' }} filter="url(#shadowFilter)">
-        {/* Trolley Handle Connection Bars */}
-        <line x1="24" y1="136" x2="16" y2="152" stroke="#475569" strokeWidth="3" />
-        <line x1="20" y1="138" x2="12" y2="154" stroke="#475569" strokeWidth="3" />
-        {/* Telescoping Handle Grips */}
-        <circle cx="24" cy="136" r="2.5" fill="#0f172a" />
-        <rect x="18" y="134" width="8" height="3" rx="1" fill="#0f172a" />
-        
-        {/* Suitcase Body */}
-        <rect x="4" y="152" width="22" height="38" rx="5" fill="url(#suitCaseGlow)" stroke="#0f766e" strokeWidth="1.5" />
-        {/* Glossy vertical reflection line */}
-        <path d="M 6,155 L 6,187" stroke="#ffffff" strokeWidth="1.5" strokeLinecap="round" className="opacity-40" />
-        
-        {/* Zippers and Side locks */}
-        <rect x="25" y="166" width="2" height="8" rx="0.5" fill="#94a3b8" />
-        
-        {/* Protective Ridges on Suitcase */}
-        <line x1="8" y1="160" x2="22" y2="160" stroke="#0ea5e9" strokeWidth="2.2" strokeLinecap="round" className="opacity-80" />
-        <line x1="8" y1="168" x2="22" y2="168" stroke="#0ea5e9" strokeWidth="2.2" strokeLinecap="round" className="opacity-80" />
-        <line x1="8" y1="176" x2="22" y2="176" stroke="#0ea5e9" strokeWidth="2.2" strokeLinecap="round" className="opacity-80" />
-        <line x1="8" y1="184" x2="22" y2="184" stroke="#0ea5e9" strokeWidth="2.2" strokeLinecap="round" className="opacity-80" />
-
-        {/* Dynamic Spinning Wheels */}
-        <motion.g style={{ rotate: wheelRotate, transformOrigin: '8px 194px' }}>
-          <circle cx="8" cy="194" r="5.5" fill="url(#wheelGray)" />
-          <circle cx="8" cy="194" r="2.5" fill="#cbd5e1" />
-          <line x1="8" y1="189" x2="8" y2="199" stroke="#f8fafc" strokeWidth="0.8" />
-          <line x1="3" y1="194" x2="13" y2="194" stroke="#f8fafc" strokeWidth="0.8" />
-        </motion.g>
-
-        <motion.g style={{ rotate: wheelRotate, transformOrigin: '22px 194px' }}>
-          <circle cx="22" cy="194" r="5.5" fill="url(#wheelGray)" />
-          <circle cx="22" cy="194" r="2.5" fill="#cbd5e1" />
-          <line x1="22" y1="189" x2="22" y2="199" stroke="#f8fafc" strokeWidth="0.8" />
-          <line x1="17" y1="194" x2="27" y2="194" stroke="#f8fafc" strokeWidth="0.8" />
-        </motion.g>
-      </g>
-    </svg>
-  );
-}
 
 /* ---------- App ---------- */
 export default function App() {
@@ -3396,7 +2922,7 @@ export default function App() {
   const handleIntroComplete = useCallback(() => setIntroComplete(true), []);
 
   const handleSelectPlan = useCallback((planName: string) => {
-    const text = `Hello Beduine, I want to subscribe to the ${planName} plan. Please guide me on the payment process.`;
+    const text = `Hello BEDUINE, I want to subscribe to the ${planName} plan. Please guide me on the payment process.`;
     const whatsappUrl = `https://wa.me/918768903565?text=${encodeURIComponent(text)}`;
     window.open(whatsappUrl, '_blank');
   }, []);
@@ -3406,63 +2932,68 @@ export default function App() {
       <AnimatePresence>{!introComplete && <CinematicIntro onComplete={handleIntroComplete} />}</AnimatePresence>
       <ScrollProgress />
       <CustomCursor />
-      <ScrollRouteLine />
-      <FamilyTravelScrollAnimation />
+
       <div className="noise fixed inset-0 pointer-events-none z-30" />
       <Navbar />
 
 
-      <main className="relative z-10 flex flex-col gap-8 lg:gap-12">
+      <main className="relative z-10 flex flex-col gap-0">
         <Hero />
         <TrustStrip />
-        
-        <div className="relative video-bg-container" style={{ overflow: 'hidden' }}>
-          {/* ── CINEMATIC FIXED BACKGROUND VIDEO: constrained to screen width/height to prevent stretching and pixelation ── */}
+
+
+        <div className="relative video-bg-container">
+          {/* Cinematic fixed background video: constrained to screen width/height to prevent stretching and pixelation. */}
           <video
             autoPlay
             loop
             muted
             playsInline
+            preload="metadata"
+            poster="/images/beduine_travel_hero_1779521651766.png"
             className="fixed inset-0 w-full h-full object-cover pointer-events-none"
-            style={{ zIndex: 0, filter: 'contrast(1.15) brightness(0.65) saturate(1.2)' }}
+            style={{
+              zIndex: 0,
+              transform: 'translate3d(0, 0, 0)',
+              backfaceVisibility: 'hidden',
+              willChange: 'transform'
+            }}
           >
             <source src="/images/hero_bg_video.mp4" type="video/mp4" />
           </video>
-          {/* Cinematic dark overlay with teal tint for premium look */}
+           {/* Clear cinematic overlay for text readability */}
           <div
             className="fixed inset-0 pointer-events-none"
             style={{
               zIndex: 1,
               background: `
-                linear-gradient(180deg, rgba(2,6,23,0.55) 0%, rgba(2,6,23,0.15) 15%, rgba(2,6,23,0.05) 40%, rgba(2,6,23,0.05) 60%, rgba(2,6,23,0.20) 85%, rgba(2,6,23,0.60) 100%),
-                radial-gradient(ellipse at center, transparent 60%, rgba(2,6,23,0.25) 100%)
+                linear-gradient(180deg, rgba(3,12,22,0.35) 0%, rgba(3,12,22,0.24) 24%, rgba(3,12,22,0.2) 62%, rgba(3,12,22,0.35) 100%)
               `,
             }}
           />
-          {/* Subtle teal atmosphere glow */}
+          {/* Subtle teal atmosphere glow - optimized without expensive fullscreen mix-blend-mode */}
           <div
             className="fixed inset-0 pointer-events-none"
             style={{
               zIndex: 1,
-              background: 'radial-gradient(ellipse at 50% 30%, rgba(13,148,136,0.08) 0%, transparent 80%)',
-              mixBlendMode: 'screen',
+              background: 'radial-gradient(ellipse at 50% 28%, rgba(24,215,242,0.07) 0%, rgba(8,31,45,0.04) 38%, transparent 82%)',
             }}
           />
 
           <div className="relative z-10 flex flex-col gap-8 lg:gap-12">
-            <AboutUs />
-            <Journey />
-            <HowItWorks />
-            <Plans onSelectPlan={handleSelectPlan} />
-            <InternationalPlans onSelectPlan={handleSelectPlan} />
-            <LuckyDrawSystem />
-            <CreditArchitecture />
-            <NonWinnerGuarantee />
+            <ScrollRoundedSection><AboutUs /></ScrollRoundedSection>
+            <ScrollRoundedSection><Journey /></ScrollRoundedSection>
+            <ScrollRoundedSection><HowItWorks /></ScrollRoundedSection>
+            <ScrollRoundedSection><Plans onSelectPlan={handleSelectPlan} /></ScrollRoundedSection>
+            <ScrollRoundedSection><InternationalPlans onSelectPlan={handleSelectPlan} /></ScrollRoundedSection>
+            <ScrollRoundedSection><LuckyDrawSystem /></ScrollRoundedSection>
+            <ScrollRoundedSection><CreditArchitecture activePlan={null} ldcTokens={0} discountCredits={0} /></ScrollRoundedSection>
+            <ScrollRoundedSection><NonWinnerGuarantee /></ScrollRoundedSection>
             <Destinations />
-            <Winners />
-            <Services />
-            <Transparency />
-            <CTABanner />
+            <ScrollRoundedSection><Winners /></ScrollRoundedSection>
+            <ScrollRoundedSection><Services /></ScrollRoundedSection>
+            <ScrollRoundedSection><Transparency /></ScrollRoundedSection>
+            <ScrollRoundedSection><CTABanner /></ScrollRoundedSection>
           </div>
         </div>
       </main>

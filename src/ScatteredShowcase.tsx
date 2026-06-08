@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 import { motion, AnimatePresence, useScroll, useMotionValueEvent, useInView } from 'framer-motion';
-import { Star, ArrowRight, MessageCircle, X, Calendar, MapPin, Plane, Eye } from 'lucide-react';
+import { Star, MessageCircle, X, Calendar, Plane, Eye } from 'lucide-react';
 
 /* ===================== Types ===================== */
 interface Destination {
@@ -16,11 +16,11 @@ interface Destination {
 
 interface ScatteredShowcaseProps {
   destinations: Destination[];
-  activeTab: string;
+  activeTab?: string;
 }
 
 /* ===================== Scatter Positions ===================== */
-// Base scattered positions — percentage of viewport
+// Base scattered positions - percentage of viewport
 const SCATTER_POSITIONS = [
   { x: -26, y: -14, rZ: -7, rY: -10 },
   { x: 24, y: 10, rZ: 5, rY: 8 },
@@ -54,10 +54,10 @@ const RETIRED_POSITIONS = [
 
 // Category accent colors
 const CATEGORY_ACCENTS: Record<string, { glow: string; border: string; text: string; spotlight: string }> = {
-  escapes: { glow: 'rgba(0, 217, 255, 0.3)', border: 'rgba(0, 217, 255, 0.35)', text: '#00D9FF', spotlight: 'rgba(0, 217, 255, 0.1)' },
-  trails: { glow: 'rgba(52, 211, 153, 0.3)', border: 'rgba(52, 211, 153, 0.35)', text: '#34D399', spotlight: 'rgba(52, 211, 153, 0.1)' },
-  royal: { glow: 'rgba(251, 191, 36, 0.3)', border: 'rgba(251, 191, 36, 0.35)', text: '#FBBF24', spotlight: 'rgba(251, 191, 36, 0.1)' },
-  intl: { glow: 'rgba(167, 139, 250, 0.3)', border: 'rgba(167, 139, 250, 0.35)', text: '#A78BFA', spotlight: 'rgba(167, 139, 250, 0.1)' },
+  escapes: { glow: 'rgba(24, 215, 242, 0.42)', border: 'rgba(24, 215, 242, 0.58)', text: '#18D7F2', spotlight: 'rgba(24, 215, 242, 0.16)' },
+  trails: { glow: 'rgba(0, 199, 163, 0.36)', border: 'rgba(0, 199, 163, 0.48)', text: '#00C7A3', spotlight: 'rgba(0, 199, 163, 0.13)' },
+  royal: { glow: 'rgba(247, 181, 0, 0.42)', border: 'rgba(247, 181, 0, 0.52)', text: '#F7B500', spotlight: 'rgba(247, 181, 0, 0.15)' },
+  intl: { glow: 'rgba(24, 215, 242, 0.34)', border: 'rgba(24, 215, 242, 0.46)', text: '#18D7F2', spotlight: 'rgba(24, 215, 242, 0.12)' },
 };
 
 /* ===================== Particles ===================== */
@@ -93,28 +93,55 @@ function ParticleField({ count = 30 }: { count?: number }) {
 }
 
 /* ===================== Progress Dots ===================== */
-function ProgressDots({ total, active, names, onJump }: {
-  total: number; active: number; names: string[]; onJump: (i: number) => void;
+function ProgressDots({ total, active, names, activeColor, onJump }: {
+  total: number; active: number; names: string[]; activeColor: string; onJump: (i: number) => void;
 }) {
   return (
-    <div className="absolute right-3 lg:right-8 top-1/2 -translate-y-1/2 flex flex-col items-end gap-2 z-50">
-      {Array.from({ length: total }).map((_, i) => (
-        <button key={i} onClick={() => onJump(i)} className="group flex items-center gap-2 cursor-pointer" aria-label={names[i]}>
-          <span className={`text-[9px] font-mono font-bold tracking-wider uppercase transition-all duration-300 whitespace-nowrap ${
-            i === active ? 'opacity-100 text-cyan-400' : 'opacity-0 group-hover:opacity-60 text-slate-400 translate-x-2 group-hover:translate-x-0'
-          }`}>{names[i]}</span>
-          <motion.div
-            className="rounded-full shrink-0"
-            animate={{
-              width: i === active ? 14 : 5,
-              height: i === active ? 14 : 5,
-              background: i === active ? '#00D9FF' : i < active ? 'rgba(0,217,255,0.25)' : 'rgba(255,255,255,0.18)',
-              boxShadow: i === active ? '0 0 14px rgba(0,217,255,0.6)' : 'none',
-            }}
-            transition={{ duration: 0.3 }}
-          />
-        </button>
-      ))}
+    <div className="destination-progress-rail absolute right-4 lg:right-8 top-1/2 -translate-y-1/2 flex flex-col items-center z-50 select-none">
+      {/* Thin timeline rail */}
+      <div className="absolute w-[1px] top-7 bottom-7 bg-white/18 pointer-events-none" />
+
+      <div className="flex flex-col items-center gap-2.5 py-4 max-h-[68vh] overflow-y-auto scattered-scroll-track relative">
+        {Array.from({ length: total }).map((_, i) => (
+          <button key={i} onClick={() => onJump(i)} className="group flex items-center justify-end w-32 gap-2.5 cursor-pointer relative" aria-label={names[i]}>
+            {/* Floating name tooltip on hover or active */}
+            <span
+              className={`destination-progress-name text-[8.5px] font-mono font-black tracking-wider uppercase transition-all duration-350 px-2 py-1 rounded-full select-none pointer-events-none ${
+                i === active ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-2 group-hover:opacity-70 group-hover:translate-x-0'
+              }`}
+              style={{
+                color: i === active ? activeColor : undefined,
+                background: i === active ? 'rgba(3, 12, 22, 0.72)' : 'transparent',
+                border: i === active ? '1px solid rgba(255,255,255,0.12)' : '1px solid transparent',
+              }}
+            >
+              {names[i]}
+            </span>
+
+            {/* Active glow / dot */}
+            <div className="relative flex items-center justify-center w-5 h-5 shrink-0">
+              {i === active && (
+                <motion.span
+                  layoutId="activeDotGlow"
+                  className="absolute inset-0 rounded-full blur-[4px] opacity-35"
+                  style={{ background: activeColor }}
+                  transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                />
+              )}
+              <motion.div
+                className="rounded-full z-10"
+                animate={{
+                  width: i === active ? 9 : 4,
+                  height: i === active ? 9 : 4,
+                  background: i === active ? activeColor : i < active ? 'rgba(255,255,255,0.45)' : 'rgba(255,255,255,0.2)',
+                  boxShadow: i === active ? `0 0 10px ${activeColor}` : 'none',
+                }}
+                transition={{ duration: 0.25 }}
+              />
+            </div>
+          </button>
+        ))}
+      </div>
     </div>
   );
 }
@@ -122,8 +149,8 @@ function ProgressDots({ total, active, names, onJump }: {
 /* ===================== Detail Modal ===================== */
 function DetailModal({ d, accent, onClose }: { d: Destination; accent: typeof CATEGORY_ACCENTS.escapes; onClose: () => void }) {
   useEffect(() => { document.body.style.overflow = 'hidden'; return () => { document.body.style.overflow = ''; }; }, []);
-  const wa = encodeURIComponent(`Hi Bedune! I'm interested in the ${d.name} package (${d.duration}). Please share details!`);
-  const feats = d.tag.split('·').map(f => f.trim());
+  const wa = encodeURIComponent(`Hi BEDUINE! I'm interested in the ${d.name} package (${d.duration}). Please share details!`);
+  const feats = d.tag.split(' - ').map(f => f.trim());
 
   return (
     <motion.div className="fixed inset-0 z-[200] flex items-center justify-center p-4 lg:p-8"
@@ -181,15 +208,13 @@ function DetailModal({ d, accent, onClose }: { d: Destination; accent: typeof CA
       </motion.div>
     </motion.div>
   );
-}
-
-/* ===================== Single Scattered Card ===================== */
+}/* ===================== Single Scattered Card ===================== */
 function ScatteredCard({
-  d, index, total, isActive, isPast, accent, onSelect,
+  d, index, total, isActive, isPast, activeIndex, onSelect,
 }: {
   d: Destination; index: number; total: number;
   isActive: boolean; isPast: boolean;
-  accent: typeof CATEGORY_ACCENTS.escapes;
+  activeIndex: number;
   onSelect: () => void;
 }) {
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
@@ -204,6 +229,8 @@ function ScatteredCard({
     return () => window.removeEventListener('resize', r);
   }, []);
 
+  const cardAccent = CATEGORY_ACCENTS[d.category] || CATEGORY_ACCENTS.escapes;
+
   const sc = SCATTER_POSITIONS[index % SCATTER_POSITIONS.length];
   const rt = RETIRED_POSITIONS[index % RETIRED_POSITIONS.length];
 
@@ -213,7 +240,7 @@ function ScatteredCard({
   const rtX = (rt.x / 100) * vw;
   const rtY = (rt.y / 100) * vh;
 
-  // Floating orbit parameters — unique per card
+  // Floating orbit parameters - unique per card
   const floatAmpX = 14 + (index % 4) * 4;
   const floatAmpY = 10 + (index % 3) * 4;
   const floatAmpR = 1.5 + (index % 3) * 0.8;
@@ -231,8 +258,12 @@ function ScatteredCard({
   const floatRetiredY = [rtY, rtY - floatAmpY * 0.5, rtY + floatAmpY * 0.4, rtY - floatAmpY * 0.3, rtY];
   const floatRetiredR = [rt.rZ, rt.rZ + floatAmpR * 0.5, rt.rZ - floatAmpR * 0.5, rt.rZ + floatAmpR * 0.3, rt.rZ];
 
-  const feats = d.tag.split('·').map(f => f.trim());
+  const feats = d.tag.split(' - ').map(f => f.trim());
 
+  // Check visibility in the sliding window of Rs.3
+  const isVisible = Math.abs(index - activeIndex) <= 3;
+
+  // Visual stacking depth inside the 3D space
   const zIdx = isActive ? 50 : isPast ? (10 + index) : (25 + (total - index));
 
   // Hover tilt
@@ -248,21 +279,40 @@ function ScatteredCard({
 
   // Build animation + transition based on state
   const getAnimateAndTransition = () => {
+    if (!isVisible) {
+      return {
+        animate: {
+          x: scX,
+          y: scY,
+          z: -300,
+          rotateZ: sc.rZ,
+          rotateY: sc.rY,
+          rotateX: 0,
+          scale: 0.6,
+          opacity: 0,
+        },
+        transition: {
+          duration: 0.6,
+        },
+      };
+    }
+
     if (isActive) {
       return {
         animate: {
           x: hovered ? tilt.y * 0.5 : 0,
           y: hovered ? (tilt.x * 0.5 - 10) : 0,
+          z: 180,
           rotateZ: 0,
           rotateY: hovered ? tilt.y : 0,
           rotateX: hovered ? tilt.x : 0,
-          scale: hovered ? 1.18 : 1.12,
+          scale: hovered ? 1.11 : 1.06,
           opacity: 1,
         },
         transition: {
           type: 'spring' as const,
-          stiffness: 70,
-          damping: 16,
+          stiffness: 82,
+          damping: 18,
           mass: 0.8,
         },
       };
@@ -273,32 +323,35 @@ function ScatteredCard({
         animate: {
           x: floatRetiredX,
           y: floatRetiredY,
+          z: -120,
           rotateZ: floatRetiredR,
           rotateY: 0,
           rotateX: 0,
-          scale: 0.72,
-          opacity: 0.3,
+          scale: 0.78,
+          opacity: 0.42,
         },
         transition: {
           x: { duration: floatDurX * 1.3, repeat: Infinity, ease: 'easeInOut' as const },
           y: { duration: floatDurY * 1.3, repeat: Infinity, ease: 'easeInOut' as const },
           rotateZ: { duration: floatDurR * 1.3, repeat: Infinity, ease: 'easeInOut' as const },
           scale: { type: 'spring' as const, stiffness: 50, damping: 18 },
+          z: { type: 'spring' as const, stiffness: 50, damping: 18 },
           opacity: { duration: 0.6 },
         },
       };
     }
 
-    // Future / scattered — continuous float
+    // Future / scattered - continuous float
     return {
       animate: {
         x: floatScatterX,
         y: floatScatterY,
+        z: -80, // Push it slightly back!
         rotateZ: floatScatterR,
         rotateY: sc.rY,
         rotateX: 0,
-        scale: 0.88,
-        opacity: 0.55,
+        scale: 0.84,
+        opacity: 0.5,
       },
       transition: {
         x: { duration: floatDurX, repeat: Infinity, ease: 'easeInOut' as const },
@@ -306,6 +359,7 @@ function ScatteredCard({
         rotateZ: { duration: floatDurR, repeat: Infinity, ease: 'easeInOut' as const },
         rotateY: { type: 'spring' as const, stiffness: 50, damping: 18 },
         scale: { type: 'spring' as const, stiffness: 50, damping: 18 },
+        z: { type: 'spring' as const, stiffness: 50, damping: 18 },
         opacity: { duration: 0.6 },
       },
     };
@@ -314,117 +368,131 @@ function ScatteredCard({
   const { animate, transition } = getAnimateAndTransition();
 
   return (
-    <motion.div
-      ref={ref}
-      className="absolute scattered-card-wrapper"
+    <div
+      className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
       style={{
         width: 'clamp(270px, 22vw, 350px)',
-        height: 'clamp(370px, 30vw, 450px)',
+        height: 'clamp(390px, 31vw, 465px)',
         transformStyle: 'preserve-3d',
         zIndex: zIdx,
-        cursor: 'pointer',
-        willChange: 'transform, opacity',
       }}
-      animate={animate}
-      transition={transition}
-      onMouseMove={onMove}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => { setTilt({ x: 0, y: 0 }); setHovered(false); }}
-      onClick={onSelect}
     >
-      <div
-        className="w-full h-full rounded-3xl overflow-hidden relative group"
+      <motion.div
+        ref={ref}
+        className="w-full h-full pointer-events-auto"
         style={{
-          background: 'rgba(8, 14, 24, 0.6)',
-          border: `1px solid ${isActive ? accent.border : 'rgba(255,255,255,0.06)'}`,
-          boxShadow: isActive
-            ? `0 0 60px ${accent.glow}, 0 30px 80px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.12)`
-            : '0 12px 40px rgba(0,0,0,0.35)',
-          filter: isActive ? 'blur(0px) brightness(1.1)' : isPast ? 'blur(3px) brightness(0.55)' : 'blur(1.5px) brightness(0.75)',
-          transition: 'filter 0.7s ease, border-color 0.5s ease, box-shadow 0.6s ease',
+          transformStyle: 'preserve-3d',
+          cursor: 'pointer',
+          willChange: 'transform, opacity',
         }}
+        animate={animate}
+        transition={transition}
+        onMouseMove={onMove}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => { setTilt({ x: 0, y: 0 }); setHovered(false); }}
+        onClick={onSelect}
       >
-        {/* Image */}
-        <div className="absolute inset-0">
-          <img src={d.img} alt={d.name} className="w-full h-full object-cover transition-transform duration-700"
-            style={{ transform: hovered && isActive ? 'scale(1.1)' : 'scale(1.02)' }} loading="lazy" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#030712] via-[#030712]/30 to-transparent" />
-          <div className="absolute inset-0 transition-opacity duration-500" style={{ opacity: isActive ? 0 : 0.4, background: '#030712' }} />
-        </div>
-
-        {/* Mouse spotlight (active only) */}
-        {isActive && hovered && (
-          <div className="absolute inset-0 pointer-events-none z-10" style={{
-            background: `radial-gradient(400px circle at ${50 + tilt.y * 4}% ${50 + tilt.x * 4}%, ${accent.spotlight}, transparent 70%)`,
-          }} />
-        )}
-
-        {/* Badges */}
-        <div className="absolute top-3.5 left-3.5 right-3.5 flex items-start justify-between z-10 pointer-events-none select-none">
-          <div className="flex gap-1.5">
-            <span className="px-2.5 py-1 rounded-full bg-black/65 backdrop-blur-md text-white text-[9px] font-mono font-extrabold uppercase tracking-wider border border-white/10 shadow-lg">{d.duration}</span>
-            <span className="px-2.5 py-1 rounded-full bg-black/65 backdrop-blur-md text-[9px] font-mono font-extrabold uppercase tracking-wider shadow-lg border"
-              style={{ color: accent.text, borderColor: accent.border }}>{d.planBadge}</span>
-          </div>
-          <span className="flex items-center gap-1 px-2 py-1 rounded-full bg-black/65 backdrop-blur-md text-white text-xs font-black border border-white/10 shadow-lg">
-            <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" /> {d.rating}
-          </span>
-        </div>
-
-        {/* Content */}
-        <div className="absolute inset-x-0 bottom-0 p-5 z-10">
-          <div className="text-[9px] uppercase tracking-[0.2em] font-mono font-bold mb-1.5 flex items-center gap-1.5"
-            style={{ color: accent.text, opacity: 0.85 }}>
-            <span className="w-1.5 h-1.5 rounded-full bg-current animate-pulse" />
-            // Season: {d.season}
-          </div>
-          <h3 className="font-display text-2xl font-black text-white leading-snug drop-shadow-md">{d.name}</h3>
-          <div className="flex flex-wrap gap-1 mt-2">
-            {feats.map(f => (
-              <span key={f} className="px-2 py-0.5 rounded text-[9px] font-mono font-bold tracking-tight bg-black/50 border border-white/5 text-slate-300">{f}</span>
-            ))}
+        <div
+          className="destination-slide-card w-full h-full rounded-3xl overflow-hidden relative group"
+          style={{
+            background: 'rgba(6, 14, 24, 0.72)',
+            border: `1px solid ${isActive ? cardAccent.border : 'rgba(255,255,255,0.11)'}`,
+            boxShadow: isActive
+              ? `${-tilt.y * 3.5}px ${30 + tilt.x * 3.5}px 86px rgba(0,0,0,0.58), 0 0 54px ${cardAccent.glow}, inset 0 1px 0 rgba(255,255,255,0.14)`
+              : '0 16px 44px rgba(0,0,0,0.38)',
+            filter: isActive ? 'blur(0px) brightness(1.04) saturate(1.04)' : isPast ? 'blur(1.4px) brightness(0.72) saturate(0.82)' : 'blur(0.8px) brightness(0.82) saturate(0.9)',
+            transition: 'filter 0.7s ease, border-color 0.5s ease, box-shadow 0.1s ease',
+          }}
+        >
+          {/* Image */}
+          <div className="absolute inset-0">
+            <img src={d.img} alt={d.name} className="w-full h-full object-cover transition-transform duration-700"
+              style={{ transform: hovered && isActive ? 'scale(1.1)' : 'scale(1.02)' }} loading="lazy" />
           </div>
 
-          {/* CTA buttons — active only */}
-          <AnimatePresence>
-            {isActive && (
-              <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 8 }}
-                transition={{ duration: 0.4, delay: 0.2 }} className="flex items-center gap-2 mt-4">
-                <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider shadow-lg cursor-pointer transition-transform hover:scale-105"
-                  style={{ background: `linear-gradient(135deg,${accent.text},${accent.text}bb)`, color: '#030712', boxShadow: `0 0 20px ${accent.glow}` }}>
-                  <Eye className="w-3 h-3" /> View Package
-                </span>
-                <a href={`https://wa.me/918768903565?text=${encodeURIComponent(`Hi Bedune! I'm interested in the ${d.name} package (${d.duration}). Please share details!`)}`}
-                  target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()}
-                  className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-emerald-500/85 text-white text-[10px] font-bold uppercase tracking-wider shadow-lg cursor-pointer transition-transform hover:scale-105">
-                  <MessageCircle className="w-3 h-3" /> WhatsApp
-                </a>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
+          {/* Deep bottom gradient overlay for excellent text contrast */}
+          <div className="absolute inset-0 bg-gradient-to-b from-slate-950/18 via-transparent to-transparent pointer-events-none z-0" />
+          <div className="absolute inset-x-0 bottom-0 h-[62%] bg-gradient-to-t from-slate-950 via-slate-950/78 to-transparent pointer-events-none z-0" />
 
-        {/* Glow ring — active only */}
-        {isActive && (
-          <motion.div className="absolute inset-0 rounded-3xl pointer-events-none"
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}
-            style={{ boxShadow: `inset 0 0 0 1.5px ${accent.border}, 0 0 70px ${accent.glow}` }} />
-        )}
-      </div>
-    </motion.div>
+          {/* Mouse spotlight (active only) */}
+          {isActive && hovered && (
+            <div className="absolute inset-0 pointer-events-none z-10" style={{
+              background: `radial-gradient(400px circle at ${50 + tilt.y * 4}% ${50 + tilt.x * 4}%, ${cardAccent.spotlight}, transparent 70%)`,
+            }} />
+          )}
+
+          {/* Badges */}
+          <div className="absolute top-3.5 left-3.5 right-3.5 flex items-start justify-between z-10 pointer-events-none select-none">
+            <div className="flex gap-1.5">
+              <span className="px-2.5 py-1 rounded-full bg-black/70 backdrop-blur-md text-white text-[9px] font-mono font-extrabold uppercase tracking-wider border border-white/10 shadow-lg">{d.duration}</span>
+              <span className="px-2.5 py-1 rounded-full bg-black/70 backdrop-blur-md text-[9px] font-mono font-extrabold uppercase tracking-wider shadow-lg border transition-all duration-350"
+                style={{
+                  color: cardAccent.text,
+                  borderColor: cardAccent.border,
+                  boxShadow: isActive ? `0 0 12px ${cardAccent.border}` : 'none'
+                }}>{d.planBadge}</span>
+            </div>
+            <span className="flex items-center gap-1 px-2 py-1 rounded-full bg-black/70 backdrop-blur-md text-white text-xs font-black border border-white/10 shadow-lg">
+              <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" /> {d.rating}
+            </span>
+          </div>
+
+          {/* Content */}
+          <div className="absolute inset-x-0 bottom-0 p-5 z-10">
+            <div className="text-[9px] uppercase tracking-[0.2em] font-mono font-bold mb-1.5 flex items-center gap-1.5"
+              style={{ color: cardAccent.text, opacity: 0.9 }}>
+              <span className="w-1.5 h-1.5 rounded-full bg-current animate-pulse" />
+              Best Season: {d.season}
+            </div>
+            <h3 className={`${isActive ? 'text-3xl' : 'text-2xl'} font-display font-black text-white leading-snug drop-shadow-md transition-all duration-500`}>{d.name}</h3>
+            <div className="flex flex-wrap gap-1 mt-2">
+              {feats.map(f => (
+                <span key={f} className="px-2 py-0.5 rounded text-[9px] font-mono font-bold tracking-tight bg-black/60 border border-white/5 text-slate-350">{f}</span>
+              ))}
+            </div>
+
+            {/* CTA buttons - active only */}
+            <AnimatePresence>
+              {isActive && (
+                <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 8 }}
+                  transition={{ duration: 0.4, delay: 0.2 }} className="flex items-center gap-2 mt-4">
+                  <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider shadow-lg cursor-pointer transition-transform hover:scale-105"
+                    style={{ background: `linear-gradient(135deg,${cardAccent.text},${cardAccent.text}bb)`, color: '#030712', boxShadow: `0 0 20px ${cardAccent.glow}` }}>
+                    <Eye className="w-3 h-3" /> View Package
+                  </span>
+                  <a href={`https://wa.me/918768903565?text=${encodeURIComponent(`Hi BEDUINE! I'm interested in the ${d.name} package (${d.duration}). Please share details!`)}`}
+                    target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()}
+                    className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-emerald-500/85 text-white text-[10px] font-bold uppercase tracking-wider shadow-lg cursor-pointer transition-transform hover:scale-105">
+                    <MessageCircle className="w-3 h-3" /> WhatsApp
+                  </a>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
+          {/* Glow ring - active only */}
+          {isActive && (
+            <motion.div className="absolute inset-0 rounded-3xl pointer-events-none"
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}
+              style={{ boxShadow: `inset 0 0 0 1.5px ${cardAccent.border}, 0 0 70px ${cardAccent.glow}` }} />
+          )}
+        </div>
+      </motion.div>
+    </div>
   );
 }
 
 /* ===================== Mobile Showcase ===================== */
-function MobileShowcase({ destinations, accent, onSelect }: {
-  destinations: Destination[]; accent: typeof CATEGORY_ACCENTS.escapes; onSelect: (d: Destination) => void;
+function MobileShowcase({ destinations, onSelect }: {
+  destinations: Destination[]; onSelect: (d: Destination) => void;
 }) {
   return (
     <div className="flex flex-col gap-5 py-4 px-2">
       {destinations.map((d, i) => {
-        const feats = d.tag.split('·').map(f => f.trim());
+        const feats = d.tag.split(' - ').map(f => f.trim());
+        const cardAccent = CATEGORY_ACCENTS[d.category] || CATEGORY_ACCENTS.escapes;
         return (
-          <MobileCardItem key={d.name} d={d} i={i} feats={feats} accent={accent} onSelect={() => onSelect(d)} />
+          <MobileCardItem key={d.name} d={d} i={i} feats={feats} accent={cardAccent} onSelect={() => onSelect(d)} />
         );
       })}
     </div>
@@ -442,25 +510,25 @@ function MobileCardItem({ d, i, feats, accent, onSelect }: {
       animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
       transition={{ duration: 0.7, delay: i * 0.04, ease: [0.22, 1, 0.36, 1] }}
       className="relative rounded-3xl overflow-hidden cursor-pointer"
-      style={{ border: `1px solid ${accent.border}`, boxShadow: `0 16px 50px rgba(0,0,0,0.35)` }}
+      style={{ border: `1px solid ${accent.border}`, boxShadow: `0 16px 50px ${accent.glow}` }}
       onClick={onSelect}>
       <div className="relative h-52 overflow-hidden">
         <img src={d.img} alt={d.name} className="w-full h-full object-cover" loading="lazy" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#030712] via-[#030712]/40 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent" />
         <div className="absolute top-3 left-3 right-3 flex justify-between">
           <div className="flex gap-1.5">
-            <span className="px-2 py-1 rounded-full bg-black/65 backdrop-blur-md text-white text-[8px] font-mono font-bold uppercase tracking-wider border border-white/10">{d.duration}</span>
-            <span className="px-2 py-1 rounded-full bg-black/65 backdrop-blur-md text-[8px] font-mono font-bold uppercase tracking-wider border"
+            <span className="px-2 py-1 rounded-full bg-black/70 backdrop-blur-md text-white text-[8px] font-mono font-bold uppercase tracking-wider border border-white/10">{d.duration}</span>
+            <span className="px-2 py-1 rounded-full bg-black/70 backdrop-blur-md text-[8px] font-mono font-bold uppercase tracking-wider border"
               style={{ color: accent.text, borderColor: accent.border }}>{d.planBadge}</span>
           </div>
-          <span className="flex items-center gap-1 px-2 py-1 rounded-full bg-black/65 backdrop-blur-md text-white text-[10px] font-black border border-white/10">
+          <span className="flex items-center gap-1 px-2 py-1 rounded-full bg-black/70 backdrop-blur-md text-white text-[10px] font-black border border-white/10">
             <Star className="w-3 h-3 fill-amber-400 text-amber-400" /> {d.rating}
           </span>
         </div>
       </div>
       <div className="p-4 bg-[#0a0f1a]">
-        <div className="text-[8px] uppercase tracking-[0.2em] font-mono font-bold mb-1 flex items-center gap-1.5" style={{ color: accent.text, opacity: 0.8 }}>
-          <span className="w-1 h-1 rounded-full bg-current animate-pulse" /> Season: {d.season}
+        <div className="text-[8px] uppercase tracking-[0.2em] font-mono font-bold mb-1 flex items-center gap-1.5" style={{ color: accent.text, opacity: 0.9 }}>
+          <span className="w-1 h-1 rounded-full bg-current animate-pulse" /> Best Season: {d.season}
         </div>
         <h3 className="font-display text-xl font-black text-white">{d.name}</h3>
         <div className="flex flex-wrap gap-1 mt-2">
@@ -471,7 +539,7 @@ function MobileCardItem({ d, i, feats, accent, onSelect }: {
             style={{ background: `linear-gradient(135deg,${accent.text},${accent.text}bb)`, color: '#030712' }}>
             <Eye className="w-3 h-3" /> View
           </span>
-          <a href={`https://wa.me/918768903565?text=${encodeURIComponent(`Hi Bedune! Interested in ${d.name} (${d.duration}).`)}`}
+          <a href={`https://wa.me/918768903565?text=${encodeURIComponent(`Hi BEDUINE! Interested in ${d.name} (${d.duration}).`)}`}
             target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()}
             className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-emerald-500/85 text-white text-[9px] font-bold uppercase tracking-wider cursor-pointer">
             <MessageCircle className="w-3 h-3" /> WhatsApp
@@ -483,13 +551,17 @@ function MobileCardItem({ d, i, feats, accent, onSelect }: {
 }
 
 /* ===================== MAIN COMPONENT ===================== */
-export default function ScatteredShowcase({ destinations, activeTab }: ScatteredShowcaseProps) {
+export default function ScatteredShowcase({ destinations }: ScatteredShowcaseProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const [selectedCard, setSelectedCard] = useState<Destination | null>(null);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
-  const accent = CATEGORY_ACCENTS[activeTab] || CATEGORY_ACCENTS.escapes;
+  // Dynamically resolve colors based on the active card's category
+  const activeCard = destinations[activeIndex];
+  const activeCategory = activeCard?.category || 'escapes';
+  const accent = CATEGORY_ACCENTS[activeCategory] || CATEGORY_ACCENTS.escapes;
 
   useEffect(() => {
     const c = () => setIsMobile(window.innerWidth < 768);
@@ -497,10 +569,7 @@ export default function ScatteredShowcase({ destinations, activeTab }: Scattered
     return () => window.removeEventListener('resize', c);
   }, []);
 
-  // Reset on tab change
-  useEffect(() => { setActiveIndex(0); }, [activeTab, destinations.length]);
-
-  // Scroll tracking — maps container scroll progress to active card index
+  // Scroll tracking - maps container scroll progress to active card index
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ['start start', 'end end'],
@@ -513,10 +582,19 @@ export default function ScatteredShowcase({ destinations, activeTab }: Scattered
     setActiveIndex(Math.max(0, idx));
   });
 
-  // Scroll track height — enough for each card to have a scroll "moment"
+  // Track mouse movements relative to the container for spring spotlights
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width - 0.5) * 80;
+    const y = ((e.clientY - rect.top) / rect.height - 0.5) * 80;
+    setMousePos({ x, y });
+  };
+
+  // Scroll track height - enough for each card to have a scroll "moment"
   const trackHeight = useMemo(() => {
-    const h = destinations.length * 80 + 120;
-    return Math.max(380, Math.min(900, h));
+    const h = destinations.length * 62 + 110;
+    return Math.max(360, Math.min(760, h));
   }, [destinations.length]);
 
   // Jump to a specific card via progress dots
@@ -531,23 +609,34 @@ export default function ScatteredShowcase({ destinations, activeTab }: Scattered
   if (isMobile) {
     return (
       <>
-        <MobileShowcase destinations={destinations} accent={accent} onSelect={setSelectedCard} />
-        <AnimatePresence>{selectedCard && <DetailModal d={selectedCard} accent={accent} onClose={() => setSelectedCard(null)} />}</AnimatePresence>
+        <MobileShowcase destinations={destinations} onSelect={setSelectedCard} />
+        <AnimatePresence>
+          {selectedCard && (
+            <DetailModal
+              d={selectedCard}
+              accent={CATEGORY_ACCENTS[selectedCard.category] || CATEGORY_ACCENTS.escapes}
+              onClose={() => setSelectedCard(null)}
+            />
+          )}
+        </AnimatePresence>
       </>
     );
   }
 
+  const modalAccent = selectedCard ? (CATEGORY_ACCENTS[selectedCard.category] || CATEGORY_ACCENTS.escapes) : accent;
+
   return (
     <>
-      {/* Tall scroll track — this creates the scroll range */}
-      <div ref={containerRef} key={activeTab} className="relative" style={{ height: `${trackHeight}vh` }}>
+      {/* Tall scroll track - this creates the scroll range */}
+      <div ref={containerRef} className="relative" style={{ height: `${trackHeight}vh` }}>
 
-        {/* Sticky viewport — pins to screen while user scrolls */}
-        <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col">
+        {/* Sticky viewport - pins to screen while user scrolls */}
+        <div className="destination-showcase-shell sticky top-0 h-screen w-full overflow-hidden flex flex-col">
 
           {/* Section heading pinned inside viewport */}
           <div className="relative z-30 flex flex-col items-center justify-center pt-20 pb-4 pointer-events-none select-none">
-            <motion.h2 key={`h-${activeTab}`}
+            <div className="absolute inset-0 bg-gradient-to-b from-black/20 to-transparent -top-20 h-48 blur-xl opacity-60 pointer-events-none z-[-1]" />
+            <motion.h2 key={`h-${activeCategory}`}
               initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}
               className="font-display text-3xl lg:text-5xl font-black text-white text-center leading-tight drop-shadow-lg">
               Explore Cinematic{' '}
@@ -555,22 +644,50 @@ export default function ScatteredShowcase({ destinations, activeTab }: Scattered
                 backgroundImage: `linear-gradient(135deg,${accent.text},#fff,${accent.text})`,
                 backgroundSize: '200% auto', animation: 'shimmer 4s linear infinite',
               }}>
-                {{ escapes: 'Weekend Escapes', trails: 'Hill & Tea Trails', royal: 'Royal India Tours', intl: 'International Trips' }[activeTab] || 'Escapes'}
+                {{ escapes: 'Weekend Escapes', trails: 'Hill & Tea Trails', royal: 'Royal India Tours', intl: 'International Trips' }[activeCategory] || 'Escapes'}
               </span>
             </motion.h2>
-            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 0.65 }} transition={{ delay: 0.15 }}
-              className="text-slate-400 text-sm lg:text-base mt-2.5 text-center max-w-xl">
+            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 0.75 }} transition={{ delay: 0.15 }}
+              className="text-slate-300 text-sm lg:text-base mt-2.5 text-center max-w-xl">
               Scroll through handpicked destinations crafted for unforgettable journeys.
             </motion.p>
           </div>
 
           {/* 3D Stage */}
-          <div className="flex-1 relative">
+          <div className="destination-stage flex-1 relative overflow-hidden" onMouseMove={handleMouseMove}>
             <ParticleField count={28} />
+
+            {/* Cinematic Background Category Watermark */}
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0 overflow-hidden select-none">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeCategory}
+                  initial={{ opacity: 0, scale: 0.85, y: 30 }}
+                  animate={{ opacity: 0.045, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 1.15, y: -30 }}
+                  transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+                  className="font-display text-[14vw] font-black text-white tracking-[0.2em] text-center uppercase whitespace-nowrap leading-none"
+                >
+                  {
+                    {
+                      escapes: "Escapes",
+                      trails: "Trails",
+                      royal: "Royal India",
+                      intl: "Global"
+                    }[activeCategory] || "BEDUINE"
+                  }
+                </motion.div>
+              </AnimatePresence>
+            </div>
 
             {/* Spotlight glow behind active card */}
             <motion.div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-0"
-              animate={{ opacity: 0.9 }} transition={{ duration: 0.8 }}
+              animate={{
+                x: mousePos.x * 1.5,
+                y: mousePos.y * 1.5,
+                opacity: 0.9,
+              }}
+              transition={{ type: 'spring', stiffness: 40, damping: 15 }}
               style={{ width: 650, height: 650, borderRadius: '50%', background: `radial-gradient(circle,${accent.spotlight},transparent 60%)`, filter: 'blur(60px)' }} />
 
             {/* Perspective container */}
@@ -578,7 +695,7 @@ export default function ScatteredShowcase({ destinations, activeTab }: Scattered
               <AnimatePresence mode="popLayout">
                 {destinations.map((d, i) => (
                   <ScatteredCard key={d.name} d={d} index={i} total={destinations.length}
-                    isActive={i === activeIndex} isPast={i < activeIndex} accent={accent}
+                    isActive={i === activeIndex} isPast={i < activeIndex} activeIndex={activeIndex}
                     onSelect={() => setSelectedCard(d)} />
                 ))}
               </AnimatePresence>
@@ -586,12 +703,12 @@ export default function ScatteredShowcase({ destinations, activeTab }: Scattered
 
             {/* Progress dots */}
             <ProgressDots total={destinations.length} active={activeIndex}
-              names={destinations.map(d => d.name)} onJump={jumpToCard} />
+              names={destinations.map(d => d.name)} activeColor={accent.text} onJump={jumpToCard} />
 
             {/* Counter badge */}
             <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-40 pointer-events-none select-none">
-              <div className="flex items-center gap-3 px-5 py-2 rounded-full bg-black/50 backdrop-blur-md border border-white/10">
-                <span className="text-white/90 font-mono text-xs font-bold">{String(activeIndex + 1).padStart(2, '0')}</span>
+              <div className="flex items-center gap-3 px-5 py-2 rounded-full bg-black/60 backdrop-blur-md border border-white/10">
+                <span className="text-white/95 font-mono text-xs font-bold">{String(activeIndex + 1).padStart(2, '0')}</span>
                 <div className="w-16 h-0.5 rounded-full bg-white/10 relative overflow-hidden">
                   <motion.div className="absolute inset-y-0 left-0 rounded-full"
                     animate={{ width: `${((activeIndex + 1) / destinations.length) * 100}%` }}
@@ -605,7 +722,7 @@ export default function ScatteredShowcase({ destinations, activeTab }: Scattered
       </div>
 
       {/* Detail modal */}
-      <AnimatePresence>{selectedCard && <DetailModal d={selectedCard} accent={accent} onClose={() => setSelectedCard(null)} />}</AnimatePresence>
+      <AnimatePresence>{selectedCard && <DetailModal d={selectedCard} accent={modalAccent} onClose={() => setSelectedCard(null)} />}</AnimatePresence>
     </>
   );
 }
