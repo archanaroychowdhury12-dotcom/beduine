@@ -509,7 +509,7 @@ function ScrollProgress() {
 /* ============ 3-SECOND CINEMATIC INTRO ============ */
 function CinematicIntro({ onComplete }: { onComplete: () => void }) {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [isMuted, setIsMuted] = useState(false);
+  const [, setIsMuted] = useState(false);
   const [showUnmuteHint, setShowUnmuteHint] = useState(false);
   const [videoError, setVideoError] = useState(false);
 
@@ -2731,7 +2731,7 @@ function Journey() {
                     `}
                   >
                     <motion.div
-                      className="w-full h-full relative"
+                      className="absolute -inset-4"
                       animate={(hoveredIndex !== null || isDeckHovered) ? {
                         x: 0,
                         y: 0,
@@ -2761,25 +2761,25 @@ function Journey() {
 
                       {/* Bottom-focused shadow gradient for contrast readability of text, keeping the top half bright and saturated */}
                       <div className="absolute inset-x-0 bottom-0 h-[50%] bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent opacity-85 group-hover:opacity-95 transition-opacity duration-300 pointer-events-none z-10" />
-
-                      {/* Content overlays */}
-                      <div className="absolute inset-x-0 bottom-0 p-4 pt-12 z-20 flex flex-col justify-end">
-                        <span className={`text-[9px] font-bold uppercase tracking-widest font-mono mb-1 w-fit px-2 py-0.5 rounded-md bg-black/45 border
-                          ${img.theme === 'cyan' ? 'text-cyan border-cyan/20' : img.theme === 'gold' ? 'text-neon-gold border-amber-500/20' : 'text-cyan border-cyan/20'}
-                        `}>
-                          {img.badge}
-                        </span>
-                        <h4 className="font-display font-bold text-white text-sm sm:text-base leading-snug">
-                          {img.label}
-                        </h4>
-                        <p className="text-[11px] text-white/70 mt-1 leading-snug opacity-0 max-h-0 group-hover:opacity-100 group-hover:max-h-12 transition-all duration-300 overflow-hidden">
-                          {img.desc}
-                        </p>
-                      </div>
-
-                      {/* Hover indicator corner border */}
-                      <div className="absolute inset-0 border border-white/0 group-hover:border-white/20 rounded-3xl transition-colors pointer-events-none" />
                     </motion.div>
+
+                    {/* Content overlays */}
+                    <div className="absolute inset-x-0 bottom-0 p-4 pt-12 z-20 flex flex-col justify-end pointer-events-none">
+                      <span className={`text-[9px] font-bold uppercase tracking-widest font-mono mb-1 w-fit px-2 py-0.5 rounded-md bg-black/45 border
+                        ${img.theme === 'cyan' ? 'text-cyan border-cyan/20' : img.theme === 'gold' ? 'text-neon-gold border-amber-500/20' : 'text-cyan border-cyan/20'}
+                      `}>
+                        {img.badge}
+                      </span>
+                      <h4 className="font-display font-bold text-white text-sm sm:text-base leading-snug">
+                        {img.label}
+                      </h4>
+                      <p className="text-[11px] text-white/70 mt-1 leading-snug opacity-0 max-h-0 group-hover:opacity-100 group-hover:max-h-12 transition-all duration-300 overflow-hidden">
+                        {img.desc}
+                      </p>
+                    </div>
+
+                    {/* Hover indicator corner border */}
+                    <div className="absolute inset-0 border border-white/0 group-hover:border-white/20 rounded-3xl transition-colors pointer-events-none" />
                   </motion.div>
                 );
               })}
