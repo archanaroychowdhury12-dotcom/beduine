@@ -1944,48 +1944,53 @@ function CreditArchitecture(_props: { activePlan: string | null; ldcTokens: numb
           {credits.map((c, i) => (
             <Reveal key={c.type} delay={i * 0.15}>
               <TiltCard className="h-full" intensity={5}>
-                <div className={`rounded-3xl p-8 border h-full tilt-inner flex flex-col ${c.accent === 'cyan' ? 'glass neon-border-cyan border-cyan/30' : 'glass-gold neon-border-gold border-neon-gold/30'}`}>
+                <div className={`rounded-3xl p-8 border h-full tilt-inner flex flex-col relative overflow-hidden transition-all duration-500 ${c.accent === 'cyan' ? 'glass glass-glow-cyan border-[#18D7F2]/25 shadow-lg shadow-[#18D7F2]/5' : 'glass-gold glass-glow-gold border-[#F7B500]/25 shadow-lg shadow-[#F7B500]/5'}`}>
+                  {/* Ambient soft background glow */}
+                  <div className={`absolute -top-20 -left-20 w-44 h-44 rounded-full blur-[80px] pointer-events-none opacity-30 ${c.accent === 'cyan' ? 'bg-[#18D7F2]' : 'bg-[#F7B500]'}`} />
+
                   {/* Header */}
-                  <div className="flex items-center gap-4 mb-6">
+                  <div className="flex items-center gap-4 mb-6 relative z-10">
                     <FloatingIcon delay={i * 0.5}>
                       <div className={`w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg ${c.accent === 'cyan' ? 'bg-gradient-to-br from-cyan to-blue-500 shadow-cyan/40' : 'bg-gradient-to-br from-neon-gold to-gold-deep shadow-neon-gold/40'}`}>
                         <c.icon className="w-8 h-8 text-cosmos" strokeWidth={2} />
                       </div>
                     </FloatingIcon>
                     <div>
-                      <div className={`font-mono text-xs font-extrabold tracking-wider ${c.accent === 'cyan' ? 'text-cyan-deep' : 'text-teal-700'}`}>{c.type}</div>
-                      <div className="font-display text-xl font-black text-slate-900">{c.name}</div>
+                      <div className={`font-mono text-xs font-black tracking-widest ${c.accent === 'cyan' ? 'text-[#18D7F2]' : 'text-[#F7B500]'}`}>{c.type}</div>
+                      <div className="font-display text-xl font-black text-white tracking-wide">{c.name}</div>
                     </div>
                   </div>
 
                   {/* Rule badge - Full Black and Stylish */}
-                  <div className={`rounded-xl p-3 mb-5 border ${c.accent === 'cyan' ? 'bg-cyan/5 border-cyan/30' : 'bg-teal-500/5 border-teal-500/30'}`}>
+                  <div className={`rounded-xl p-3 mb-5 border backdrop-blur-md relative z-10 ${c.accent === 'cyan' ? 'bg-[#18D7F2]/8 border-[#18D7F2]/20 text-[#18D7F2]' : 'bg-[#F7B500]/8 border-[#F7B500]/20 text-[#F7B500]'}`}>
                     <div className="text-sm font-bold flex items-center gap-1.5">
-                      <CheckCircle2 className={c.accent === 'cyan' ? 'w-4 h-4 text-cyan-deep' : 'w-4 h-4 text-teal-600'} />
-                      <span className="font-extrabold text-slate-900 tracking-tight">{c.rule}</span>
+                      <CheckCircle2 className="w-4 h-4 shrink-0" />
+                      <span className="font-extrabold text-white tracking-tight">{c.rule}</span>
                     </div>
                   </div>
 
                   {/* Visual illustration slot */}
                   {c.type === 'LDC' ? (
                     /* Lucky Draw Token Image */
-                    <div className="relative rounded-2xl overflow-hidden border border-white/10 group shadow-2xl mb-6 h-40 bg-cosmos shrink-0">
-                      <img src="/images/lucky_draw_token.png" alt="Lucky Draw Token" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-                      <div className="absolute inset-0 bg-black/5" />
-                      <div className="absolute inset-0 p-5 flex flex-col justify-between">
+                    <div className="relative rounded-2xl overflow-hidden border border-white/10 group shadow-2xl mb-6 h-40 bg-slate-950 shrink-0">
+                      {/* Sweeping glare reflection effect */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:animate-card-shine pointer-events-none z-10" />
+                      <img src="/images/lucky_draw_token.png" alt="Lucky Draw Token" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-80" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent z-[2]" />
+                      <div className="absolute inset-0 p-5 flex flex-col justify-between z-[3]">
                         <div className="flex justify-between items-start">
-                          <span className="text-[10px] font-mono tracking-widest text-cyan font-bold">
+                          <span className="text-[9px] font-mono tracking-widest text-[#18D7F2] font-black bg-slate-950/60 px-2 py-0.5 rounded border border-[#18D7F2]/30 shadow-md">
                             LUCKY TOKEN
                           </span>
-                          <span className="text-cyan/80 font-mono text-[9px]">
-                            &gt;_ active
+                          <span className="text-[#18D7F2] font-mono text-[9px] flex items-center gap-1 bg-slate-950/60 px-2 py-0.5 rounded border border-[#18D7F2]/20">
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#18D7F2] animate-pulse" /> active
                           </span>
                         </div>
                         <div>
-                          <div className="text-cyan font-mono text-xl tracking-widest mb-1 font-bold">
+                          <div className="text-white font-mono text-xl tracking-widest mb-1 font-black drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
                             WEEKLY DRAW
                           </div>
-                          <div className="flex justify-between items-center text-[10px] font-mono text-cyan-deep/80 font-semibold">
+                          <div className="flex justify-between items-center text-[10px] font-mono text-slate-300 font-bold">
                             <span>LDC UNIT</span>
                             <span>EXP: Sunday 8PM</span>
                           </div>
@@ -1994,28 +1999,37 @@ function CreditArchitecture(_props: { activePlan: string | null; ldcTokens: numb
                     </div>
                   ) : (
                     /* Discount Credit Voucher (CSS Holographic Card - Dark Premium) */
-                    <div className="relative rounded-2xl overflow-hidden border border-teal-500/30 group shadow-2xl mb-6 h-40 bg-slate-950 flex flex-col justify-between p-5 shrink-0">
-                      <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-teal-500/10 to-transparent pointer-events-none group-hover:scale-105 transition-transform duration-700" />
-                      <div className="absolute -top-12 -left-12 w-24 h-24 rounded-full bg-teal-500/5 blur-xl pointer-events-none" />
-                      <div className="absolute -bottom-12 -right-12 w-24 h-24 rounded-full bg-cyan-500/5 blur-xl pointer-events-none" />
+                    <div className="relative rounded-2xl overflow-hidden border border-[#F7B500]/30 group shadow-2xl mb-6 h-40 bg-gradient-to-br from-slate-900 via-[#0B1F2E] to-slate-950 flex flex-col justify-between p-5 shrink-0">
+                      {/* Sweeping glare reflection effect */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:animate-card-shine pointer-events-none z-10" />
+
+                      {/* Ticket punch cuts */}
+                      <div className="absolute -left-2.5 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-[#030C15] border-r border-[#F7B500]/25 z-20 pointer-events-none" />
+                      <div className="absolute -right-2.5 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-[#030C15] border-l border-[#F7B500]/25 z-20 pointer-events-none" />
+                      
+                      {/* Ticket tear line */}
+                      <div className="absolute left-3 right-3 top-1/2 -translate-y-1/2 border-t border-dashed border-[#F7B500]/20 z-0 pointer-events-none" />
+
+                      <div className="absolute -top-12 -left-12 w-24 h-24 rounded-full bg-[#F7B500]/5 blur-xl pointer-events-none" />
+                      <div className="absolute -bottom-12 -right-12 w-24 h-24 rounded-full bg-teal-500/5 blur-xl pointer-events-none" />
 
                       <div className="flex justify-between items-start relative z-10">
-                        <span className="text-[10px] font-mono tracking-widest text-teal-400 font-bold">
+                        <span className="text-[9px] font-mono tracking-widest text-[#F7B500] font-black bg-slate-950/60 px-2 py-0.5 rounded border border-[#F7B500]/30 shadow-md">
                           DISCOUNT VOUCHER
                         </span>
-                        <span className="text-teal-400 font-mono text-[9px] animate-pulse flex items-center gap-1">
-                          <span className="w-1 h-1 rounded-full bg-teal-400" /> redeemable
+                        <span className="text-[#F7B500] font-mono text-[9px] font-bold flex items-center gap-1 bg-slate-950/60 px-2 py-0.5 rounded border border-[#F7B500]/20">
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#F7B500] animate-pulse" /> redeemable
                         </span>
                       </div>
 
                       <div className="flex items-center justify-between my-2 relative z-10">
                         <div className="text-left">
                           <div className="text-[9px] uppercase tracking-widest text-slate-400 font-mono">Value</div>
-                          <div className="text-3xl font-display font-black text-teal-400 tracking-tight leading-none">
+                          <div className="text-3xl font-display font-black text-[#F7B500] tracking-tight leading-none drop-shadow-[0_0_8px_rgba(247,181,0,0.35)]">
                             Rs.500
                           </div>
                         </div>
-                        <div className="h-10 w-px border-l border-dashed border-teal-500/30" />
+                        <div className="h-10 w-px border-l border-dashed border-slate-700/40" />
                         <div className="text-right">
                           <div className="text-[9px] uppercase tracking-widest text-slate-400 font-mono">Applicable on</div>
                           <div className="text-xs font-bold text-white mt-0.5">
@@ -2024,20 +2038,20 @@ function CreditArchitecture(_props: { activePlan: string | null; ldcTokens: numb
                         </div>
                       </div>
 
-                      <div className="flex justify-between items-center text-[10px] font-mono text-teal-400/80 font-semibold relative z-10 pt-2 border-t border-slate-800">
+                      <div className="flex justify-between items-center text-[10px] font-mono text-slate-400 font-semibold relative z-10 pt-2 border-t border-slate-800">
                         <span>SECURE CREDITS</span>
                         <span className="text-white/80">100% SECURED</span>
                       </div>
                     </div>
                   )}
 
-                  <p className="text-sm text-slate-700 leading-relaxed mb-6 flex-1 font-medium">{c.desc}</p>
+                  <p className="text-sm text-slate-300 leading-relaxed mb-6 flex-1 font-medium relative z-10">{c.desc}</p>
 
-                  <ul className="space-y-2.5 pt-5 border-t border-slate-line">
+                  <ul className="space-y-2.5 pt-5 border-t border-slate-line relative z-10">
                     {c.details.map((d) => (
-                      <li key={d} className="flex items-start gap-2.5 text-sm text-slate-900 font-semibold">
+                      <li key={d} className="flex items-start gap-2.5 text-sm text-slate-200 font-semibold">
                         <GoldCheck size={15} variant={c.accent === 'cyan' ? 'cyan' : 'gold'} />
-                        <span className="text-slate-900 font-bold">{d}</span>
+                        <span className="text-slate-300 font-medium">{d}</span>
                       </li>
                     ))}
                   </ul>
@@ -2049,54 +2063,77 @@ function CreditArchitecture(_props: { activePlan: string | null; ldcTokens: numb
           {/* Third Column: Interactive Holographic Member Pass */}
           <Reveal delay={0.3}>
             <TiltCard className="h-full" intensity={5}>
-              <div className="rounded-3xl p-8 border h-full tilt-inner flex flex-col justify-between overflow-hidden relative transition-all duration-500 border-teal-500/30 glass shadow-teal-500/5">
+              <div className="rounded-3xl p-8 border h-full tilt-inner flex flex-col justify-between overflow-hidden relative transition-all duration-500 border-teal-500/20 glass glass-glow-teal shadow-lg shadow-teal-500/5">
+                {/* Ambient soft background glow */}
+                <div className="absolute -top-20 -left-20 w-44 h-44 rounded-full blur-[80px] pointer-events-none opacity-30 bg-[#00C7A3]" />
                 <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent pointer-events-none" />
 
                 <div>
-                  <div className="flex items-center gap-4 mb-6">
+                  <div className="flex items-center gap-4 mb-6 relative z-10">
                     <div className="w-16 h-16 rounded-2xl flex items-center justify-center bg-gradient-to-br from-cyan to-teal-deep shadow-lg shadow-cyan/20">
                       <Fingerprint className="w-8 h-8 text-cosmos" strokeWidth={2} />
                     </div>
                     <div>
-                      <div className="font-mono text-xs font-extrabold tracking-wider text-teal-700">// BEDUINE DIGITAL PASS</div>
-                      <div className="font-display text-xl font-black text-slate-900">BEDUINE Member Pass</div>
+                      <div className="font-mono text-xs font-black tracking-widest text-[#00C7A3]">// BEDUINE DIGITAL PASS</div>
+                      <div className="font-display text-xl font-black text-white tracking-wide">BEDUINE Member Pass</div>
                     </div>
                   </div>
 
                   {/* Digital Pass Image */}
-                  <div className="relative rounded-2xl overflow-hidden border border-white/10 group shadow-2xl mb-6 h-40">
-                    <img src="/images/credit_card_holographic_1779521713449.png" alt="Holographic Credit Card" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-                    <div className="absolute inset-0 bg-black/10" />
-                    <div className="absolute inset-0 p-5 flex flex-col justify-between">
+                  <div className="relative rounded-2xl overflow-hidden border border-white/10 group shadow-2xl mb-6 h-40 bg-slate-950 shrink-0">
+                    {/* Sweeping glare reflection effect */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent -translate-x-full group-hover:animate-card-shine pointer-events-none z-10" />
+                    
+                    <img src="/images/credit_card_holographic_1779521713449.png" alt="Holographic Credit Card" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-80" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-slate-950/20 z-[2]" />
+                    
+                    <div className="absolute inset-0 p-5 flex flex-col justify-between z-[3]">
                       <div className="flex justify-between items-start">
-                        <span className="text-[10px] font-mono tracking-widest text-white font-bold">
+                        <span className="text-[9px] font-mono tracking-widest text-white font-black bg-slate-950/60 px-2 py-0.5 rounded border border-white/20 shadow-md">
                           MEMBER CLUB
                         </span>
-                        <span className="text-white/80 font-mono text-[9px]">
-                          &gt;_ active
-                        </span>
-                      </div>
-                      <div>
-                        <div className="text-white font-mono text-base tracking-widest mb-1">
-                          BEDUINE PASS 2026
+                        
+                        {/* Realistic Smart Chip */}
+                        <div className="w-8 h-6 rounded bg-gradient-to-br from-yellow-300 via-amber-400 to-yellow-600 border border-yellow-200/30 relative overflow-hidden flex flex-col justify-between p-1 shadow-md shadow-amber-500/20 opacity-90">
+                          <div className="h-full w-full border-t border-b border-yellow-900/30 flex justify-between">
+                            <div className="h-full w-[2px] bg-yellow-900/20" />
+                            <div className="h-full w-[2px] bg-yellow-900/20" />
+                            <div className="h-full w-[2px] bg-yellow-900/20" />
+                          </div>
                         </div>
-                        <div className="flex justify-between items-center text-[10px] font-mono text-white/90">
-                          <span>MEMBER PASS</span>
-                          <span>EXP: 12 Months</span>
+                      </div>
+                      
+                      <div className="flex justify-between items-end">
+                        <div>
+                          <div className="text-white font-mono text-base tracking-widest mb-1 font-bold drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+                            BEDUINE PASS 2026
+                          </div>
+                          <div className="flex gap-4 text-[9px] font-mono text-slate-300">
+                            <span>MEMBER PASS</span>
+                            <span>EXP: 12 Months</span>
+                          </div>
+                        </div>
+                        
+                        {/* Barcode */}
+                        <div className="flex gap-[1.5px] items-end h-5 opacity-60 shrink-0">
+                          {[1.5, 3, 1, 4, 1.5, 2, 3, 1, 2.5, 1.5].map((w, index) => (
+                            <div key={index} className="bg-white h-full" style={{ width: w }} />
+                          ))}
                         </div>
                       </div>
                     </div>
                   </div>
 
-                  <p className="text-sm text-slate-700 leading-relaxed mb-6 font-medium">
+                  <p className="text-sm text-slate-300 leading-relaxed mb-6 font-medium relative z-10">
                     Your virtual membership card stores your draw tokens and discount credits. Accessible instantly from your phone.
                   </p>
                 </div>
 
-                <div className="rounded-xl p-3 bg-slate-100 border border-slate-200 flex items-center justify-between text-xs font-mono text-slate-900 font-bold">
-                  <span>Lucky Draw entry included</span>
-                  <span className="text-teal-600 font-black">
-                    Guaranteed Discounts
+                <div className="rounded-xl p-3.5 bg-slate-950/65 border border-slate-800/80 flex items-center justify-between text-xs font-mono text-slate-300 font-semibold shadow-inner relative z-10">
+                  <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-cyan" /> Lucky Draw Entry</span>
+                  <div className="h-4 w-px bg-slate-800" />
+                  <span className="text-[#00C7A3] font-bold flex items-center gap-1.5">
+                    <ShieldCheck className="w-4 h-4 text-[#00C7A3]" /> Guaranteed DC
                   </span>
                 </div>
               </div>

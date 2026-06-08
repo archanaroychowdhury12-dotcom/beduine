@@ -1491,3 +1491,44 @@ input:focus-visible,
   box-shadow: 0 0 14px rgba(0, 217, 255, 0.6) !important;
 }
 
+/* ============ UPGRADES: Credit Card Glass & Hologram Glow ============ */
+@keyframes card-shine {
+  0% { transform: translateX(-150%) skewX(-15deg); }
+  50% { transform: translateX(150%) skewX(-15deg); }
+  100% { transform: translateX(150%) skewX(-15deg); }
+}
+
+.animate-card-shine {
+  animation: card-shine 4.5s infinite ease-in-out;
+}
+
+@keyframes hologram-glow {
+  0%, 100% { filter: drop-shadow(0 0 4px rgba(24, 215, 242, 0.45)) brightness(1); }
+  50% { filter: drop-shadow(0 0 12px rgba(24, 215, 242, 0.8)) brightness(1.18); }
+}
+
+.animate-hologram-glow {
+  animation: hologram-glow 3s infinite ease-in-out;
+}
+
+.glass-glow-cyan {
+  box-shadow: 0 12px 40px -10px rgba(0, 0, 0, 0.5), 0 0 30px rgba(24, 215, 242, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+}
+.glass-glow-cyan:hover {
+  box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.6), 0 0 45px rgba(24, 215, 242, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
+}
+
+.glass-glow-gold {
+  box-shadow: 0 12px 40px -10px rgba(0, 0, 0, 0.5), 0 0 30px rgba(247, 181, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+}
+.glass-glow-gold:hover {
+  box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.6), 0 0 45px rgba(247, 181, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
+}
+
+.glass-glow-teal {
+  box-shadow: 0 12px 40px -10px rgba(0, 0, 0, 0.5), 0 0 30px rgba(0, 199, 163, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+}
+.glass-glow-teal:hover {
+  box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.6), 0 0 45px rgba(0, 199, 163, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
+}
+
