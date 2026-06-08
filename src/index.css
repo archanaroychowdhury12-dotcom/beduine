@@ -95,31 +95,53 @@ body {
   position: fixed; top: 0; left: 0;
   width: 52px; height: 52px;
   margin-left: -26px; margin-top: -26px;
-  border: 1px solid rgba(13, 148, 136, 0.35);
+  border: 1.5px solid rgba(24, 215, 242, 0.3);
   border-radius: 50%;
   pointer-events: none;
   z-index: 9998;
   will-change: transform;
-  transition: width 0.25s cubic-bezier(0.22, 1, 0.36, 1), height 0.25s cubic-bezier(0.22, 1, 0.36, 1), margin 0.25s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.25s, background-color 0.25s;
+  transition: width 0.3s cubic-bezier(0.25, 1, 0.5, 1), height 0.3s cubic-bezier(0.25, 1, 0.5, 1), margin 0.3s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.3s, background-color 0.3s, box-shadow 0.3s;
+  box-shadow: 0 0 10px rgba(24, 215, 242, 0.1);
+}
+.cursor-ring-inner {
+  position: absolute;
+  inset: 2px;
+  border: 1px dashed rgba(247, 181, 0, 0.2);
+  border-radius: 50%;
+  transition: border-color 0.3s, transform 0.3s;
 }
 .cursor-hover .airplane-wrapper svg {
   transform: scale(1.25);
   filter: drop-shadow(0 4px 10px rgba(13, 148, 136, 0.5));
 }
 .cursor-hover .cursor-ring {
-  width: 68px; height: 68px;
-  margin-left: -34px; margin-top: -34px;
-  border-color: rgba(0, 180, 216, 0.6);
-  background-color: rgba(0, 180, 216, 0.04);
+  width: 72px; height: 72px;
+  margin-left: -36px; margin-top: -36px;
+  border-color: rgba(24, 215, 242, 0.65);
+  background-color: rgba(24, 215, 242, 0.05);
+  box-shadow: 0 0 15px rgba(24, 215, 242, 0.2);
+}
+.cursor-hover .cursor-ring-inner {
+  border-color: rgba(247, 181, 0, 0.65);
+  animation: rotate-ring 6s linear infinite;
 }
 .cursor-clicked .airplane-wrapper svg {
   transform: scale(0.7);
 }
 .cursor-clicked .cursor-ring {
-  width: 36px; height: 36px;
-  margin-left: -18px; margin-top: -18px;
-  border-color: #0D9488;
-  background-color: rgba(13, 148, 136, 0.1);
+  width: 38px; height: 38px;
+  margin-left: -19px; margin-top: -19px;
+  border-color: rgba(247, 181, 0, 0.85);
+  background-color: rgba(247, 181, 0, 0.1);
+  box-shadow: 0 0 8px rgba(247, 181, 0, 0.3);
+}
+.cursor-clicked .cursor-ring-inner {
+  border-color: rgba(24, 215, 242, 0.5);
+  transform: scale(0.8);
+}
+@keyframes rotate-ring {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 /* Glass variants */

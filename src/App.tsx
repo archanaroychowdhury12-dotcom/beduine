@@ -384,21 +384,54 @@ function CustomCursor() {
   const dotRef = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
   const planeRef = useRef<HTMLDivElement>(null);
+  
   useEffect(() => {
     let mouseX = -100, mouseY = -100, ringX = -100, ringY = -100, magnetX = 0, magnetY = 0, hovering = false;
     let prevX = -100, prevY = -100;
     let currentAngle = 45;
+    
+    // Scale parameters for speed-dependent stretch
+    let targetScaleX = 1, targetScaleY = 1;
+    let currentScaleX = 1, currentScaleY = 1;
+    
+    // Trail tracking
+    const trailPositions = Array.from({ length: 30 }, () => ({ x: -100, y: -100 }));
+    
+    // Click sparks tracking
+    interface SparkData {
+      x: number;
+      y: number;
+      vx: number;
+      vy: number;
+      alpha: number;
+      active: boolean;
+    }
+    const sparkData: SparkData[] = Array.from({ length: 8 }, () => ({
+      x: 0, y: 0, vx: 0, vy: 0, alpha: 0, active: false
+    }));
+
     const onMove = (e: MouseEvent) => {
       mouseX = e.clientX; mouseY = e.clientY;
       const dx = mouseX - prevX;
       const dy = mouseY - prevY;
-      if (Math.abs(dx) > 1 || Math.abs(dy) > 1) {
+      let velocity = Math.sqrt(dx * dx + dy * dy);
+      
+      if (Math.abs(dx) > 0.5 || Math.abs(dy) > 0.5) {
         const angleRad = Math.atan2(dy, dx);
         let angleDeg = (angleRad * 180) / Math.PI + 90;
         currentAngle = angleDeg;
         prevX = mouseX;
         prevY = mouseY;
+        
+        // Stretch plane forward based on velocity
+        const speedScale = Math.min(velocity * 0.035, 0.25);
+        targetScaleX = 1 - speedScale * 0.45;
+        targetScaleY = 1 + speedScale * 0.75;
+      } else {
+        targetScaleX = 1;
+        targetScaleY = 1;
       }
+      
       const target = e.target as HTMLElement | null;
       const magnet = (target && typeof target.closest === 'function') ? target.closest('[data-magnetic]') : null;
       if (magnet) {
@@ -410,31 +443,90 @@ function CustomCursor() {
         magnetX *= 0.85; magnetY *= 0.85;
         if (hovering) { document.body.classList.remove('cursor-hover'); hovering = false; }
       }
+      
       if (dotRef.current) {
         dotRef.current.style.transform = `translate3d(${mouseX + magnetX}px, ${mouseY + magnetY}px, 0)`;
       }
-      if (planeRef.current) {
-        planeRef.current.style.transform = `rotate(${currentAngle}deg)`;
-      }
     };
+    
     const onMouseDown = () => {
       document.body.classList.add('cursor-clicked');
+      // Trigger spark explosion at mouse coordinate
+      sparkData.forEach((spark, i) => {
+        spark.x = mouseX;
+        spark.y = mouseY;
+        const angle = (i / 8) * Math.PI * 2 + Math.random() * 0.4;
+        const speed = 4 + Math.random() * 6;
+        spark.vx = Math.cos(angle) * speed;
+        spark.vy = Math.sin(angle) * speed;
+        spark.alpha = 1;
+        spark.active = true;
+      });
     };
+    
     const onMouseUp = () => {
       document.body.classList.remove('cursor-clicked');
     };
+    
     let raf = 0;
     const loop = () => {
       ringX += (mouseX - ringX) * 0.15; ringY += (mouseY - ringY) * 0.15;
       if (ringRef.current) {
         ringRef.current.style.transform = `translate3d(${ringX}px, ${ringY}px, 0)`;
       }
+      
+      // Interpolate scale back to normal
+      currentScaleX += (targetScaleX - currentScaleX) * 0.15;
+      currentScaleY += (targetScaleY - currentScaleY) * 0.15;
+      
+      // Target scale decays back to 1
+      targetScaleX += (1 - targetScaleX) * 0.08;
+      targetScaleY += (1 - targetScaleY) * 0.08;
+
+      if (planeRef.current) {
+        planeRef.current.style.transform = `rotate(${currentAngle}deg) scale(${currentScaleX}, ${currentScaleY})`;
+      }
+      
+      // Update trail positions
+      trailPositions.unshift({ x: mouseX + magnetX, y: mouseY + magnetY });
+      trailPositions.pop();
+      
+      const trailDots = document.querySelectorAll('.cursor-trail-dot') as NodeListOf<HTMLDivElement>;
+      trailDots.forEach((dot, i) => {
+        const pos = trailPositions[(i + 1) * 3];
+        if (pos && dot) {
+          dot.style.transform = `translate3d(${pos.x}px, ${pos.y}px, 0)`;
+        }
+      });
+      
+      // Update sparks animation
+      const sparks = document.querySelectorAll('.cursor-spark') as NodeListOf<HTMLDivElement>;
+      sparks.forEach((dot, i) => {
+        const data = sparkData[i];
+        if (data.active) {
+          data.x += data.vx;
+          data.y += data.vy;
+          data.vx *= 0.90; // friction
+          data.vy *= 0.90;
+          data.alpha -= 0.035; // fade out
+          if (data.alpha <= 0) {
+            data.active = false;
+            dot.style.opacity = '0';
+          } else {
+            dot.style.opacity = String(data.alpha);
+            dot.style.transform = `translate3d(${data.x}px, ${data.y}px, 0) scale(${data.alpha * 1.6})`;
+          }
+        }
+      });
+
       raf = requestAnimationFrame(loop);
     };
+    
     window.addEventListener('mousemove', onMove);
     window.addEventListener('mousedown', onMouseDown);
     window.addEventListener('mouseup', onMouseUp);
     loop();
+    
     return () => {
       window.removeEventListener('mousemove', onMove);
       window.removeEventListener('mousedown', onMouseDown);
@@ -442,8 +534,60 @@ function CustomCursor() {
       cancelAnimationFrame(raf);
     };
   }, []);
+  
   return (
     <>
+      {/* Contrail / Vapor Trail dots */}
+      {Array.from({ length: 6 }).map((_, i) => {
+        const size = 9 - i * 1.4;
+        return (
+          <div
+            key={i}
+            className="cursor-trail-dot"
+            style={{
+              position: 'fixed',
+              top: 0, left: 0,
+              width: `${size}px`,
+              height: `${size}px`,
+              marginLeft: `-${size / 2}px`,
+              marginTop: `-${size / 2}px`,
+              background: i % 2 === 0 ? 'rgba(24, 215, 242, 0.4)' : 'rgba(247, 181, 0, 0.3)',
+              borderRadius: '50%',
+              pointerEvents: 'none',
+              zIndex: 9997,
+              willChange: 'transform',
+              filter: 'blur(0.5px)'
+            }}
+          />
+        );
+      })}
+
+      {/* Click sparks */}
+      {Array.from({ length: 8 }).map((_, i) => {
+        const size = 6;
+        return (
+          <div
+            key={i}
+            className="cursor-spark"
+            style={{
+              position: 'fixed',
+              top: 0, left: 0,
+              width: `${size}px`,
+              height: `${size}px`,
+              marginLeft: `-${size / 2}px`,
+              marginTop: `-${size / 2}px`,
+              background: i % 2 === 0 ? '#18D7F2' : '#F7B500',
+              borderRadius: '50%',
+              pointerEvents: 'none',
+              zIndex: 9999,
+              willChange: 'transform',
+              opacity: 0,
+              boxShadow: i % 2 === 0 ? '0 0 8px #18D7F2' : '0 0 8px #F7B500'
+            }}
+          />
+        );
+      })}
+
       <div ref={dotRef} className="cursor-dot">
         <div ref={planeRef} className="airplane-wrapper">
           <svg viewBox="0 0 64 64" width="36" height="36" className="realistic-airplane">
@@ -476,6 +620,17 @@ function CustomCursor() {
             <path d="M32 20 L8 40 L8 44 L32 32 Z" fill="url(#wing-grad-left)" stroke="#00B4D8" strokeWidth="0.5"/>
             {/* Right Wing */}
             <path d="M32 20 L56 40 L56 44 L32 32 Z" fill="url(#wing-grad-right)" stroke="#00B4D8" strokeWidth="0.5"/>
+            
+            {/* Pulsating Jet Engines Thrust Glow */}
+            <circle cx="19.25" cy="42" r="1.5" fill="#18D7F2">
+              <animate attributeName="r" values="1.2;2.2;1.2" dur="0.15s" repeatCount="indefinite" />
+              <animate attributeName="opacity" values="0.6;1;0.6" dur="0.15s" repeatCount="indefinite" />
+            </circle>
+            <circle cx="44.75" cy="42" r="1.5" fill="#18D7F2">
+              <animate attributeName="r" values="1.2;2.2;1.2" dur="0.15s" repeatCount="indefinite" />
+              <animate attributeName="opacity" values="0.6;1;0.6" dur="0.15s" repeatCount="indefinite" />
+            </circle>
+
             {/* Left Engine */}
             <rect x="17.5" y="32" width="3.5" height="9" rx="1.5" fill="url(#gold-grad)" stroke="#E2E8F0" strokeWidth="0.5" transform="rotate(-5 19 36)"/>
             {/* Right Engine */}
@@ -493,7 +648,9 @@ function CustomCursor() {
           </svg>
         </div>
       </div>
-      <div ref={ringRef} className="cursor-ring" />
+      <div ref={ringRef} className="cursor-ring">
+        <div className="cursor-ring-inner" />
+      </div>
     </>
   );
 }
@@ -562,6 +719,7 @@ function CinematicIntro({ onComplete }: { onComplete: () => void }) {
           src="/images/Beduine_Logo_Last_Clean_Sound_Adjusted.mp4"
           playsInline
           className="w-full h-full object-contain bg-black"
+          style={{ transform: 'scale(1.12) translateY(-6%)' }}
           onEnded={onComplete}
           onError={() => setVideoError(true)}
         />
@@ -2953,84 +3111,98 @@ export default function App() {
     window.open(whatsappUrl, '_blank');
   }, []);
 
+  // Manage body cursor visibility: default cursor during intro, hidden after intro for the custom cursor
+  useEffect(() => {
+    if (!introComplete) {
+      document.body.style.cursor = 'auto';
+    } else {
+      document.body.style.cursor = 'none';
+    }
+    return () => {
+      document.body.style.cursor = '';
+    };
+  }, [introComplete]);
+
   return (
     <div className="min-h-screen bg-cosmos text-ink relative">
       <AnimatePresence>{!introComplete && <CinematicIntro onComplete={handleIntroComplete} />}</AnimatePresence>
-      <ScrollProgress />
-      <CustomCursor />
+      
+      {introComplete && <ScrollProgress />}
+      {introComplete && <CustomCursor />}
 
-      <div className="noise fixed inset-0 pointer-events-none z-30" />
-      <Navbar />
+      {/* Main page content container - invisible during intro to prevent menu leak, then fades in beautifully */}
+      <div className={`transition-opacity duration-700 ${introComplete ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+        <div className="noise fixed inset-0 pointer-events-none z-30" />
+        <Navbar />
 
+        <main className="relative z-10 flex flex-col gap-0">
+          <Hero />
+          <TrustStrip />
 
-      <main className="relative z-10 flex flex-col gap-0">
-        <Hero />
-        <TrustStrip />
+          <div className="relative video-bg-container">
+            {/* Cinematic fixed background video: constrained to screen width/height to prevent stretching and pixelation. */}
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              preload="metadata"
+              poster="/images/beduine_travel_hero_1779521651766.png"
+              className="fixed inset-0 w-full h-full object-cover pointer-events-none"
+              style={{
+                zIndex: 0,
+                transform: 'translate3d(0, 0, 0)',
+                backfaceVisibility: 'hidden',
+                willChange: 'transform'
+              }}
+            >
+              <source src="/images/hero_bg_video.mp4" type="video/mp4" />
+            </video>
+             {/* Clear cinematic overlay for text readability */}
+            <div
+              className="fixed inset-0 pointer-events-none"
+              style={{
+                zIndex: 1,
+                background: `
+                  linear-gradient(180deg, rgba(3,12,22,0.35) 0%, rgba(3,12,22,0.24) 24%, rgba(3,12,22,0.2) 62%, rgba(3,12,22,0.35) 100%)
+                `,
+              }}
+            />
+            {/* Subtle teal atmosphere glow - optimized without expensive fullscreen mix-blend-mode */}
+            <div
+              className="fixed inset-0 pointer-events-none"
+              style={{
+                zIndex: 1,
+                background: 'radial-gradient(ellipse at 50% 28%, rgba(24,215,242,0.07) 0%, rgba(8,31,45,0.04) 38%, transparent 82%)',
+              }}
+            />
 
-
-        <div className="relative video-bg-container">
-          {/* Cinematic fixed background video: constrained to screen width/height to prevent stretching and pixelation. */}
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
-            preload="metadata"
-            poster="/images/beduine_travel_hero_1779521651766.png"
-            className="fixed inset-0 w-full h-full object-cover pointer-events-none"
-            style={{
-              zIndex: 0,
-              transform: 'translate3d(0, 0, 0)',
-              backfaceVisibility: 'hidden',
-              willChange: 'transform'
-            }}
-          >
-            <source src="/images/hero_bg_video.mp4" type="video/mp4" />
-          </video>
-           {/* Clear cinematic overlay for text readability */}
-          <div
-            className="fixed inset-0 pointer-events-none"
-            style={{
-              zIndex: 1,
-              background: `
-                linear-gradient(180deg, rgba(3,12,22,0.35) 0%, rgba(3,12,22,0.24) 24%, rgba(3,12,22,0.2) 62%, rgba(3,12,22,0.35) 100%)
-              `,
-            }}
-          />
-          {/* Subtle teal atmosphere glow - optimized without expensive fullscreen mix-blend-mode */}
-          <div
-            className="fixed inset-0 pointer-events-none"
-            style={{
-              zIndex: 1,
-              background: 'radial-gradient(ellipse at 50% 28%, rgba(24,215,242,0.07) 0%, rgba(8,31,45,0.04) 38%, transparent 82%)',
-            }}
-          />
-
-          <div className="relative z-10 flex flex-col gap-8 lg:gap-12">
-            <ScrollRoundedSection><AboutUs /></ScrollRoundedSection>
-            <ScrollRoundedSection><Journey /></ScrollRoundedSection>
-            <ScrollRoundedSection><HowItWorks /></ScrollRoundedSection>
-            <ScrollRoundedSection><Plans onSelectPlan={handleSelectPlan} /></ScrollRoundedSection>
-            <ScrollRoundedSection><InternationalPlans onSelectPlan={handleSelectPlan} /></ScrollRoundedSection>
-            <ScrollRoundedSection><LuckyDrawSystem /></ScrollRoundedSection>
-            <ScrollRoundedSection><CreditArchitecture activePlan={null} ldcTokens={0} discountCredits={0} /></ScrollRoundedSection>
-            <ScrollRoundedSection><NonWinnerGuarantee /></ScrollRoundedSection>
-            <Destinations />
-            <ScrollRoundedSection><Winners /></ScrollRoundedSection>
-            <ScrollRoundedSection><Services /></ScrollRoundedSection>
-            <ScrollRoundedSection><Transparency /></ScrollRoundedSection>
-            <ScrollRoundedSection><CTABanner /></ScrollRoundedSection>
+            <div className="relative z-10 flex flex-col gap-8 lg:gap-12">
+              <ScrollRoundedSection><AboutUs /></ScrollRoundedSection>
+              <ScrollRoundedSection><Journey /></ScrollRoundedSection>
+              <ScrollRoundedSection><HowItWorks /></ScrollRoundedSection>
+              <ScrollRoundedSection><Plans onSelectPlan={handleSelectPlan} /></ScrollRoundedSection>
+              <ScrollRoundedSection><InternationalPlans onSelectPlan={handleSelectPlan} /></ScrollRoundedSection>
+              <ScrollRoundedSection><LuckyDrawSystem /></ScrollRoundedSection>
+              <ScrollRoundedSection><CreditArchitecture activePlan={null} ldcTokens={0} discountCredits={0} /></ScrollRoundedSection>
+              <ScrollRoundedSection><NonWinnerGuarantee /></ScrollRoundedSection>
+              <Destinations />
+              <ScrollRoundedSection><Winners /></ScrollRoundedSection>
+              <ScrollRoundedSection><Services /></ScrollRoundedSection>
+              <ScrollRoundedSection><Transparency /></ScrollRoundedSection>
+              <ScrollRoundedSection><CTABanner /></ScrollRoundedSection>
+            </div>
           </div>
-        </div>
-      </main>
-      <Footer />
-      <FloatingButtons />
-      <MobileSticky />
-      <a href="#plans" className="choose-btn hidden lg:inline-flex">
-        <ParticleButton variant="gold" className="px-5 py-3 rounded-full font-bold text-sm shadow-xl shadow-neon-gold/30 flex items-center gap-1.5 hover:scale-110 transition-transform">
-          <Crown className="w-4 h-4" /> Choose Plan
-        </ParticleButton>
-      </a>
+        </main>
+        <Footer />
+        <FloatingButtons />
+        <MobileSticky />
+        <a href="#plans" className="choose-btn hidden lg:inline-flex">
+          <ParticleButton variant="gold" className="px-5 py-3 rounded-full font-bold text-sm shadow-xl shadow-neon-gold/30 flex items-center gap-1.5 hover:scale-110 transition-transform">
+            <Crown className="w-4 h-4" /> Choose Plan
+          </ParticleButton>
+        </a>
+      </div>
     </div>
   );
 }
