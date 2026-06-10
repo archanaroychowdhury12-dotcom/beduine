@@ -1,0 +1,9 @@
+.vercel
+.git
+.codex-screenshots
+Initial_Scene_*
+node_modules
+dist
+public/images/map_3d_frames
+*.bak
+*.log

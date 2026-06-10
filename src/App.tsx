@@ -5,13 +5,13 @@ import {
   ChevronRight, CheckCircle2, Check, Star,
   Phone, Calendar, MapPin, Hotel, Train, Plane,
   FileCheck2, Banknote, ArrowRight, Menu, X, MessageCircle,
-  Download, Lock, Eye, Target, TrendingUp, Crown,
+  Download, Lock, Eye, TrendingUp, Crown,
   Video, Camera, Send, Tv, Share2, FileText,
   BadgeCheck, Zap, Bot, Fingerprint, Scan,
-  Heart, Globe, Users, Rocket, Wallet, Shield, HeartHandshake,
-  Volume2
+  Heart, Globe, Users, Rocket, Wallet, Shield, HeartHandshake
 } from 'lucide-react';
 import ScatteredShowcase from './ScatteredShowcase';
+import RegistrationPage from './RegistrationPage';
 
 
 
@@ -28,6 +28,8 @@ const NAV = [
   { id: 'destinations', label: 'Destinations' },
   { id: 'services', label: 'Services' },
   { id: 'audit', label: 'Transparency' },
+  { id: 'join', label: 'Join' },
+  { id: 'terms', label: 'Terms' },
   { id: 'contact', label: 'Contact' },
 ];
 
@@ -35,6 +37,8 @@ const DESKTOP_NAV = [
   { id: 'about', label: 'About' },
   { id: 'plans', label: 'Plans' },
   { id: 'destinations', label: 'Destinations' },
+  { id: 'join', label: 'Join' },
+  { id: 'terms', label: 'Terms' },
   { id: 'audit', label: 'Trust' },
   { id: 'contact', label: 'Contact' },
 ];
@@ -47,18 +51,18 @@ const PLANS = [
     paidDiscount: 'Member rate', insurance: 'Payable', nameChange: 'Not available',
     image: '/images/sundarbans_mangrove_1779521789593.png',
     imageLabel: 'Sundarbans - Boat Safari',
-    destinations: ['Sundarbans (Boat Safari + Tiger Reserve)', 'Bakkhali (Beach Escape)', 'Mousuni Island (Sea & Camping)', 'Mukutmanipur (Dam, Hills & Lake)'],
-    benefits: ['1 Weekly Reward Draw entry', 'Winner tour value up to Rs.3,000', '1 x Rs.500 discount credit if not selected', 'Member-only rates on paid tours', '12-month subscription validity', 'Pickup & drop from selected points'],
+    destinations: ['Sundarban', 'Digha', 'Mousuni Island', 'Purulia'],
+    benefits: ['1 Weekly Promotional Draw entry', 'Eligible for promotional winner benefits', 'Rs.500 discount credit if not selected', 'Member-only rates on paid tours', '12-month subscription validity', '18+ Membership Only'],
   },
   {
-    name: 'Emerald', price: 799, tagline: 'Balanced Choice', icon: Award,
+    name: 'Gold', price: 799, tagline: 'Balanced Choice', icon: Award,
     color: 'from-teal-400 to-emerald-600', glow: 'teal',
     tourValue: 5000, duration: '2N / 3D', discountCredits: 2, discountValue: 1000,
     paidDiscount: 'Member rate', insurance: '50% off', nameChange: 'One time',
     image: '/images/darjeeling_tea_1779521805614.png',
     imageLabel: 'Darjeeling - Tea Gardens',
-    destinations: ['Darjeeling (Toy Train + Tiger Hill Sunrise)', 'Dooars (Jungle Safari + Tea Gardens)', 'Puri + Konark (Jagannath + Sun Temple)', 'Vizag + Araku Valley (Beach + Hills)'],
-    benefits: ['1 Weekly Reward Draw entry', 'Winner tour value up to Rs.5,000', '2 x Rs.500 discount credits if not selected', 'Member-only rates on paid tours', 'Travel insurance at 50% off', 'One-time family name change allowed'],
+    destinations: ['Darjeeling', 'Dooars', 'Puri', 'Daring Bari'],
+    benefits: ['1 Weekly Promotional Draw entry', 'Eligible for promotional winner benefits', 'Rs.1,000 discount credits if not selected', 'Member-only rates on paid tours', 'One-time family name change allowed', '18+ Membership Only'],
   },
   {
     name: 'Platinum', price: 1499, tagline: 'Premium Experience', icon: Crown,
@@ -68,41 +72,41 @@ const PLANS = [
     paidDiscount: 'Member rate', insurance: 'Included free', nameChange: 'Two times',
     image: '/images/kashmir_dal_lake_1779521728036.png',
     imageLabel: 'Kashmir - Dal Lake',
-    destinations: ['Kashmir (Srinagar - Gulmarg - Pahalgam)', 'Rajasthan (Jaipur - Udaipur - Jaisalmer)', 'Kerala (Munnar - Alleppey - Kovalam)', 'Himachal (Shimla - Manali Circuit)'],
-    benefits: ['1 Weekly Reward Draw entry', 'Winner tour value up to Rs.10,000', '4 x Rs.500 discount credits if not selected', 'Member-only rates on paid tours', 'Complimentary travel insurance', 'Two family name changes allowed', 'Priority quarterly tour batching'],
+    destinations: ['Kashmir', 'Goa', 'Sikkim', 'Himachal'],
+    benefits: ['1 Weekly Promotional Draw entry', 'Eligible for promotional winner benefits', 'Rs.2,000 discount credits if not selected', 'Member-only rates on paid tours', 'Two family name changes allowed', '18+ Membership Only'],
   },
 ];
 
 const INTL_PLANS = [
   {
-    name: 'Explorer', price: 4999, tagline: 'International Starter', icon: Globe,
+    name: 'Silver', price: 4999, tagline: 'International Starter', icon: Globe,
     color: 'from-sky-400 to-blue-600', glow: 'blue',
     tourValue: 25000, duration: '3N / 4D', discountCredits: 5, discountValue: 2500,
-    paidDiscount: 'Member rate', insurance: '50% off', nameChange: 'One time',
-    image: '/images/dubai_skyline_1779539448313.png',
-    imageLabel: 'Dubai - Skyline & Dunes',
-    destinations: ['Dubai (Burj Khalifa - Desert Safari - Marina)', 'Thailand (Bangkok - Pattaya - Floating Market)', 'Sri Lanka (Colombo - Kandy - Sigiriya)', 'Nepal (Kathmandu - Pokhara - Chitwan)'],
-    benefits: ['1 Monthly Reward Draw entry', 'Winner tour value up to Rs.25,000', '5 x Rs.500 discount credits if not selected', 'Member-only rates on international tours', 'Travel insurance at 50% off', 'One-time name change allowed', 'Visa assistance included'],
+    paidDiscount: 'Up to 5% off', insurance: '50% off', nameChange: 'One time',
+    image: '/images/nepal.png',
+    imageLabel: 'Nepal - Valley & Peaks',
+    destinations: ['Nepal', 'Bhutan'],
+    benefits: ['1 Monthly Promotional Draw entry', 'Winner tour value up to Rs.25,000 (3N/4D)', '5 x Rs.500 discount credits (Rs.2,500 value)', 'Up to 5% off on paid international tours', 'Travel insurance – 50% off', 'One-time family name change allowed', '18+ Membership Only'],
   },
   {
-    name: 'Voyager', price: 7999, tagline: 'Premium Explorer', icon: Plane,
+    name: 'Gold', price: 7999, tagline: 'Premium Explorer', icon: Plane,
     color: 'from-emerald-400 to-teal-600', glow: 'teal',
     featured: true, tourValue: 50000, duration: '4N / 5D', discountCredits: 8, discountValue: 4000,
-    paidDiscount: 'VIP rate', insurance: 'Included free', nameChange: 'Two times',
-    image: '/images/singapore_skyline_1779539502293.png',
-    imageLabel: 'Singapore - City of Future',
-    destinations: ['Singapore (Gardens by the Bay - Sentosa - Marina Bay)', 'Malaysia (Kuala Lumpur - Langkawi - Genting)', 'Bali (Ubud - Kuta - Tanah Lot - Uluwatu)', 'Vietnam (Hanoi - Ha Long Bay - Ho Chi Minh)'],
-    benefits: ['1 Monthly Reward Draw entry', 'Winner tour value up to Rs.50,000', '8 x Rs.500 discount credits if not selected', 'VIP rates on all international tours', 'Complimentary travel insurance', 'Two name changes allowed', 'Visa assistance + Airport lounge access', 'Priority tour batching'],
+    paidDiscount: 'Up to 7% off', insurance: 'Included free', nameChange: 'Two times',
+    image: '/images/thailand.png',
+    imageLabel: 'Thailand - Temples & Beaches',
+    destinations: ['Thailand', 'Bali'],
+    benefits: ['1 Monthly Promotional Draw entry', 'Winner tour value up to Rs.50,000 (4N/5D)', '8 x Rs.500 discount credits (Rs.4,000 value)', 'Up to 7% off on paid international tours', 'Travel insurance – Free', 'Two family name changes allowed', '18+ Membership Only'],
   },
   {
-    name: 'Globetrotter', price: 14999, tagline: 'Ultimate World Pass', icon: Rocket,
+    name: 'Platinum', price: 14999, tagline: 'Ultimate World Pass', icon: Rocket,
     color: 'from-cyan via-cyan-bright to-cyan-deep', glow: 'cyan',
     tourValue: 100000, duration: '5N / 6D', discountCredits: 15, discountValue: 7500,
-    paidDiscount: 'VIP rate', insurance: 'Included free', nameChange: 'Unlimited',
-    image: '/images/maldives_overwater_1779539482305.png',
-    imageLabel: 'Maldives - Paradise',
-    destinations: ['Maldives (Overwater Villa - Snorkeling - Sunset Cruise)', 'Europe (Paris - Switzerland - Rome - Barcelona)', 'Turkey (Istanbul - Cappadocia - Pamukkale)', 'Japan (Tokyo - Kyoto - Osaka - Mount Fuji)'],
-    benefits: ['1 Monthly Reward Draw entry', 'Winner tour value up to Rs.1,00,000', '15 x Rs.500 discount credits if not selected', 'VIP rates on all international tours', 'Premium travel insurance', 'Unlimited name changes', 'Full visa processing + Airport lounge', 'Dedicated travel concierge', 'Priority booking & upgrades'],
+    paidDiscount: 'Up to 10% off', insurance: 'Included free', nameChange: 'Unlimited',
+    image: '/images/vietnam.png',
+    imageLabel: 'Vietnam - Bays & Cities',
+    destinations: ['Dubai', 'Vietnam'],
+    benefits: ['1 Monthly Promotional Draw entry', 'Winner tour value up to Rs.1,00,000 (5N/6D)', '15 x Rs.500 discount credits (Rs.7,500 value)', 'Up to 10% off on paid international tours', 'Travel insurance – Free', 'Unlimited name changes allowed', '18+ Membership Only'],
   },
 ];
 
@@ -159,10 +163,10 @@ const DESTINATIONS = [
 
 const WINNERS_DATA = [
   { name: 'Ananya Das', plan: 'Platinum', dest: 'Kashmir', week: 'Week 42', img: '/images/winner_ananya_das.png', destImg: '/images/kashmir_dal_lake_1779521728036.png' },
-  { name: 'Rajesh Kumar', plan: 'Emerald', dest: 'Darjeeling', week: 'Week 41', img: '/images/winner_rajesh_kumar.png', destImg: '/images/darjeeling_tea_1779521805614.png' },
+  { name: 'Rajesh Kumar', plan: 'Gold', dest: 'Darjeeling', week: 'Week 41', img: '/images/winner_rajesh_kumar.png', destImg: '/images/darjeeling_tea_1779521805614.png' },
   { name: 'Priya Sen', plan: 'Silver', dest: 'Sundarbans', week: 'Week 40', img: '/images/winner_priya_sen.png', destImg: '/images/sundarbans_mangrove_1779521789593.png' },
   { name: 'Arjun Roy', plan: 'Platinum', dest: 'Kerala', week: 'Week 39', img: '/images/winner_arjun_roy.png', destImg: '/images/kerala_houseboat_1779521772928.png' },
-  { name: 'Meera Bose', plan: 'Emerald', dest: 'Rajasthan', week: 'Week 38', img: '/images/winner_meera_bose.png', destImg: '/images/rajasthan_palace_1779521744228.png' },
+  { name: 'Meera Bose', plan: 'Gold', dest: 'Rajasthan', week: 'Week 38', img: '/images/winner_meera_bose.png', destImg: '/images/rajasthan_palace_1779521744228.png' },
   { name: 'Subhadeep Ghosh', plan: 'Platinum', dest: 'Himachal', week: 'Week 37', img: '/images/winner_subhadeep_ghosh.png', destImg: '/images/himachal_hills.png' },
 ];
 
@@ -386,6 +390,10 @@ function CustomCursor() {
   const planeRef = useRef<HTMLDivElement>(null);
   
   useEffect(() => {
+    // Skip all cursor effects on touch/mobile devices to save CPU and battery
+    const isTouchDevice = 'ontouchstart' in window || window.matchMedia('(hover: none)').matches;
+    if (isTouchDevice) return;
+
     let mouseX = -100, mouseY = -100, ringX = -100, ringY = -100, magnetX = 0, magnetY = 0, hovering = false;
     let prevX = -100, prevY = -100;
     let currentAngle = 45;
@@ -666,8 +674,6 @@ function ScrollProgress() {
 /* ============ 3-SECOND CINEMATIC INTRO ============ */
 function CinematicIntro({ onComplete }: { onComplete: () => void }) {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [, setIsMuted] = useState(false);
-  const [showUnmuteHint, setShowUnmuteHint] = useState(false);
   const [videoError, setVideoError] = useState(false);
 
   useEffect(() => {
@@ -679,10 +685,8 @@ function CinematicIntro({ onComplete }: { onComplete: () => void }) {
 
       if (playPromise !== undefined) {
         playPromise.catch((error) => {
-          console.log("Autoplay with sound was blocked. Muted playback started.", error);
+          console.log("Autoplay with sound was blocked. Fallback to silent/muted playback.", error);
           video.muted = true;
-          setIsMuted(true);
-          setShowUnmuteHint(true);
           video.play().catch((err) => {
             console.error("Muted playback failed too:", err);
             setVideoError(true);
@@ -691,21 +695,13 @@ function CinematicIntro({ onComplete }: { onComplete: () => void }) {
       }
     }
 
-    // Safety fallback: if video fails or is blocked completely, transition after 9 seconds
+    // Safety fallback: if video fails or is blocked completely, transition after 4.5 seconds
     const fallbackTimer = setTimeout(() => {
       onComplete();
-    }, 9000);
+    }, 4500);
 
     return () => clearTimeout(fallbackTimer);
   }, [onComplete]);
-
-  const handleUnmute = () => {
-    if (videoRef.current) {
-      videoRef.current.muted = false;
-      setIsMuted(false);
-      setShowUnmuteHint(false);
-    }
-  };
 
   return (
     <motion.div 
@@ -729,15 +725,6 @@ function CinematicIntro({ onComplete }: { onComplete: () => void }) {
         </div>
       )}
 
-      {showUnmuteHint && (
-        <button
-          onClick={handleUnmute}
-          className="absolute top-8 left-1/2 -translate-x-1/2 z-[310] px-5 py-2.5 rounded-full bg-[#18D7F2]/10 border border-[#18D7F2]/30 text-[#18D7F2] text-xs font-semibold uppercase tracking-widest backdrop-blur-md flex items-center gap-2 hover:bg-[#18D7F2]/20 transition-all active:scale-95 cursor-pointer shadow-lg shadow-[#18D7F2]/10"
-        >
-          <Volume2 className="w-4 h-4" /> Tap for sound
-        </button>
-      )}
-
       <button 
         onClick={onComplete} 
         className="absolute bottom-8 right-8 px-4 py-2 rounded-full glass text-white/60 hover:text-white text-xs uppercase tracking-widest z-[310] border border-white/10"
@@ -749,7 +736,7 @@ function CinematicIntro({ onComplete }: { onComplete: () => void }) {
 }
 
 /* ---------- Navbar ---------- */
-function Navbar() {
+function Navbar({ view, setView }: { view: 'landing' | 'register'; setView: (v: 'landing' | 'register') => void }) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
@@ -762,7 +749,20 @@ function Navbar() {
       <div className="max-w-7xl mx-auto px-4 lg:px-6">
         <div className={`glass rounded-2xl transition-all duration-500 ${scrolled ? 'neon-border-cyan' : ''}`}>
           <div className="flex items-center justify-between px-4 lg:px-6 h-14 lg:h-16">
-            <a href="#top" className="flex items-center gap-2.5" data-magnetic>
+            <a 
+              href="#top" 
+              className="flex items-center gap-2.5" 
+              data-magnetic
+              onClick={(e) => {
+                if (view === 'register') {
+                  e.preventDefault();
+                  setView('landing');
+                  setTimeout(() => {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }, 100);
+                }
+              }}
+            >
               <div className="w-10 h-10 rounded-full overflow-hidden border border-cyan/30 shadow-lg shadow-cyan/20 bg-cosmos flex items-center justify-center p-1.5">
                 <img src="/images/bedune_logo_cropped.png" alt="BEDUINE Logo" className="w-full h-full object-contain" />
               </div>
@@ -772,11 +772,46 @@ function Navbar() {
               </div>
             </a>
             <nav className="hidden lg:flex items-center gap-6">
-              {DESKTOP_NAV.map((n) => <a key={n.id} href={`#${n.id}`} data-magnetic className="text-sm text-[#7E919D] hover:text-[#18D7F2] hover:scale-105 transition-all font-medium whitespace-nowrap">{n.label}</a>)}
+              {DESKTOP_NAV.map((n) => (
+                <a 
+                  key={n.id} 
+                  href={`#${n.id}`} 
+                  data-magnetic 
+                  onClick={(e) => {
+                    if (view === 'register') {
+                      e.preventDefault();
+                      setView('landing');
+                      setTimeout(() => {
+                        const el = document.getElementById(n.id);
+                        if (el) el.scrollIntoView({ behavior: 'smooth' });
+                      }, 100);
+                    }
+                  }}
+                  className="text-sm text-[#7E919D] hover:text-[#18D7F2] hover:scale-105 transition-all font-medium whitespace-nowrap"
+                >
+                  {n.label}
+                </a>
+              ))}
             </nav>
             <div className="hidden lg:flex items-center gap-3">
               <a href="https://wa.me/918768903565?text=Hello%20BEDUINE%2C%20I%20want%20to%20inquire%20about%20my%20membership." target="_blank" rel="noreferrer" data-magnetic className="text-sm text-[#7E919D] hover:text-[#18D7F2] transition-colors font-medium px-3 py-2 whitespace-nowrap">Member Login</a>
-              <a href="#plans"><ParticleButton variant="cyan" className="px-4 py-2 rounded-full font-semibold text-sm inline-flex items-center gap-1.5">Choose Plan <ArrowRight className="w-3.5 h-3.5" /></ParticleButton></a>
+              <a 
+                href="#plans"
+                onClick={(e) => {
+                  if (view === 'register') {
+                    e.preventDefault();
+                    setView('landing');
+                    setTimeout(() => {
+                      const el = document.getElementById('plans');
+                      if (el) el.scrollIntoView({ behavior: 'smooth' });
+                    }, 100);
+                  }
+                }}
+              >
+                <ParticleButton variant="cyan" className="px-4 py-2 rounded-full font-semibold text-sm inline-flex items-center gap-1.5">
+                  Choose Plan <ArrowRight className="w-3.5 h-3.5" />
+                </ParticleButton>
+              </a>
             </div>
 
             <div className="flex items-center gap-2">
@@ -795,8 +830,43 @@ function Navbar() {
             {open && (
               <motion.div id="mobile-menu" initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="lg:hidden overflow-hidden border-t border-slate-line">
                 <div className="px-4 py-3 flex flex-col gap-1">
-                  {NAV.map((n) => <a key={n.id} href={`#${n.id}`} onClick={() => setOpen(false)} className="py-2.5 text-ink/90 text-sm font-medium">{n.label}</a>)}
-                  <a href="#plans" onClick={() => setOpen(false)} className="mt-2 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-gradient-to-r from-neon-gold to-gold text-cosmos font-semibold text-sm">Choose Plan <ArrowRight className="w-4 h-4" /></a>
+                  {NAV.map((n) => (
+                    <a 
+                      key={n.id} 
+                      href={`#${n.id}`} 
+                      onClick={(e) => {
+                        setOpen(false);
+                        if (view === 'register') {
+                          e.preventDefault();
+                          setView('landing');
+                          setTimeout(() => {
+                            const el = document.getElementById(n.id);
+                            if (el) el.scrollIntoView({ behavior: 'smooth' });
+                          }, 100);
+                        }
+                      }} 
+                      className="py-2.5 text-ink/90 text-sm font-medium"
+                    >
+                      {n.label}
+                    </a>
+                  ))}
+                  <a 
+                    href="#plans" 
+                    onClick={(e) => {
+                      setOpen(false);
+                      if (view === 'register') {
+                        e.preventDefault();
+                        setView('landing');
+                        setTimeout(() => {
+                          const el = document.getElementById('plans');
+                          if (el) el.scrollIntoView({ behavior: 'smooth' });
+                        }, 100);
+                      }
+                    }} 
+                    className="mt-2 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-gradient-to-r from-neon-gold to-gold text-cosmos font-semibold text-sm"
+                  >
+                    Choose Plan <ArrowRight className="w-4 h-4" />
+                  </a>
                 </div>
               </motion.div>
             )}
@@ -919,33 +989,49 @@ function Hero() {
               transition={{ duration: 0.8, ease: [0.25, 1, 0.5, 1] }}
               className="flex flex-col items-start"
             >
-              {/* Tagline / Subtitle in cursive script */}
-              <div className="mb-2">
-                <span className="font-pacifico text-3xl md:text-4xl text-[#0096C7] leading-relaxed drop-shadow-[0_2px_4px_rgba(255,255,255,0.9)]">
-                  {slide.tagline}
+              {/* Company Name & Secondary Tagline */}
+              <div className="mb-2 flex flex-col">
+                <span className="text-xs uppercase tracking-widest text-[#0096C7] font-extrabold font-mono">
+                  BEDUIN TOUR & TRAVELS
+                </span>
+                <span className="font-pacifico text-3xl md:text-4xl text-[#0096C7] leading-relaxed drop-shadow-[0_2px_4px_rgba(255,255,255,0.9)] mt-1">
+                  Safar Jo Yaad Rahe
                 </span>
               </div>
 
-              {/* Headline */}
-              <h1 className="font-display font-black text-5xl sm:text-6xl lg:text-7xl tracking-tight leading-[1.05] uppercase mb-4 flex flex-col">
+              {/* Headline (Main Tagline) */}
+              <h1 className="font-display font-black text-4xl sm:text-5xl lg:text-6xl tracking-tight leading-[1.1] uppercase mb-4 flex flex-col">
                 <span className="text-[#0B1F2E] drop-shadow-[0_2px_8px_rgba(255,255,255,0.9)]">
-                  {slide.title1}
+                  Choose Your Plan.
                 </span>
                 <span className="bg-gradient-to-r from-[#0096C7] via-[#00B4D8] to-[#0077B6] bg-clip-text text-transparent drop-shadow-[0_1.5px_4px_rgba(255,255,255,0.4)]">
-                  {slide.title2}
+                  Try Your Luck.
+                </span>
+                <span className="text-[#0B1F2E] drop-shadow-[0_2px_8px_rgba(255,255,255,0.9)] text-3xl sm:text-4xl lg:text-5xl mt-1">
+                  Travel Beyond Limits.
                 </span>
               </h1>
 
               {/* Description */}
               <p className="text-sm sm:text-base text-slate-700/95 font-bold leading-relaxed max-w-md mb-6 drop-shadow-[0_1.5px_3px_rgba(255,255,255,0.9)]">
-                {slide.desc}
+                Join a Beduin subscription plan, get discount credits on paid tours, and become eligible for weekly promotional winner tour benefits.
               </p>
 
               {/* Action Buttons */}
-              <div className="flex flex-wrap gap-4 items-center mb-8">
+              <div className="flex flex-wrap gap-3 items-center mb-8">
                 <a href="#plans" className="cursor-pointer">
-                  <button className="px-8 py-3.5 bg-gradient-to-r from-[#00A2FF] to-[#00D9FF] hover:from-[#0088D1] hover:to-[#00C2E6] text-white font-bold rounded-full shadow-lg shadow-cyan-500/20 hover:-translate-y-0.5 transition-all text-sm uppercase tracking-wider border-none cursor-pointer flex items-center gap-2">
-                    Book Now <ArrowRight className="w-4 h-4" />
+                  <button className="px-6 py-3 bg-gradient-to-r from-[#00A2FF] to-[#00D9FF] hover:from-[#0088D1] hover:to-[#00C2E6] text-white font-bold rounded-full shadow-lg shadow-cyan-500/20 hover:-translate-y-0.5 transition-all text-xs uppercase tracking-wider border-none cursor-pointer flex items-center gap-1.5">
+                    View Plans <ArrowRight className="w-3.5 h-3.5" />
+                  </button>
+                </a>
+                <a href="#terms" className="cursor-pointer">
+                  <button className="px-6 py-3 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-full shadow-lg hover:-translate-y-0.5 transition-all text-xs uppercase tracking-wider border-none cursor-pointer flex items-center gap-1.5">
+                    Read Terms
+                  </button>
+                </a>
+                <a href="#contact" className="cursor-pointer">
+                  <button className="px-6 py-3 bg-white hover:bg-slate-100 text-slate-900 border border-slate-300 font-bold rounded-full shadow-lg hover:-translate-y-0.5 transition-all text-xs uppercase tracking-wider cursor-pointer flex items-center gap-1.5">
+                    Contact Us
                   </button>
                 </a>
               </div>
@@ -1094,9 +1180,11 @@ function Hero() {
 /* ---------- Trust Strip ---------- */
 function TrustStrip() {
   const items = [
-    { icon: ShieldCheck, t: 'RNG Certified' }, { icon: Lock, t: 'End-to-End Encrypted' },
-    { icon: FileText, t: 'Public Audit Reports' }, { icon: Fingerprint, t: 'Biometric Verified' },
-    { icon: Bot, t: 'AI-Powered Curation' },
+    { icon: Calendar, t: '12 Month Validity' },
+    { icon: Sparkles, t: 'Weekly Promotional Draw' },
+    { icon: Wallet, t: '₹500 Discount Credit' },
+    { icon: Shield, t: '18+ Membership Only' },
+    { icon: Gift, t: 'Non-Cash Benefits' },
   ];
   return (
     <section className="trust-strip relative py-5 lg:py-6 border-y border-slate-line scanline z-20">
@@ -1217,9 +1305,10 @@ function AboutUs() {
 /* ---------- How It Works ---------- */
 function HowItWorks() {
   const steps = [
-    { n: '01', icon: CreditCard, title: 'Choose Your Subscription', desc: 'Pick Silver, Gold, or Platinum - each valid for 12 months.', details: ['12-month validity', 'Digital dashboard', 'Instant credit allocation'], img: '/images/beduin_travel_hero_1779521651766.png' },
-    { n: '02', icon: Target, title: 'Enter the Weekly Draw', desc: 'Every Sunday, eligible subscribers enter a verified draw for a fully-paid luxury tour.', details: ['Certified RNG process', 'Live-streamed selection', 'Publicly archived results'], img: '/images/lucky_draw_ticket_1779521667122.png' },
-    { n: '03', icon: Gift, title: 'Win Tour - or Use Credit', desc: 'Selected members get a luxury journey. Everyone else gets guaranteed credits.', details: ['Luxury tour covered', 'Rs.500 x Rs.2,000 in credits', 'Never empty-handed'], img: '/images/happy_family_travelers.png' },
+    { n: '01', icon: CreditCard, title: 'Choose Your Plan', desc: 'Select from our Silver, Gold, or Platinum tiers (domestic & international plans).', details: ['12-month validity', 'Clear credit options', '18+ membership only'], img: '/images/beduin_travel_hero_1779521651766.png' },
+    { n: '02', icon: FileCheck2, title: 'Complete Verification', desc: 'Securely submit your inquiry and confirm age requirements to activate benefits.', details: ['WhatsApp Activation', '18+ age verification', 'Secure processing'], img: '/images/office_setup.png' },
+    { n: '03', icon: Wallet, title: 'Get Your Credits', desc: 'Get your Lucky Draw Credit (LDC) token and Discount Credits (DCs) loaded.', details: ['1 LDC token received', '₹500 discount credits', 'Value floor guaranteed'], img: '/images/lucky_draw_ticket_1779521667122.png' },
+    { n: '04', icon: Gift, title: 'Travel & Save', desc: 'Enjoy weekly promotional winner benefits or apply discount credits on paid bookings.', details: ['Weekly winner draws', '₹500 off per booking', 'Non-cash travel benefits'], img: '/images/happy_family_travelers.png' },
   ];
   return (
     <section id="how" className="relative py-14 lg:py-20 overflow-hidden">
@@ -1234,8 +1323,8 @@ function HowItWorks() {
           </div>
         </Reveal>
 
-        <div className="grid md:grid-cols-3 gap-6 lg:gap-8 relative">
-          <div className="hidden md:block absolute top-24 left-[18%] right-[18%] h-px bg-gradient-to-r from-transparent via-cyan/40 to-transparent" />
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 relative">
+          <div className="hidden lg:block absolute top-24 left-[10%] right-[10%] h-px bg-gradient-to-r from-transparent via-cyan/40 to-transparent" />
           {steps.map((s, i) => (
             <Reveal key={s.n} delay={i * 0.12}>
               <TiltCard className="h-full" intensity={6}>
@@ -1247,13 +1336,13 @@ function HowItWorks() {
                     <div className="absolute top-3 left-4 font-display text-5xl font-bold text-cyan/30 tabular">{s.n}</div>
                     <div className="absolute top-3 right-3">
                       <FloatingIcon delay={i * 0.5}>
-                        <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${i === 0 ? 'from-cyan to-cyan-deep' : i === 1 ? 'from-teal-400 to-emerald-600' : 'from-neon-gold to-gold-deep'} flex items-center justify-center shadow-lg ${i === 0 ? 'shadow-cyan/30' : i === 1 ? 'shadow-teal/30' : 'shadow-neon-gold/30'}`}><s.icon className="w-6 h-6 text-cosmos" strokeWidth={2.2} /></div>
+                        <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${i % 2 === 0 ? 'from-cyan to-cyan-deep' : 'from-neon-gold to-gold-deep'} flex items-center justify-center shadow-lg ${i % 2 === 0 ? 'shadow-cyan/30' : 'shadow-neon-gold/30'}`}><s.icon className="w-6 h-6 text-cosmos" strokeWidth={2.2} /></div>
                       </FloatingIcon>
                     </div>
                   </div>
                   <div className="p-6">
                     <h3 className="font-display text-xl font-bold text-ink mb-3">{s.title}</h3>
-                    <p className="text-sm text-ink/65 leading-relaxed mb-5">{s.desc}</p>
+                    <p className="text-sm text-ink/65 leading-relaxed mb-5 min-h-[60px]">{s.desc}</p>
                     <ul className="space-y-2 pt-5 border-t border-slate-line">
                       {s.details.map((d) => <li key={d} className="flex items-center gap-2.5 text-sm text-ink/80"><GoldCheck size={16} /><span>{d}</span></li>)}
                     </ul>
@@ -1367,7 +1456,7 @@ function PlanCard({ plan, index, onSelectPlan }: { plan: typeof PLANS[number]; i
               variant={plan.featured ? 'gold' : 'cyan'}
               className="block text-center w-full py-3.5 rounded-full font-bold"
             >
-              {plan.featured ? 'Lock Platinum Entry' : `Choose ${plan.name}`}
+              {`Choose ${plan.name}`}
             </ParticleButton>
             <div className="text-center text-[11px] text-slate-400 font-bold mt-3 font-mono">// 12-mo validity - pickup included</div>
           </div>
@@ -1608,11 +1697,11 @@ function IntlPlanCard({ plan, index, onSelectPlan }: { plan: typeof INTL_PLANS[n
 
           <div className="p-7 pt-0">
             <ParticleButton
-              onClick={() => onSelectPlan(plan.name)}
+              onClick={() => onSelectPlan(plan.name + ' International')}
               variant={plan.featured ? 'cyan' : 'gold'}
               className="block text-center w-full py-3.5 rounded-full font-bold"
             >
-              {plan.featured ? 'Lock Voyager Entry' : `Choose ${plan.name}`}
+              {`Choose ${plan.name} International`}
             </ParticleButton>
             <div className="text-center text-[11px] text-slate-400 font-bold mt-3 font-mono">// 12-mo validity - visa assist included</div>
           </div>
@@ -2069,14 +2158,14 @@ function CreditArchitecture(_props: { activePlan: string | null; ldcTokens: numb
 
   const domesticCredits = [
     { plan: 'Silver', price: 'Rs.499', ldc: '1', dc: '1 x Rs.500', total: 'Rs.500', color: 'from-slate-500 to-slate-700', image: '/images/sundarbans_mangrove_1779521789593.png' },
-    { plan: 'Emerald', price: 'Rs.799', ldc: '1', dc: '2 x Rs.500', total: 'Rs.1,000', color: 'from-teal-400 to-emerald-600', image: '/images/darjeeling_tea_1779521805614.png' },
+    { plan: 'Gold', price: 'Rs.799', ldc: '1', dc: '2 x Rs.500', total: 'Rs.1,000', color: 'from-teal-400 to-emerald-600', image: '/images/darjeeling_tea_1779521805614.png' },
     { plan: 'Platinum', price: 'Rs.1,499', ldc: '1', dc: '4 x Rs.500', total: 'Rs.2,000', color: 'from-neon-gold to-gold-deep', image: '/images/kashmir_dal_lake_1779521728036.png' },
   ];
 
   const intlCredits = [
-    { plan: 'Explorer', price: 'Rs.4,999', ldc: '1 (Monthly)', dc: '5 x Rs.500', total: 'Rs.2,500', color: 'from-sky-400 to-blue-600', image: '/images/dubai_skyline_1779539448313.png' },
-    { plan: 'Voyager', price: 'Rs.7,999', ldc: '1 (Monthly)', dc: '8 x Rs.500', total: 'Rs.4,000', color: 'from-emerald-400 to-teal-600', image: '/images/maldives_overwater_1779539482305.png' },
-    { plan: 'Globetrotter', price: 'Rs.14,999', ldc: '1 (Monthly)', dc: '15 x Rs.500', total: 'Rs.7,500', color: 'from-cyan via-cyan-bright to-cyan-deep', image: '/images/singapore_skyline_1779539502293.png' },
+    { plan: 'Silver', price: 'Rs.4,999', ldc: '1 (Monthly)', dc: '5 x Rs.500', total: 'Rs.2,500', color: 'from-sky-400 to-blue-600', image: '/images/nepal.png' },
+    { plan: 'Gold', price: 'Rs.7,999', ldc: '1 (Monthly)', dc: '8 x Rs.500', total: 'Rs.4,000', color: 'from-emerald-400 to-teal-600', image: '/images/thailand.png' },
+    { plan: 'Platinum', price: 'Rs.14,999', ldc: '1 (Monthly)', dc: '15 x Rs.500', total: 'Rs.7,500', color: 'from-cyan via-cyan-bright to-cyan-deep', image: '/images/vietnam.png' },
   ];
 
   const currentCredits = activeTab === 'domestic' ? domesticCredits : intlCredits;
@@ -2397,18 +2486,18 @@ function NonWinnerGuarantee() {
       plan: 'Silver', price: 499, dc: 1, dcValue: 500, roi: 100,
       color: 'from-slate-400 to-slate-600', glow: 'slate',
       image: '/images/sundarbans_mangrove_1779521789593.png',
-      tours: ['Sundarbans Boat Safari', 'Bakkhali Beach', 'Mousuni Island', 'Mukutmanipur'],
+      tours: ['Sundarban', 'Digha', 'Mousuni Island', 'Purulia'],
       example: {
         name: 'Riya Das',
         avatar: '/images/winner_priya_sen.png',
-        story: 'Riya subscribed to Silver for Rs.499. She didn\'t win the draw, but used her 1 Discount Credit to get Rs.500 off her Sundarbans trip. She saved Rs.1 more than she paid!'
+        story: 'Riya subscribed to Silver for Rs.499. She didn\'t win the draw, but used her 1 Discount Credit to get Rs.500 off her Sundarban trip. She saved Rs.1 more than she paid!'
       },
     },
     {
       plan: 'Gold', price: 799, dc: 2, dcValue: 1000, roi: 125,
-      color: 'from-amber-400 to-yellow-600', glow: 'gold',
+      color: 'from-teal-400 to-emerald-600', glow: 'teal',
       image: '/images/darjeeling_tea_1779521805614.png',
-      tours: ['Darjeeling', 'Dooars Safari', 'Puri + Konark', 'Vizag + Araku Valley'],
+      tours: ['Darjeeling', 'Dooars', 'Puri', 'Daring Bari'],
       example: {
         name: 'Arjun Roy',
         avatar: '/images/winner_arjun_roy.png',
@@ -2419,7 +2508,7 @@ function NonWinnerGuarantee() {
       plan: 'Platinum', price: 1499, dc: 4, dcValue: 2000, roi: 133,
       color: 'from-neon-gold via-gold to-gold-deep', glow: 'gold',
       image: '/images/kashmir_dal_lake_1779521728036.png',
-      tours: ['Kashmir', 'Rajasthan Royal', 'Kerala Backwaters', 'Shimla-Manali'],
+      tours: ['Kashmir', 'Goa', 'Sikkim', 'Himachal'],
       example: {
         name: 'Priya Sen',
         avatar: '/images/winner_ananya_das.png',
@@ -2429,10 +2518,13 @@ function NonWinnerGuarantee() {
   ];
 
   const faqs = [
-    { q: 'What if I never win the lucky draw?', a: 'You still receive your full Discount Credits (DC). Each DC gives you Rs.500 off on any domestic tour. Your subscription cost is always recovered - guaranteed.' },
-    { q: 'Can I use multiple DCs on one tour?', a: 'No - 1 DC per tour booking. But you can use them on separate tours throughout your 12-month subscription period.' },
-    { q: 'Do Discount Credits expire?', a: 'DCs are valid for the entire 12-month subscription period. Use them anytime within that window.' },
-    { q: 'What happens if I DO win?', a: 'Winners get a fully paid tour (Rs.3,000-Rs.10,000 value depending on plan) with pickup, drop, hotel, and meals included. You travel free!' },
+    { q: 'Who can buy a subscription?', a: 'Individuals aged 18 years or above.' },
+    { q: 'How long is the subscription valid?', a: '12 months from activation.' },
+    { q: 'Is the subscription refundable?', a: 'No, subscription fees are non-refundable and non-transferable.' },
+    { q: 'Can I exchange winner benefits for cash?', a: 'No, winner tour benefits cannot be exchanged for cash or other packages.' },
+    { q: 'What is 1 Discount Credit?', a: '1 Discount Credit equals ₹500 discount for 1 person on an eligible paid tour booking.' },
+    { q: 'Can domestic credits be used for international tours?', a: 'No, domestic and international credits cannot be interchanged.' },
+    { q: 'How are winners selected?', a: 'Winners are selected through RNG or an approved automated digital system from active valid participants.' }
   ];
 
   return (
@@ -3023,11 +3115,350 @@ function CTABanner() {
   );
 }
 
+/* ---------- Membership Inquiry Form ---------- */
+function MembershipInquiryForm() {
+  const [formData, setFormData] = useState({
+    name: '',
+    mobile: '',
+    email: '',
+    plan: 'Silver Domestic - ₹499',
+    city: '',
+    is18Plus: false,
+    agreeTerms: false
+  });
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!formData.is18Plus || !formData.agreeTerms) {
+      alert("Please confirm you are 18+ and agree to the Terms & Conditions.");
+      return;
+    }
+    const message = `Hello BEDUINE, I want to inquire about subscription membership.
+Name: ${formData.name}
+Mobile: ${formData.mobile}
+Email: ${formData.email}
+Plan: ${formData.plan}
+City: ${formData.city}
+Age Confirmed: Yes (18+)
+Terms Confirmed: Yes`;
+    
+    const whatsappUrl = `https://wa.me/918768903565?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank');
+    setSubmitted(true);
+  };
+
+  return (
+    <section id="join" className="relative py-14 lg:py-20 overflow-hidden">
+      <div className="max-w-3xl mx-auto px-5 relative z-10">
+        <Reveal>
+          <div className="text-center mb-10">
+            <div className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.3em] neon-cyan font-semibold mb-4">
+              <div className="w-8 h-px bg-cyan" /> Join Beduin <div className="w-8 h-px bg-cyan" />
+            </div>
+            <h2 className="font-display text-4xl lg:text-5xl font-bold text-ink leading-tight">
+              Membership Inquiry Form
+            </h2>
+            <p className="mt-4 text-ink/70 text-sm">
+              Ready to start? Fill in the details below to complete your sign-up verification. Active 18+ status is required.
+            </p>
+          </div>
+        </Reveal>
+
+        <Reveal>
+          <div className="glass rounded-3xl p-8 lg:p-10 border border-slate-line/80 shadow-2xl relative">
+            {submitted ? (
+              <div className="text-center py-10">
+                <div className="w-16 h-16 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center mx-auto mb-6 text-emerald-400">
+                  <Check className="w-8 h-8" />
+                </div>
+                <h3 className="text-2xl font-bold text-ink mb-2">Inquiry Submitted!</h3>
+                <p className="text-ink/70 text-sm max-w-md mx-auto mb-6">
+                  Thank you for your inquiry. We have opened WhatsApp to connect you with our registration team.
+                </p>
+                <button 
+                  onClick={() => setSubmitted(false)}
+                  className="px-6 py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-full font-bold text-xs uppercase cursor-pointer"
+                >
+                  Submit Another Inquiry
+                </button>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-5">
+                <div className="grid md:grid-cols-2 gap-5">
+                  <div>
+                    <label className="block text-xs uppercase tracking-wider text-ink/60 font-semibold mb-2" htmlFor="fullName">Full Name</label>
+                    <input 
+                      type="text" 
+                      id="fullName" 
+                      required
+                      placeholder="e.g. Rahul Sen"
+                      value={formData.name}
+                      onChange={(e) => setFormData({...formData, name: e.target.value})}
+                      className="w-full px-4 py-3 rounded-xl bg-cosmos border border-slate-300 text-ink text-sm outline-none focus:border-cyan transition-colors"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs uppercase tracking-wider text-ink/60 font-semibold mb-2" htmlFor="mobileNumber">Mobile Number</label>
+                    <input 
+                      type="tel" 
+                      id="mobileNumber" 
+                      required
+                      placeholder="e.g. +91 9876543210"
+                      value={formData.mobile}
+                      onChange={(e) => setFormData({...formData, mobile: e.target.value})}
+                      className="w-full px-4 py-3 rounded-xl bg-cosmos border border-slate-300 text-ink text-sm outline-none focus:border-cyan transition-colors"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-5">
+                  <div>
+                    <label className="block text-xs uppercase tracking-wider text-ink/60 font-semibold mb-2" htmlFor="emailAddress">Email Address</label>
+                    <input 
+                      type="email" 
+                      id="emailAddress" 
+                      required
+                      placeholder="e.g. rahul@example.com"
+                      value={formData.email}
+                      onChange={(e) => setFormData({...formData, email: e.target.value})}
+                      className="w-full px-4 py-3 rounded-xl bg-cosmos border border-slate-300 text-ink text-sm outline-none focus:border-cyan transition-colors"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs uppercase tracking-wider text-ink/60 font-semibold mb-2" htmlFor="cityLocation">City / Location</label>
+                    <input 
+                      type="text" 
+                      id="cityLocation" 
+                      required
+                      placeholder="e.g. Kolkata, Fulia"
+                      value={formData.city}
+                      onChange={(e) => setFormData({...formData, city: e.target.value})}
+                      className="w-full px-4 py-3 rounded-xl bg-cosmos border border-slate-300 text-ink text-sm outline-none focus:border-cyan transition-colors"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs uppercase tracking-wider text-ink/60 font-semibold mb-2" htmlFor="planSelection">Select Subscription Plan</label>
+                  <select 
+                    id="planSelection" 
+                    value={formData.plan}
+                    onChange={(e) => setFormData({...formData, plan: e.target.value})}
+                    className="w-full px-4 py-3 rounded-xl bg-cosmos border border-slate-300 text-ink text-sm outline-none focus:border-cyan transition-colors"
+                  >
+                    <option>Silver Domestic - ₹499</option>
+                    <option>Gold Domestic - ₹799</option>
+                    <option>Platinum Domestic - ₹1499</option>
+                    <option>Silver International - ₹4999</option>
+                    <option>Gold International - ₹7999</option>
+                    <option>Platinum International - ₹14999</option>
+                  </select>
+                </div>
+
+                <div className="space-y-3 pt-2">
+                  <label className="flex items-start gap-3 cursor-pointer text-sm text-ink/75">
+                    <input 
+                      type="checkbox" 
+                      checked={formData.is18Plus}
+                      onChange={(e) => setFormData({...formData, is18Plus: e.target.checked})}
+                      className="mt-1 accent-cyan w-4 h-4"
+                    />
+                    <span>I confirm that I am <strong>18 years of age or older</strong> and possess a valid government ID.</span>
+                  </label>
+
+                  <label className="flex items-start gap-3 cursor-pointer text-sm text-ink/75">
+                    <input 
+                      type="checkbox" 
+                      checked={formData.agreeTerms}
+                      onChange={(e) => setFormData({...formData, agreeTerms: e.target.checked})}
+                      className="mt-1 accent-cyan w-4 h-4"
+                    />
+                    <span>I agree to the <a href="#terms" className="text-cyan underline font-semibold">Terms & Conditions</a> of Beduin Tour & Travels.</span>
+                  </label>
+                </div>
+
+                <div className="pt-4">
+                  <button 
+                    type="submit"
+                    className="w-full py-4 bg-gradient-to-r from-[#00A2FF] to-[#00D9FF] hover:from-[#0088D1] hover:to-[#00C2E6] text-white font-bold rounded-full shadow-lg shadow-cyan-500/20 hover:-translate-y-0.5 transition-all text-sm uppercase tracking-wider cursor-pointer border-none"
+                  >
+                    Inquire via WhatsApp
+                  </button>
+                </div>
+              </form>
+            )}
+          </div>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
+/* ---------- Terms And Conditions Accordion ---------- */
+function TermsAndConditions() {
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+
+  const sections = [
+    {
+      id: 'A',
+      title: 'A. Definitions & Scope',
+      content: 'Under this agreement, "Member" or "Subscriber" refers to any individual registered under a paid Beduin subscription. "Company" refers to BEDUINE Tour & Travels. "LDC" refers to the Lucky Draw Credit which permits entry in promotional winner selection events. "DC" refers to Discount Credits utilized to lower fees for standard paid travel bookings.'
+    },
+    {
+      id: 'B',
+      title: 'B. Eligibility & Age Requirements',
+      content: 'Subscription memberships, lucky draws, and winner benefits are strictly restricted to individuals who are 18 years of age or older at the time of subscription. The Company reserves the right to request official government identification (Aadhaar, Passport, etc.) to verify age before activating any tour benefits.'
+    },
+    {
+      id: 'C',
+      title: 'C. Subscription Plan Details & Price Tiers',
+      content: 'Domestic Subscription tiers include Silver (₹499), Gold (₹799), and Platinum (₹1499). International Subscription tiers include Silver (₹4999), Gold (₹7999), and Platinum (₹14999). Subscription fees grant access to membership discount privileges and promotional benefit credits for 12 months.'
+    },
+    {
+      id: 'D',
+      title: 'D. Lucky Draw & Promotional Benefit Rules',
+      content: 'Beduin operates this program strictly as a promotional subscription membership benefit program. It must not be presented, marketed, or regarded as gambling, betting, wagering, or a lottery service. Weekly promotional draws are organized digitally using approved transparent algorithms (RNG).'
+    },
+    {
+      id: 'E',
+      title: 'E. Winner Tour Inclusions & Travel Conditions',
+      content: 'Subscribers selected for promotional winner tour benefits travel with standard lodging, dining, and designated ground transfers included. Winner benefits are strictly non-cash, non-refundable, and cannot be redeemed for physical cash, store vouchers, or other non-specified travel packages.'
+    },
+    {
+      id: 'F',
+      title: 'F. Discount Credits Allocation & Value Floor',
+      content: 'Each Discount Credit (DC) carries a flat value of ₹500 off on eligible paid tour bookings. Silver subscribers receive 1 DC, Gold receives 2 DCs, and Platinum receives 4 DCs. A maximum of 1 DC (₹500 off) can be redeemed per person, per booking. These credits expire upon subscription termination (12 months).'
+    },
+    {
+      id: 'G',
+      title: 'G. Name-Change Request Policy',
+      content: 'Winner benefits are non-transferable except under strict allowed name-change rules. Domestic and international Gold plans allow one-time family name changes. Platinum plans allow two family name changes. Silver plans do not permit name changes. Transfers must be registered at least 15 days prior to travel.'
+    },
+    {
+      id: 'H',
+      title: 'H. Registration & Verification Process',
+      content: 'Subscribers must complete the inquiry verification form. Activation is finalized via our WhatsApp hook (+91 87689 03565). No real payment gateways are built into the client site; payment processes and bookings are handled offline through authorized office personnel.'
+    },
+    {
+      id: 'I',
+      title: 'I. Non-Refundability of Fees',
+      content: 'All membership subscription fees (from ₹499 to ₹14999) are strictly non-refundable and non-transferable under any circumstances, including but not limited to the member not winning any weekly promotional draws.'
+    },
+    {
+      id: 'J',
+      title: 'J. Booking Requests & Seat Availability',
+      content: 'All paid tours and promotional travel benefits are subject to seasonal seat availability and operational capacity. Members must submit travel booking requests at least 30 days before their intended departure date.'
+    },
+    {
+      id: 'K',
+      title: 'K. Operational Inclusions & Exclusions',
+      content: 'Standard tour itineraries cover base lodging, shared vehicle transfers, and guided activities. Personal expenses, custom flight/train upgrades, independent sightseeing, and additional meals are excluded and must be paid separately by the traveler.'
+    },
+    {
+      id: 'L',
+      title: 'L. Dispute Resolution & Governing Law',
+      content: 'Any legal issues, disputes, or interpretation queries regarding the subscription rules shall be subject to the exclusive jurisdiction of the competent courts in Fulia/Nadia, West Bengal, India. Regulatory and operations details comply with West Bengal state guidelines.'
+    }
+  ];
+
+  return (
+    <section id="terms" className="relative py-14 lg:py-20 overflow-hidden">
+      <div className="max-w-4xl mx-auto px-5 relative z-10">
+        <Reveal>
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.3em] neon-gold font-semibold mb-4">
+              <div className="w-8 h-px bg-neon-gold" /> Legal & Policy <div className="w-8 h-px bg-neon-gold" />
+            </div>
+            <h2 className="font-display text-4xl lg:text-5xl font-bold text-ink leading-tight">
+              Terms & Conditions
+            </h2>
+            <p className="mt-4 text-ink/70 text-sm max-w-2xl mx-auto">
+              Please review our membership terms below. By purchasing a subscription, you confirm agreement to all clauses.
+            </p>
+          </div>
+        </Reveal>
+
+        {/* Recommended Legal Review Alert */}
+        <Reveal>
+          <div className="mb-8 p-5 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400 text-sm flex items-start gap-3">
+            <Shield className="w-5 h-5 shrink-0 mt-0.5" />
+            <div>
+              <span className="font-bold">Disclaimer Notice:</span> A professional legal/compliance review is highly recommended before launching these policies in a production environment.
+            </div>
+          </div>
+        </Reveal>
+
+        {/* Accordion List */}
+        <div className="space-y-3">
+          {sections.map((sec, index) => {
+            const isOpen = activeIndex === index;
+            return (
+              <Reveal key={sec.id} delay={index * 0.05}>
+                <div className="glass rounded-2xl border border-slate-line/80 overflow-hidden hover:neon-border-gold transition-all">
+                  <button
+                    onClick={() => setActiveIndex(isOpen ? null : index)}
+                    className="w-full flex items-center justify-between p-5 text-left font-display font-bold text-ink select-none outline-none focus:bg-white/10 cursor-pointer"
+                    aria-expanded={isOpen}
+                  >
+                    <span>{sec.title}</span>
+                    <ChevronRight className={`w-4 h-4 text-[#0096C7] transition-transform ${isOpen ? 'rotate-90' : ''}`} />
+                  </button>
+                  <AnimatePresence initial={false}>
+                    {isOpen && (
+                      <motion.div
+                        initial={{ height: 0 }}
+                        animate={{ height: 'auto' }}
+                        exit={{ height: 0 }}
+                        transition={{ duration: 0.3, ease: 'easeInOut' }}
+                        className="overflow-hidden"
+                      >
+                        <div className="p-5 pt-0 border-t border-slate-line/50 text-ink/80 text-sm leading-relaxed whitespace-pre-line">
+                          {sec.content}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              </Reveal>
+            );
+          })}
+        </div>
+
+        {/* Subject to policy banner */}
+        <Reveal>
+          <div className="mt-8 text-center text-xs text-ink/50 leading-relaxed font-mono">
+            * Final eligibility, draw selection, travel dates, destinations, hotels, and operational schedules are subject to company policy.
+          </div>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
 /* ---------- Footer ---------- */
 function Footer() {
-  const company = ['About BEDUINE', 'Our Story', 'Leadership', 'Careers', 'Press & Media'];
-  const trust = ['Operational Integrity', 'Digital Audit Archive', 'Lucky Draw Rules', 'Regulatory Compliance', 'RNG Certification'];
-  const support = ['Help Center', 'Refund Policy', 'Terms of Service', 'Privacy Policy', 'Grievance Officer'];
+  const company = [
+    { label: 'About BEDUINE', href: '#about' },
+    { label: 'Our Story', href: '#about' },
+    { label: 'Leadership', href: '#about' },
+    { label: 'Careers', href: 'https://wa.me/918768903565?text=Hello%20BEDUINE%2C%20I%20am%20interested%20in%20career%20opportunities.' },
+    { label: 'Press & Media', href: 'https://wa.me/918768903565?text=Hello%20BEDUINE%2C%20I%20have%20a%20press%20inquiry.' },
+  ];
+  const trust = [
+    { label: 'Operational Integrity', href: '#audit' },
+    { label: 'Digital Audit Archive', href: '#audit' },
+    { label: 'Lucky Draw Rules', href: '#luckydraw' },
+    { label: 'Regulatory Compliance', href: '#audit' },
+    { label: 'RNG Certification', href: '#audit' },
+  ];
+  const support = [
+    { label: 'Help Center', href: 'https://wa.me/918768903565?text=Hello%20BEDUINE%2C%20I%20need%20help.' },
+    { label: 'Refund Policy', href: '#terms' },
+    { label: 'Terms of Service', href: '#terms' },
+    { label: 'Privacy Policy', href: '#terms' },
+    { label: 'Grievance Officer', href: 'https://wa.me/918768903565?text=Hello%20BEDUINE%2C%20I%20have%20a%20grievance.' },
+  ];
   return (
     <footer className="bg-[#030C15] border-t border-slate-900/80 pt-16 pb-10 relative z-20">
       <StarField count={40} />
@@ -3047,9 +3478,9 @@ function Footer() {
               <div className="text-sm text-[#D8E4EA] leading-relaxed"><div className="font-semibold text-white">Registered Office</div>Fulia, Nadia,<br />West Bengal, India<br />Pin - 741402</div>
             </div>
           </div>
-          <div className="lg:col-span-2"><div className="font-display font-bold text-white mb-4 text-xs uppercase tracking-widest">Company</div><ul className="space-y-2.5">{company.map((l) => <li key={l}><a href="#" data-magnetic className="text-sm text-[#AFC0CA] hover:text-[#18D7F2] transition-all">{l}</a></li>)}</ul></div>
-          <div className="lg:col-span-2"><div className="font-display font-bold text-white mb-4 text-xs uppercase tracking-widest">Trust</div><ul className="space-y-2.5">{trust.map((l) => <li key={l}><a href="#" data-magnetic className="text-sm text-[#AFC0CA] hover:text-[#18D7F2] transition-all">{l}</a></li>)}</ul></div>
-          <div className="lg:col-span-2"><div className="font-display font-bold text-white mb-4 text-xs uppercase tracking-widest">Support</div><ul className="space-y-2.5">{support.map((l) => <li key={l}><a href="#" data-magnetic className="text-sm text-[#AFC0CA] hover:text-[#18D7F2] transition-all">{l}</a></li>)}</ul></div>
+          <div className="lg:col-span-2"><div className="font-display font-bold text-white mb-4 text-xs uppercase tracking-widest">Company</div><ul className="space-y-2.5">{company.map((l) => <li key={l.label}><a href={l.href} target={l.href.startsWith('http') ? '_blank' : undefined} rel={l.href.startsWith('http') ? 'noreferrer' : undefined} data-magnetic className="text-sm text-[#AFC0CA] hover:text-[#18D7F2] transition-all">{l.label}</a></li>)}</ul></div>
+          <div className="lg:col-span-2"><div className="font-display font-bold text-white mb-4 text-xs uppercase tracking-widest">Trust</div><ul className="space-y-2.5">{trust.map((l) => <li key={l.label}><a href={l.href} data-magnetic className="text-sm text-[#AFC0CA] hover:text-[#18D7F2] transition-all">{l.label}</a></li>)}</ul></div>
+          <div className="lg:col-span-2"><div className="font-display font-bold text-white mb-4 text-xs uppercase tracking-widest">Support</div><ul className="space-y-2.5">{support.map((l) => <li key={l.label}><a href={l.href} target={l.href.startsWith('http') ? '_blank' : undefined} rel={l.href.startsWith('http') ? 'noreferrer' : undefined} data-magnetic className="text-sm text-[#AFC0CA] hover:text-[#18D7F2] transition-all">{l.label}</a></li>)}</ul></div>
           <div className="lg:col-span-2">
             <div className="font-display font-bold text-white mb-4 text-xs uppercase tracking-widest flex items-center gap-2"><FileText className="w-3.5 h-3.5 text-neon-gold" /> Audit Archive</div>
             <ul className="space-y-2.5">
@@ -3058,7 +3489,7 @@ function Footer() {
             </ul>
           </div>
         </div>
-
+ 
         <div className="pt-8 flex flex-col lg:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-4">
             <span className="text-xs text-[#AFC0CA] uppercase tracking-widest">Connect</span>
@@ -3070,7 +3501,10 @@ function Footer() {
             <span className="flex items-center gap-1.5"><BadgeCheck className="w-3.5 h-3.5 text-neon-gold" /> Audited</span>
           </div>
         </div>
-        <div className="mt-6 pt-6 border-t border-slate-900/80 text-center text-xs text-[#AFC0CA]/40 font-mono">(c) 2026 BEDUINE Tour & Travels. - <a href="#" className="hover:text-cyan">terms</a> - <a href="#" className="hover:text-cyan">privacy</a> - <a href="#" className="hover:text-cyan">refunds</a></div>
+        <div className="mt-6 pt-6 border-t border-slate-900/80 text-center text-xs text-[#AFC0CA]/40 font-mono">
+          (c) 2026 BEDUINE Tour & Travels. - <a href="#terms" className="hover:text-cyan">terms</a> - <a href="#terms" className="hover:text-cyan">privacy</a> - <a href="#terms" className="hover:text-cyan">refunds</a>
+          <br /><span className="text-[10px] text-amber-500 mt-2 block font-sans">⚠️ 18+ Membership Only. Subscription plans are a promotional benefit program and not a gambling/lottery service. All travel operations are subject to company policy.</span>
+        </div>
       </div>
     </footer>
   );
@@ -3105,10 +3539,13 @@ export default function App() {
   const [introComplete, setIntroComplete] = useState(false);
   const handleIntroComplete = useCallback(() => setIntroComplete(true), []);
 
+  const [view, setView] = useState<'landing' | 'register'>('landing');
+  const [selectedPlanName, setSelectedPlanName] = useState<string>('Silver');
+
   const handleSelectPlan = useCallback((planName: string) => {
-    const text = `Hello BEDUINE, I want to subscribe to the ${planName} plan. Please guide me on the payment process.`;
-    const whatsappUrl = `https://wa.me/918768903565?text=${encodeURIComponent(text)}`;
-    window.open(whatsappUrl, '_blank');
+    setSelectedPlanName(planName);
+    setView('register');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
 
   // Manage body cursor visibility: default cursor during intro, hidden after intro for the custom cursor
@@ -3133,75 +3570,91 @@ export default function App() {
       {/* Main page content container - invisible during intro to prevent menu leak, then fades in beautifully */}
       <div className={`transition-opacity duration-700 ${introComplete ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
         <div className="noise fixed inset-0 pointer-events-none z-30" />
-        <Navbar />
+        <Navbar view={view} setView={setView} />
 
         <main className="relative z-10 flex flex-col gap-0">
-          <Hero />
-          <TrustStrip />
+          {view === 'landing' ? (
+            <>
+              <Hero />
+              <TrustStrip />
 
-          <div className="relative video-bg-container">
-            {/* Cinematic fixed background video: constrained to screen width/height to prevent stretching and pixelation. */}
-            <video
-              autoPlay
-              loop
-              muted
-              playsInline
-              preload="metadata"
-              poster="/images/beduine_travel_hero_1779521651766.png"
-              className="fixed inset-0 w-full h-full object-cover pointer-events-none"
-              style={{
-                zIndex: 0,
-                transform: 'translate3d(0, 0, 0)',
-                backfaceVisibility: 'hidden',
-                willChange: 'transform'
-              }}
-            >
-              <source src="/images/hero_bg_video.mp4" type="video/mp4" />
-            </video>
-             {/* Clear cinematic overlay for text readability */}
-            <div
-              className="fixed inset-0 pointer-events-none"
-              style={{
-                zIndex: 1,
-                background: `
-                  linear-gradient(180deg, rgba(3,12,22,0.35) 0%, rgba(3,12,22,0.24) 24%, rgba(3,12,22,0.2) 62%, rgba(3,12,22,0.35) 100%)
-                `,
-              }}
-            />
-            {/* Subtle teal atmosphere glow - optimized without expensive fullscreen mix-blend-mode */}
-            <div
-              className="fixed inset-0 pointer-events-none"
-              style={{
-                zIndex: 1,
-                background: 'radial-gradient(ellipse at 50% 28%, rgba(24,215,242,0.07) 0%, rgba(8,31,45,0.04) 38%, transparent 82%)',
-              }}
-            />
+              <div className="relative video-bg-container">
+                {/* Cinematic fixed background video: constrained to screen width/height to prevent stretching and pixelation. */}
+                <video
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  preload="metadata"
+                  poster="/images/beduine_travel_hero_1779521651766.png"
+                  className="fixed inset-0 w-full h-full object-cover pointer-events-none"
+                  style={{
+                    zIndex: 0,
+                    transform: 'translate3d(0, 0, 0)',
+                    backfaceVisibility: 'hidden',
+                    willChange: 'transform'
+                  }}
+                >
+                  <source src="/images/hero_bg_video.mp4" type="video/mp4" />
+                </video>
+                 {/* Clear cinematic overlay for text readability */}
+                <div
+                  className="fixed inset-0 pointer-events-none"
+                  style={{
+                    zIndex: 1,
+                    background: `
+                      linear-gradient(180deg, rgba(3,12,22,0.35) 0%, rgba(3,12,22,0.24) 24%, rgba(3,12,22,0.2) 62%, rgba(3,12,22,0.35) 100%)
+                    `,
+                  }}
+                />
+                {/* Subtle teal atmosphere glow - optimized without expensive fullscreen mix-blend-mode */}
+                <div
+                  className="fixed inset-0 pointer-events-none"
+                  style={{
+                    zIndex: 1,
+                    background: 'radial-gradient(ellipse at 50% 28%, rgba(24,215,242,0.07) 0%, rgba(8,31,45,0.04) 38%, transparent 82%)',
+                  }}
+                />
 
-            <div className="relative z-10 flex flex-col gap-8 lg:gap-12">
-              <ScrollRoundedSection><AboutUs /></ScrollRoundedSection>
-              <ScrollRoundedSection><Journey /></ScrollRoundedSection>
-              <ScrollRoundedSection><HowItWorks /></ScrollRoundedSection>
-              <ScrollRoundedSection><Plans onSelectPlan={handleSelectPlan} /></ScrollRoundedSection>
-              <ScrollRoundedSection><InternationalPlans onSelectPlan={handleSelectPlan} /></ScrollRoundedSection>
-              <ScrollRoundedSection><LuckyDrawSystem /></ScrollRoundedSection>
-              <ScrollRoundedSection><CreditArchitecture activePlan={null} ldcTokens={0} discountCredits={0} /></ScrollRoundedSection>
-              <ScrollRoundedSection><NonWinnerGuarantee /></ScrollRoundedSection>
-              <Destinations />
-              <ScrollRoundedSection><Winners /></ScrollRoundedSection>
-              <ScrollRoundedSection><Services /></ScrollRoundedSection>
-              <ScrollRoundedSection><Transparency /></ScrollRoundedSection>
-              <ScrollRoundedSection><CTABanner /></ScrollRoundedSection>
-            </div>
-          </div>
+                <div className="relative z-10 flex flex-col gap-8 lg:gap-12">
+                  <ScrollRoundedSection><AboutUs /></ScrollRoundedSection>
+                  <ScrollRoundedSection><Journey /></ScrollRoundedSection>
+                  <ScrollRoundedSection><HowItWorks /></ScrollRoundedSection>
+                  <ScrollRoundedSection><Plans onSelectPlan={handleSelectPlan} /></ScrollRoundedSection>
+                  <ScrollRoundedSection><InternationalPlans onSelectPlan={handleSelectPlan} /></ScrollRoundedSection>
+                  <ScrollRoundedSection><LuckyDrawSystem /></ScrollRoundedSection>
+                  <ScrollRoundedSection><CreditArchitecture activePlan={null} ldcTokens={0} discountCredits={0} /></ScrollRoundedSection>
+                  <ScrollRoundedSection><NonWinnerGuarantee /></ScrollRoundedSection>
+                  <Destinations />
+                  <ScrollRoundedSection><Winners /></ScrollRoundedSection>
+                  <ScrollRoundedSection><Services /></ScrollRoundedSection>
+                  <ScrollRoundedSection><Transparency /></ScrollRoundedSection>
+                  <ScrollRoundedSection><MembershipInquiryForm /></ScrollRoundedSection>
+                  <ScrollRoundedSection><TermsAndConditions /></ScrollRoundedSection>
+                  <ScrollRoundedSection><CTABanner /></ScrollRoundedSection>
+                </div>
+              </div>
+            </>
+          ) : (
+            <RegistrationPage 
+              initialPlanName={selectedPlanName} 
+              onBack={() => {
+                setView('landing');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }} 
+            />
+          )}
         </main>
         <Footer />
-        <FloatingButtons />
-        <MobileSticky />
-        <a href="#plans" className="choose-btn hidden lg:inline-flex">
-          <ParticleButton variant="gold" className="px-5 py-3 rounded-full font-bold text-sm shadow-xl shadow-neon-gold/30 flex items-center gap-1.5 hover:scale-110 transition-transform">
-            <Crown className="w-4 h-4" /> Choose Plan
-          </ParticleButton>
-        </a>
+        {view === 'landing' && <FloatingButtons />}
+        {view === 'landing' && <MobileSticky />}
+        {view === 'landing' && (
+          <a href="#plans" className="choose-btn hidden lg:inline-flex">
+            <ParticleButton variant="gold" className="px-5 py-3 rounded-full font-bold text-sm shadow-xl shadow-neon-gold/30 flex items-center gap-1.5 hover:scale-110 transition-transform">
+              <Crown className="w-4 h-4" /> Choose Plan
+            </ParticleButton>
+          </a>
+        )}
       </div>
     </div>
   );
