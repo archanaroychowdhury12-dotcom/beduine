@@ -10,6 +10,7 @@ interface RegistrationPageProps {
   initialPlanName: string;
   onBack: () => void;
   prefilledData?: any;
+  onRegisterSuccess?: (user: any) => void;
 }
 
 const ALL_PLANS = [
@@ -121,8 +122,9 @@ const ALL_PLANS = [
   }
 ];
 
-export default function RegistrationPage({ initialPlanName, onBack, prefilledData }: RegistrationPageProps) {
+export default function RegistrationPage({ initialPlanName, onBack, prefilledData, onRegisterSuccess }: RegistrationPageProps) {
   const [step, setStep] = useState(1);
+  const [showGoogleModal, setShowGoogleModal] = useState(false);
   const [selectedPlanId, setSelectedPlanId] = useState(() => {
     const matched = ALL_PLANS.find(p => {
       if (p.id.toLowerCase() === initialPlanName.toLowerCase()) return true;
@@ -211,6 +213,9 @@ export default function RegistrationPage({ initialPlanName, onBack, prefilledDat
     };
 
     setReceipt(newReceipt);
+    if (onRegisterSuccess) {
+      onRegisterSuccess(newReceipt);
+    }
   };
 
   const handleWhatsAppRedirect = () => {
@@ -471,6 +476,83 @@ _I confirm my registration and age eligibility (18+). Please guide me on payment
                     <div>
                       <h2 className="text-xl font-bold text-ink">Tell us about yourself</h2>
                       <p className="text-xs text-ink/50 mt-1">Please enter your legal name and contact details exactly as on your Government ID.</p>
+                    </div>
+
+                    {/* Google Sign-in Simulation */}
+                    <div className="pt-2">
+                      <button
+                        type="button"
+                        onClick={() => setShowGoogleModal(true)}
+                        className="w-full py-3.5 px-4 rounded-xl bg-white/5 border border-white/10 hover:border-cyan/40 hover:bg-white/10 text-white font-semibold flex items-center justify-center gap-3 transition-all cursor-pointer shadow-lg"
+                      >
+                        <svg className="w-5 h-5" viewBox="0 0 24 24">
+                          <path
+                            fill="#EA4335"
+                            d="M12.24 10.285V14.4h6.887c-.648 2.41-2.519 4.114-5.136 4.114-3.555 0-6.437-2.883-6.437-6.437s2.882-6.437 6.437-6.437c1.558 0 2.977.557 4.088 1.487l3.056-3.056C19.263 2.223 15.974 1 12.24 1 6.033 1 1 6.033 1 12.24s5.033 11.24 11.24 11.24c5.898 0 10.871-4.212 10.871-11.24 0-.768-.068-1.513-.193-1.955H12.24z"
+                          />
+                        </svg>
+                        Sign Up with Google / Gmail
+                      </button>
+                    </div>
+
+                    {/* Account Selector Dialog Simulation */}
+                    {showGoogleModal && (
+                      <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+                        <motion.div 
+                          initial={{ scale: 0.9, opacity: 0 }} 
+                          animate={{ scale: 1, opacity: 1 }}
+                          className="glass rounded-3xl p-6 max-w-md w-full border border-white/15 shadow-2xl relative"
+                        >
+                          <h3 className="text-base font-bold text-white mb-2">Choose a Google Account</h3>
+                          <p className="text-xs text-ink/60 mb-5">to continue to BEDUINE Tour & Travels</p>
+                          
+                          <div className="space-y-3">
+                            {[
+                              { name: 'Arunasish Roychowdhury', email: 'arunasish.roy@gmail.com' },
+                              { name: 'Rahul Sen', email: 'rahul.sen99@gmail.com' },
+                              { name: 'Guest Traveler', email: 'traveler.guest@gmail.com' }
+                            ].map((acc) => (
+                              <button
+                                key={acc.email}
+                                type="button"
+                                onClick={() => {
+                                  setFormData({
+                                    ...formData,
+                                    fullName: acc.name,
+                                    email: acc.email
+                                  });
+                                  setShowGoogleModal(false);
+                                }}
+                                className="w-full text-left p-3.5 rounded-2xl bg-white/5 border border-white/5 hover:border-cyan/40 hover:bg-white/10 transition-all flex items-center gap-3 cursor-pointer"
+                              >
+                                <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-cyan to-blue-500 flex items-center justify-center font-bold text-cosmos text-sm">
+                                  {acc.name.charAt(0)}
+                                </div>
+                                <div>
+                                  <span className="block text-xs font-bold text-white">{acc.name}</span>
+                                  <span className="block text-[10px] text-ink/50 font-mono">{acc.email}</span>
+                                </div>
+                              </button>
+                            ))}
+                          </div>
+
+                          <div className="mt-5 pt-4 border-t border-white/5 text-right">
+                            <button
+                              type="button"
+                              onClick={() => setShowGoogleModal(false)}
+                              className="px-4 py-2 rounded-xl text-xs text-ink hover:text-white transition-colors cursor-pointer"
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                        </motion.div>
+                      </div>
+                    )}
+
+                    <div className="flex items-center gap-4 py-2">
+                      <div className="h-px bg-white/10 flex-1" />
+                      <span className="text-[10px] uppercase font-mono tracking-widest text-ink/40">Or fill manually</span>
+                      <div className="h-px bg-white/10 flex-1" />
                     </div>
 
                     <div className="grid sm:grid-cols-2 gap-5">

@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import ScatteredShowcase from './ScatteredShowcase';
 import RegistrationPage from './RegistrationPage';
+import DashboardPage from './DashboardPage';
 
 
 
@@ -27,8 +28,6 @@ const NAV = [
   { id: 'credits', label: 'Credits' },
   { id: 'destinations', label: 'Destinations' },
   { id: 'services', label: 'Services' },
-  { id: 'audit', label: 'Transparency' },
-  { id: 'join', label: 'Join' },
   { id: 'terms', label: 'Terms' },
   { id: 'contact', label: 'Contact' },
 ];
@@ -37,9 +36,7 @@ const DESKTOP_NAV = [
   { id: 'about', label: 'About' },
   { id: 'plans', label: 'Plans' },
   { id: 'destinations', label: 'Destinations' },
-  { id: 'join', label: 'Join' },
   { id: 'terms', label: 'Terms' },
-  { id: 'audit', label: 'Trust' },
   { id: 'contact', label: 'Contact' },
 ];
 
@@ -736,7 +733,15 @@ function CinematicIntro({ onComplete }: { onComplete: () => void }) {
 }
 
 /* ---------- Navbar ---------- */
-function Navbar({ view, setView, onSelectPlan }: { view: 'landing' | 'register' | 'terms'; setView: (v: 'landing' | 'register' | 'terms') => void; onSelectPlan: (planName: string) => void }) {
+interface NavbarProps {
+  view: 'landing' | 'register' | 'terms' | 'dashboard';
+  setView: (v: 'landing' | 'register' | 'terms' | 'dashboard') => void;
+  currentUser: any;
+  setCurrentUser: (u: any) => void;
+  onSelectPlan?: (planName: string) => void;
+}
+
+function Navbar({ view, setView, currentUser, setCurrentUser }: NavbarProps) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
@@ -744,6 +749,33 @@ function Navbar({ view, setView, onSelectPlan }: { view: 'landing' | 'register' 
     window.addEventListener('scroll', onScroll);
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
+
+  const handleMemberLogin = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (currentUser) {
+      setView('dashboard');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      // Setup a simulated Gmail sign-in mock user immediately
+      const mockUser = {
+        fullName: 'Arunasish Roychowdhury',
+        email: 'arunasish.roy@gmail.com',
+        mobile: '+91 98765 43210',
+        city: 'Kolkata',
+        memberId: `BDN-${Math.floor(1000 + Math.random() * 9000)}-2026`,
+        planName: 'Platinum Domestic',
+        planPrice: '₹1,499',
+        planType: 'domestic',
+        color: 'from-amber-400 via-yellow-500 to-amber-600',
+        glow: 'rgba(245, 158, 11, 0.4)',
+        drawToken: `LDC-${Math.floor(100000 + Math.random() * 900000)}`
+      };
+      setCurrentUser(mockUser);
+      setView('dashboard');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
   return (
     <header className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${scrolled ? 'py-2' : 'py-4'}`}>
       <div className="max-w-7xl mx-auto px-4 lg:px-6">
@@ -778,11 +810,6 @@ function Navbar({ view, setView, onSelectPlan }: { view: 'landing' | 'register' 
                   href={`#${n.id}`} 
                   data-magnetic 
                   onClick={(e) => {
-                    if (n.id === 'join') {
-                      e.preventDefault();
-                      onSelectPlan('Silver');
-                      return;
-                    }
                     if (n.id === 'terms') {
                       e.preventDefault();
                       setView('terms');
@@ -807,7 +834,14 @@ function Navbar({ view, setView, onSelectPlan }: { view: 'landing' | 'register' 
               ))}
             </nav>
             <div className="hidden lg:flex items-center gap-3">
-              <a href="https://wa.me/918768903565?text=Hello%20BEDUINE%2C%20I%20want%20to%20inquire%20about%20my%20membership." target="_blank" rel="noreferrer" data-magnetic className="text-sm text-[#7E919D] hover:text-[#18D7F2] transition-colors font-medium px-3 py-2 whitespace-nowrap">Member Login</a>
+              <a 
+                href="#login" 
+                onClick={handleMemberLogin} 
+                data-magnetic 
+                className="text-sm text-[#7E919D] hover:text-[#18D7F2] transition-colors font-medium px-3 py-2 whitespace-nowrap"
+              >
+                {currentUser ? 'My Dashboard' : 'Member Login'}
+              </a>
               <a 
                 href="#plans"
                 onClick={(e) => {
@@ -849,11 +883,6 @@ function Navbar({ view, setView, onSelectPlan }: { view: 'landing' | 'register' 
                       href={`#${n.id}`} 
                       onClick={(e) => {
                         setOpen(false);
-                        if (n.id === 'join') {
-                          e.preventDefault();
-                          onSelectPlan('Silver');
-                          return;
-                        }
                         if (n.id === 'terms') {
                           e.preventDefault();
                           setView('terms');
@@ -876,6 +905,15 @@ function Navbar({ view, setView, onSelectPlan }: { view: 'landing' | 'register' 
                       {n.label}
                     </a>
                   ))}
+                  <button 
+                    onClick={(e) => {
+                      setOpen(false);
+                      handleMemberLogin(e);
+                    }}
+                    className="mt-2 text-center py-2.5 rounded-full border border-white/10 text-xs font-semibold text-white/95"
+                  >
+                    {currentUser ? 'My Dashboard' : 'Member Login'}
+                  </button>
                   <a 
                     href="#plans" 
                     onClick={(e) => {
@@ -889,7 +927,7 @@ function Navbar({ view, setView, onSelectPlan }: { view: 'landing' | 'register' 
                         }, 100);
                       }
                     }} 
-                    className="mt-2 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-gradient-to-r from-neon-gold to-gold text-cosmos font-semibold text-sm"
+                    className="mt-1 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-gradient-to-r from-neon-gold to-gold text-cosmos font-semibold text-sm"
                   >
                     Choose Plan <ArrowRight className="w-4 h-4" />
                   </a>
@@ -3554,7 +3592,8 @@ export default function App() {
   const [introComplete, setIntroComplete] = useState(false);
   const handleIntroComplete = useCallback(() => setIntroComplete(true), []);
 
-  const [view, setView] = useState<'landing' | 'register' | 'terms'>('landing');
+  const [view, setView] = useState<'landing' | 'register' | 'terms' | 'dashboard'>('landing');
+  const [currentUser, setCurrentUser] = useState<any | null>(null);
   const [selectedPlanName, setSelectedPlanName] = useState<string>('Silver');
   const [prefilledData, setPrefilledData] = useState<any>(null);
 
@@ -3605,7 +3644,7 @@ export default function App() {
       {/* Main page content container - invisible during intro to prevent menu leak, then fades in beautifully */}
       <div className={`transition-opacity duration-700 ${introComplete ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
         <div className="noise fixed inset-0 pointer-events-none z-30" />
-        <Navbar view={view} setView={setView} onSelectPlan={handleSelectPlan} />
+        <Navbar view={view} setView={setView} currentUser={currentUser} setCurrentUser={setCurrentUser} />
 
         <main className="relative z-10 flex flex-col gap-0">
           {view === 'landing' ? (
@@ -3678,6 +3717,20 @@ export default function App() {
                 setView('landing');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }} 
+              onRegisterSuccess={(userData) => {
+                setCurrentUser(userData);
+                setView('dashboard');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+            />
+          ) : view === 'dashboard' ? (
+            <DashboardPage 
+              user={currentUser} 
+              onLogout={() => {
+                setCurrentUser(null);
+                setView('landing');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
             />
           ) : (
             <div className="pt-24 lg:pt-32 pb-16 min-h-[70vh] flex flex-col items-center">
