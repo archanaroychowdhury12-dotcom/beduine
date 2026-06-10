@@ -9,6 +9,7 @@ import {
 interface RegistrationPageProps {
   initialPlanName: string;
   onBack: () => void;
+  prefilledData?: any;
 }
 
 const ALL_PLANS = [
@@ -120,7 +121,7 @@ const ALL_PLANS = [
   }
 ];
 
-export default function RegistrationPage({ initialPlanName, onBack }: RegistrationPageProps) {
+export default function RegistrationPage({ initialPlanName, onBack, prefilledData }: RegistrationPageProps) {
   const [step, setStep] = useState(1);
   const [selectedPlanId, setSelectedPlanId] = useState(() => {
     const matched = ALL_PLANS.find(p => {
@@ -132,18 +133,18 @@ export default function RegistrationPage({ initialPlanName, onBack }: Registrati
   });
 
   const [formData, setFormData] = useState({
-    fullName: '',
-    mobile: '',
-    email: '',
+    fullName: prefilledData?.fullName || '',
+    mobile: prefilledData?.mobile || '',
+    email: prefilledData?.email || '',
     dob: '',
     gender: 'Male',
-    city: '',
+    city: prefilledData?.city || '',
     pincode: '',
     address: '',
     nomineeName: '',
     nomineeRelation: '',
-    is18Plus: false,
-    agreeTerms: false
+    is18Plus: prefilledData?.is18Plus || false,
+    agreeTerms: prefilledData?.agreeTerms || false
   });
 
   const [receipt, setReceipt] = useState<any | null>(null);

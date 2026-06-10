@@ -736,7 +736,7 @@ function CinematicIntro({ onComplete }: { onComplete: () => void }) {
 }
 
 /* ---------- Navbar ---------- */
-function Navbar({ view, setView }: { view: 'landing' | 'register'; setView: (v: 'landing' | 'register') => void }) {
+function Navbar({ view, setView, onSelectPlan }: { view: 'landing' | 'register' | 'terms'; setView: (v: 'landing' | 'register' | 'terms') => void; onSelectPlan: (planName: string) => void }) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
@@ -754,7 +754,7 @@ function Navbar({ view, setView }: { view: 'landing' | 'register'; setView: (v: 
               className="flex items-center gap-2.5" 
               data-magnetic
               onClick={(e) => {
-                if (view === 'register') {
+                if (view !== 'landing') {
                   e.preventDefault();
                   setView('landing');
                   setTimeout(() => {
@@ -778,7 +778,20 @@ function Navbar({ view, setView }: { view: 'landing' | 'register'; setView: (v: 
                   href={`#${n.id}`} 
                   data-magnetic 
                   onClick={(e) => {
-                    if (view === 'register') {
+                    if (n.id === 'join') {
+                      e.preventDefault();
+                      onSelectPlan('Silver');
+                      return;
+                    }
+                    if (n.id === 'terms') {
+                      e.preventDefault();
+                      setView('terms');
+                      setTimeout(() => {
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }, 100);
+                      return;
+                    }
+                    if (view !== 'landing') {
                       e.preventDefault();
                       setView('landing');
                       setTimeout(() => {
@@ -798,7 +811,7 @@ function Navbar({ view, setView }: { view: 'landing' | 'register'; setView: (v: 
               <a 
                 href="#plans"
                 onClick={(e) => {
-                  if (view === 'register') {
+                  if (view !== 'landing') {
                     e.preventDefault();
                     setView('landing');
                     setTimeout(() => {
@@ -836,7 +849,20 @@ function Navbar({ view, setView }: { view: 'landing' | 'register'; setView: (v: 
                       href={`#${n.id}`} 
                       onClick={(e) => {
                         setOpen(false);
-                        if (view === 'register') {
+                        if (n.id === 'join') {
+                          e.preventDefault();
+                          onSelectPlan('Silver');
+                          return;
+                        }
+                        if (n.id === 'terms') {
+                          e.preventDefault();
+                          setView('terms');
+                          setTimeout(() => {
+                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                          }, 100);
+                          return;
+                        }
+                        if (view !== 'landing') {
                           e.preventDefault();
                           setView('landing');
                           setTimeout(() => {
@@ -854,7 +880,7 @@ function Navbar({ view, setView }: { view: 'landing' | 'register'; setView: (v: 
                     href="#plans" 
                     onClick={(e) => {
                       setOpen(false);
-                      if (view === 'register') {
+                      if (view !== 'landing') {
                         e.preventDefault();
                         setView('landing');
                         setTimeout(() => {
@@ -3094,7 +3120,7 @@ function Journey() {
 }
 
 /* ---------- CTA Banner ---------- */
-function CTABanner() {
+function CTABanner({ onSelectPlan }: { onSelectPlan: (planName: string) => void }) {
   return (
     <section id="contact" className="pt-12 pb-32 lg:pt-16 lg:pb-48 relative overflow-hidden">
       <div className="relative max-w-4xl mx-auto px-5 lg:px-8 text-center z-10 -translate-y-10 lg:-translate-y-16">
@@ -3106,7 +3132,11 @@ function CTABanner() {
           </h2>
           <p className="mt-6 text-lg text-ink/70 max-w-2xl mx-auto font-semibold">Join thousands of travelers who trust BEDUINE for AI-curated journeys, transparent draws, and guaranteed value.</p>
           <div className="mt-10 flex flex-col sm:flex-row gap-3 justify-center items-center">
-            <a href="#plans"><ParticleButton variant="gold" className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full font-bold text-base"><Crown className="w-5 h-5" /> Lock Your Entry <ChevronRight className="w-5 h-5" /></ParticleButton></a>
+            <button onClick={() => onSelectPlan('Silver')} className="cursor-pointer border-none bg-transparent p-0">
+              <ParticleButton variant="gold" className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full font-bold text-base">
+                <Crown className="w-5 h-5" /> Lock Your Entry <ChevronRight className="w-5 h-5" />
+              </ParticleButton>
+            </button>
             <a href="tel:+918768903565" data-magnetic><ParticleButton variant="cyan" className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full font-semibold"><Phone className="w-4 h-4" /> +91 87689 03565</ParticleButton></a>
           </div>
         </Reveal>
@@ -3116,7 +3146,7 @@ function CTABanner() {
 }
 
 /* ---------- Membership Inquiry Form ---------- */
-function MembershipInquiryForm() {
+function MembershipInquiryForm({ onStartRegistration }: { onStartRegistration: (data: any) => void }) {
   const [formData, setFormData] = useState({
     name: '',
     mobile: '',
@@ -3126,7 +3156,6 @@ function MembershipInquiryForm() {
     is18Plus: false,
     agreeTerms: false
   });
-  const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -3134,18 +3163,7 @@ function MembershipInquiryForm() {
       alert("Please confirm you are 18+ and agree to the Terms & Conditions.");
       return;
     }
-    const message = `Hello BEDUINE, I want to inquire about subscription membership.
-Name: ${formData.name}
-Mobile: ${formData.mobile}
-Email: ${formData.email}
-Plan: ${formData.plan}
-City: ${formData.city}
-Age Confirmed: Yes (18+)
-Terms Confirmed: Yes`;
-    
-    const whatsappUrl = `https://wa.me/918768903565?text=${encodeURIComponent(message)}`;
-    window.open(whatsappUrl, '_blank');
-    setSubmitted(true);
+    onStartRegistration(formData);
   };
 
   return (
@@ -3157,137 +3175,119 @@ Terms Confirmed: Yes`;
               <div className="w-8 h-px bg-cyan" /> Join Beduin <div className="w-8 h-px bg-cyan" />
             </div>
             <h2 className="font-display text-4xl lg:text-5xl font-bold text-ink leading-tight">
-              Membership Inquiry Form
+              Membership Registration
             </h2>
             <p className="mt-4 text-ink/70 text-sm">
-              Ready to start? Fill in the details below to complete your sign-up verification. Active 18+ status is required.
+              Ready to start? Fill in the details below to begin your sign-up verification. Active 18+ status is required.
             </p>
           </div>
         </Reveal>
 
         <Reveal>
           <div className="glass rounded-3xl p-8 lg:p-10 border border-slate-line/80 shadow-2xl relative">
-            {submitted ? (
-              <div className="text-center py-10">
-                <div className="w-16 h-16 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center mx-auto mb-6 text-emerald-400">
-                  <Check className="w-8 h-8" />
+            <form onSubmit={handleSubmit} className="space-y-5">
+              <div className="grid md:grid-cols-2 gap-5">
+                <div>
+                  <label className="block text-xs uppercase tracking-wider text-ink/60 font-semibold mb-2" htmlFor="fullName">Full Name</label>
+                  <input 
+                    type="text" 
+                    id="fullName" 
+                    required
+                    placeholder="e.g. Rahul Sen"
+                    value={formData.name}
+                    onChange={(e) => setFormData({...formData, name: e.target.value})}
+                    className="w-full px-4 py-3 rounded-xl bg-cosmos border border-slate-300 text-ink text-sm outline-none focus:border-cyan transition-colors"
+                  />
                 </div>
-                <h3 className="text-2xl font-bold text-ink mb-2">Inquiry Submitted!</h3>
-                <p className="text-ink/70 text-sm max-w-md mx-auto mb-6">
-                  Thank you for your inquiry. We have opened WhatsApp to connect you with our registration team.
-                </p>
-                <button 
-                  onClick={() => setSubmitted(false)}
-                  className="px-6 py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-full font-bold text-xs uppercase cursor-pointer"
+                <div>
+                  <label className="block text-xs uppercase tracking-wider text-ink/60 font-semibold mb-2" htmlFor="mobileNumber">Mobile Number</label>
+                  <input 
+                    type="tel" 
+                    id="mobileNumber" 
+                    required
+                    placeholder="e.g. +91 9876543210"
+                    value={formData.mobile}
+                    onChange={(e) => setFormData({...formData, mobile: e.target.value})}
+                    className="w-full px-4 py-3 rounded-xl bg-cosmos border border-slate-300 text-ink text-sm outline-none focus:border-cyan transition-colors"
+                  />
+                </div>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-5">
+                <div>
+                  <label className="block text-xs uppercase tracking-wider text-ink/60 font-semibold mb-2" htmlFor="emailAddress">Email Address</label>
+                  <input 
+                    type="email" 
+                    id="emailAddress" 
+                    required
+                    placeholder="e.g. rahul@example.com"
+                    value={formData.email}
+                    onChange={(e) => setFormData({...formData, email: e.target.value})}
+                    className="w-full px-4 py-3 rounded-xl bg-cosmos border border-slate-300 text-ink text-sm outline-none focus:border-cyan transition-colors"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs uppercase tracking-wider text-ink/60 font-semibold mb-2" htmlFor="cityLocation">City / Location</label>
+                  <input 
+                    type="text" 
+                    id="cityLocation" 
+                    required
+                    placeholder="e.g. Kolkata, Fulia"
+                    value={formData.city}
+                    onChange={(e) => setFormData({...formData, city: e.target.value})}
+                    className="w-full px-4 py-3 rounded-xl bg-cosmos border border-slate-300 text-ink text-sm outline-none focus:border-cyan transition-colors"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs uppercase tracking-wider text-ink/60 font-semibold mb-2" htmlFor="planSelection">Select Subscription Plan</label>
+                <select 
+                  id="planSelection" 
+                  value={formData.plan}
+                  onChange={(e) => setFormData({...formData, plan: e.target.value})}
+                  className="w-full px-4 py-3 rounded-xl bg-cosmos border border-slate-300 text-ink text-sm outline-none focus:border-cyan transition-colors font-semibold"
                 >
-                  Submit Another Inquiry
+                  <option>Silver Domestic - ₹499</option>
+                  <option>Gold Domestic - ₹799</option>
+                  <option>Platinum Domestic - ₹1499</option>
+                  <option>Silver International - ₹4999</option>
+                  <option>Gold International - ₹7999</option>
+                  <option>Platinum International - ₹14999</option>
+                </select>
+              </div>
+
+              <div className="space-y-3 pt-2">
+                <label className="flex items-start gap-3 cursor-pointer text-sm text-ink/75">
+                  <input 
+                    type="checkbox" 
+                    checked={formData.is18Plus}
+                    onChange={(e) => setFormData({...formData, is18Plus: e.target.checked})}
+                    className="mt-1 accent-cyan w-4 h-4"
+                  />
+                  <span>I confirm that I am <strong>18 years of age or older</strong> and possess a valid government ID.</span>
+                </label>
+
+                <label className="flex items-start gap-3 cursor-pointer text-sm text-ink/75">
+                  <input 
+                    type="checkbox" 
+                    checked={formData.agreeTerms}
+                    onChange={(e) => setFormData({...formData, agreeTerms: e.target.checked})}
+                    className="mt-1 accent-cyan w-4 h-4"
+                  />
+                  <span>I agree to the <a href="#terms" className="text-cyan underline font-semibold">Terms & Conditions</a> of Beduin Tour & Travels.</span>
+                </label>
+              </div>
+
+              <div className="pt-4">
+                <button 
+                  type="submit"
+                  className="w-full py-4 bg-gradient-to-r from-[#00A2FF] to-[#00D9FF] hover:from-[#0088D1] hover:to-[#00C2E6] text-white font-bold rounded-full shadow-lg shadow-cyan-500/20 hover:-translate-y-0.5 transition-all text-sm uppercase tracking-wider cursor-pointer border-none"
+                >
+                  Proceed to Register
                 </button>
               </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="space-y-5">
-                <div className="grid md:grid-cols-2 gap-5">
-                  <div>
-                    <label className="block text-xs uppercase tracking-wider text-ink/60 font-semibold mb-2" htmlFor="fullName">Full Name</label>
-                    <input 
-                      type="text" 
-                      id="fullName" 
-                      required
-                      placeholder="e.g. Rahul Sen"
-                      value={formData.name}
-                      onChange={(e) => setFormData({...formData, name: e.target.value})}
-                      className="w-full px-4 py-3 rounded-xl bg-cosmos border border-slate-300 text-ink text-sm outline-none focus:border-cyan transition-colors"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs uppercase tracking-wider text-ink/60 font-semibold mb-2" htmlFor="mobileNumber">Mobile Number</label>
-                    <input 
-                      type="tel" 
-                      id="mobileNumber" 
-                      required
-                      placeholder="e.g. +91 9876543210"
-                      value={formData.mobile}
-                      onChange={(e) => setFormData({...formData, mobile: e.target.value})}
-                      className="w-full px-4 py-3 rounded-xl bg-cosmos border border-slate-300 text-ink text-sm outline-none focus:border-cyan transition-colors"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid md:grid-cols-2 gap-5">
-                  <div>
-                    <label className="block text-xs uppercase tracking-wider text-ink/60 font-semibold mb-2" htmlFor="emailAddress">Email Address</label>
-                    <input 
-                      type="email" 
-                      id="emailAddress" 
-                      required
-                      placeholder="e.g. rahul@example.com"
-                      value={formData.email}
-                      onChange={(e) => setFormData({...formData, email: e.target.value})}
-                      className="w-full px-4 py-3 rounded-xl bg-cosmos border border-slate-300 text-ink text-sm outline-none focus:border-cyan transition-colors"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs uppercase tracking-wider text-ink/60 font-semibold mb-2" htmlFor="cityLocation">City / Location</label>
-                    <input 
-                      type="text" 
-                      id="cityLocation" 
-                      required
-                      placeholder="e.g. Kolkata, Fulia"
-                      value={formData.city}
-                      onChange={(e) => setFormData({...formData, city: e.target.value})}
-                      className="w-full px-4 py-3 rounded-xl bg-cosmos border border-slate-300 text-ink text-sm outline-none focus:border-cyan transition-colors"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-xs uppercase tracking-wider text-ink/60 font-semibold mb-2" htmlFor="planSelection">Select Subscription Plan</label>
-                  <select 
-                    id="planSelection" 
-                    value={formData.plan}
-                    onChange={(e) => setFormData({...formData, plan: e.target.value})}
-                    className="w-full px-4 py-3 rounded-xl bg-cosmos border border-slate-300 text-ink text-sm outline-none focus:border-cyan transition-colors"
-                  >
-                    <option>Silver Domestic - ₹499</option>
-                    <option>Gold Domestic - ₹799</option>
-                    <option>Platinum Domestic - ₹1499</option>
-                    <option>Silver International - ₹4999</option>
-                    <option>Gold International - ₹7999</option>
-                    <option>Platinum International - ₹14999</option>
-                  </select>
-                </div>
-
-                <div className="space-y-3 pt-2">
-                  <label className="flex items-start gap-3 cursor-pointer text-sm text-ink/75">
-                    <input 
-                      type="checkbox" 
-                      checked={formData.is18Plus}
-                      onChange={(e) => setFormData({...formData, is18Plus: e.target.checked})}
-                      className="mt-1 accent-cyan w-4 h-4"
-                    />
-                    <span>I confirm that I am <strong>18 years of age or older</strong> and possess a valid government ID.</span>
-                  </label>
-
-                  <label className="flex items-start gap-3 cursor-pointer text-sm text-ink/75">
-                    <input 
-                      type="checkbox" 
-                      checked={formData.agreeTerms}
-                      onChange={(e) => setFormData({...formData, agreeTerms: e.target.checked})}
-                      className="mt-1 accent-cyan w-4 h-4"
-                    />
-                    <span>I agree to the <a href="#terms" className="text-cyan underline font-semibold">Terms & Conditions</a> of Beduin Tour & Travels.</span>
-                  </label>
-                </div>
-
-                <div className="pt-4">
-                  <button 
-                    type="submit"
-                    className="w-full py-4 bg-gradient-to-r from-[#00A2FF] to-[#00D9FF] hover:from-[#0088D1] hover:to-[#00C2E6] text-white font-bold rounded-full shadow-lg shadow-cyan-500/20 hover:-translate-y-0.5 transition-all text-sm uppercase tracking-wider cursor-pointer border-none"
-                  >
-                    Inquire via WhatsApp
-                  </button>
-                </div>
-              </form>
-            )}
+            </form>
           </div>
         </Reveal>
       </div>
@@ -3437,7 +3437,11 @@ function TermsAndConditions() {
 }
 
 /* ---------- Footer ---------- */
-function Footer() {
+interface FooterProps {
+  setView?: (v: 'landing' | 'register' | 'terms') => void;
+}
+
+function Footer({ setView }: FooterProps) {
   const company = [
     { label: 'About BEDUINE', href: '#about' },
     { label: 'Our Story', href: '#about' },
@@ -3459,6 +3463,15 @@ function Footer() {
     { label: 'Privacy Policy', href: '#terms' },
     { label: 'Grievance Officer', href: 'https://wa.me/918768903565?text=Hello%20BEDUINE%2C%20I%20have%20a%20grievance.' },
   ];
+
+  const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (href === '#terms' && setView) {
+      e.preventDefault();
+      setView('terms');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
   return (
     <footer className="bg-[#030C15] border-t border-slate-900/80 pt-16 pb-10 relative z-20">
       <StarField count={40} />
@@ -3478,18 +3491,18 @@ function Footer() {
               <div className="text-sm text-[#D8E4EA] leading-relaxed"><div className="font-semibold text-white">Registered Office</div>Fulia, Nadia,<br />West Bengal, India<br />Pin - 741402</div>
             </div>
           </div>
-          <div className="lg:col-span-2"><div className="font-display font-bold text-white mb-4 text-xs uppercase tracking-widest">Company</div><ul className="space-y-2.5">{company.map((l) => <li key={l.label}><a href={l.href} target={l.href.startsWith('http') ? '_blank' : undefined} rel={l.href.startsWith('http') ? 'noreferrer' : undefined} data-magnetic className="text-sm text-[#AFC0CA] hover:text-[#18D7F2] transition-all">{l.label}</a></li>)}</ul></div>
-          <div className="lg:col-span-2"><div className="font-display font-bold text-white mb-4 text-xs uppercase tracking-widest">Trust</div><ul className="space-y-2.5">{trust.map((l) => <li key={l.label}><a href={l.href} data-magnetic className="text-sm text-[#AFC0CA] hover:text-[#18D7F2] transition-all">{l.label}</a></li>)}</ul></div>
-          <div className="lg:col-span-2"><div className="font-display font-bold text-white mb-4 text-xs uppercase tracking-widest">Support</div><ul className="space-y-2.5">{support.map((l) => <li key={l.label}><a href={l.href} target={l.href.startsWith('http') ? '_blank' : undefined} rel={l.href.startsWith('http') ? 'noreferrer' : undefined} data-magnetic className="text-sm text-[#AFC0CA] hover:text-[#18D7F2] transition-all">{l.label}</a></li>)}</ul></div>
+          <div className="lg:col-span-2"><div className="font-display font-bold text-white mb-4 text-xs uppercase tracking-widest">Company</div><ul className="space-y-2.5">{company.map((l) => <li key={l.label}><a href={l.href} target={l.href.startsWith('http') ? '_blank' : undefined} rel={l.href.startsWith('http') ? 'noreferrer' : undefined} onClick={(e) => handleLinkClick(e, l.href)} data-magnetic className="text-sm text-[#AFC0CA] hover:text-[#18D7F2] transition-all">{l.label}</a></li>)}</ul></div>
+          <div className="lg:col-span-2"><div className="font-display font-bold text-white mb-4 text-xs uppercase tracking-widest">Trust</div><ul className="space-y-2.5">{trust.map((l) => <li key={l.label}><a href={l.href} onClick={(e) => handleLinkClick(e, l.href)} data-magnetic className="text-sm text-[#AFC0CA] hover:text-[#18D7F2] transition-all">{l.label}</a></li>)}</ul></div>
+          <div className="lg:col-span-2"><div className="font-display font-bold text-white mb-4 text-xs uppercase tracking-widest">Support</div><ul className="space-y-2.5">{support.map((l) => <li key={l.label}><a href={l.href} target={l.href.startsWith('http') ? '_blank' : undefined} rel={l.href.startsWith('http') ? 'noreferrer' : undefined} onClick={(e) => handleLinkClick(e, l.href)} data-magnetic className="text-sm text-[#AFC0CA] hover:text-[#18D7F2] transition-all">{l.label}</a></li>)}</ul></div>
           <div className="lg:col-span-2">
             <div className="font-display font-bold text-white mb-4 text-xs uppercase tracking-widest flex items-center gap-2"><FileText className="w-3.5 h-3.5 text-neon-gold" /> Audit Archive</div>
             <ul className="space-y-2.5">
               {AUDIT_REPORTS.map((a) => <li key={a.week}><a href="#" data-magnetic className="group flex items-center gap-2 text-sm text-[#AFC0CA] hover:text-neon-gold transition-all"><Download className="w-3 h-3 opacity-50 group-hover:opacity-100" /><span className="text-xs font-mono">{a.week}</span></a></li>)}
-              <li className="pt-2"><a href="#audit" className="text-xs font-semibold neon-cyan inline-flex items-center gap-1 font-mono">&gt; full_archive() <ArrowRight className="w-3 h-3" /></a></li>
+              <li className="pt-2"><a href="#audit" onClick={(e) => handleLinkClick(e, '#audit')} className="text-xs font-semibold neon-cyan inline-flex items-center gap-1 font-mono">&gt; full_archive() <ArrowRight className="w-3 h-3" /></a></li>
             </ul>
           </div>
         </div>
- 
+
         <div className="pt-8 flex flex-col lg:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-4">
             <span className="text-xs text-[#AFC0CA] uppercase tracking-widest">Connect</span>
@@ -3502,7 +3515,7 @@ function Footer() {
           </div>
         </div>
         <div className="mt-6 pt-6 border-t border-slate-900/80 text-center text-xs text-[#AFC0CA]/40 font-mono">
-          (c) 2026 BEDUINE Tour & Travels. - <a href="#terms" className="hover:text-cyan">terms</a> - <a href="#terms" className="hover:text-cyan">privacy</a> - <a href="#terms" className="hover:text-cyan">refunds</a>
+          (c) 2026 BEDUINE Tour & Travels. - <a href="#terms" onClick={(e) => handleLinkClick(e, '#terms')} className="hover:text-cyan">terms</a> - <a href="#terms" onClick={(e) => handleLinkClick(e, '#terms')} className="hover:text-cyan">privacy</a> - <a href="#terms" onClick={(e) => handleLinkClick(e, '#terms')} className="hover:text-cyan">refunds</a>
           <br /><span className="text-[10px] text-amber-500 mt-2 block font-sans">⚠️ 18+ Membership Only. Subscription plans are a promotional benefit program and not a gambling/lottery service. All travel operations are subject to company policy.</span>
         </div>
       </div>
@@ -3519,31 +3532,53 @@ function FloatingButtons() {
   );
 }
 
-function MobileSticky() {
+function MobileSticky({ onSelectPlan }: { onSelectPlan: (planName: string) => void }) {
   return (
     <div className="lg:hidden fixed bottom-0 inset-x-0 z-40 p-3 pb-4">
       <div className="glass rounded-2xl p-2 flex gap-2 shadow-2xl shadow-black/60 border border-slate-line">
         <a href="https://wa.me/918768903565" target="_blank" rel="noreferrer" className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-emerald-500 text-white text-xs font-bold"><MessageCircle className="w-4 h-4" /> WhatsApp</a>
         <a href="tel:+918768903565" className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl glass-light border border-slate-line text-ink text-xs font-bold"><Phone className="w-4 h-4" /> Call</a>
-        <a href="#plans" className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-gradient-to-r from-neon-gold to-gold text-[#0B1F2E] text-xs font-bold"><Crown className="w-4 h-4" /> Join</a>
+        <button 
+          onClick={() => onSelectPlan('Silver')}
+          className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-gradient-to-r from-neon-gold to-gold text-[#0B1F2E] text-xs font-bold cursor-pointer border-none"
+        >
+          <Crown className="w-4 h-4" /> Join
+        </button>
       </div>
     </div>
   );
 }
-
-
-
 
 /* ---------- App ---------- */
 export default function App() {
   const [introComplete, setIntroComplete] = useState(false);
   const handleIntroComplete = useCallback(() => setIntroComplete(true), []);
 
-  const [view, setView] = useState<'landing' | 'register'>('landing');
+  const [view, setView] = useState<'landing' | 'register' | 'terms'>('landing');
   const [selectedPlanName, setSelectedPlanName] = useState<string>('Silver');
+  const [prefilledData, setPrefilledData] = useState<any>(null);
 
   const handleSelectPlan = useCallback((planName: string) => {
     setSelectedPlanName(planName);
+    setPrefilledData(null);
+    setView('register');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
+  const handleStartRegistration = useCallback((data: any) => {
+    setPrefilledData({
+      fullName: data.name,
+      mobile: data.mobile,
+      email: data.email,
+      city: data.city,
+      is18Plus: data.is18Plus,
+      agreeTerms: data.agreeTerms,
+    });
+    
+    // Parse selection from "Silver Domestic - ₹499" format
+    const planPart = data.plan.split(' ')[0];
+    const isIntl = data.plan.toLowerCase().includes('international');
+    setSelectedPlanName(planPart + (isIntl ? ' International' : ''));
     setView('register');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
@@ -3570,7 +3605,7 @@ export default function App() {
       {/* Main page content container - invisible during intro to prevent menu leak, then fades in beautifully */}
       <div className={`transition-opacity duration-700 ${introComplete ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
         <div className="noise fixed inset-0 pointer-events-none z-30" />
-        <Navbar view={view} setView={setView} />
+        <Navbar view={view} setView={setView} onSelectPlan={handleSelectPlan} />
 
         <main className="relative z-10 flex flex-col gap-0">
           {view === 'landing' ? (
@@ -3603,7 +3638,7 @@ export default function App() {
                   style={{
                     zIndex: 1,
                     background: `
-                      linear-gradient(180deg, rgba(3,12,22,0.35) 0%, rgba(3,12,22,0.24) 24%, rgba(3,12,22,0.2) 62%, rgba(3,12,22,0.35) 100%)
+                       linear-gradient(180deg, rgba(3,12,22,0.35) 0%, rgba(3,12,22,0.24) 24%, rgba(3,12,22,0.2) 62%, rgba(3,12,22,0.35) 100%)
                     `,
                   }}
                 />
@@ -3629,31 +3664,65 @@ export default function App() {
                   <ScrollRoundedSection><Winners /></ScrollRoundedSection>
                   <ScrollRoundedSection><Services /></ScrollRoundedSection>
                   <ScrollRoundedSection><Transparency /></ScrollRoundedSection>
-                  <ScrollRoundedSection><MembershipInquiryForm /></ScrollRoundedSection>
-                  <ScrollRoundedSection><TermsAndConditions /></ScrollRoundedSection>
-                  <ScrollRoundedSection><CTABanner /></ScrollRoundedSection>
+                  <ScrollRoundedSection><MembershipInquiryForm onStartRegistration={handleStartRegistration} /></ScrollRoundedSection>
+                  <ScrollRoundedSection><CTABanner onSelectPlan={handleSelectPlan} /></ScrollRoundedSection>
                 </div>
               </div>
             </>
-          ) : (
+          ) : view === 'register' ? (
             <RegistrationPage 
               initialPlanName={selectedPlanName} 
+              prefilledData={prefilledData}
               onBack={() => {
+                setPrefilledData(null);
                 setView('landing');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }} 
             />
+          ) : (
+            <div className="pt-24 lg:pt-32 pb-16 min-h-[70vh] flex flex-col items-center">
+              <div className="max-w-4xl w-full px-5">
+                <button
+                  onClick={() => {
+                    setView('landing');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                  className="mb-8 inline-flex items-center gap-2 text-sm text-[#0096C7] hover:text-[#00B4D8] font-bold transition-all focus:outline-none"
+                >
+                  <ArrowRight className="w-4 h-4 rotate-180" /> Back to Home
+                </button>
+                <div className="glass rounded-3xl p-6 lg:p-12 border border-slate-line/80 shadow-2xl relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-72 h-72 bg-gradient-to-br from-cyan/10 to-transparent rounded-full blur-3xl pointer-events-none" />
+                  <div className="absolute bottom-0 left-0 w-72 h-72 bg-gradient-to-tr from-neon-gold/5 to-transparent rounded-full blur-3xl pointer-events-none" />
+                  <TermsAndConditions />
+                </div>
+                <div className="mt-8 text-center">
+                  <button
+                    onClick={() => {
+                      setView('landing');
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                    className="glow-cta px-8 py-3 rounded-full font-bold text-sm hover:scale-105 transition-transform inline-flex items-center gap-2"
+                  >
+                    Agree & Return Home <Check className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            </div>
           )}
         </main>
-        <Footer />
+        <Footer setView={setView} />
         {view === 'landing' && <FloatingButtons />}
-        {view === 'landing' && <MobileSticky />}
+        {view === 'landing' && <MobileSticky onSelectPlan={handleSelectPlan} />}
         {view === 'landing' && (
-          <a href="#plans" className="choose-btn hidden lg:inline-flex">
+          <button 
+            onClick={() => handleSelectPlan('Silver')}
+            className="choose-btn hidden lg:inline-flex cursor-pointer border-none bg-transparent p-0"
+          >
             <ParticleButton variant="gold" className="px-5 py-3 rounded-full font-bold text-sm shadow-xl shadow-neon-gold/30 flex items-center gap-1.5 hover:scale-110 transition-transform">
               <Crown className="w-4 h-4" /> Choose Plan
             </ParticleButton>
-          </a>
+          </button>
         )}
       </div>
     </div>
