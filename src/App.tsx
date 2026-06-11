@@ -84,7 +84,7 @@ const INTL_PLANS = [
     image: '/images/nepal.png',
     imageLabel: 'Nepal - Valley & Peaks',
     destinations: ['Nepal', 'Bhutan'],
-    benefits: ['1 Monthly Promotional Draw entry', 'Winner tour value up to Rs.25,000 (3N/4D)', '5 x Rs.500 discount credits (Rs.2,500 value)', 'Up to 5% off on paid international tours', 'Travel insurance – 50% off', 'One-time family name change allowed', '18+ Membership Only'],
+    benefits: ['1 Monthly Promotional Draw entry', 'Winner tour value up to Rs.25,000 (3N/4D)', 'Rs.2,500 discount credits if not selected', 'Up to 5% off on paid international tours', 'Travel insurance – 50% off', 'One-time family name change allowed', '18+ Membership Only'],
   },
   {
     name: 'Gold', price: 7999, tagline: 'Premium Explorer', icon: Plane,
@@ -94,7 +94,7 @@ const INTL_PLANS = [
     image: '/images/thailand.png',
     imageLabel: 'Thailand - Temples & Beaches',
     destinations: ['Thailand', 'Bali'],
-    benefits: ['1 Monthly Promotional Draw entry', 'Winner tour value up to Rs.50,000 (4N/5D)', '8 x Rs.500 discount credits (Rs.4,000 value)', 'Up to 7% off on paid international tours', 'Travel insurance – Free', 'Two family name changes allowed', '18+ Membership Only'],
+    benefits: ['1 Monthly Promotional Draw entry', 'Winner tour value up to Rs.50,000 (4N/5D)', 'Rs.4,000 discount credits if not selected', 'Up to 7% off on paid international tours', 'Travel insurance – Free', 'Two family name changes allowed', '18+ Membership Only'],
   },
   {
     name: 'Platinum', price: 14999, tagline: 'Ultimate World Pass', icon: Rocket,
@@ -104,7 +104,7 @@ const INTL_PLANS = [
     image: '/images/vietnam.png',
     imageLabel: 'Vietnam - Bays & Cities',
     destinations: ['Dubai', 'Vietnam'],
-    benefits: ['1 Monthly Promotional Draw entry', 'Winner tour value up to Rs.1,00,000 (5N/6D)', '15 x Rs.500 discount credits (Rs.7,500 value)', 'Up to 10% off on paid international tours', 'Travel insurance – Free', 'Unlimited name changes allowed', '18+ Membership Only'],
+    benefits: ['1 Monthly Promotional Draw entry', 'Winner tour value up to Rs.1,00,000 (5N/6D)', 'Rs.7,500 discount credits if not selected', 'Up to 10% off on paid international tours', 'Travel insurance – Free', 'Unlimited name changes allowed', '18+ Membership Only'],
   },
 ];
 
@@ -1735,7 +1735,7 @@ function IntlPlanCard({ plan, index, onSelectPlan }: { plan: typeof INTL_PLANS[n
 
           <div className="px-7 pb-5">
             <div className="grid grid-cols-2 gap-2">
-              {[{ l: 'Discount Credits', v: `Rs. ${plan.discountValue.toLocaleString('en-IN')}` }, { l: 'Tour Discount', v: `Up to ${plan.paidDiscount}` }, { l: 'Insurance', v: plan.insurance }, { l: 'Name Change', v: plan.nameChange }].map((c) => (
+              {[{ l: 'Discount Credits', v: `Rs. ${plan.discountValue.toLocaleString('en-IN')}` }, { l: 'Tour Discount', v: plan.paidDiscount.startsWith('Up to') ? plan.paidDiscount : `Up to ${plan.paidDiscount}` }, { l: 'Insurance', v: plan.insurance }, { l: 'Name Change', v: plan.nameChange }].map((c) => (
                 <div key={c.l} className="bg-slate-900/60 border border-slate-800/50 rounded-lg p-2.5">
                   <div className="text-[9px] uppercase tracking-widest text-slate-400 font-bold">{c.l}</div>
                   <div className="text-xs font-black text-slate-100 mt-0.5">{c.v}</div>
