@@ -737,11 +737,10 @@ interface NavbarProps {
   view: 'landing' | 'register' | 'terms' | 'dashboard';
   setView: (v: 'landing' | 'register' | 'terms' | 'dashboard') => void;
   currentUser: any;
-  setCurrentUser: (u: any) => void;
   onSelectPlan?: (planName: string) => void;
 }
 
-function Navbar({ view, setView, currentUser, setCurrentUser }: NavbarProps) {
+function Navbar({ view, setView, currentUser }: NavbarProps) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
@@ -756,22 +755,7 @@ function Navbar({ view, setView, currentUser, setCurrentUser }: NavbarProps) {
       setView('dashboard');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
-      // Setup a simulated Gmail sign-in mock user immediately
-      const mockUser = {
-        fullName: 'Arunasish Roychowdhury',
-        email: 'arunasish.roy@gmail.com',
-        mobile: '+91 98765 43210',
-        city: 'Kolkata',
-        memberId: `BDN-${Math.floor(1000 + Math.random() * 9000)}-2026`,
-        planName: 'Platinum Domestic',
-        planPrice: '₹1,499',
-        planType: 'domestic',
-        color: 'from-amber-400 via-yellow-500 to-amber-600',
-        glow: 'rgba(245, 158, 11, 0.4)',
-        drawToken: `LDC-${Math.floor(100000 + Math.random() * 900000)}`
-      };
-      setCurrentUser(mockUser);
-      setView('dashboard');
+      setView('register');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
@@ -840,7 +824,7 @@ function Navbar({ view, setView, currentUser, setCurrentUser }: NavbarProps) {
                 data-magnetic 
                 className="text-sm text-[#7E919D] hover:text-[#18D7F2] transition-colors font-medium px-3 py-2 whitespace-nowrap"
               >
-                {currentUser ? 'My Dashboard' : 'Member Login'}
+                {currentUser ? 'My Dashboard' : 'Create Account'}
               </a>
               <a 
                 href="#plans"
@@ -912,7 +896,7 @@ function Navbar({ view, setView, currentUser, setCurrentUser }: NavbarProps) {
                     }}
                     className="mt-2 text-center py-2.5 rounded-full border border-white/10 text-xs font-semibold text-white/95"
                   >
-                    {currentUser ? 'My Dashboard' : 'Member Login'}
+                    {currentUser ? 'My Dashboard' : 'Create Account'}
                   </button>
                   <a 
                     href="#plans" 
@@ -3320,7 +3304,7 @@ function MembershipInquiryForm({ onStartRegistration }: { onStartRegistration: (
               <div className="pt-4">
                 <button 
                   type="submit"
-                  className="w-full py-4 bg-gradient-to-r from-[#00A2FF] to-[#00D9FF] hover:from-[#0088D1] hover:to-[#00C2E6] text-white font-bold rounded-full shadow-lg shadow-cyan-500/20 hover:-translate-y-0.5 transition-all text-sm uppercase tracking-wider cursor-pointer border-none"
+                  className="w-full py-4 premium-register-btn text-white font-bold rounded-full text-sm uppercase tracking-wider cursor-pointer border-none"
                 >
                   Proceed to Register
                 </button>
@@ -3644,7 +3628,7 @@ export default function App() {
       {/* Main page content container - invisible during intro to prevent menu leak, then fades in beautifully */}
       <div className={`transition-opacity duration-700 ${introComplete ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
         <div className="noise fixed inset-0 pointer-events-none z-30" />
-        <Navbar view={view} setView={setView} currentUser={currentUser} setCurrentUser={setCurrentUser} />
+        <Navbar view={view} setView={setView} currentUser={currentUser} />
 
         <main className="relative z-10 flex flex-col gap-0">
           {view === 'landing' ? (

@@ -827,7 +827,7 @@ _I confirm my registration and age eligibility (18+). Please guide me on payment
                   ) : (
                     <button
                       type="submit"
-                      className="px-8 py-3.5 bg-gradient-to-r from-[#00A2FF] to-[#00D9FF] hover:from-[#0088D1] hover:to-[#00C2E6] text-white font-bold rounded-full text-xs uppercase tracking-wider flex items-center gap-1.5 hover:-translate-y-0.5 transition-all cursor-pointer shadow-lg shadow-cyan-500/20"
+                      className="px-8 py-3.5 premium-register-btn text-white font-bold rounded-full text-xs uppercase tracking-wider flex items-center gap-1.5 cursor-pointer"
                     >
                       <ShieldCheck className="w-4.5 h-4.5" /> Confirm & Generate Digital Ticket
                     </button>
