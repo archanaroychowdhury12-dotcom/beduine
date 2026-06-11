@@ -50,7 +50,7 @@ const PLANS = [
     image: '/images/sundarbans_mangrove_1779521789593.png',
     imageLabel: 'Sundarbans - Boat Safari',
     destinations: ['Sundarban', 'Digha', 'Mousuni Island', 'Purulia'],
-    benefits: ['1 Weekly Promotional Draw entry', 'Eligible for promotional winner benefits', 'Rs.500 discount credit if not selected', 'Member-only rates on paid tours', '12-month subscription validity', '18+ Membership Only'],
+    benefits: ['1 Weekly Promotional Draw entry', 'Eligible for promotional winner benefits', '₹500 discount credit if not selected', 'Member-only rates on paid tours', '12-month subscription validity', '18+ Membership Only'],
   },
   {
     name: 'Gold', price: 799, tagline: 'Balanced Choice', icon: Award,
@@ -60,7 +60,7 @@ const PLANS = [
     image: '/images/darjeeling_tea_1779521805614.png',
     imageLabel: 'Darjeeling - Tea Gardens',
     destinations: ['Darjeeling', 'Dooars', 'Puri', 'Daring Bari'],
-    benefits: ['1 Weekly Promotional Draw entry', 'Eligible for promotional winner benefits', 'Rs.1,000 discount credits if not selected', 'Member-only rates on paid tours', 'One-time family name change allowed', '18+ Membership Only'],
+    benefits: ['1 Weekly Promotional Draw entry', 'Eligible for promotional winner benefits', '₹1,000 discount credits if not selected', 'Member-only rates on paid tours', 'One-time family name change allowed', '18+ Membership Only'],
   },
   {
     name: 'Platinum', price: 1499, tagline: 'Premium Experience', icon: Crown,
@@ -71,7 +71,7 @@ const PLANS = [
     image: '/images/kashmir_dal_lake_1779521728036.png',
     imageLabel: 'Kashmir - Dal Lake',
     destinations: ['Kashmir', 'Goa', 'Sikkim', 'Himachal'],
-    benefits: ['1 Weekly Promotional Draw entry', 'Eligible for promotional winner benefits', 'Rs.2,000 discount credits if not selected', 'Member-only rates on paid tours', 'Two family name changes allowed', '18+ Membership Only'],
+    benefits: ['1 Weekly Promotional Draw entry', 'Eligible for promotional winner benefits', '₹2,000 discount credits if not selected', 'Member-only rates on paid tours', 'Two family name changes allowed', '18+ Membership Only'],
   },
 ];
 
@@ -84,7 +84,7 @@ const INTL_PLANS = [
     image: '/images/nepal.png',
     imageLabel: 'Nepal - Valley & Peaks',
     destinations: ['Nepal', 'Bhutan'],
-    benefits: ['1 Monthly Promotional Draw entry', 'Winner tour value up to Rs.25,000 (3N/4D)', 'Rs.2,500 discount credits if not selected', 'Up to 5% off on paid international tours', 'Travel insurance – 50% off', 'One-time family name change allowed', '18+ Membership Only'],
+    benefits: ['1 Monthly Promotional Draw entry', 'Winner tour value up to ₹25,000 (3N/4D)', '₹2,500 discount credits if not selected', 'Up to 5% off on paid international tours', 'Travel insurance – 50% off', 'One-time family name change allowed', '18+ Membership Only'],
   },
   {
     name: 'Gold', price: 7999, tagline: 'Premium Explorer', icon: Plane,
@@ -94,7 +94,7 @@ const INTL_PLANS = [
     image: '/images/thailand.png',
     imageLabel: 'Thailand - Temples & Beaches',
     destinations: ['Thailand', 'Bali'],
-    benefits: ['1 Monthly Promotional Draw entry', 'Winner tour value up to Rs.50,000 (4N/5D)', 'Rs.4,000 discount credits if not selected', 'Up to 7% off on paid international tours', 'Travel insurance – Free', 'Two family name changes allowed', '18+ Membership Only'],
+    benefits: ['1 Monthly Promotional Draw entry', 'Winner tour value up to ₹50,000 (4N/5D)', '₹4,000 discount credits if not selected', 'Up to 7% off on paid international tours', 'Travel insurance – Free', 'Two family name changes allowed', '18+ Membership Only'],
   },
   {
     name: 'Platinum', price: 14999, tagline: 'Ultimate World Pass', icon: Rocket,
@@ -104,7 +104,7 @@ const INTL_PLANS = [
     image: '/images/vietnam.png',
     imageLabel: 'Vietnam - Bays & Cities',
     destinations: ['Dubai', 'Vietnam'],
-    benefits: ['1 Monthly Promotional Draw entry', 'Winner tour value up to Rs.1,00,000 (5N/6D)', 'Rs.7,500 discount credits if not selected', 'Up to 10% off on paid international tours', 'Travel insurance – Free', 'Unlimited name changes allowed', '18+ Membership Only'],
+    benefits: ['1 Monthly Promotional Draw entry', 'Winner tour value up to ₹1,00,000 (5N/6D)', '₹7,500 discount credits if not selected', 'Up to 10% off on paid international tours', 'Travel insurance – Free', 'Unlimited name changes allowed', '18+ Membership Only'],
   },
 ];
 
@@ -1433,13 +1433,15 @@ function PlanCard({ plan, index, onSelectPlan }: { plan: typeof PLANS[number]; i
   };
   const onLeave = () => setImgStyle({ transform: 'scale(1) translate(0,0)' });
   const creditValue = plan.discountValue.toLocaleString('en-IN');
+  const isComingSoon = plan.name !== 'Silver';
 
   return (
     <Reveal delay={index * 0.1}>
       <TiltCard intensity={6}>
         <div ref={cardRef} onMouseMove={onMove} onMouseEnter={() => setHovered(true)} onMouseLeave={() => { setHovered(false); onLeave(); }} className={`relative rounded-3xl overflow-hidden h-full transition-all duration-500 tilt-inner bg-gradient-to-b from-slate-950 to-slate-900 border ${plan.featured ? 'border-2 border-neon-gold/80 shadow-2xl shadow-neon-gold/10' : 'border-slate-800/80 hover:border-cyan/50 hover:shadow-2xl hover:shadow-cyan/5'}`}>
-          {plan.featured && <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-neon-gold via-cyan to-neon-gold z-10" />}
-          {plan.featured && <div className="absolute top-5 right-5 z-20 px-3 py-1 rounded-full bg-gradient-to-r from-neon-gold to-gold text-cosmos text-[10px] font-bold uppercase tracking-widest flex items-center gap-1 shadow-lg"><Crown className="w-3 h-3 fill-current" /> Premium Choice</div>}
+          {plan.featured && !isComingSoon && <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-neon-gold via-cyan to-neon-gold z-10" />}
+          {plan.featured && !isComingSoon && <div className="absolute top-5 right-5 z-20 px-3 py-1 rounded-full bg-gradient-to-r from-neon-gold to-gold text-cosmos text-[10px] font-bold uppercase tracking-widest flex items-center gap-1 shadow-lg"><Crown className="w-3 h-3 fill-current" /> Premium Choice</div>}
+          {isComingSoon && <div className="absolute top-5 right-5 z-20 px-3 py-1 rounded-full bg-red-500/20 border border-red-500/30 text-red-300 text-[10px] font-bold uppercase tracking-widest shadow-lg backdrop-blur-md">Coming Soon</div>}
 
           <div className="relative h-48 overflow-hidden bg-slate-950">
             <div className={`tilt-img absolute inset-0 bg-cover bg-center transition-all duration-700 ${hovered ? 'opacity-100 scale-105' : 'opacity-80'}`} style={{ ...imgStyle, backgroundImage: `url(${plan.image})` }} />
@@ -1462,22 +1464,22 @@ function PlanCard({ plan, index, onSelectPlan }: { plan: typeof PLANS[number]; i
             {plan.name === 'Silver' ? (
               <div className="relative overflow-visible">
                 <div className="flex items-baseline gap-1 relative z-10">
-                  <span className="text-neon-gold text-lg font-bold">Rs.</span>
+                  <span className="text-neon-gold text-lg font-bold">₹</span>
                   <span className="font-display text-5xl font-black text-white tracking-tight tabular">{plan.price}</span>
                   <span className="text-slate-400 font-extrabold text-sm">/ 12 mo</span>
                 </div>
               </div>
             ) : (
               <div className="flex items-baseline gap-1">
-                <span className="text-neon-gold text-lg font-bold">Rs.</span>
+                <span className="text-neon-gold text-lg font-bold">₹</span>
                 <span className="font-display text-5xl font-black text-white tracking-tight tabular">{plan.price}</span>
                 <span className="text-slate-400 font-extrabold text-sm">/ 12 mo</span>
               </div>
             )}
-            <div className="mt-2 text-sm text-slate-300 font-bold">Winner tour value up to <span className="font-extrabold text-white">Rs.{plan.tourValue.toLocaleString('en-IN')}</span> - {plan.duration}</div>
+            <div className="mt-2 text-sm text-slate-300 font-bold">Winner tour value up to <span className="font-extrabold text-white">₹{plan.tourValue.toLocaleString('en-IN')}</span> - {plan.duration}</div>
             <div className="mt-4 flex items-start gap-2 rounded-xl border border-emerald-400/25 bg-emerald-400/10 p-3 text-sm font-black leading-snug text-emerald-100">
               <Wallet className="mt-0.5 h-4 w-4 shrink-0 text-emerald-300" />
-              <span>Pay Rs.{plan.price.toLocaleString('en-IN')}. If not selected, use Rs.{creditValue} as travel credit.</span>
+              <span>Pay ₹{plan.price.toLocaleString('en-IN')}. If not selected, use ₹{creditValue} as travel credit.</span>
             </div>
           </div>
 
@@ -1490,7 +1492,7 @@ function PlanCard({ plan, index, onSelectPlan }: { plan: typeof PLANS[number]; i
 
           <div className="px-7 pb-5">
             <div className="grid grid-cols-2 gap-2">
-              {[{ l: 'Discount Credits', v: `Rs. ${plan.discountValue.toLocaleString('en-IN')}` }, { l: 'Paid Tour Off', v: `Up to ${plan.paidDiscount}` }, { l: 'Insurance', v: plan.insurance }, { l: 'Name Change', v: plan.nameChange }].map((c) => (
+              {[{ l: 'Discount Credits', v: `₹ ${plan.discountValue.toLocaleString('en-IN')}` }, { l: 'Paid Tour Off', v: `Up to ${plan.paidDiscount}` }, { l: 'Insurance', v: plan.insurance }, { l: 'Name Change', v: plan.nameChange }].map((c) => (
                 <div key={c.l} className="bg-slate-900/60 border border-slate-800/50 rounded-lg p-2.5">
                   <div className="text-[9px] uppercase tracking-widest text-slate-400 font-bold">{c.l}</div>
                   <div className="text-xs font-black text-slate-100 mt-0.5">{c.v}</div>
@@ -1500,13 +1502,22 @@ function PlanCard({ plan, index, onSelectPlan }: { plan: typeof PLANS[number]; i
           </div>
 
           <div className="p-7 pt-0">
-            <ParticleButton
-              onClick={() => onSelectPlan(plan.name)}
-              variant={plan.featured ? 'gold' : 'cyan'}
-              className="block text-center w-full py-3.5 rounded-full font-bold"
-            >
-              {`Choose ${plan.name}`}
-            </ParticleButton>
+            {isComingSoon ? (
+              <button
+                disabled
+                className="block text-center w-full py-3.5 rounded-full font-bold bg-white/5 border border-white/10 text-slate-500 text-sm cursor-not-allowed"
+              >
+                Coming Soon
+              </button>
+            ) : (
+              <ParticleButton
+                onClick={() => onSelectPlan(plan.name)}
+                variant={plan.featured ? 'gold' : 'cyan'}
+                className="block text-center w-full py-3.5 rounded-full font-bold"
+              >
+                {`Choose ${plan.name}`}
+              </ParticleButton>
+            )}
             <div className="text-center text-[11px] text-slate-400 font-bold mt-3 font-mono">// 12-mo validity - pickup included</div>
           </div>
         </div>
@@ -1694,7 +1705,7 @@ function IntlPlanCard({ plan, index, onSelectPlan }: { plan: typeof INTL_PLANS[n
       <TiltCard intensity={6}>
         <div ref={cardRef} onMouseMove={onMove} onMouseEnter={() => setHovered(true)} onMouseLeave={() => { setHovered(false); onLeave(); }} className={`relative rounded-3xl overflow-hidden h-full transition-all duration-500 tilt-inner bg-gradient-to-b from-slate-950 to-slate-900 border ${plan.featured ? 'border-2 border-emerald-400/80 shadow-2xl shadow-cyan/10' : 'border-slate-800/80 hover:border-cyan/50 hover:shadow-2xl hover:shadow-cyan/5'}`}>
           {plan.featured && <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-emerald-400 via-cyan to-emerald-400 z-10" />}
-          {plan.featured && <div className="absolute top-5 right-5 z-20 px-3 py-1 rounded-full bg-gradient-to-r from-emerald-400 to-teal-500 text-cosmos text-[10px] font-bold uppercase tracking-widest flex items-center gap-1 shadow-lg"><Plane className="w-3 h-3 fill-current" /> Best Value</div>}
+          <div className="absolute top-5 right-5 z-20 px-3 py-1 rounded-full bg-red-500/20 border border-red-500/30 text-red-300 text-[10px] font-bold uppercase tracking-widest shadow-lg backdrop-blur-md">Coming Soon</div>
 
           <div className="relative h-48 overflow-hidden bg-slate-950">
             <div className={`tilt-img absolute inset-0 bg-cover bg-center transition-all duration-700 ${hovered ? 'opacity-100 scale-105' : 'opacity-80'}`} style={{ ...imgStyle, backgroundImage: `url(${plan.image})` }} />
@@ -1719,10 +1730,10 @@ function IntlPlanCard({ plan, index, onSelectPlan }: { plan: typeof INTL_PLANS[n
               <span className="font-display text-5xl font-black text-white tracking-tight tabular">{plan.price.toLocaleString('en-IN')}</span>
               <span className="text-slate-400 font-extrabold text-sm">/ 12 mo</span>
             </div>
-            <div className="mt-2 text-sm text-slate-300 font-bold">Winner tour value up to <span className="font-extrabold text-white">Rs.{plan.tourValue.toLocaleString('en-IN')}</span> - {plan.duration}</div>
+            <div className="mt-2 text-sm text-slate-300 font-bold">Winner tour value up to <span className="font-extrabold text-white">₹{plan.tourValue.toLocaleString('en-IN')}</span> - {plan.duration}</div>
             <div className="mt-4 flex items-start gap-2 rounded-xl border border-cyan/25 bg-cyan/10 p-3 text-sm font-black leading-snug text-cyan-bright">
               <Wallet className="mt-0.5 h-4 w-4 shrink-0" />
-              <span>Pay Rs.{plan.price.toLocaleString('en-IN')}. If not selected, use Rs.{creditValue} as travel credit.</span>
+              <span>Pay ₹{plan.price.toLocaleString('en-IN')}. If not selected, use ₹{creditValue} as travel credit.</span>
             </div>
           </div>
 
@@ -1735,7 +1746,7 @@ function IntlPlanCard({ plan, index, onSelectPlan }: { plan: typeof INTL_PLANS[n
 
           <div className="px-7 pb-5">
             <div className="grid grid-cols-2 gap-2">
-              {[{ l: 'Discount Credits', v: `Rs. ${plan.discountValue.toLocaleString('en-IN')}` }, { l: 'Tour Discount', v: plan.paidDiscount.startsWith('Up to') ? plan.paidDiscount : `Up to ${plan.paidDiscount}` }, { l: 'Insurance', v: plan.insurance }, { l: 'Name Change', v: plan.nameChange }].map((c) => (
+              {[{ l: 'Discount Credits', v: `₹ ${plan.discountValue.toLocaleString('en-IN')}` }, { l: 'Tour Discount', v: plan.paidDiscount.startsWith('Up to') ? plan.paidDiscount : `Up to ${plan.paidDiscount}` }, { l: 'Insurance', v: plan.insurance }, { l: 'Name Change', v: plan.nameChange }].map((c) => (
                 <div key={c.l} className="bg-slate-900/60 border border-slate-800/50 rounded-lg p-2.5">
                   <div className="text-[9px] uppercase tracking-widest text-slate-400 font-bold">{c.l}</div>
                   <div className="text-xs font-black text-slate-100 mt-0.5">{c.v}</div>
@@ -1745,13 +1756,12 @@ function IntlPlanCard({ plan, index, onSelectPlan }: { plan: typeof INTL_PLANS[n
           </div>
 
           <div className="p-7 pt-0">
-            <ParticleButton
-              onClick={() => onSelectPlan(plan.name + ' International')}
-              variant={plan.featured ? 'cyan' : 'gold'}
-              className="block text-center w-full py-3.5 rounded-full font-bold"
+            <button
+              disabled
+              className="block text-center w-full py-3.5 rounded-full font-bold bg-white/5 border border-white/10 text-slate-500 text-sm cursor-not-allowed"
             >
-              {`Choose ${plan.name} International`}
-            </ParticleButton>
+              Coming Soon
+            </button>
             <div className="text-center text-[11px] text-slate-400 font-bold mt-3 font-mono">// 12-mo validity - visa assist included</div>
           </div>
         </div>
@@ -2200,21 +2210,21 @@ function CreditArchitecture(_props: { activePlan: string | null; ldcTokens: numb
       rule: '1 Credit = 1 Entry in the weekly Lucky Draw',
       details: ['Automatically added upon payment verification', 'Used every Sunday to activate draw entry', 'Ticket ID confirmed and locked for that week', 'No extra credits can be purchased - fair chance for all'] },
     { type: 'DC', name: 'Discount Credits', icon: CreditCard, accent: 'teal',
-      desc: 'These act as the protective floor for non-winners. If a user does not win, these credits allow them to claim a flat Rs.500 off per tour booking.',
+      desc: 'These act as the protective floor for non-winners. If a user does not win, these credits allow them to claim a flat ₹500 off per tour booking.',
       rule: '1 Tour Booking = 1 Discount Credit applied',
-      details: ['Domestic: Rs.500 discount per credit (Up to Rs.2,000 safety floor)', 'International: Rs.500 discount per credit (Up to Rs.7,500 safety floor)', 'Credits never expire and stack across bookings', 'Credits visible on your digital dashboard'] },
+      details: ['Domestic: ₹500 discount per credit (Up to ₹2,000 safety floor)', 'International: ₹500 discount per credit (Up to ₹7,500 safety floor)', 'Credits never expire and stack across bookings', 'Credits visible on your digital dashboard'] },
   ];
 
   const domesticCredits = [
-    { plan: 'Silver', price: 'Rs.499', ldc: '1', dc: 'Rs.500', total: 'Rs.500', color: 'from-slate-500 to-slate-700', image: '/images/sundarbans_mangrove_1779521789593.png' },
-    { plan: 'Gold', price: 'Rs.799', ldc: '1', dc: 'Rs.1,000', total: 'Rs.1,000', color: 'from-teal-400 to-emerald-600', image: '/images/darjeeling_tea_1779521805614.png' },
-    { plan: 'Platinum', price: 'Rs.1,499', ldc: '1', dc: 'Rs.2,000', total: 'Rs.2,000', color: 'from-neon-gold to-gold-deep', image: '/images/kashmir_dal_lake_1779521728036.png' },
+    { plan: 'Silver', price: '₹499', ldc: '1', dc: '₹500', total: '₹500', color: 'from-slate-500 to-slate-700', image: '/images/sundarbans_mangrove_1779521789593.png' },
+    { plan: 'Gold', price: '₹799', ldc: '1', dc: '₹1,000', total: '₹1,000', color: 'from-teal-400 to-emerald-600', image: '/images/darjeeling_tea_1779521805614.png' },
+    { plan: 'Platinum', price: '₹1,499', ldc: '1', dc: '₹2,000', total: '₹2,000', color: 'from-neon-gold to-gold-deep', image: '/images/kashmir_dal_lake_1779521728036.png' },
   ];
 
   const intlCredits = [
-    { plan: 'Silver', price: 'Rs.4,999', ldc: '1 (Monthly)', dc: 'Rs.2,500', total: 'Rs.2,500', color: 'from-sky-400 to-blue-600', image: '/images/nepal.png' },
-    { plan: 'Gold', price: 'Rs.7,999', ldc: '1 (Monthly)', dc: 'Rs.4,000', total: 'Rs.4,000', color: 'from-emerald-400 to-teal-600', image: '/images/thailand.png' },
-    { plan: 'Platinum', price: 'Rs.14,999', ldc: '1 (Monthly)', dc: 'Rs.7,500', total: 'Rs.7,500', color: 'from-cyan via-cyan-bright to-cyan-deep', image: '/images/vietnam.png' },
+    { plan: 'Silver', price: '₹4,999', ldc: '1 (Monthly)', dc: '₹2,500', total: '₹2,500', color: 'from-sky-400 to-blue-600', image: '/images/nepal.png' },
+    { plan: 'Gold', price: '₹7,999', ldc: '1 (Monthly)', dc: '₹4,000', total: '₹4,000', color: 'from-emerald-400 to-teal-600', image: '/images/thailand.png' },
+    { plan: 'Platinum', price: '₹14,999', ldc: '1 (Monthly)', dc: '₹7,500', total: '₹7,500', color: 'from-cyan via-cyan-bright to-cyan-deep', image: '/images/vietnam.png' },
   ];
 
   const currentCredits = activeTab === 'domestic' ? domesticCredits : intlCredits;
@@ -2322,7 +2332,7 @@ function CreditArchitecture(_props: { activePlan: string | null; ldcTokens: numb
                         <div className="text-left">
                           <div className="text-[9px] uppercase tracking-widest text-slate-400 font-mono">Value</div>
                           <div className="text-3xl font-display font-black text-[#F7B500] tracking-tight leading-none drop-shadow-[0_0_8px_rgba(247,181,0,0.35)]">
-                            Rs.500
+                            ₹500
                           </div>
                         </div>
                         <div className="h-10 w-px border-l border-dashed border-slate-700/40" />
@@ -2539,7 +2549,7 @@ function NonWinnerGuarantee() {
       example: {
         name: 'Riya Das',
         avatar: '/images/winner_priya_sen.png',
-        story: 'Riya subscribed to Silver for Rs.499. She didn\'t win the draw, but used her 1 Discount Credit to get Rs.500 off her Sundarban trip. She saved Rs.1 more than she paid!'
+        story: 'Riya subscribed to Silver for ₹499. She didn\'t win the draw, but used her 1 Discount Credit to get ₹500 off her Sundarban trip. She saved ₹1 more than she paid!'
       },
     },
     {
@@ -2550,7 +2560,7 @@ function NonWinnerGuarantee() {
       example: {
         name: 'Arjun Roy',
         avatar: '/images/winner_arjun_roy.png',
-        story: 'Arjun paid Rs.799 for Gold. He didn\'t win, but used his 2 DCs on two separate tours - Rs.500 off each. Total savings: Rs.1,000 on a Rs.799 investment!'
+        story: 'Arjun paid ₹799 for Gold. He didn\'t win, but used his 2 DCs on two separate tours - ₹500 off each. Total savings: ₹1,000 on a ₹799 investment!'
       },
     },
     {
@@ -2561,7 +2571,7 @@ function NonWinnerGuarantee() {
       example: {
         name: 'Priya Sen',
         avatar: '/images/winner_ananya_das.png',
-        story: 'Priya invested Rs.1,499 in Platinum. She didn\'t win, but received 4 DCs - Rs.500 off on 4 different tours = Rs.2,000 total savings. That\'s 133% return!'
+        story: 'Priya invested ₹1,499 in Platinum. She didn\'t win, but received 4 DCs - ₹500 off on 4 different tours = ₹2,000 total savings. That\'s 133% return!'
       },
     },
   ];
@@ -2589,11 +2599,11 @@ function NonWinnerGuarantee() {
               <KineticText text="Didn't win?" />
               <br /><span className="gold-shimmer"><KineticText text="You still win." delay={0.3} /></span>
             </h2>
-            <p className="mt-6 text-ink/70 text-lg leading-relaxed">Every subscriber gets guaranteed value back through Discount Credits (DC). Each DC = Rs.500 flat discount on any domestic tour. Your subscription cost is always fully recovered - and then some.</p>
+            <p className="mt-6 text-ink/70 text-lg leading-relaxed">Every subscriber gets guaranteed value back through Discount Credits (DC). Each DC = ₹500 flat discount on any domestic tour. Your subscription cost is always fully recovered - and then some.</p>
           </div>
         </Reveal>
 
-        {/* Rs.499 = Rs.500 Guarantee Badge */}
+        {/* ₹499 = ₹500 Guarantee Badge */}
         <Reveal>
           <div className="glass rounded-3xl p-8 lg:p-12 border border-amber-500/30 mb-16 shadow-[0_0_50px_-10px_rgba(245,158,11,0.22),inset_0_1px_0_rgba(255,255,255,0.06)] text-center relative overflow-hidden">
             <div className="absolute -top-20 -left-20 w-60 h-60 rounded-full bg-amber-500/10 blur-3xl" />
@@ -2605,11 +2615,11 @@ function NonWinnerGuarantee() {
                 </div>
               </FloatingIcon>
               <div className="font-display text-4xl lg:text-6xl font-bold mb-4 flex items-center justify-center gap-3 select-none">
-                <span className="text-white">Rs.499</span>
+                <span className="text-white">₹499</span>
                 <span className="text-amber-400 animate-pulse font-mono font-medium">=</span>
-                <span className="bg-gradient-to-r from-[#FFF6C3] via-[#FDE047] to-[#F59E0B] bg-clip-text text-transparent">Rs.500</span>
+                <span className="bg-gradient-to-r from-[#FFF6C3] via-[#FDE047] to-[#F59E0B] bg-clip-text text-transparent">₹500</span>
               </div>
-              <p className="text-lg text-ink/75 max-w-xl mx-auto leading-relaxed">Every Rs.499 in your subscription maps directly to Rs.500 of real tour discount value. <span className="text-[#00F5D4] font-black">Zero loss. Guaranteed.</span></p>
+              <p className="text-lg text-ink/75 max-w-xl mx-auto leading-relaxed">Every ₹499 in your subscription maps directly to ₹500 of real tour discount value. <span className="text-[#00F5D4] font-black">Zero loss. Guaranteed.</span></p>
               <div className="mt-6 inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-black/45 border border-emerald-500/30 shadow-lg backdrop-blur-md">
                 <CheckCircle2 className="w-4 h-4 text-emerald-400" />
                 <span className="text-sm text-emerald-400 font-semibold">100%+ Value Recovery on Every Plan</span>
@@ -2640,7 +2650,7 @@ function NonWinnerGuarantee() {
                       </div>
                       <div>
                         <div className="font-display text-lg font-bold text-ink drop-shadow-sm">{card.plan}</div>
-                        <div className="text-[10px] text-ink/60 font-mono">Rs.{card.price} / 12 months</div>
+                        <div className="text-[10px] text-ink/60 font-mono">₹{card.price} / 12 months</div>
                       </div>
                     </div>
                   </div>
@@ -2651,12 +2661,12 @@ function NonWinnerGuarantee() {
                       <div className="flex items-center justify-between mb-3">
                         <div className="text-center">
                           <div className="text-[9px] uppercase tracking-widest text-ink/40 mb-1">You Pay</div>
-                          <div className="font-display text-lg font-bold text-ink">Rs.{card.price}</div>
+                          <div className="font-display text-lg font-bold text-ink">₹{card.price}</div>
                         </div>
                         <ArrowRight className="w-5 h-5 text-neon-gold" />
                         <div className="text-center">
                           <div className="text-[9px] uppercase tracking-widest text-ink/40 mb-1">You Get Back</div>
-                          <div className="font-display text-lg font-bold text-emerald-400">Rs.{card.dcValue.toLocaleString()}</div>
+                          <div className="font-display text-lg font-bold text-emerald-400">₹{card.dcValue.toLocaleString()}</div>
                         </div>
                       </div>
                       {/* ROI Progress Bar */}
@@ -2682,7 +2692,7 @@ function NonWinnerGuarantee() {
                         <span className="text-sm font-bold text-neon-gold">{card.dc} Discount Credit{card.dc > 1 ? 's' : ''}</span>
                       </div>
                       <div className="text-xs text-ink/60 leading-relaxed">
-                        = {card.dc} x Rs.500 = <span className="text-emerald-400 font-bold">Rs.{card.dcValue.toLocaleString()} off</span> on {card.dc} domestic tour{card.dc > 1 ? 's' : ''}
+                        = {card.dc} x ₹500 = <span className="text-emerald-400 font-bold">₹{card.dcValue.toLocaleString()} off</span> on {card.dc} domestic tour{card.dc > 1 ? 's' : ''}
                       </div>
                     </div>
 
@@ -2732,7 +2742,7 @@ function NonWinnerGuarantee() {
                 </div>
                 <div className="rounded-xl p-3 bg-emerald-500/10 border border-emerald-500/20 flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                  <span className="text-xs text-emerald-400 font-semibold">Net ROI: {card.roi}% - Paid Rs.{card.price}, got Rs.{card.dcValue.toLocaleString()} value</span>
+                  <span className="text-xs text-emerald-400 font-semibold">Net ROI: {card.roi}% - Paid ₹{card.price}, got ₹{card.dcValue.toLocaleString()} value</span>
                 </div>
               </div>
             </Reveal>
