@@ -1257,15 +1257,34 @@ function TrustStrip() {
 /* ---------- About Us / Mission / Vision ---------- */
 function AboutUs() {
   const pillars = [
-    { icon: Heart, title: 'Our Mission', accent: 'cyan', image: '/images/about_mission.png',
-      text: 'Transform travel into an accessible, reliable, and rewarding experience for everyone. We offer carefully crafted tours that balance culture, comfort and adventure - delivering a subscription model where members enjoy weekly lucky draws and guaranteed discounts.',
-      points: ['Curated tours for every traveller', 'Subscription model with guaranteed value', 'A trusted partner in creating memories'] },
-    { icon: Globe, title: 'Our Vision', accent: 'teal', image: '/images/about_vision.png',
-      text: 'Revolutionize the travel industry with a sustainable, inclusive, and transparent model. Expand across India with a franchise and agent-driven network - integrating cutting-edge technology for seamless subscriptions and tour management.',
-      points: ['Pan-India franchise network', 'Technology-first transparency', 'From domestic roots to global journeys'] },
-    { icon: Users, title: 'Our Promise', accent: 'gold', image: '/images/about_promise.png',
-      text: 'Every subscriber gets more value than their subscription fee - whether they win or not. We believe travel is not just about visiting destinations - it\'s about building stories, emotions, and connections that last a lifetime.',
-      points: ['Winners enjoy luxury tours free', 'Non-winners always get assured discounts', 'Fair, transparent, community-driven'] },
+    {
+      icon: Heart,
+      title: 'Our Mission',
+      accent: 'cyan',
+      image: '/images/about_mission.png',
+      text: 'At Beduine Tour & Travels, our mission is to transform travel into an accessible, reliable, and rewarding experience for everyone.',
+      points: [
+        'Offer carefully crafted tours that balance culture, comfort and adventure.',
+        'Provide a unique subscription-based model where members enjoy weekly lucky draws and guaranteed discounts.',
+        'Deliver luxury tours for winners while ensuring that non-winners never feel left behind, thanks to fair and transparent benefits.',
+        'Build a community of happy travelers who see Beduine not just as a company, but as a trusted partner in creating memories.'
+      ],
+      quote: "We believe travel is not just about visiting destinations — it's about building stories, emotions, and connections that last a lifetime."
+    },
+    {
+      icon: Globe,
+      title: 'Our Vision',
+      accent: 'gold',
+      image: '/images/about_vision.png',
+      text: 'The vision of Beduine Tour & Travels is to revolutionize the travel industry with a sustainable, inclusive, and transparent model that benefits every traveler.',
+      points: [
+        'Expand our presence across India with a franchise and agent-driven network, reaching even the remotest travelers.',
+        'Integrate cutting-edge technology to ensure seamless subscriptions, lucky draw transparency, and hassle-free tour management.',
+        'Position Beduine as a global name in innovative travel solutions, starting from domestic roots and branching out to international experiences.',
+        'Build a community of loyal subscribers who see travel not as an expense but as a lifetime investment in memories.'
+      ],
+      quote: 'Our ultimate vision is simple: "Safar jo yad rahe" — journeys that live forever in the hearts of our travelers.'
+    }
   ];
   return (
     <section id="about" className="relative py-14 lg:py-20 overflow-hidden">
@@ -1284,29 +1303,38 @@ function AboutUs() {
         </Reveal>
 
         {/* Pillar Cards */}
-        <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
+        <div className="grid md:grid-cols-2 gap-8 lg:gap-10">
           {pillars.map((p, i) => (
-            <Reveal key={p.title} delay={i * 0.12}>
-              <TiltCard className="h-full" intensity={6}>
+            <Reveal key={p.title} delay={i * 0.15}>
+              <TiltCard className="h-full" intensity={5}>
                 <div className={`glass rounded-3xl overflow-hidden border border-slate-line ${p.accent === 'cyan' ? 'hover:neon-border-cyan' : 'hover:neon-border-gold'} transition-all h-full tilt-inner flex flex-col group`}>
-                  <div className="relative h-44 overflow-hidden">
+                  <div className="relative h-52 overflow-hidden">
                     <img src={p.image} alt={p.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#0d1b22] via-[#0d1b22]/40 to-transparent" />
                     <div className="absolute top-4 left-4">
                       <FloatingIcon delay={i * 0.5}>
-                        <div className={`w-12 h-12 rounded-xl flex items-center justify-center shadow-lg ${p.accent === 'cyan' ? 'bg-gradient-to-br from-cyan to-cyan-deep shadow-cyan/30' : p.accent === 'teal' ? 'bg-gradient-to-br from-teal-400 to-emerald-600 shadow-teal/30' : 'bg-gradient-to-br from-neon-gold to-gold-deep shadow-neon-gold/30'}`}>
+                        <div className={`w-12 h-12 rounded-xl flex items-center justify-center shadow-lg ${p.accent === 'cyan' ? 'bg-gradient-to-br from-cyan to-cyan-deep shadow-cyan/30' : 'bg-gradient-to-br from-neon-gold to-gold-deep shadow-neon-gold/30'}`}>
                           <p.icon className="w-6 h-6 text-cosmos" strokeWidth={2.2} />
                         </div>
                       </FloatingIcon>
                     </div>
-                    <Rocket className="absolute top-4 right-4 w-5 h-5 text-ink/20" />
                   </div>
-                  <div className="p-8 pt-5 flex-1 flex flex-col">
-                    <h3 className="font-display text-xl font-black text-slate-950 mb-3">{p.title}</h3>
-                    <p className="text-sm text-slate-800 leading-relaxed mb-5 flex-1 font-semibold">{p.text}</p>
-                    <ul className="space-y-2.5 pt-5 border-t border-slate-line">
-                      {p.points.map((pt) => <li key={pt} className="flex items-center gap-2.5 text-sm text-slate-900 font-bold"><GoldCheck size={16} variant={p.accent as any} /><span>{pt}</span></li>)}
-                    </ul>
+                  <div className="p-8 pt-6 flex-1 flex flex-col justify-between">
+                    <div>
+                      <h3 className="font-display text-2xl font-black text-[#0B1F2E] mb-4">{p.title}</h3>
+                      <p className="text-sm text-slate-800 leading-relaxed mb-6 font-semibold">{p.text}</p>
+                      <ul className="space-y-3.5 mb-6">
+                        {p.points.map((pt) => (
+                          <li key={pt} className="flex items-start gap-3 text-sm text-slate-900 font-bold">
+                            <GoldCheck size={16} variant={p.accent as any} className="mt-0.5 shrink-0" />
+                            <span className="text-slate-800">{pt}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div className={`p-4 rounded-2xl border ${p.accent === 'cyan' ? 'bg-cyan/8 border-cyan/20 text-[#008EAA] font-serif italic' : 'bg-neon-gold/8 border-neon-gold/20 text-gold-deep font-bold'} text-xs leading-relaxed text-center mt-auto shadow-sm`}>
+                      {p.quote}
+                    </div>
                   </div>
                 </div>
               </TiltCard>
