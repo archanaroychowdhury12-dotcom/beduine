@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { 
   ArrowLeft, Calendar, User, Phone, Mail, MapPin, 
@@ -11,6 +11,8 @@ interface RegistrationPageProps {
   onBack: () => void;
   prefilledData?: any;
   onRegisterSuccess?: (user: any) => void;
+  currentUser?: any;
+  onRedirectToLogin?: () => void;
 }
 
 const ALL_PLANS = [
@@ -25,7 +27,7 @@ const ALL_PLANS = [
     benefits: [
       '1 Weekly Lucky Draw entry',
       'Winner tour value up to ₹3,000 (2N/3D)',
-      '1 x ₹500 discount credit if not selected',
+      '₹500 discount credit if not selected',
       'Up to 5% off on other paid tours',
       'Travel insurance – Payable',
       'Name change – Not available'
@@ -42,7 +44,7 @@ const ALL_PLANS = [
     benefits: [
       '1 Weekly Lucky Draw entry',
       'Winner tour value up to ₹5,000 (2N/3D)',
-      '2 x ₹500 discount credits (₹1,000 value)',
+      '₹1,000 discount credits if not selected',
       'Up to 7% off on other paid tours',
       'Travel insurance – 50% off',
       'Name change – One time allowed'
@@ -59,7 +61,7 @@ const ALL_PLANS = [
     benefits: [
       '1 Weekly Lucky Draw entry',
       'Winner tour value up to ₹10,000 (3N/4D)',
-      '4 x ₹500 discount credits (₹2,000 value)',
+      '₹2,000 discount credits if not selected',
       'Up to 10% off on other paid tours',
       'Travel insurance – Free',
       'Name change – Two times allowed'
@@ -76,7 +78,7 @@ const ALL_PLANS = [
     benefits: [
       '1 Monthly Lucky Draw entry',
       'Winner tour value up to ₹25,000 (3N/4D)',
-      '5 x ₹500 discount credits (₹2,500 value)',
+      '₹2,500 discount credits if not selected',
       'Up to 5% off on other paid tours',
       'Travel insurance – 50% off',
       'Name change – One time allowed',
@@ -94,7 +96,7 @@ const ALL_PLANS = [
     benefits: [
       '1 Monthly Lucky Draw entry',
       'Winner tour value up to ₹50,000 (4N/5D)',
-      '8 x ₹500 discount credits (₹4,000 value)',
+      '₹4,000 discount credits if not selected',
       'Up to 7% off on other paid tours',
       'Travel insurance – Free',
       'Name change – Two times allowed',
@@ -112,7 +114,7 @@ const ALL_PLANS = [
     benefits: [
       '1 Monthly Lucky Draw entry',
       'Winner tour value up to ₹1,00,000 (5N/6D)',
-      '15 x ₹500 discount credits (₹7,500 value)',
+      '₹7,500 discount credits if not selected',
       'Up to 10% off on other paid tours',
       'Travel insurance – Free',
       'Name change – Unlimited allowed',
@@ -122,9 +124,8 @@ const ALL_PLANS = [
   }
 ];
 
-export default function RegistrationPage({ initialPlanName, onBack, prefilledData, onRegisterSuccess }: RegistrationPageProps) {
+export default function RegistrationPage({ initialPlanName, onBack, prefilledData, onRegisterSuccess, currentUser, onRedirectToLogin }: RegistrationPageProps) {
   const [step, setStep] = useState(1);
-  const [showGoogleModal, setShowGoogleModal] = useState(false);
   const [selectedPlanId, setSelectedPlanId] = useState(() => {
     const matched = ALL_PLANS.find(p => {
       if (p.id.toLowerCase() === initialPlanName.toLowerCase()) return true;
@@ -135,12 +136,12 @@ export default function RegistrationPage({ initialPlanName, onBack, prefilledDat
   });
 
   const [formData, setFormData] = useState({
-    fullName: prefilledData?.fullName || '',
-    mobile: prefilledData?.mobile || '',
-    email: prefilledData?.email || '',
+    fullName: prefilledData?.fullName || currentUser?.fullName || '',
+    mobile: prefilledData?.mobile || currentUser?.mobile || '',
+    email: prefilledData?.email || currentUser?.email || '',
     dob: '',
     gender: 'Male',
-    city: prefilledData?.city || '',
+    city: prefilledData?.city || currentUser?.city || '',
     pincode: '',
     address: '',
     nomineeName: '',
@@ -150,6 +151,16 @@ export default function RegistrationPage({ initialPlanName, onBack, prefilledDat
   });
 
   const [receipt, setReceipt] = useState<any | null>(null);
+
+  useEffect(() => {
+    if (currentUser) {
+      setFormData(prev => ({
+        ...prev,
+        fullName: currentUser.fullName || prev.fullName,
+        email: currentUser.email || prev.email,
+      }));
+    }
+  }, [currentUser]);
 
   const selectedPlan = useMemo(() => {
     return ALL_PLANS.find(p => p.id === selectedPlanId) || ALL_PLANS[0];
@@ -478,82 +489,35 @@ _I confirm my registration and age eligibility (18+). Please guide me on payment
                       <p className="text-xs text-ink/50 mt-1">Please enter your legal name and contact details exactly as on your Government ID.</p>
                     </div>
 
-                    {/* Google Sign-in Simulation */}
-                    <div className="pt-2">
-                      <button
-                        type="button"
-                        onClick={() => setShowGoogleModal(true)}
-                        className="w-full py-3.5 px-4 rounded-xl bg-white/5 border border-white/10 hover:border-cyan/40 hover:bg-white/10 text-white font-semibold flex items-center justify-center gap-3 transition-all cursor-pointer shadow-lg"
-                      >
-                        <svg className="w-5 h-5" viewBox="0 0 24 24">
+                    {currentUser ? (
+                      <div className="p-4 rounded-2xl bg-cyan/10 border border-cyan/20 text-cyan text-xs flex items-center gap-3 mb-2 shadow-inner">
+                        <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
                           <path
-                            fill="#EA4335"
-                            d="M12.24 10.285V14.4h6.887c-.648 2.41-2.519 4.114-5.136 4.114-3.555 0-6.437-2.883-6.437-6.437s2.882-6.437 6.437-6.437c1.558 0 2.977.557 4.088 1.487l3.056-3.056C19.263 2.223 15.974 1 12.24 1 6.033 1 1 6.033 1 12.24s5.033 11.24 11.24 11.24c5.898 0 10.871-4.212 10.871-11.24 0-.768-.068-1.513-.193-1.955H12.24z"
+                            fill="currentColor"
+                            d="M21.35 11.1c.86-.53 1.15-1.65.61-2.51-.53-.86-1.65-1.15-2.51-.61l-3.2 2c-.18.11-.3.3-.3.5v3.82l-3.2-2c-.86-.53-1.98-.24-2.51.61-.53.86-.24 1.98.61 2.51l3.2 2c.18.11.3.17.5.17.1 0 .2 0 .3-.05.17-.06.3-.18.35-.35l1-3.26 1 3.26c.05.17.18.29.35.35.1.05.2.05.3.05.2 0 .32-.06.5-.17l3.2-2c.86-.53 1.15-1.65.61-2.51-.53-.86-1.65-1.15-2.51-.61l-3.2 2v-3.82c0-.2-.12-.39-.3-.5l-3.2-2zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"
                           />
                         </svg>
-                        Sign Up with Google / Gmail
-                      </button>
-                    </div>
-
-                    {/* Account Selector Dialog Simulation */}
-                    {showGoogleModal && (
-                      <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-                        <motion.div 
-                          initial={{ scale: 0.9, opacity: 0 }} 
-                          animate={{ scale: 1, opacity: 1 }}
-                          className="glass rounded-3xl p-6 max-w-md w-full border border-white/15 shadow-2xl relative"
+                        <span>Google Session active: <strong className="font-mono text-white">{currentUser.email}</strong>. Booking is linked to this account.</span>
+                      </div>
+                    ) : (
+                      <div className="p-5 rounded-2xl bg-[#081F2E] border border-amber-500/20 text-ink text-xs flex flex-col gap-3.5 mb-4 shadow-xl">
+                        <div className="flex items-center gap-3">
+                          <span className="w-2.5 h-2.5 rounded-full bg-amber-500 animate-ping shrink-0" />
+                          <span className="text-[#AFC0CA] text-xs font-semibold">Please sign in with Google/Gmail first to verify your travel account details.</span>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            if (onRedirectToLogin) {
+                              onRedirectToLogin();
+                            }
+                          }}
+                          className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-cosmos font-bold text-xs uppercase tracking-wider transition-all hover:scale-[1.01] hover:brightness-110 cursor-pointer border-none shadow-md"
                         >
-                          <h3 className="text-base font-bold text-white mb-2">Choose a Google Account</h3>
-                          <p className="text-xs text-ink/60 mb-5">to continue to BEDUINE Tour & Travels</p>
-                          
-                          <div className="space-y-3">
-                            {[
-                              { name: 'Arunasish Roychowdhury', email: 'arunasish.roy@gmail.com' },
-                              { name: 'Rahul Sen', email: 'rahul.sen99@gmail.com' },
-                              { name: 'Guest Traveler', email: 'traveler.guest@gmail.com' }
-                            ].map((acc) => (
-                              <button
-                                key={acc.email}
-                                type="button"
-                                onClick={() => {
-                                  setFormData({
-                                    ...formData,
-                                    fullName: acc.name,
-                                    email: acc.email
-                                  });
-                                  setShowGoogleModal(false);
-                                }}
-                                className="w-full text-left p-3.5 rounded-2xl bg-white/5 border border-white/5 hover:border-cyan/40 hover:bg-white/10 transition-all flex items-center gap-3 cursor-pointer"
-                              >
-                                <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-cyan to-blue-500 flex items-center justify-center font-bold text-cosmos text-sm">
-                                  {acc.name.charAt(0)}
-                                </div>
-                                <div>
-                                  <span className="block text-xs font-bold text-white">{acc.name}</span>
-                                  <span className="block text-[10px] text-ink/50 font-mono">{acc.email}</span>
-                                </div>
-                              </button>
-                            ))}
-                          </div>
-
-                          <div className="mt-5 pt-4 border-t border-white/5 text-right">
-                            <button
-                              type="button"
-                              onClick={() => setShowGoogleModal(false)}
-                              className="px-4 py-2 rounded-xl text-xs text-ink hover:text-white transition-colors cursor-pointer"
-                            >
-                              Cancel
-                            </button>
-                          </div>
-                        </motion.div>
+                          Sign In / Log In with Google
+                        </button>
                       </div>
                     )}
-
-                    <div className="flex items-center gap-4 py-2">
-                      <div className="h-px bg-white/10 flex-1" />
-                      <span className="text-[10px] uppercase font-mono tracking-widest text-ink/40">Or fill manually</span>
-                      <div className="h-px bg-white/10 flex-1" />
-                    </div>
 
                     <div className="grid sm:grid-cols-2 gap-5">
                       <div>
@@ -564,10 +528,14 @@ _I confirm my registration and age eligibility (18+). Please guide me on payment
                             type="text" 
                             id="fullName" 
                             required
+                            readOnly={!!currentUser}
+                            disabled={!currentUser}
                             placeholder="e.g. Ananya Das"
                             value={formData.fullName}
                             onChange={(e) => setFormData({...formData, fullName: e.target.value})}
-                            className="w-full pl-11 pr-4 py-3.5 rounded-xl bg-[#051520]/60 border border-white/10 text-ink text-sm outline-none focus:border-cyan-400 transition-colors"
+                            className={`w-full pl-11 pr-4 py-3.5 rounded-xl bg-[#051520]/60 border text-ink text-sm outline-none transition-colors ${
+                              !currentUser ? 'opacity-40 cursor-not-allowed border-white/5' : currentUser ? 'border-cyan/30 opacity-70 select-none cursor-not-allowed bg-white/5' : 'border-white/10 focus:border-cyan-400'
+                            }`}
                           />
                         </div>
                       </div>
@@ -580,10 +548,13 @@ _I confirm my registration and age eligibility (18+). Please guide me on payment
                             type="tel" 
                             id="mobileNumber" 
                             required
+                            disabled={!currentUser}
                             placeholder="e.g. +91 98765 43210"
                             value={formData.mobile}
                             onChange={(e) => setFormData({...formData, mobile: e.target.value})}
-                            className="w-full pl-11 pr-4 py-3.5 rounded-xl bg-[#051520]/60 border border-white/10 text-ink text-sm outline-none focus:border-cyan-400 transition-colors"
+                            className={`w-full pl-11 pr-4 py-3.5 rounded-xl bg-[#051520]/60 border text-[#D8E4EA] text-sm outline-none focus:border-cyan-400 transition-colors ${
+                              !currentUser ? 'opacity-40 cursor-not-allowed border-white/5' : 'border-white/10'
+                            }`}
                           />
                         </div>
                       </div>
@@ -598,10 +569,14 @@ _I confirm my registration and age eligibility (18+). Please guide me on payment
                             type="email" 
                             id="emailAddress" 
                             required
+                            readOnly={!!currentUser}
+                            disabled={!currentUser}
                             placeholder="e.g. ananya@example.com"
                             value={formData.email}
                             onChange={(e) => setFormData({...formData, email: e.target.value})}
-                            className="w-full pl-11 pr-4 py-3.5 rounded-xl bg-[#051520]/60 border border-white/10 text-ink text-sm outline-none focus:border-cyan-400 transition-colors"
+                            className={`w-full pl-11 pr-4 py-3.5 rounded-xl bg-[#051520]/60 border text-ink text-sm outline-none transition-colors ${
+                              !currentUser ? 'opacity-40 cursor-not-allowed border-white/5' : currentUser ? 'border-cyan/30 opacity-70 select-none cursor-not-allowed bg-white/5' : 'border-white/10 focus:border-cyan-400'
+                            }`}
                           />
                         </div>
                       </div>
@@ -615,9 +590,12 @@ _I confirm my registration and age eligibility (18+). Please guide me on payment
                               type="date" 
                               id="dob" 
                               required
+                              disabled={!currentUser}
                               value={formData.dob}
                               onChange={(e) => setFormData({...formData, dob: e.target.value})}
-                              className="w-full pl-9 pr-2 py-3.5 rounded-xl bg-[#051520]/60 border border-white/10 text-ink text-xs outline-none focus:border-cyan-400 transition-colors"
+                              className={`w-full pl-9 pr-2 py-3.5 rounded-xl bg-[#051520]/60 border text-[#D8E4EA] text-xs outline-none focus:border-cyan-400 transition-colors ${
+                                !currentUser ? 'opacity-40 cursor-not-allowed border-white/5' : 'border-white/10'
+                              }`}
                             />
                           </div>
                         </div>
@@ -625,9 +603,12 @@ _I confirm my registration and age eligibility (18+). Please guide me on payment
                           <label className="block text-xs uppercase tracking-wider text-ink/60 font-semibold mb-2" htmlFor="gender">Gender</label>
                           <select 
                             id="gender" 
+                            disabled={!currentUser}
                             value={formData.gender}
                             onChange={(e) => setFormData({...formData, gender: e.target.value})}
-                            className="w-full px-3 py-3.5 rounded-xl bg-[#051520]/60 border border-white/10 text-ink text-xs outline-none focus:border-cyan-400 transition-colors"
+                            className={`w-full px-3 py-3.5 rounded-xl bg-[#051520]/60 border text-[#D8E4EA] text-xs outline-none focus:border-cyan-400 transition-colors ${
+                              !currentUser ? 'opacity-40 cursor-not-allowed border-white/5' : 'border-white/10'
+                            }`}
                           >
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
@@ -820,7 +801,12 @@ _I confirm my registration and age eligibility (18+). Please guide me on payment
                     <button
                       type="button"
                       onClick={handleNextStep}
-                      className="px-6 py-3 bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-500 hover:to-blue-600 text-cosmos font-bold rounded-full text-xs uppercase tracking-wider flex items-center gap-1.5 hover:-translate-y-0.5 transition-all cursor-pointer shadow-lg shadow-cyan-500/10"
+                      disabled={!currentUser && step === 1}
+                      className={`px-6 py-3 font-bold rounded-full text-xs uppercase tracking-wider flex items-center gap-1.5 hover:-translate-y-0.5 transition-all cursor-pointer shadow-lg ${
+                        !currentUser && step === 1 
+                          ? 'opacity-40 cursor-not-allowed bg-[#081F2E] border border-white/5 text-ink/30 hover:translate-y-0 shadow-none'
+                          : 'bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-500 hover:to-blue-600 text-cosmos shadow-cyan-500/10'
+                      }`}
                     >
                       Continue <ChevronRight className="w-4 h-4" />
                     </button>

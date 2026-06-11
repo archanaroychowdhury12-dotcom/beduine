@@ -13,6 +13,7 @@ import {
 import ScatteredShowcase from './ScatteredShowcase';
 import RegistrationPage from './RegistrationPage';
 import DashboardPage from './DashboardPage';
+import LoginPage from './LoginPage';
 
 
 
@@ -734,8 +735,8 @@ function CinematicIntro({ onComplete }: { onComplete: () => void }) {
 
 /* ---------- Navbar ---------- */
 interface NavbarProps {
-  view: 'landing' | 'register' | 'terms' | 'dashboard';
-  setView: (v: 'landing' | 'register' | 'terms' | 'dashboard') => void;
+  view: 'landing' | 'login' | 'register' | 'terms' | 'dashboard';
+  setView: (v: 'landing' | 'login' | 'register' | 'terms' | 'dashboard') => void;
   currentUser: any;
   onSelectPlan?: (planName: string) => void;
 }
@@ -755,7 +756,7 @@ function Navbar({ view, setView, currentUser }: NavbarProps) {
       setView('dashboard');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
-      setView('register');
+      setView('login');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
@@ -1489,7 +1490,7 @@ function PlanCard({ plan, index, onSelectPlan }: { plan: typeof PLANS[number]; i
 
           <div className="px-7 pb-5">
             <div className="grid grid-cols-2 gap-2">
-              {[{ l: 'Discount Credits', v: `${plan.discountCredits} x Rs.500` }, { l: 'Paid Tour Off', v: `Up to ${plan.paidDiscount}` }, { l: 'Insurance', v: plan.insurance }, { l: 'Name Change', v: plan.nameChange }].map((c) => (
+              {[{ l: 'Discount Credits', v: `Rs. ${plan.discountValue.toLocaleString('en-IN')}` }, { l: 'Paid Tour Off', v: `Up to ${plan.paidDiscount}` }, { l: 'Insurance', v: plan.insurance }, { l: 'Name Change', v: plan.nameChange }].map((c) => (
                 <div key={c.l} className="bg-slate-900/60 border border-slate-800/50 rounded-lg p-2.5">
                   <div className="text-[9px] uppercase tracking-widest text-slate-400 font-bold">{c.l}</div>
                   <div className="text-xs font-black text-slate-100 mt-0.5">{c.v}</div>
@@ -1734,7 +1735,7 @@ function IntlPlanCard({ plan, index, onSelectPlan }: { plan: typeof INTL_PLANS[n
 
           <div className="px-7 pb-5">
             <div className="grid grid-cols-2 gap-2">
-              {[{ l: 'Discount Credits', v: `${plan.discountCredits} x Rs.500` }, { l: 'Tour Discount', v: `Up to ${plan.paidDiscount}` }, { l: 'Insurance', v: plan.insurance }, { l: 'Name Change', v: plan.nameChange }].map((c) => (
+              {[{ l: 'Discount Credits', v: `Rs. ${plan.discountValue.toLocaleString('en-IN')}` }, { l: 'Tour Discount', v: `Up to ${plan.paidDiscount}` }, { l: 'Insurance', v: plan.insurance }, { l: 'Name Change', v: plan.nameChange }].map((c) => (
                 <div key={c.l} className="bg-slate-900/60 border border-slate-800/50 rounded-lg p-2.5">
                   <div className="text-[9px] uppercase tracking-widest text-slate-400 font-bold">{c.l}</div>
                   <div className="text-xs font-black text-slate-100 mt-0.5">{c.v}</div>
@@ -2205,15 +2206,15 @@ function CreditArchitecture(_props: { activePlan: string | null; ldcTokens: numb
   ];
 
   const domesticCredits = [
-    { plan: 'Silver', price: 'Rs.499', ldc: '1', dc: '1 x Rs.500', total: 'Rs.500', color: 'from-slate-500 to-slate-700', image: '/images/sundarbans_mangrove_1779521789593.png' },
-    { plan: 'Gold', price: 'Rs.799', ldc: '1', dc: '2 x Rs.500', total: 'Rs.1,000', color: 'from-teal-400 to-emerald-600', image: '/images/darjeeling_tea_1779521805614.png' },
-    { plan: 'Platinum', price: 'Rs.1,499', ldc: '1', dc: '4 x Rs.500', total: 'Rs.2,000', color: 'from-neon-gold to-gold-deep', image: '/images/kashmir_dal_lake_1779521728036.png' },
+    { plan: 'Silver', price: 'Rs.499', ldc: '1', dc: 'Rs.500', total: 'Rs.500', color: 'from-slate-500 to-slate-700', image: '/images/sundarbans_mangrove_1779521789593.png' },
+    { plan: 'Gold', price: 'Rs.799', ldc: '1', dc: 'Rs.1,000', total: 'Rs.1,000', color: 'from-teal-400 to-emerald-600', image: '/images/darjeeling_tea_1779521805614.png' },
+    { plan: 'Platinum', price: 'Rs.1,499', ldc: '1', dc: 'Rs.2,000', total: 'Rs.2,000', color: 'from-neon-gold to-gold-deep', image: '/images/kashmir_dal_lake_1779521728036.png' },
   ];
 
   const intlCredits = [
-    { plan: 'Silver', price: 'Rs.4,999', ldc: '1 (Monthly)', dc: '5 x Rs.500', total: 'Rs.2,500', color: 'from-sky-400 to-blue-600', image: '/images/nepal.png' },
-    { plan: 'Gold', price: 'Rs.7,999', ldc: '1 (Monthly)', dc: '8 x Rs.500', total: 'Rs.4,000', color: 'from-emerald-400 to-teal-600', image: '/images/thailand.png' },
-    { plan: 'Platinum', price: 'Rs.14,999', ldc: '1 (Monthly)', dc: '15 x Rs.500', total: 'Rs.7,500', color: 'from-cyan via-cyan-bright to-cyan-deep', image: '/images/vietnam.png' },
+    { plan: 'Silver', price: 'Rs.4,999', ldc: '1 (Monthly)', dc: 'Rs.2,500', total: 'Rs.2,500', color: 'from-sky-400 to-blue-600', image: '/images/nepal.png' },
+    { plan: 'Gold', price: 'Rs.7,999', ldc: '1 (Monthly)', dc: 'Rs.4,000', total: 'Rs.4,000', color: 'from-emerald-400 to-teal-600', image: '/images/thailand.png' },
+    { plan: 'Platinum', price: 'Rs.14,999', ldc: '1 (Monthly)', dc: 'Rs.7,500', total: 'Rs.7,500', color: 'from-cyan via-cyan-bright to-cyan-deep', image: '/images/vietnam.png' },
   ];
 
   const currentCredits = activeTab === 'domestic' ? domesticCredits : intlCredits;
@@ -3460,7 +3461,7 @@ function TermsAndConditions() {
 
 /* ---------- Footer ---------- */
 interface FooterProps {
-  setView?: (v: 'landing' | 'register' | 'terms') => void;
+  setView?: (v: 'landing' | 'login' | 'register' | 'terms' | 'dashboard') => void;
 }
 
 function Footer({ setView }: FooterProps) {
@@ -3576,35 +3577,49 @@ export default function App() {
   const [introComplete, setIntroComplete] = useState(false);
   const handleIntroComplete = useCallback(() => setIntroComplete(true), []);
 
-  const [view, setView] = useState<'landing' | 'register' | 'terms' | 'dashboard'>('landing');
+  const [view, setView] = useState<'landing' | 'login' | 'register' | 'terms' | 'dashboard'>('landing');
   const [currentUser, setCurrentUser] = useState<any | null>(null);
   const [selectedPlanName, setSelectedPlanName] = useState<string>('Silver');
   const [prefilledData, setPrefilledData] = useState<any>(null);
+  const [pendingPlan, setPendingPlan] = useState<string | null>(null);
 
   const handleSelectPlan = useCallback((planName: string) => {
     setSelectedPlanName(planName);
     setPrefilledData(null);
-    setView('register');
+    if (currentUser) {
+      setView('register');
+    } else {
+      setPendingPlan(planName);
+      setView('login');
+    }
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, []);
+  }, [currentUser]);
 
   const handleStartRegistration = useCallback((data: any) => {
-    setPrefilledData({
+    const prefill = {
       fullName: data.name,
       mobile: data.mobile,
       email: data.email,
       city: data.city,
       is18Plus: data.is18Plus,
       agreeTerms: data.agreeTerms,
-    });
+    };
+    setPrefilledData(prefill);
     
     // Parse selection from "Silver Domestic - ₹499" format
     const planPart = data.plan.split(' ')[0];
     const isIntl = data.plan.toLowerCase().includes('international');
-    setSelectedPlanName(planPart + (isIntl ? ' International' : ''));
-    setView('register');
+    const finalPlanName = planPart + (isIntl ? ' International' : '');
+    setSelectedPlanName(finalPlanName);
+    
+    if (currentUser) {
+      setView('register');
+    } else {
+      setPendingPlan(finalPlanName);
+      setView('login');
+    }
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, []);
+  }, [currentUser]);
 
   // Manage body cursor visibility: default cursor during intro, hidden after intro for the custom cursor
   useEffect(() => {
@@ -3692,10 +3707,35 @@ export default function App() {
                 </div>
               </div>
             </>
+          ) : view === 'login' ? (
+            <LoginPage 
+              onBack={() => {
+                setPendingPlan(null);
+                setView('landing');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              onLoginSuccess={(user) => {
+                setCurrentUser(user);
+                if (pendingPlan) {
+                  setSelectedPlanName(pendingPlan);
+                  setView('register');
+                  setPendingPlan(null);
+                } else {
+                  setView('dashboard');
+                }
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+            />
           ) : view === 'register' ? (
             <RegistrationPage 
               initialPlanName={selectedPlanName} 
               prefilledData={prefilledData}
+              currentUser={currentUser}
+              onRedirectToLogin={() => {
+                setPendingPlan(selectedPlanName);
+                setView('login');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
               onBack={() => {
                 setPrefilledData(null);
                 setView('landing');
