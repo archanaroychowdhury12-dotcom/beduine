@@ -123,7 +123,7 @@ export default function LoginPage({ onBack, onLoginSuccess, initialMode = 'login
         initial={{ y: 30, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, type: 'spring', stiffness: 90 }}
-        className="max-w-md w-full z-10 bg-white/95 backdrop-blur-xl border border-white/40 rounded-3xl overflow-hidden shadow-2xl relative"
+        className="max-w-md w-full z-10 bg-white/20 backdrop-blur-2xl border border-white/30 rounded-3xl overflow-hidden shadow-[0_8px_60px_rgba(0,0,0,0.35)] relative"
       >
         {viewMode === 'register' ? (
           <WelcomeScreen
@@ -143,23 +143,23 @@ export default function LoginPage({ onBack, onLoginSuccess, initialMode = 'login
           <div className="p-8">
             {/* Animated Brand Header */}
             <div className="text-center mb-8">
-              <div className="w-14 h-14 rounded-full overflow-hidden border border-cyan/30 shadow-lg shadow-cyan/20 bg-white flex items-center justify-center p-2 mx-auto mb-4">
+              <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-white/40 shadow-lg shadow-black/20 bg-white/90 flex items-center justify-center p-2 mx-auto mb-4">
                 <img src="/images/bedune_logo_cropped.png" alt="BEDUINE Logo" className="w-full h-full object-contain" />
               </div>
-              <h2 className="font-display text-2xl font-black text-slate-900 uppercase tracking-tight">BEDUINE</h2>
-              <p className="text-[9px] uppercase tracking-[0.25em] text-cyan-deep font-bold font-mono">Tour & Travels</p>
-              <p className="text-xs text-slate-600 mt-3 max-w-xs mx-auto">
+              <h2 className="font-display text-2xl font-black text-white uppercase tracking-tight drop-shadow-md">BEDUINE</h2>
+              <p className="text-[9px] uppercase tracking-[0.25em] text-cyan-bright font-bold font-mono">Tour & Travels</p>
+              <p className="text-xs text-white/70 mt-3 max-w-xs mx-auto">
                 Choose Your Plan. Try Your Luck. Travel Beyond Limits.
               </p>
             </div>
 
             {/* Action Form / Buttons */}
-            <div className="space-y-5">
+            <div className="space-y-4">
               <div>
-                <h3 className="text-base font-bold text-slate-900 text-center mb-1">
+                <h3 className="text-base font-bold text-white text-center mb-1 drop-shadow-sm">
                   {viewMode === 'signup-auth' ? 'Create Your Account' : 'User Account Login'}
                 </h3>
-                <p className="text-[11px] text-slate-500 text-center">
+                <p className="text-[11px] text-white/60 text-center">
                   {viewMode === 'signup-auth' 
                     ? 'Sign up with Gmail, Facebook, or Phone Number to create your travel profile.'
                     : 'Sign in using your Google, Facebook, or Phone OTP to access your dashboard.'}
@@ -170,7 +170,7 @@ export default function LoginPage({ onBack, onLoginSuccess, initialMode = 'login
               <button
                 type="button"
                 onClick={() => setShowGoogleModal(true)}
-                className="w-full py-3.5 px-4 rounded-full bg-white text-slate-800 font-bold hover:bg-slate-50 flex items-center justify-center gap-3 transition-all cursor-pointer shadow-md border border-slate-200/80 hover:scale-[1.02] text-sm relative overflow-hidden"
+                className="w-full py-3.5 px-4 rounded-full bg-white/95 text-slate-800 font-bold hover:bg-white flex items-center justify-center gap-3 transition-all cursor-pointer shadow-lg hover:scale-[1.02] border border-white/50 text-sm"
               >
                 <svg className="w-5 h-5" viewBox="0 0 24 24">
                   <path
@@ -184,7 +184,7 @@ export default function LoginPage({ onBack, onLoginSuccess, initialMode = 'login
               <button
                 type="button"
                 onClick={handleFacebookLogin}
-                className="w-full py-3.5 px-4 rounded-full bg-[#1877F2] text-white font-bold hover:bg-[#166FE5] flex items-center justify-center gap-3 transition-all cursor-pointer shadow-lg hover:scale-[1.02] border-none text-sm relative overflow-hidden"
+                className="w-full py-3.5 px-4 rounded-full bg-[#1877F2] text-white font-bold hover:bg-[#166FE5] flex items-center justify-center gap-3 transition-all cursor-pointer shadow-lg hover:scale-[1.02] border-none text-sm"
               >
                 <svg className="w-5 h-5" viewBox="0 0 24 24" fill="white">
                   <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
@@ -194,11 +194,11 @@ export default function LoginPage({ onBack, onLoginSuccess, initialMode = 'login
 
               {/* Divider */}
               <div className="flex items-center gap-4 py-1">
-                <div className="h-px bg-slate-200 flex-1" />
-                <span className="text-[9px] uppercase font-mono tracking-widest text-slate-400">
+                <div className="h-px bg-white/20 flex-1" />
+                <span className="text-[9px] uppercase font-mono tracking-widest text-white/50">
                   Or continue with
                 </span>
-                <div className="h-px bg-slate-200 flex-1" />
+                <div className="h-px bg-white/20 flex-1" />
               </div>
 
               {/* Tab toggle: Email / Phone */}
@@ -208,8 +208,8 @@ export default function LoginPage({ onBack, onLoginSuccess, initialMode = 'login
                   onClick={() => setAuthMethod('email')}
                   className={`flex-1 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 cursor-pointer border transition-all ${
                     authMethod === 'email'
-                      ? 'bg-cyan-deep/10 border-cyan-deep/30 text-cyan-deep font-black'
-                      : 'bg-slate-100 border-slate-200/80 text-slate-500 hover:text-slate-900 hover:bg-slate-200/50'
+                      ? 'bg-white/20 border-cyan-bright/50 text-cyan-bright'
+                      : 'bg-white/5 border-white/15 text-white/60 hover:text-white hover:bg-white/10'
                   }`}
                 >
                   <Mail className="w-3.5 h-3.5" /> Email
@@ -219,8 +219,8 @@ export default function LoginPage({ onBack, onLoginSuccess, initialMode = 'login
                   onClick={() => setAuthMethod('phone')}
                   className={`flex-1 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 cursor-pointer border transition-all ${
                     authMethod === 'phone'
-                      ? 'bg-cyan-deep/10 border-cyan-deep/30 text-cyan-deep font-black'
-                      : 'bg-slate-100 border-slate-200/80 text-slate-500 hover:text-slate-900 hover:bg-slate-200/50'
+                      ? 'bg-white/20 border-cyan-bright/50 text-cyan-bright'
+                      : 'bg-white/5 border-white/15 text-white/60 hover:text-white hover:bg-white/10'
                   }`}
                 >
                   <Phone className="w-3.5 h-3.5" /> Phone OTP
@@ -232,9 +232,9 @@ export default function LoginPage({ onBack, onLoginSuccess, initialMode = 'login
                 <form onSubmit={handleCustomSubmit} className="space-y-4">
                   {customStep === 1 ? (
                     <div>
-                      <label className="block text-xs uppercase tracking-wider text-slate-700 font-semibold mb-2" htmlFor="loginEmail">Gmail Address</label>
+                      <label className="block text-xs uppercase tracking-wider text-white/80 font-semibold mb-2" htmlFor="loginEmail">Gmail Address</label>
                       <div className="relative">
-                        <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                        <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
                         <input
                           type="email"
                           id="loginEmail"
@@ -242,15 +242,15 @@ export default function LoginPage({ onBack, onLoginSuccess, initialMode = 'login
                           placeholder="your.email@gmail.com"
                           value={customEmail}
                           onChange={(e) => setCustomEmail(e.target.value)}
-                          className="w-full pl-11 pr-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-sm outline-none focus:border-cyan-deep focus:bg-white transition-all placeholder:text-slate-400"
+                          className="w-full pl-11 pr-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white text-sm outline-none focus:border-cyan-bright focus:bg-white/15 transition-all placeholder:text-white/40"
                         />
                       </div>
                     </div>
                   ) : (
                     <div>
-                      <label className="block text-xs uppercase tracking-wider text-slate-700 font-semibold mb-2" htmlFor="loginName">Your Full Name</label>
+                      <label className="block text-xs uppercase tracking-wider text-white/80 font-semibold mb-2" htmlFor="loginName">Your Full Name</label>
                       <div className="relative">
-                        <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                        <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
                         <input
                           type="text"
                           id="loginName"
@@ -258,7 +258,7 @@ export default function LoginPage({ onBack, onLoginSuccess, initialMode = 'login
                           placeholder="e.g. Rahul Sen"
                           value={customName}
                           onChange={(e) => setCustomName(e.target.value)}
-                          className="w-full pl-11 pr-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-sm outline-none focus:border-cyan-deep focus:bg-white transition-all placeholder:text-slate-400"
+                          className="w-full pl-11 pr-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white text-sm outline-none focus:border-cyan-bright focus:bg-white/15 transition-all placeholder:text-white/40"
                         />
                       </div>
                     </div>
@@ -280,10 +280,10 @@ export default function LoginPage({ onBack, onLoginSuccess, initialMode = 'login
                 <form onSubmit={handlePhoneSubmit} className="space-y-4">
                   {phoneStep === 1 && (
                     <div>
-                      <label className="block text-xs uppercase tracking-wider text-slate-700 font-semibold mb-2" htmlFor="phoneInput">Mobile Number</label>
+                      <label className="block text-xs uppercase tracking-wider text-white/80 font-semibold mb-2" htmlFor="phoneInput">Mobile Number</label>
                       <div className="relative">
-                        <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                        <span className="absolute left-10 top-1/2 -translate-y-1/2 text-sm text-slate-500 font-mono">+91</span>
+                        <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
+                        <span className="absolute left-10 top-1/2 -translate-y-1/2 text-sm text-white/60 font-mono">+91</span>
                         <input
                           type="tel"
                           id="phoneInput"
@@ -292,17 +292,17 @@ export default function LoginPage({ onBack, onLoginSuccess, initialMode = 'login
                           placeholder="9876543210"
                           value={phoneNumber}
                           onChange={(e) => setPhoneNumber(e.target.value.replace(/\D/g, ''))}
-                          className="w-full pl-20 pr-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-sm outline-none focus:border-cyan-deep focus:bg-white transition-all font-mono placeholder:text-slate-400"
+                          className="w-full pl-20 pr-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white text-sm outline-none focus:border-cyan-bright focus:bg-white/15 transition-all font-mono placeholder:text-white/40"
                         />
                       </div>
                     </div>
                   )}
                   {phoneStep === 2 && (
                     <div>
-                      <label className="block text-xs uppercase tracking-wider text-slate-700 font-semibold mb-2" htmlFor="otpInput">Enter OTP</label>
-                      <p className="text-[10px] text-cyan-deep/80 mb-2">✓ OTP sent to +91 {phoneNumber}</p>
+                      <label className="block text-xs uppercase tracking-wider text-white/80 font-semibold mb-2" htmlFor="otpInput">Enter OTP</label>
+                      <p className="text-[10px] text-cyan-bright/80 mb-2">✓ OTP sent to +91 {phoneNumber}</p>
                       <div className="relative">
-                        <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                        <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
                         <input
                           type="text"
                           id="otpInput"
@@ -311,13 +311,13 @@ export default function LoginPage({ onBack, onLoginSuccess, initialMode = 'login
                           placeholder="Enter 4-digit OTP"
                           value={phoneOtp}
                           onChange={(e) => setPhoneOtp(e.target.value.replace(/\D/g, ''))}
-                          className="w-full pl-11 pr-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-sm outline-none focus:border-cyan-deep focus:bg-white transition-all font-mono tracking-[0.4em] text-center placeholder:text-slate-400"
+                          className="w-full pl-11 pr-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white text-sm outline-none focus:border-cyan-bright focus:bg-white/15 transition-all font-mono tracking-[0.4em] text-center placeholder:text-white/40"
                         />
                       </div>
                       <button
                         type="button"
                         onClick={() => { setPhoneStep(1); setPhoneOtp(''); setOtpSent(false); }}
-                        className="text-[10px] text-cyan-deep/75 hover:text-cyan-deep mt-2 cursor-pointer bg-transparent border-none"
+                        className="text-[10px] text-cyan-bright/70 hover:text-cyan-bright mt-2 cursor-pointer bg-transparent border-none"
                       >
                         ← Change Number
                       </button>
@@ -325,10 +325,10 @@ export default function LoginPage({ onBack, onLoginSuccess, initialMode = 'login
                   )}
                   {phoneStep === 3 && (
                     <div>
-                      <p className="text-[10px] text-emerald-600 mb-3 flex items-center gap-1"><ShieldCheck className="w-3.5 h-3.5" /> Phone verified successfully!</p>
-                      <label className="block text-xs uppercase tracking-wider text-slate-700 font-semibold mb-2" htmlFor="phoneNameInput">Your Full Name</label>
+                      <p className="text-[10px] text-emerald-400 mb-3 flex items-center gap-1"><ShieldCheck className="w-3.5 h-3.5" /> Phone verified successfully!</p>
+                      <label className="block text-xs uppercase tracking-wider text-white/80 font-semibold mb-2" htmlFor="phoneNameInput">Your Full Name</label>
                       <div className="relative">
-                        <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                        <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
                         <input
                           type="text"
                           id="phoneNameInput"
@@ -336,7 +336,7 @@ export default function LoginPage({ onBack, onLoginSuccess, initialMode = 'login
                           placeholder="e.g. Rahul Sen"
                           value={phoneName}
                           onChange={(e) => setPhoneName(e.target.value)}
-                          className="w-full pl-11 pr-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 text-sm outline-none focus:border-cyan-deep focus:bg-white transition-all placeholder:text-slate-400"
+                          className="w-full pl-11 pr-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white text-sm outline-none focus:border-cyan-bright focus:bg-white/15 transition-all placeholder:text-white/40"
                         />
                       </div>
                     </div>
@@ -351,30 +351,30 @@ export default function LoginPage({ onBack, onLoginSuccess, initialMode = 'login
                 </form>
               )}
 
-              <div className="text-center pt-3 border-t border-slate-200 mt-4">
+              <div className="text-center pt-3 border-t border-white/15 mt-4">
                 {viewMode === 'signup-auth' ? (
                   <button
                     type="button"
                     onClick={() => setViewMode('login')}
-                    className="text-xs text-slate-600 hover:text-cyan-deep transition-colors font-medium border-none bg-transparent cursor-pointer"
+                    className="text-xs text-white/70 hover:text-cyan-bright transition-colors font-medium border-none bg-transparent cursor-pointer"
                   >
-                    Already have an account? <span className="underline font-bold text-cyan-deep">Login Here</span>
+                    Already have an account? <span className="underline font-bold text-cyan-bright">Login Here</span>
                   </button>
                 ) : (
                   <button
                     type="button"
                     onClick={() => setViewMode('signup-auth')}
-                    className="text-xs text-slate-600 hover:text-cyan-deep transition-colors font-medium border-none bg-transparent cursor-pointer"
+                    className="text-xs text-white/70 hover:text-cyan-bright transition-colors font-medium border-none bg-transparent cursor-pointer"
                   >
-                    Don't have an account? <span className="underline font-bold text-cyan-deep">Register / Create Account</span>
+                    Don't have an account? <span className="underline font-bold text-cyan-bright">Register / Create Account</span>
                   </button>
                 )}
               </div>
             </div>
 
             {/* Security strip */}
-            <div className="mt-8 pt-4 border-t border-slate-200 flex items-center justify-center gap-3 text-[10px] text-slate-500">
-              <ShieldCheck className="w-3.5 h-3.5 text-cyan-deep" /> Secure Authentication (Google OAuth, Facebook, OTP)
+            <div className="mt-8 pt-4 border-t border-white/15 flex items-center justify-center gap-3 text-[10px] text-white/50">
+              <ShieldCheck className="w-3.5 h-3.5 text-cyan-bright" /> Secure Authentication (Google OAuth, Facebook, OTP)
             </div>
           </div>
         )}
