@@ -97,7 +97,7 @@ export default function LoginPage({ onBack, onLoginSuccess, initialMode = 'login
       {/* Travel Background Image with Dark Overlay & Blur */}
       <div className="absolute inset-0 z-0">
         <img 
-          src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=compress&cs=tinysrgb&w=1920&q=80" 
+          src="/images/travel_login_bg.png" 
           alt="Travel Background" 
           className="w-full h-full object-cover object-center"
         />
