@@ -765,6 +765,8 @@ function Navbar({ view, setView, currentUser }: NavbarProps) {
       setView('dashboard');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
+      setPendingPlan('Silver');
+      setLoginInitialMode('register');
       setView('login');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -3698,6 +3700,7 @@ export default function App() {
   const [selectedPlanName, setSelectedPlanName] = useState<string>('Silver');
   const [prefilledData, setPrefilledData] = useState<any>(null);
   const [pendingPlan, setPendingPlan] = useState<string | null>(null);
+  const [loginInitialMode, setLoginInitialMode] = useState<'login' | 'register'>('login');
 
   const handleSelectPlan = useCallback((planName: string) => {
     setSelectedPlanName(planName);
@@ -3706,6 +3709,7 @@ export default function App() {
       setView('register');
     } else {
       setPendingPlan(planName);
+      setLoginInitialMode('login');
       setView('login');
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -3732,6 +3736,7 @@ export default function App() {
       setView('register');
     } else {
       setPendingPlan(finalPlanName);
+      setLoginInitialMode('login');
       setView('login');
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -3825,6 +3830,11 @@ export default function App() {
             </>
           ) : view === 'login' ? (
             <LoginPage 
+              initialMode={loginInitialMode}
+              onRedirectToRegister={() => {
+                setView('register');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
               onBack={() => {
                 setPendingPlan(null);
                 setView('landing');

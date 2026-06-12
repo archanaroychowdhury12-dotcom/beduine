@@ -3,13 +3,17 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ArrowLeft, ShieldCheck, Mail, Key
 } from 'lucide-react';
+import { WelcomeScreen } from '@/components/ui/onboarding-welcome-screen';
 
 interface LoginPageProps {
   onBack: () => void;
   onLoginSuccess: (user: any) => void;
+  initialMode?: 'login' | 'register';
+  onRedirectToRegister?: () => void;
 }
 
-export default function LoginPage({ onBack, onLoginSuccess }: LoginPageProps) {
+export default function LoginPage({ onBack, onLoginSuccess, initialMode = 'login', onRedirectToRegister }: LoginPageProps) {
+  const [viewMode, setViewMode] = useState<'login' | 'register' | 'signup-auth'>(initialMode);
   const [showGoogleModal, setShowGoogleModal] = useState(false);
   const [customEmail, setCustomEmail] = useState('');
   const [customName, setCustomName] = useState('');
@@ -66,99 +70,149 @@ export default function LoginPage({ onBack, onLoginSuccess }: LoginPageProps) {
       </div>
 
       <motion.div
+        key={viewMode}
         initial={{ y: 30, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, type: 'spring', stiffness: 90 }}
-        className="max-w-md w-full z-10 bg-[#081F2E]/80 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-2xl relative"
+        className="max-w-md w-full z-10 bg-[#081F2E]/80 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden shadow-2xl relative"
       >
-        {/* Animated Brand Header */}
-        <div className="text-center mb-8">
-          <div className="w-14 h-14 rounded-full overflow-hidden border border-cyan/30 shadow-lg shadow-cyan/20 bg-cosmos flex items-center justify-center p-2 mx-auto mb-4">
-            <img src="/images/bedune_logo_cropped.png" alt="BEDUINE Logo" className="w-full h-full object-contain" />
-          </div>
-          <h2 className="font-display text-2xl font-black text-white uppercase tracking-tight">BEDUINE</h2>
-          <p className="text-[9px] uppercase tracking-[0.25em] text-cyan font-bold font-mono">Tour & Travels</p>
-          <p className="text-xs text-ink/60 mt-3 max-w-xs mx-auto">
-            Choose Your Plan. Try Your Luck. Travel Beyond Limits.
-          </p>
-        </div>
-
-        {/* Action Form / Buttons */}
-        <div className="space-y-5">
-          <div>
-            <h3 className="text-base font-bold text-white text-center mb-1">User Account Login</h3>
-            <p className="text-[11px] text-ink/50 text-center">Sign in using your Google account or email credentials to access your active subscription draws and discount wallet dashboard.</p>
-          </div>
-
-          <button
-            type="button"
-            onClick={() => setShowGoogleModal(true)}
-            className="w-full py-4 px-4 rounded-full bg-white text-slate-800 font-bold hover:bg-slate-100 flex items-center justify-center gap-3 transition-all cursor-pointer shadow-lg hover:scale-[1.02] border-none text-sm relative overflow-hidden"
-          >
-            <svg className="w-5 h-5" viewBox="0 0 24 24">
-              <path
-                fill="#EA4335"
-                d="M12.24 10.285V14.4h6.887c-.648 2.41-2.519 4.114-5.136 4.114-3.555 0-6.437-2.883-6.437-6.437s2.882-6.437 6.437-6.437c1.558 0 2.977.557 4.088 1.487l3.056-3.056C19.263 2.223 15.974 1 12.24 1 6.033 1 1 6.033 1 12.24s5.033 11.24 11.24 11.24c5.898 0 10.871-4.212 10.871-11.24 0-.768-.068-1.513-.193-1.955H12.24z"
-              />
-            </svg>
-            Sign In with Google / Gmail
-          </button>
-
-          <div className="flex items-center gap-4 py-2">
-            <div className="h-px bg-white/10 flex-1" />
-            <span className="text-[9px] uppercase font-mono tracking-widest text-ink/40">Or Enter Gmail</span>
-            <div className="h-px bg-white/10 flex-1" />
-          </div>
-
-          {/* Manual Input form */}
-          <form onSubmit={handleCustomSubmit} className="space-y-4">
-            {customStep === 1 ? (
-              <div>
-                <label className="block text-xs uppercase tracking-wider text-ink/60 font-semibold mb-2" htmlFor="loginEmail">Gmail Address</label>
-                <div className="relative">
-                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/40" />
-                  <input
-                    type="email"
-                    id="loginEmail"
-                    required
-                    placeholder="your.email@gmail.com"
-                    value={customEmail}
-                    onChange={(e) => setCustomEmail(e.target.value)}
-                    className="w-full pl-11 pr-4 py-3 rounded-xl bg-[#051520]/60 border border-white/10 text-white text-sm outline-none focus:border-cyan transition-colors"
-                  />
-                </div>
+        {viewMode === 'register' ? (
+          <WelcomeScreen
+            imageUrl="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=compress&cs=tinysrgb&w=800&q=80"
+            title={
+              <>
+                Welcome to <span className="text-[#00F5D4] font-black">Beduin</span>
+              </>
+            }
+            description="Create your membership account to participate in weekly lucky draws, secure travel discounts, and explore beautiful destinations."
+            buttonText="Create Your Account"
+            onButtonClick={() => setViewMode('signup-auth')}
+            secondaryActionText="Already have an account? Login Here"
+            onSecondaryActionClick={() => setViewMode('login')}
+          />
+        ) : (
+          <div className="p-8">
+            {/* Animated Brand Header */}
+            <div className="text-center mb-8">
+              <div className="w-14 h-14 rounded-full overflow-hidden border border-cyan/30 shadow-lg shadow-cyan/20 bg-cosmos flex items-center justify-center p-2 mx-auto mb-4">
+                <img src="/images/bedune_logo_cropped.png" alt="BEDUINE Logo" className="w-full h-full object-contain" />
               </div>
-            ) : (
+              <h2 className="font-display text-2xl font-black text-white uppercase tracking-tight">BEDUINE</h2>
+              <p className="text-[9px] uppercase tracking-[0.25em] text-cyan font-bold font-mono">Tour & Travels</p>
+              <p className="text-xs text-ink/60 mt-3 max-w-xs mx-auto">
+                Choose Your Plan. Try Your Luck. Travel Beyond Limits.
+              </p>
+            </div>
+
+            {/* Action Form / Buttons */}
+            <div className="space-y-5">
               <div>
-                <label className="block text-xs uppercase tracking-wider text-ink/60 font-semibold mb-2" htmlFor="loginName">Your Full Name</label>
-                <div className="relative">
-                  <Key className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/40" />
-                  <input
-                    type="text"
-                    id="loginName"
-                    required
-                    placeholder="e.g. Rahul Sen"
-                    value={customName}
-                    onChange={(e) => setCustomName(e.target.value)}
-                    className="w-full pl-11 pr-4 py-3 rounded-xl bg-[#051520]/60 border border-white/10 text-white text-sm outline-none focus:border-cyan transition-colors"
-                  />
-                </div>
+                <h3 className="text-base font-bold text-white text-center mb-1">
+                  {viewMode === 'signup-auth' ? 'Create Your Account' : 'User Account Login'}
+                </h3>
+                <p className="text-[11px] text-ink/50 text-center">
+                  {viewMode === 'signup-auth' 
+                    ? 'Verify your Gmail address to establish your travel profile and continue to the subscription registration form.'
+                    : 'Sign in using your Google account or email credentials to access your active subscription draws and discount wallet dashboard.'}
+                </p>
               </div>
-            )}
 
-            <button
-              type="submit"
-              className="w-full py-3 premium-register-btn text-white font-bold rounded-full text-xs uppercase tracking-wider border-none cursor-pointer flex items-center justify-center gap-1.5"
-            >
-              {customStep === 1 ? 'Next' : 'Authorize & Log In'} <ArrowLeft className="w-3.5 h-3.5 rotate-180" />
-            </button>
-          </form>
-        </div>
+              <button
+                type="button"
+                onClick={() => setShowGoogleModal(true)}
+                className="w-full py-4 px-4 rounded-full bg-white text-slate-800 font-bold hover:bg-slate-100 flex items-center justify-center gap-3 transition-all cursor-pointer shadow-lg hover:scale-[1.02] border-none text-sm relative overflow-hidden"
+              >
+                <svg className="w-5 h-5" viewBox="0 0 24 24">
+                  <path
+                    fill="#EA4335"
+                    d="M12.24 10.285V14.4h6.887c-.648 2.41-2.519 4.114-5.136 4.114-3.555 0-6.437-2.883-6.437-6.437s2.882-6.437 6.437-6.437c1.558 0 2.977.557 4.088 1.487l3.056-3.056C19.263 2.223 15.974 1 12.24 1 6.033 1 1 6.033 1 12.24s5.033 11.24 11.24 11.24c5.898 0 10.871-4.212 10.871-11.24 0-.768-.068-1.513-.193-1.955H12.24z"
+                  />
+                </svg>
+                {viewMode === 'signup-auth' ? 'Sign Up with Google / Gmail' : 'Sign In with Google / Gmail'}
+              </button>
 
-        {/* Security strip */}
-        <div className="mt-8 pt-4 border-t border-white/5 flex items-center justify-center gap-3 text-[10px] text-ink/45">
-          <ShieldCheck className="w-3.5 h-3.5 text-cyan" /> Secure Google Authentication (OAuth)
-        </div>
+              <div className="flex items-center gap-4 py-2">
+                <div className="h-px bg-white/10 flex-1" />
+                <span className="text-[9px] uppercase font-mono tracking-widest text-ink/40">
+                  {viewMode === 'signup-auth' ? 'Or Enter Gmail to Sign Up' : 'Or Enter Gmail'}
+                </span>
+                <div className="h-px bg-white/10 flex-1" />
+              </div>
+
+              {/* Manual Input form */}
+              <form onSubmit={handleCustomSubmit} className="space-y-4">
+                {customStep === 1 ? (
+                  <div>
+                    <label className="block text-xs uppercase tracking-wider text-ink/60 font-semibold mb-2" htmlFor="loginEmail">Gmail Address</label>
+                    <div className="relative">
+                      <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/40" />
+                      <input
+                        type="email"
+                        id="loginEmail"
+                        required
+                        placeholder="your.email@gmail.com"
+                        value={customEmail}
+                        onChange={(e) => setCustomEmail(e.target.value)}
+                        className="w-full pl-11 pr-4 py-3 rounded-xl bg-[#051520]/60 border border-white/10 text-white text-sm outline-none focus:border-cyan transition-colors"
+                      />
+                    </div>
+                  </div>
+                ) : (
+                  <div>
+                    <label className="block text-xs uppercase tracking-wider text-ink/60 font-semibold mb-2" htmlFor="loginName">Your Full Name</label>
+                    <div className="relative">
+                      <Key className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/40" />
+                      <input
+                        type="text"
+                        id="loginName"
+                        required
+                        placeholder="e.g. Rahul Sen"
+                        value={customName}
+                        onChange={(e) => setCustomName(e.target.value)}
+                        className="w-full pl-11 pr-4 py-3 rounded-xl bg-[#051520]/60 border border-white/10 text-white text-sm outline-none focus:border-cyan transition-colors"
+                      />
+                    </div>
+                  </div>
+                )}
+
+                <button
+                  type="submit"
+                  className="w-full py-3 premium-register-btn text-white font-bold rounded-full text-xs uppercase tracking-wider border-none cursor-pointer flex items-center justify-center gap-1.5"
+                >
+                  {customStep === 1 
+                    ? 'Next' 
+                    : viewMode === 'signup-auth' ? 'Create Account & Continue' : 'Authorize & Log In'}{' '}
+                  <ArrowLeft className="w-3.5 h-3.5 rotate-180" />
+                </button>
+              </form>
+
+              <div className="text-center pt-3 border-t border-white/5 mt-4">
+                {viewMode === 'signup-auth' ? (
+                  <button
+                    type="button"
+                    onClick={() => setViewMode('login')}
+                    className="text-xs text-ink/65 hover:text-[#00F5D4] transition-colors font-medium border-none bg-transparent cursor-pointer"
+                  >
+                    Already have an account? <span className="underline font-bold text-[#00F5D4]">Login Here</span>
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => setViewMode('signup-auth')}
+                    className="text-xs text-ink/65 hover:text-[#00F5D4] transition-colors font-medium border-none bg-transparent cursor-pointer"
+                  >
+                    Don't have an account? <span className="underline font-bold text-[#00F5D4]">Register / Create Account</span>
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {/* Security strip */}
+            <div className="mt-8 pt-4 border-t border-white/5 flex items-center justify-center gap-3 text-[10px] text-ink/45">
+              <ShieldCheck className="w-3.5 h-3.5 text-cyan" /> Secure Google Authentication (OAuth)
+            </div>
+          </div>
+        )}
       </motion.div>
 
       {/* Google Selector Modal Simulation */}

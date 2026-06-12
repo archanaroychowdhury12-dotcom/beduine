@@ -126,7 +126,7 @@ const ALL_PLANS = [
 ];
 
 export default function RegistrationPage({ initialPlanName, onBack, prefilledData, onRegisterSuccess, currentUser, onRedirectToLogin }: RegistrationPageProps) {
-  const [showWelcome, setShowWelcome] = useState(true);
+  const [showWelcome, setShowWelcome] = useState(false);
   const [step, setStep] = useState(1);
   const [selectedPlanId, setSelectedPlanId] = useState(() => {
     const matched = ALL_PLANS.find(p => {
