@@ -94,9 +94,19 @@ export default function LoginPage({ onBack, onLoginSuccess, initialMode = 'login
 
   return (
     <section className="min-h-screen pt-28 pb-16 px-4 sm:px-6 lg:px-8 relative overflow-hidden flex flex-col items-center justify-center bg-cosmos">
-      {/* Dynamic atmospheric background */}
-      <div className="absolute top-1/4 left-1/4 w-[350px] h-[350px] rounded-full filter blur-[120px] pointer-events-none opacity-20 bg-cyan" />
-      <div className="absolute bottom-1/4 right-1/4 w-[350px] h-[350px] rounded-full filter blur-[120px] pointer-events-none opacity-15 bg-violet" />
+      {/* Travel Background Image with Dark Overlay & Blur */}
+      <div className="absolute inset-0 z-0">
+        <img 
+          src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=compress&cs=tinysrgb&w=1920&q=80" 
+          alt="Travel Background" 
+          className="w-full h-full object-cover object-center"
+        />
+        <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px]" />
+      </div>
+
+      {/* Atmospheric highlights on top */}
+      <div className="absolute top-1/4 left-1/4 w-[350px] h-[350px] rounded-full filter blur-[120px] pointer-events-none opacity-20 bg-cyan z-[1]" />
+      <div className="absolute bottom-1/4 right-1/4 w-[350px] h-[350px] rounded-full filter blur-[120px] pointer-events-none opacity-15 bg-violet z-[1]" />
 
       {/* Back button */}
       <div className="max-w-md w-full mb-6 z-10">
