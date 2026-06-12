@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  ArrowLeft, ShieldCheck, Mail, Key
+  ArrowLeft, ShieldCheck, Mail, Key, Phone, Lock, User
 } from 'lucide-react';
 import { WelcomeScreen } from '@/components/ui/onboarding-welcome-screen';
 
@@ -19,11 +19,19 @@ export default function LoginPage({ onBack, onLoginSuccess, initialMode = 'login
   const [customName, setCustomName] = useState('');
   const [customStep, setCustomStep] = useState(1); // 1: Email, 2: Name/Details
 
-  const handleSelectAccount = (name: string, email: string) => {
+  // Phone OTP states
+  const [authMethod, setAuthMethod] = useState<'email' | 'phone'>('email');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [phoneOtp, setPhoneOtp] = useState('');
+  const [phoneName, setPhoneName] = useState('');
+  const [phoneStep, setPhoneStep] = useState(1); // 1: Number, 2: OTP, 3: Name
+  const [otpSent, setOtpSent] = useState(false);
+
+  const handleSelectAccount = (name: string, email: string, mobile?: string) => {
     const mockUser = {
       fullName: name,
       email: email,
-      mobile: '',
+      mobile: mobile || '',
       city: '',
       memberId: `BDN-${Math.floor(1000 + Math.random() * 9000)}-2026`,
       planName: '', // Unsubscribed initially unless updated
@@ -51,6 +59,37 @@ export default function LoginPage({ onBack, onLoginSuccess, initialMode = 'login
       }
       handleSelectAccount(customName, customEmail);
     }
+  };
+
+  const handlePhoneSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (phoneStep === 1) {
+      if (phoneNumber.length < 10) {
+        alert('Please enter a valid 10-digit mobile number.');
+        return;
+      }
+      // Simulate sending OTP
+      setOtpSent(true);
+      setPhoneStep(2);
+    } else if (phoneStep === 2) {
+      if (phoneOtp.length < 4) {
+        alert('Please enter the 4-digit OTP.');
+        return;
+      }
+      // Simulate OTP verification
+      setPhoneStep(3);
+    } else {
+      if (!phoneName.trim()) {
+        alert('Please enter your full name.');
+        return;
+      }
+      handleSelectAccount(phoneName, '', phoneNumber);
+    }
+  };
+
+  const handleFacebookLogin = () => {
+    // Simulate Facebook login
+    handleSelectAccount('Facebook User', 'user@facebook.com');
   };
 
   return (
@@ -112,15 +151,16 @@ export default function LoginPage({ onBack, onLoginSuccess, initialMode = 'login
                 </h3>
                 <p className="text-[11px] text-ink/50 text-center">
                   {viewMode === 'signup-auth' 
-                    ? 'Verify your Gmail address to establish your travel profile and continue to the subscription registration form.'
-                    : 'Sign in using your Google account or email credentials to access your active subscription draws and discount wallet dashboard.'}
+                    ? 'Sign up with Gmail, Facebook, or Phone Number to create your travel profile.'
+                    : 'Sign in using your Google, Facebook, or Phone OTP to access your dashboard.'}
                 </p>
               </div>
 
+              {/* Social Login Buttons */}
               <button
                 type="button"
                 onClick={() => setShowGoogleModal(true)}
-                className="w-full py-4 px-4 rounded-full bg-white text-slate-800 font-bold hover:bg-slate-100 flex items-center justify-center gap-3 transition-all cursor-pointer shadow-lg hover:scale-[1.02] border-none text-sm relative overflow-hidden"
+                className="w-full py-3.5 px-4 rounded-full bg-white text-slate-800 font-bold hover:bg-slate-100 flex items-center justify-center gap-3 transition-all cursor-pointer shadow-lg hover:scale-[1.02] border-none text-sm relative overflow-hidden"
               >
                 <svg className="w-5 h-5" viewBox="0 0 24 24">
                   <path
@@ -131,60 +171,175 @@ export default function LoginPage({ onBack, onLoginSuccess, initialMode = 'login
                 {viewMode === 'signup-auth' ? 'Sign Up with Google / Gmail' : 'Sign In with Google / Gmail'}
               </button>
 
-              <div className="flex items-center gap-4 py-2">
+              <button
+                type="button"
+                onClick={handleFacebookLogin}
+                className="w-full py-3.5 px-4 rounded-full bg-[#1877F2] text-white font-bold hover:bg-[#166FE5] flex items-center justify-center gap-3 transition-all cursor-pointer shadow-lg hover:scale-[1.02] border-none text-sm relative overflow-hidden"
+              >
+                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="white">
+                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                </svg>
+                {viewMode === 'signup-auth' ? 'Sign Up with Facebook' : 'Sign In with Facebook'}
+              </button>
+
+              {/* Divider */}
+              <div className="flex items-center gap-4 py-1">
                 <div className="h-px bg-white/10 flex-1" />
                 <span className="text-[9px] uppercase font-mono tracking-widest text-ink/40">
-                  {viewMode === 'signup-auth' ? 'Or Enter Gmail to Sign Up' : 'Or Enter Gmail'}
+                  Or continue with
                 </span>
                 <div className="h-px bg-white/10 flex-1" />
               </div>
 
-              {/* Manual Input form */}
-              <form onSubmit={handleCustomSubmit} className="space-y-4">
-                {customStep === 1 ? (
-                  <div>
-                    <label className="block text-xs uppercase tracking-wider text-ink/60 font-semibold mb-2" htmlFor="loginEmail">Gmail Address</label>
-                    <div className="relative">
-                      <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/40" />
-                      <input
-                        type="email"
-                        id="loginEmail"
-                        required
-                        placeholder="your.email@gmail.com"
-                        value={customEmail}
-                        onChange={(e) => setCustomEmail(e.target.value)}
-                        className="w-full pl-11 pr-4 py-3 rounded-xl bg-[#051520]/60 border border-white/10 text-white text-sm outline-none focus:border-cyan transition-colors"
-                      />
-                    </div>
-                  </div>
-                ) : (
-                  <div>
-                    <label className="block text-xs uppercase tracking-wider text-ink/60 font-semibold mb-2" htmlFor="loginName">Your Full Name</label>
-                    <div className="relative">
-                      <Key className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/40" />
-                      <input
-                        type="text"
-                        id="loginName"
-                        required
-                        placeholder="e.g. Rahul Sen"
-                        value={customName}
-                        onChange={(e) => setCustomName(e.target.value)}
-                        className="w-full pl-11 pr-4 py-3 rounded-xl bg-[#051520]/60 border border-white/10 text-white text-sm outline-none focus:border-cyan transition-colors"
-                      />
-                    </div>
-                  </div>
-                )}
-
+              {/* Tab toggle: Email / Phone */}
+              <div className="flex gap-2 mb-1">
                 <button
-                  type="submit"
-                  className="w-full py-3 premium-register-btn text-white font-bold rounded-full text-xs uppercase tracking-wider border-none cursor-pointer flex items-center justify-center gap-1.5"
+                  type="button"
+                  onClick={() => setAuthMethod('email')}
+                  className={`flex-1 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 cursor-pointer border transition-all ${
+                    authMethod === 'email'
+                      ? 'bg-cyan/15 border-cyan/40 text-cyan'
+                      : 'bg-white/5 border-white/10 text-ink/50 hover:text-white hover:border-white/20'
+                  }`}
                 >
-                  {customStep === 1 
-                    ? 'Next' 
-                    : viewMode === 'signup-auth' ? 'Create Account & Continue' : 'Authorize & Log In'}{' '}
-                  <ArrowLeft className="w-3.5 h-3.5 rotate-180" />
+                  <Mail className="w-3.5 h-3.5" /> Email
                 </button>
-              </form>
+                <button
+                  type="button"
+                  onClick={() => setAuthMethod('phone')}
+                  className={`flex-1 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 cursor-pointer border transition-all ${
+                    authMethod === 'phone'
+                      ? 'bg-cyan/15 border-cyan/40 text-cyan'
+                      : 'bg-white/5 border-white/10 text-ink/50 hover:text-white hover:border-white/20'
+                  }`}
+                >
+                  <Phone className="w-3.5 h-3.5" /> Phone OTP
+                </button>
+              </div>
+
+              {/* Email Method */}
+              {authMethod === 'email' && (
+                <form onSubmit={handleCustomSubmit} className="space-y-4">
+                  {customStep === 1 ? (
+                    <div>
+                      <label className="block text-xs uppercase tracking-wider text-ink/60 font-semibold mb-2" htmlFor="loginEmail">Gmail Address</label>
+                      <div className="relative">
+                        <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/40" />
+                        <input
+                          type="email"
+                          id="loginEmail"
+                          required
+                          placeholder="your.email@gmail.com"
+                          value={customEmail}
+                          onChange={(e) => setCustomEmail(e.target.value)}
+                          className="w-full pl-11 pr-4 py-3 rounded-xl bg-[#051520]/60 border border-white/10 text-white text-sm outline-none focus:border-cyan transition-colors"
+                        />
+                      </div>
+                    </div>
+                  ) : (
+                    <div>
+                      <label className="block text-xs uppercase tracking-wider text-ink/60 font-semibold mb-2" htmlFor="loginName">Your Full Name</label>
+                      <div className="relative">
+                        <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/40" />
+                        <input
+                          type="text"
+                          id="loginName"
+                          required
+                          placeholder="e.g. Rahul Sen"
+                          value={customName}
+                          onChange={(e) => setCustomName(e.target.value)}
+                          className="w-full pl-11 pr-4 py-3 rounded-xl bg-[#051520]/60 border border-white/10 text-white text-sm outline-none focus:border-cyan transition-colors"
+                        />
+                      </div>
+                    </div>
+                  )}
+                  <button
+                    type="submit"
+                    className="w-full py-3 premium-register-btn text-white font-bold rounded-full text-xs uppercase tracking-wider border-none cursor-pointer flex items-center justify-center gap-1.5"
+                  >
+                    {customStep === 1 
+                      ? 'Next' 
+                      : viewMode === 'signup-auth' ? 'Create Account' : 'Log In'}{' '}
+                    <ArrowLeft className="w-3.5 h-3.5 rotate-180" />
+                  </button>
+                </form>
+              )}
+
+              {/* Phone OTP Method */}
+              {authMethod === 'phone' && (
+                <form onSubmit={handlePhoneSubmit} className="space-y-4">
+                  {phoneStep === 1 && (
+                    <div>
+                      <label className="block text-xs uppercase tracking-wider text-ink/60 font-semibold mb-2" htmlFor="phoneInput">Mobile Number</label>
+                      <div className="relative">
+                        <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/40" />
+                        <span className="absolute left-10 top-1/2 -translate-y-1/2 text-sm text-ink/60 font-mono">+91</span>
+                        <input
+                          type="tel"
+                          id="phoneInput"
+                          required
+                          maxLength={10}
+                          placeholder="9876543210"
+                          value={phoneNumber}
+                          onChange={(e) => setPhoneNumber(e.target.value.replace(/\D/g, ''))}
+                          className="w-full pl-20 pr-4 py-3 rounded-xl bg-[#051520]/60 border border-white/10 text-white text-sm outline-none focus:border-cyan transition-colors font-mono"
+                        />
+                      </div>
+                    </div>
+                  )}
+                  {phoneStep === 2 && (
+                    <div>
+                      <label className="block text-xs uppercase tracking-wider text-ink/60 font-semibold mb-2" htmlFor="otpInput">Enter OTP</label>
+                      <p className="text-[10px] text-cyan/70 mb-2">✓ OTP sent to +91 {phoneNumber}</p>
+                      <div className="relative">
+                        <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/40" />
+                        <input
+                          type="text"
+                          id="otpInput"
+                          required
+                          maxLength={6}
+                          placeholder="Enter 4-digit OTP"
+                          value={phoneOtp}
+                          onChange={(e) => setPhoneOtp(e.target.value.replace(/\D/g, ''))}
+                          className="w-full pl-11 pr-4 py-3 rounded-xl bg-[#051520]/60 border border-white/10 text-white text-sm outline-none focus:border-cyan transition-colors font-mono tracking-[0.4em] text-center"
+                        />
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => { setPhoneStep(1); setPhoneOtp(''); setOtpSent(false); }}
+                        className="text-[10px] text-cyan/60 hover:text-cyan mt-2 cursor-pointer bg-transparent border-none"
+                      >
+                        ← Change Number
+                      </button>
+                    </div>
+                  )}
+                  {phoneStep === 3 && (
+                    <div>
+                      <p className="text-[10px] text-emerald-400 mb-3 flex items-center gap-1"><ShieldCheck className="w-3.5 h-3.5" /> Phone verified successfully!</p>
+                      <label className="block text-xs uppercase tracking-wider text-ink/60 font-semibold mb-2" htmlFor="phoneNameInput">Your Full Name</label>
+                      <div className="relative">
+                        <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/40" />
+                        <input
+                          type="text"
+                          id="phoneNameInput"
+                          required
+                          placeholder="e.g. Rahul Sen"
+                          value={phoneName}
+                          onChange={(e) => setPhoneName(e.target.value)}
+                          className="w-full pl-11 pr-4 py-3 rounded-xl bg-[#051520]/60 border border-white/10 text-white text-sm outline-none focus:border-cyan transition-colors"
+                        />
+                      </div>
+                    </div>
+                  )}
+                  <button
+                    type="submit"
+                    className="w-full py-3 premium-register-btn text-white font-bold rounded-full text-xs uppercase tracking-wider border-none cursor-pointer flex items-center justify-center gap-1.5"
+                  >
+                    {phoneStep === 1 ? 'Send OTP' : phoneStep === 2 ? 'Verify OTP' : 'Create Account'}{' '}
+                    <ArrowLeft className="w-3.5 h-3.5 rotate-180" />
+                  </button>
+                </form>
+              )}
 
               <div className="text-center pt-3 border-t border-white/5 mt-4">
                 {viewMode === 'signup-auth' ? (
@@ -209,7 +364,7 @@ export default function LoginPage({ onBack, onLoginSuccess, initialMode = 'login
 
             {/* Security strip */}
             <div className="mt-8 pt-4 border-t border-white/5 flex items-center justify-center gap-3 text-[10px] text-ink/45">
-              <ShieldCheck className="w-3.5 h-3.5 text-cyan" /> Secure Google Authentication (OAuth)
+              <ShieldCheck className="w-3.5 h-3.5 text-cyan" /> Secure Authentication (Google OAuth, Facebook, OTP)
             </div>
           </div>
         )}
