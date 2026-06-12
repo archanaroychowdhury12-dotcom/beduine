@@ -101,7 +101,7 @@ export default function LoginPage({ onBack, onLoginSuccess, initialMode = 'login
           alt="Travel Background" 
           className="w-full h-full object-cover object-center"
         />
-        <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px]" />
+        <div className="absolute inset-0 bg-black/35 backdrop-blur-[2px]" />
       </div>
 
       {/* Atmospheric highlights on top */}
