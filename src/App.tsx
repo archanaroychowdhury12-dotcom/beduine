@@ -3736,7 +3736,6 @@ export default function App() {
       setView('dashboard');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
-      setPendingPlan('Silver');
       setLoginInitialMode('register');
       setView('login');
       window.scrollTo({ top: 0, behavior: 'smooth' });
