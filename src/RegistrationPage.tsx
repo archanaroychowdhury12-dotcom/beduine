@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
+import { WelcomeScreen } from '@/components/ui/onboarding-welcome-screen';
 import { motion } from 'framer-motion';
 import { 
   ArrowLeft, Calendar, User, Phone, Mail, MapPin, 
@@ -125,6 +126,7 @@ const ALL_PLANS = [
 ];
 
 export default function RegistrationPage({ initialPlanName, onBack, prefilledData, onRegisterSuccess, currentUser, onRedirectToLogin }: RegistrationPageProps) {
+  const [showWelcome, setShowWelcome] = useState(true);
   const [step, setStep] = useState(1);
   const [selectedPlanId, setSelectedPlanId] = useState(() => {
     const matched = ALL_PLANS.find(p => {
@@ -262,6 +264,32 @@ _I confirm my registration and age eligibility (18+). Please guide me on payment
   };
 
   const PlanIcon = selectedPlan.icon;
+
+  if (showWelcome) {
+    return (
+      <section className="min-h-screen pt-28 pb-16 px-4 sm:px-6 lg:px-8 relative overflow-hidden flex flex-col items-center justify-center bg-cosmos">
+        {/* Decorative Glowing Orbs */}
+        <div className="absolute top-1/4 left-1/4 w-[350px] h-[350px] rounded-full filter blur-[120px] pointer-events-none opacity-20 bg-cyan-500/20" />
+        <div className="absolute bottom-1/4 right-1/4 w-[350px] h-[350px] rounded-full filter blur-[120px] pointer-events-none opacity-25 bg-blue-500/20" />
+
+        <div className="max-w-md w-full z-10 bg-[#081F2E]/80 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden shadow-2xl relative">
+          <WelcomeScreen
+            imageUrl="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=compress&cs=tinysrgb&w=800&q=80"
+            title={
+              <>
+                Welcome to <span className="text-[#00F5D4] font-black">Beduin</span>
+              </>
+            }
+            description="Create your membership account to participate in weekly lucky draws, secure travel discounts, and explore beautiful destinations."
+            buttonText="Create Your Account"
+            onButtonClick={() => setShowWelcome(false)}
+            secondaryActionText="Already have an account? Login Here"
+            onSecondaryActionClick={onRedirectToLogin}
+          />
+        </div>
+      </section>
+    );
+  }
 
   if (receipt) {
     return (
