@@ -748,9 +748,10 @@ interface NavbarProps {
   setView: (v: 'landing' | 'login' | 'register' | 'terms' | 'dashboard') => void;
   currentUser: any;
   onSelectPlan?: (planName: string) => void;
+  handleMemberLogin: (e: React.MouseEvent) => void;
 }
 
-function Navbar({ view, setView, currentUser }: NavbarProps) {
+function Navbar({ view, setView, currentUser, handleMemberLogin }: NavbarProps) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
@@ -758,19 +759,6 @@ function Navbar({ view, setView, currentUser }: NavbarProps) {
     window.addEventListener('scroll', onScroll);
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
-
-  const handleMemberLogin = (e: React.MouseEvent) => {
-    e.preventDefault();
-    if (currentUser) {
-      setView('dashboard');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else {
-      setPendingPlan('Silver');
-      setLoginInitialMode('register');
-      setView('login');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  };
 
   return (
     <header className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${scrolled ? 'py-2' : 'py-4'}`}>
@@ -3742,6 +3730,19 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [currentUser]);
 
+  const handleMemberLogin = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    if (currentUser) {
+      setView('dashboard');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      setPendingPlan('Silver');
+      setLoginInitialMode('register');
+      setView('login');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [currentUser]);
+
   // Manage body cursor visibility: default cursor during intro, hidden after intro for the custom cursor
   useEffect(() => {
     if (!introComplete) {
@@ -3764,7 +3765,7 @@ export default function App() {
       {/* Main page content container - invisible during intro to prevent menu leak, then fades in beautifully */}
       <div className={`transition-opacity duration-700 ${introComplete ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
         <div className="noise fixed inset-0 pointer-events-none z-30" />
-        <Navbar view={view} setView={setView} currentUser={currentUser} />
+        <Navbar view={view} setView={setView} currentUser={currentUser} handleMemberLogin={handleMemberLogin} />
 
         <main className="relative z-10 flex flex-col gap-0">
           {view === 'landing' ? (
