@@ -67,11 +67,20 @@ const PLANS = [
     color: 'from-neon-gold via-gold to-gold-deep', glow: 'gold',
     featured: true, tourValue: 10000, duration: '3N / 4D',
     discountCredits: 4, discountValue: 2000,
-    paidDiscount: 'Member rate', insurance: 'Included free', nameChange: 'Two times',
+    paidDiscount: 'Member rate',
+    insurance: 'Included free',
+    nameChange: 'Two times',
     image: '/images/kashmir_dal_lake_1779521728036.png',
     imageLabel: 'Kashmir - Dal Lake',
-    destinations: ['Kashmir', 'Goa', 'Sikkim', 'Himachal'],
-    benefits: ['1 Weekly Promotional Draw entry', 'Eligible for promotional winner benefits', '₹2,000 discount credits if not selected', 'Member-only rates on paid tours', 'Two family name changes allowed', '18+ Membership Only'],
+    destinations: ['Kashmir', 'Goa', 'Sikkim', 'Himachal (Shimla+Manali)'],
+    benefits: [
+      '1 Weekly Promotional Draw entry',
+      'Eligible for promotional winner benefits',
+      '₹2,000 discount credits if not selected',
+      'Member-only rates on paid tours',
+      'Two family name changes allowed',
+      '18+ Membership Only'
+    ],
   },
 ];
 
@@ -93,7 +102,7 @@ const INTL_PLANS = [
     paidDiscount: 'Up to 7% off', insurance: 'Included free', nameChange: 'Two times',
     image: '/images/thailand.png',
     imageLabel: 'Thailand - Temples & Beaches',
-    destinations: ['Thailand', 'Bali'],
+    destinations: ['Thailand', 'Bali (Indonesia)'],
     benefits: ['1 Monthly Promotional Draw entry', 'Winner tour value up to ₹50,000 (4N/5D)', '₹4,000 discount credits if not selected', 'Up to 7% off on paid international tours', 'Travel insurance – Free', 'Two family name changes allowed', '18+ Membership Only'],
   },
   {
@@ -2595,7 +2604,7 @@ function NonWinnerGuarantee() {
       plan: 'Platinum', price: 1499, dc: 4, dcValue: 2000, roi: 133,
       color: 'from-neon-gold via-gold to-gold-deep', glow: 'gold',
       image: '/images/kashmir_dal_lake_1779521728036.png',
-      tours: ['Kashmir', 'Goa', 'Sikkim', 'Himachal'],
+      tours: ['Kashmir', 'Goa', 'Sikkim', 'Himachal (Shimla+Manali)'],
       example: {
         name: 'Priya Sen',
         avatar: '/images/winner_ananya_das.png',
@@ -3310,11 +3319,11 @@ function MembershipInquiryForm({ onStartRegistration }: { onStartRegistration: (
                   className="w-full px-4 py-3 rounded-xl bg-cosmos border border-slate-300 text-ink text-sm outline-none focus:border-cyan transition-colors font-semibold"
                 >
                   <option>Silver Domestic - ₹499</option>
-                  <option>Gold Domestic - ₹799</option>
-                  <option>Platinum Domestic - ₹1499</option>
-                  <option>Silver International - ₹4999</option>
-                  <option>Gold International - ₹7999</option>
-                  <option>Platinum International - ₹14999</option>
+                  <option disabled>Gold Domestic - ₹799 (Coming Soon)</option>
+                  <option disabled>Platinum Domestic - ₹1499 (Coming Soon)</option>
+                  <option disabled>Silver International - ₹4999 (Coming Soon)</option>
+                  <option disabled>Gold International - ₹7999 (Coming Soon)</option>
+                  <option disabled>Platinum International - ₹14999 (Coming Soon)</option>
                 </select>
               </div>
 
@@ -3363,63 +3372,130 @@ function TermsAndConditions() {
   const sections = [
     {
       id: 'A',
-      title: 'A. Definitions & Scope',
-      content: 'Under this agreement, "Member" or "Subscriber" refers to any individual registered under a paid Beduin subscription. "Company" refers to BEDUINE Tour & Travels. "LDC" refers to the Lucky Draw Credit which permits entry in promotional winner selection events. "DC" refers to Discount Credits utilized to lower fees for standard paid travel bookings.'
+      title: 'A. Membership & Subscription Rules',
+      content: `1. Subscription plans are available only to individuals aged 18 years or above.
+2. Each subscription is valid for a period of 12 (Twelve) months from the date of activation.
+3. Subscription fees are strictly non-refundable and non-transferable.
+4. A subscription will be activated only after successful payment verification, mobile number verification, and KYC verification (if required).
+5. A customer may purchase multiple subscriptions under the same name, subject to company approval.
+6. All subscription benefits are applicable only to active subscribers.`
     },
     {
       id: 'B',
-      title: 'B. Eligibility & Age Requirements',
-      content: 'Subscription memberships, lucky draws, and winner benefits are strictly restricted to individuals who are 18 years of age or older at the time of subscription. The Company reserves the right to request official government identification (Aadhaar, Passport, etc.) to verify age before activating any tour benefits.'
+      title: 'B. Lucky Draw Rules',
+      content: `7. Each subscription includes 1 (One) Lucky Draw Credit (LDC).
+8. Only active subscribers are eligible to participate in the Lucky Draw.
+9. The Lucky Draw will be conducted through a Random Number Generator (RNG) or any other approved automated digital system.
+10. The Company's decision regarding winner selection shall be final and binding.
+11. Lucky Draw results cannot be challenged, modified, or reconsidered once announced.
+12. In case of technical issues, system failures, force majeure events, or unforeseen circumstances, the Company reserves the right to postpone, reschedule, or modify the draw.
+13. A minimum of 5% of the total valid participants will be selected as winners every week, using the "Round-Up" rule.
+14. The draw may be conducted live, recorded, or through an automated digital platform.
+15. Winner announcements may be published through the Company Website, Mobile App, Social Media Platforms, SMS, Email, or any other official communication channel.`
     },
     {
       id: 'C',
-      title: 'C. Subscription Plan Details & Price Tiers',
-      content: 'Domestic Subscription tiers include Silver (₹499), Gold (₹799), and Platinum (₹1499). International Subscription tiers include Silver (₹4999), Gold (₹7999), and Platinum (₹14999). Subscription fees grant access to membership discount privileges and promotional benefit credits for 12 months.'
+      title: 'C. Winner Benefits & Conditions',
+      content: `16. Winner Tour benefits cannot be exchanged for cash or any monetary compensation.
+17. Winner Tour benefits cannot be exchanged for any other tour package, service, voucher, or offer.
+18. Winner Tours will be conducted only on destinations, dates, and itineraries selected by the Company.
+19. Winners must confirm their participation within 15 days of the announcement or invitation. Failure to do so may result in cancellation of the benefit.
+20. If a winner fails to join the allocated tour, the benefit shall be considered forfeited.
+21. Winner Tour benefits are non-transferable except where Name Change benefits are specifically allowed under the subscriber's plan.
+22. Winners must provide valid government-issued identification before joining the tour.
+23. The Company reserves the sole right to determine destinations, hotels, transportation, sightseeing schedules, and tour inclusions.
+24. A subscriber may avail Winner Tour benefits only once during the validity period of a subscription.`
     },
     {
       id: 'D',
-      title: 'D. Lucky Draw & Promotional Benefit Rules',
-      content: 'Beduin operates this program strictly as a promotional subscription membership benefit program. It must not be presented, marketed, or regarded as gambling, betting, wagering, or a lottery service. Weekly promotional draws are organized digitally using approved transparent algorithms (RNG).'
+      title: 'D. Name Change Policy',
+      content: `25. No Name Change facility is available under the Silver Plan.
+26. Gold Plan subscribers are entitled to one (1) Name Change for an eligible family member.
+27. Platinum Plan subscribers are entitled to two (2) Name Changes for eligible family members.
+28. Family Members include:
+   - Spouse
+   - Parents
+   - Children
+   - Brother
+   - Sister
+29. All Name Change requests are subject to verification and approval by the Company.`
     },
     {
       id: 'E',
-      title: 'E. Winner Tour Inclusions & Travel Conditions',
-      content: 'Subscribers selected for promotional winner tour benefits travel with standard lodging, dining, and designated ground transfers included. Winner benefits are strictly non-cash, non-refundable, and cannot be redeemed for physical cash, store vouchers, or other non-specified travel packages.'
+      title: 'E. Discount Credit (DC) Policy',
+      content: `General Rules:
+30. 1 Discount Credit (DC) = 1 Person = ₹500 Discount.
+31. A maximum of one (1) Discount Credit can be used per person per tour booking.
+32. Multiple Discount Credits cannot be combined for a single person's tour cost.
+33. Discount Credits are applicable only on Beduin Tour & Travels Paid Tour Packages.
+34. Discount Credits cannot be redeemed for cash.
+35. Discount Credits cannot be sold, transferred, exchanged, or resold.
+36. Unused Discount Credits automatically expire upon subscription expiry.
+
+Silver Plan (1 DC):
+37. 1 DC = 1 Tour Booking (Subscriber Only). The subscriber may use the credit for one paid tour booking and receive a flat ₹500 discount.
+
+Gold Plan (2 DC):
+38. Option A – Two Separate Tours:
+   - 2 DC may be used for two separate tour bookings by the subscriber, OR one approved Name Change for an eligible family member.
+39. Option B – Two Persons in One Tour:
+   - The subscriber may use 2 DC for Subscriber + 1 Family Member/Friend in the same tour. (1 DC = Subscriber, 1 DC = Additional Person). Example: Subscriber + Spouse, Subscriber + Child, Subscriber + Friend.
+
+Platinum Plan (4 DC):
+40. Option A – Four Separate Tours:
+   - 4 DC may be used for four separate tour bookings by the subscriber, OR up to two approved Name Changes for eligible family members.
+41. Option B – Four Persons in One Tour:
+   - The subscriber may use 4 DC for Subscriber + 3 Family Members/Friends in the same tour (e.g., Subscriber + Spouse + Two Children, Subscriber + Three Friends, Subscriber + Two Family Members + One Friend).
+42. Option C – Two Persons in Two Separate Tours:
+   - The subscriber may use 4 DC for Tour 1 (Subscriber + 1 Family Member/Friend) and Tour 2 (Subscriber + 1 Family Member/Friend).`
     },
     {
       id: 'F',
-      title: 'F. Discount Credits Allocation & Value Floor',
-      content: 'Each Discount Credit (DC) carries a flat value of ₹500 off on eligible paid tour bookings. Silver subscribers receive 1 DC, Gold receives 2 DCs, and Platinum receives 4 DCs. A maximum of 1 DC (₹500 off) can be redeemed per person, per booking. These credits expire upon subscription termination (12 months).'
+      title: 'F. Domestic & International Discount Credit Policy',
+      content: `43. Domestic Membership Discount Credits can only be used for Domestic Paid Tour Packages.
+44. International Membership Discount Credits can only be used for International Paid Tour Packages.
+45. Domestic Discount Credits cannot be used for International Tours, and International Discount Credits cannot be used for Domestic Tours.`
     },
     {
       id: 'G',
-      title: 'G. Name-Change Request Policy',
-      content: 'Winner benefits are non-transferable except under strict allowed name-change rules. Domestic and international Gold plans allow one-time family name changes. Platinum plans allow two family name changes. Silver plans do not permit name changes. Transfers must be registered at least 15 days prior to travel.'
+      title: 'G. Tour Operations & Travel Rules',
+      content: `46. The Company reserves the right to determine and modify tour schedules, routes, hotels, transportation, and services whenever necessary.
+47. Tours may be postponed, rescheduled, merged, or cancelled if the minimum required number of participants is not achieved.
+48. Tour schedules, itineraries, or destinations may be altered due to weather conditions, natural disasters, political unrest, strikes, road closures, pandemics, government regulations, or any force majeure event.
+49. Any personal expenses, including but not limited to shopping, laundry, room service, personal transportation, medical expenses, and optional activities, shall be borne by the subscriber.`
     },
     {
       id: 'H',
-      title: 'H. Registration & Verification Process',
-      content: 'Subscribers must complete the inquiry verification form. Activation is finalized via our WhatsApp hook (+91 87689 03565). No real payment gateways are built into the client site; payment processes and bookings are handled offline through authorized office personnel.'
+      title: 'H. Travel Insurance Policy',
+      content: `50. Travel insurance benefits shall be governed by the terms and conditions of the respective insurance provider.
+51. Beduin Tour & Travels shall not be responsible for any insurance claim approval, rejection, settlement, or dispute.`
     },
     {
       id: 'I',
-      title: 'I. Non-Refundability of Fees',
-      content: 'All membership subscription fees (from ₹499 to ₹14999) are strictly non-refundable and non-transferable under any circumstances, including but not limited to the member not winning any weekly promotional draws.'
+      title: 'I. Fraud Prevention & Misuse Policy',
+      content: `52. Any false, misleading, incomplete, or fraudulent information may result in suspension or termination of the subscription.
+53. The Company reserves the right to cancel memberships found involved in duplicate registrations, fake payments, fraudulent activities, or attempts to manipulate the system.
+54. No refund shall be provided in such cases.`
     },
     {
       id: 'J',
-      title: 'J. Booking Requests & Seat Availability',
-      content: 'All paid tours and promotional travel benefits are subject to seasonal seat availability and operational capacity. Members must submit travel booking requests at least 30 days before their intended departure date.'
+      title: 'J. Liability Disclaimer',
+      content: `55. Beduin Tour & Travels shall not be held liable for accidents, illness, injury, theft, loss of personal belongings, natural disasters, delays, cancellations, or any third-party negligence during travel.
+56. Subscribers are solely responsible for complying with local laws, regulations, and authorities during their travels.`
     },
     {
       id: 'K',
-      title: 'K. Operational Inclusions & Exclusions',
-      content: 'Standard tour itineraries cover base lodging, shared vehicle transfers, and guided activities. Personal expenses, custom flight/train upgrades, independent sightseeing, and additional meals are excluded and must be paid separately by the traveler.'
+      title: 'K. Marketing & Publicity Rights',
+      content: `57. Winners and participants grant Beduin Tour & Travels the right to use their names, photographs, videos, testimonials, and tour experiences for promotional, marketing, and advertising purposes.
+58. By purchasing a subscription, the subscriber provides consent for such usage without any additional compensation.`
     },
     {
       id: 'L',
-      title: 'L. Dispute Resolution & Governing Law',
-      content: 'Any legal issues, disputes, or interpretation queries regarding the subscription rules shall be subject to the exclusive jurisdiction of the competent courts in Fulia/Nadia, West Bengal, India. Regulatory and operations details comply with West Bengal state guidelines.'
+      title: 'L. Legal & Compliance',
+      content: `59. The Beduin Lucky Draw Program is a promotional membership benefit program and shall not be considered a lottery, gambling, betting, or wagering activity.
+60. The Company reserves the right to amend, modify, suspend, or update these Terms & Conditions at any time without prior notice.
+61. Any dispute arising from the subscription program shall be subject to the exclusive jurisdiction of the courts of Nadia, West Bengal, India.
+62. By purchasing and activating a subscription, the subscriber confirms that they have read, understood, and agreed to all the Terms & Conditions mentioned above.`
     }
   ];
 
@@ -3434,8 +3510,8 @@ function TermsAndConditions() {
             <h2 className="font-display text-4xl lg:text-5xl font-bold text-ink leading-tight">
               Terms & Conditions
             </h2>
-            <p className="mt-4 text-ink/70 text-sm max-w-2xl mx-auto">
-              Please review our membership terms below. By purchasing a subscription, you confirm agreement to all clauses.
+            <p className="mt-4 text-ink/70 text-sm max-w-2xl mx-auto font-mono">
+              "Choose Your Plan. Try Your Luck. Travel Beyond Limits."
             </p>
           </div>
         </Reveal>
@@ -3445,7 +3521,7 @@ function TermsAndConditions() {
           <div className="mb-8 p-5 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400 text-sm flex items-start gap-3">
             <Shield className="w-5 h-5 shrink-0 mt-0.5" />
             <div>
-              <span className="font-bold">Disclaimer Notice:</span> A professional legal/compliance review is highly recommended before launching these policies in a production environment.
+              <span className="font-bold">Important Notice:</span> Please read the Beduin Tour & Travels Subscription Membership Terms & Conditions carefully.
             </div>
           </div>
         </Reveal>
@@ -3459,7 +3535,7 @@ function TermsAndConditions() {
                 <div className="glass rounded-2xl border border-slate-line/80 overflow-hidden hover:neon-border-gold transition-all">
                   <button
                     onClick={() => setActiveIndex(isOpen ? null : index)}
-                    className="w-full flex items-center justify-between p-5 text-left font-display font-bold text-ink select-none outline-none focus:bg-white/10 cursor-pointer"
+                    className="w-full flex items-center justify-between p-5 text-left font-display font-bold text-ink select-none outline-none focus:bg-white/10 cursor-pointer border-none bg-transparent"
                     aria-expanded={isOpen}
                   >
                     <span>{sec.title}</span>
@@ -3489,7 +3565,9 @@ function TermsAndConditions() {
         {/* Subject to policy banner */}
         <Reveal>
           <div className="mt-8 text-center text-xs text-ink/50 leading-relaxed font-mono">
-            * Final eligibility, draw selection, travel dates, destinations, hotels, and operational schedules are subject to company policy.
+            * Official Disclaimer: Beduin Tour & Travels reserves the right to modify tour destinations, schedules, benefits, offers, and operational policies whenever necessary for business, operational, safety, legal, or logistical reasons. All decisions taken by the Company in such matters shall be considered final and binding.
+            <br />
+            <span className="mt-2 block font-bold text-[#0096C7] text-sm font-display">"Safar Jo Yaad Rahe."</span>
           </div>
         </Reveal>
       </div>
