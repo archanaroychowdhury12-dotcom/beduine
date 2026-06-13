@@ -48,53 +48,181 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
 
       <div className="max-w-7xl mx-auto relative z-10">
         
-        {/* ═══════════════ TOP WELCOME BANNER ═══════════════ */}
+        {/* ═══════════════ CINEMATIC 3D USER PROFILE ═══════════════ */}
         <motion.div 
-          initial={{ opacity: 0, y: -20 }} 
-          animate={{ opacity: 1, y: 0 }} 
-          transition={{ duration: 0.6 }}
-          className="rounded-3xl p-6 lg:p-8 mb-8 relative overflow-hidden"
-          style={{ background: 'linear-gradient(135deg, rgba(24,215,242,0.15) 0%, rgba(139,92,246,0.12) 50%, rgba(247,181,0,0.1) 100%)', border: '1px solid rgba(255,255,255,0.1)' }}
+          initial={{ opacity: 0, y: -30, rotateX: 8 }} 
+          animate={{ opacity: 1, y: 0, rotateX: 0 }} 
+          transition={{ duration: 0.8, type: 'spring', stiffness: 60 }}
+          className="rounded-[28px] mb-8 relative overflow-hidden"
+          style={{ 
+            background: 'linear-gradient(135deg, #1a0533 0%, #0c1445 25%, #0a2351 50%, #062b3e 75%, #0d1f2d 100%)',
+            border: '1px solid rgba(255,255,255,0.08)',
+            boxShadow: '0 25px 80px -20px rgba(99,102,241,0.25), 0 10px 40px -15px rgba(14,165,233,0.15), inset 0 1px 0 rgba(255,255,255,0.06)',
+            perspective: '1200px',
+          }}
         >
-          {/* Animated shimmer */}
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent animate-pulse pointer-events-none" style={{ animationDuration: '3s' }} />
-          
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6 relative z-10">
-            <div className="flex items-center gap-5">
-              {/* Avatar with gradient ring */}
-              <div className="relative">
-                <div className="w-[72px] h-[72px] rounded-full p-[3px]" style={{ background: 'linear-gradient(135deg, #18D7F2, #8B5CF6, #F7B500)' }}>
-                  <div className="w-full h-full rounded-full bg-[#0D1B2A] flex items-center justify-center text-white text-2xl font-black uppercase">
-                    {user?.fullName?.charAt(0) || 'U'}
+          {/* ── Animated Aurora Glow Background ── */}
+          <div className="absolute inset-0 pointer-events-none overflow-hidden">
+            {/* Top-left warm glow */}
+            <div className="absolute -top-20 -left-20 w-[350px] h-[350px] rounded-full opacity-40" style={{ background: 'radial-gradient(circle, rgba(251,146,60,0.4) 0%, rgba(244,63,94,0.2) 40%, transparent 70%)', animation: 'pulse 4s ease-in-out infinite' }} />
+            {/* Center violet glow */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[300px] rounded-full opacity-25" style={{ background: 'radial-gradient(ellipse, rgba(139,92,246,0.5) 0%, rgba(99,102,241,0.2) 50%, transparent 80%)', animation: 'pulse 5s ease-in-out infinite reverse' }} />
+            {/* Right cyan glow */}
+            <div className="absolute -top-10 -right-10 w-[300px] h-[300px] rounded-full opacity-35" style={{ background: 'radial-gradient(circle, rgba(6,182,212,0.45) 0%, rgba(14,165,233,0.2) 50%, transparent 75%)', animation: 'pulse 6s ease-in-out infinite' }} />
+            {/* Bottom emerald glow */}
+            <div className="absolute -bottom-16 left-1/3 w-[400px] h-[200px] rounded-full opacity-20" style={{ background: 'radial-gradient(ellipse, rgba(16,185,129,0.4) 0%, transparent 70%)' }} />
+            
+            {/* Floating particles */}
+            {[...Array(6)].map((_, i) => (
+              <div key={i} className="absolute rounded-full" style={{
+                width: `${3 + i * 1.5}px`, height: `${3 + i * 1.5}px`,
+                background: ['rgba(251,146,60,0.6)', 'rgba(139,92,246,0.5)', 'rgba(6,182,212,0.6)', 'rgba(16,185,129,0.5)', 'rgba(244,63,94,0.4)', 'rgba(250,204,21,0.5)'][i],
+                top: `${15 + i * 12}%`, left: `${10 + i * 15}%`,
+                animation: `pulse ${3 + i}s ease-in-out infinite ${i * 0.5}s`,
+                boxShadow: `0 0 ${8 + i * 3}px ${['rgba(251,146,60,0.4)', 'rgba(139,92,246,0.3)', 'rgba(6,182,212,0.4)', 'rgba(16,185,129,0.3)', 'rgba(244,63,94,0.3)', 'rgba(250,204,21,0.3)'][i]}`,
+              }} />
+            ))}
+
+            {/* Shimmer line */}
+            <div className="absolute inset-0" style={{
+              background: 'linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.03) 45%, rgba(255,255,255,0.06) 50%, rgba(255,255,255,0.03) 55%, transparent 60%)',
+              animation: 'shimmer 4s ease-in-out infinite',
+            }} />
+          </div>
+
+          {/* ── Main Content ── */}
+          <div className="relative z-10 p-6 lg:p-8">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+              
+              {/* Left: Avatar + Info */}
+              <div className="flex items-center gap-5">
+                {/* 3D Glowing Avatar */}
+                <motion.div 
+                  className="relative"
+                  whileHover={{ scale: 1.08, rotateY: 10 }}
+                  transition={{ type: 'spring', stiffness: 200 }}
+                >
+                  {/* Outer glow ring */}
+                  <div className="absolute -inset-2 rounded-full opacity-60" style={{
+                    background: 'conic-gradient(from 0deg, #f97316, #ec4899, #8b5cf6, #06b6d4, #10b981, #eab308, #f97316)',
+                    animation: 'spin 6s linear infinite',
+                    filter: 'blur(8px)',
+                  }} />
+                  {/* Avatar ring */}
+                  <div className="w-[80px] h-[80px] rounded-full p-[3px] relative" style={{ 
+                    background: 'conic-gradient(from 0deg, #f97316, #ec4899, #8b5cf6, #06b6d4, #10b981, #eab308, #f97316)',
+                    boxShadow: '0 0 30px rgba(139,92,246,0.3), 0 0 60px rgba(6,182,212,0.15)'
+                  }}>
+                    <div className="w-full h-full rounded-full flex items-center justify-center text-white text-3xl font-black uppercase relative overflow-hidden" style={{
+                      background: 'linear-gradient(135deg, #1e1b4b, #172554)',
+                    }}>
+                      <span className="relative z-10 drop-shadow-lg">{user?.fullName?.charAt(0) || 'U'}</span>
+                      <div className="absolute inset-0 bg-gradient-to-t from-violet-500/20 to-transparent" />
+                    </div>
+                  </div>
+                  {/* Verified badge */}
+                  <motion.div 
+                    initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.5, type: 'spring' }}
+                    className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full flex items-center justify-center shadow-lg"
+                    style={{ background: 'linear-gradient(135deg, #10b981, #059669)', boxShadow: '0 0 12px rgba(16,185,129,0.5)' }}
+                  >
+                    <Check className="w-3.5 h-3.5 text-white" />
+                  </motion.div>
+                </motion.div>
+
+                {/* User Info */}
+                <div>
+                  <div className="flex items-center gap-2.5 flex-wrap">
+                    <h1 className="text-xl sm:text-2xl font-black tracking-tight text-white drop-shadow-sm">{user?.fullName}</h1>
+                    <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-[10px] font-bold font-mono" style={{
+                      background: 'linear-gradient(135deg, rgba(16,185,129,0.2), rgba(6,182,212,0.15))',
+                      border: '1px solid rgba(16,185,129,0.3)',
+                      color: '#6ee7b7',
+                      boxShadow: '0 0 15px rgba(16,185,129,0.1)',
+                    }}>
+                      <Shield className="w-3 h-3" /> VERIFIED
+                    </span>
+                  </div>
+                  <p className="text-sm text-blue-200/60 font-mono mt-1">{user?.email || user?.mobile}</p>
+                  <div className="flex items-center gap-3 mt-2">
+                    <span className="inline-flex items-center gap-1 text-[10px] text-white/40 font-mono">
+                      <Calendar className="w-3 h-3 text-violet-400/60" /> Joined {new Date().toLocaleDateString('en-IN', { month: 'short', year: 'numeric' })}
+                    </span>
+                    <span className="w-1 h-1 rounded-full bg-white/20" />
+                    <span className="inline-flex items-center gap-1 text-[10px] font-mono" style={{ color: isSubscribed ? '#a5f3fc' : '#fbbf24' }}>
+                      <Crown className="w-3 h-3" /> {displayPlan}
+                    </span>
                   </div>
                 </div>
-                <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-emerald-500 border-2 border-[#0D1B2A] flex items-center justify-center">
-                  <Check className="w-3 h-3 text-white" />
-                </div>
               </div>
-              <div>
-                <div className="flex items-center gap-2 flex-wrap">
-                  <h1 className="text-xl sm:text-2xl font-black tracking-tight text-white">{user?.fullName}</h1>
-                  <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/25 font-mono">
-                    <Shield className="w-3 h-3" /> VERIFIED
-                  </span>
-                </div>
-                <p className="text-sm text-white/50 font-mono mt-0.5">{user?.email || user?.mobile}</p>
-                <p className="text-[10px] text-white/30 mt-1 font-mono">Member since {new Date().toLocaleDateString('en-IN', { month: 'short', year: 'numeric' })}</p>
+
+              {/* Right: Membership + Actions */}
+              <div className="flex flex-wrap items-center gap-3">
+                {/* Holographic Membership ID */}
+                <motion.div 
+                  whileHover={{ scale: 1.04, rotateY: -5 }}
+                  className="px-5 py-3.5 rounded-2xl text-center relative overflow-hidden cursor-default"
+                  style={{ 
+                    background: 'linear-gradient(135deg, rgba(250,204,21,0.12), rgba(251,146,60,0.1), rgba(244,63,94,0.08))',
+                    border: '1px solid rgba(250,204,21,0.2)',
+                    boxShadow: '0 4px 20px rgba(250,204,21,0.08), inset 0 1px 0 rgba(255,255,255,0.05)',
+                  }}
+                >
+                  {/* Holographic shimmer */}
+                  <div className="absolute inset-0 opacity-30" style={{
+                    background: 'linear-gradient(105deg, transparent 35%, rgba(250,204,21,0.2) 45%, rgba(251,146,60,0.15) 50%, rgba(244,63,94,0.1) 55%, transparent 65%)',
+                    animation: 'shimmer 3s ease-in-out infinite',
+                  }} />
+                  <span className="block text-[8px] uppercase tracking-[0.2em] font-mono relative z-10" style={{ color: 'rgba(250,204,21,0.7)' }}>MEMBERSHIP ID</span>
+                  <span className="text-sm font-black font-mono tracking-[0.15em] relative z-10" style={{ 
+                    background: 'linear-gradient(90deg, #fbbf24, #f97316, #fbbf24)',
+                    backgroundSize: '200% 100%',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    animation: 'shimmer 3s ease-in-out infinite',
+                  }}>{user?.memberId}</span>
+                </motion.div>
+
+                {/* Log Out Button */}
+                <motion.button 
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={onLogout}
+                  className="px-5 py-3 rounded-2xl text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-2 cursor-pointer"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(239,68,68,0.12), rgba(239,68,68,0.06))',
+                    border: '1px solid rgba(239,68,68,0.2)',
+                    color: '#fca5a5',
+                  }}
+                >
+                  <LogOut className="w-4 h-4" /> Log Out
+                </motion.button>
               </div>
             </div>
 
-            <div className="flex flex-wrap items-center gap-3">
-              <div className="px-5 py-3 rounded-2xl text-center relative overflow-hidden" style={{ background: 'linear-gradient(135deg, rgba(247,181,0,0.15), rgba(247,181,0,0.05))', border: '1px solid rgba(247,181,0,0.2)' }}>
-                <span className="block text-[8px] uppercase tracking-wider text-neon-gold/70 font-mono">MEMBERSHIP ID</span>
-                <span className="text-sm font-black text-neon-gold font-mono tracking-wider">{user?.memberId}</span>
-              </div>
-              <button 
-                onClick={onLogout}
-                className="px-5 py-3 rounded-2xl bg-red-500/10 border border-red-500/20 hover:bg-red-500/20 text-red-400 text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-2 cursor-pointer hover:scale-[1.02]"
-              >
-                <LogOut className="w-4 h-4" /> Log Out
-              </button>
+            {/* Bottom Stats Strip */}
+            <div className="mt-6 pt-5 border-t border-white/5 grid grid-cols-2 md:grid-cols-4 gap-4">
+              {[
+                { label: 'Status', value: isSubscribed ? 'Active' : 'Inactive', color: isSubscribed ? '#34d399' : '#fbbf24', icon: '●' },
+                { label: 'Draw Entry', value: user?.drawToken ? 'Ready' : 'Pending', color: '#a78bfa', icon: '◆' },
+                { label: 'Vouchers', value: `${isSubscribed ? (planName?.toLowerCase()?.includes('platinum') ? 4 : planName?.toLowerCase()?.includes('gold') ? 2 : 1) : 0} Active`, color: '#67e8f9', icon: '★' },
+                { label: 'Next Draw', value: 'Sunday', color: '#fdba74', icon: '▶' },
+              ].map((item, i) => (
+                <motion.div 
+                  key={i}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.6 + i * 0.1 }}
+                  className="flex items-center gap-2.5 p-2.5 rounded-xl"
+                  style={{ background: 'rgba(255,255,255,0.03)' }}
+                >
+                  <span className="text-sm" style={{ color: item.color, textShadow: `0 0 8px ${item.color}40` }}>{item.icon}</span>
+                  <div>
+                    <span className="block text-[8px] uppercase tracking-wider text-white/30 font-mono">{item.label}</span>
+                    <span className="block text-xs font-bold" style={{ color: item.color }}>{item.value}</span>
+                  </div>
+                </motion.div>
+              ))}
             </div>
           </div>
         </motion.div>
