@@ -239,7 +239,7 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
           <motion.main initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}>
             
             {/* Profile Summary Card */}
-            <div className="rounded-2xl shadow-sm border border-teal-100/40 p-6 mb-5" style={{ background: 'linear-gradient(135deg, #ffffff 0%, #f0fdfa 50%, #faf5ff 100%)' }}>
+            <div className="rounded-2xl shadow-sm border p-6 mb-5" style={{ background: 'linear-gradient(135deg, #F5DFBF 0%, #FAF0DD 50%, #E6CFA9 100%)', borderColor: '#ECD7B4' }}>
               <div className="flex items-center justify-between mb-5">
                 <h2 className="text-lg font-bold text-slate-800">Profile Summary</h2>
                 <ChevronRight className="w-4 h-4 text-slate-300" />
@@ -320,7 +320,7 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                 {activeTab === 'overview' && (
                   <div className="space-y-5">
                     {/* Upcoming Trips Progress */}
-                    <div className="rounded-2xl shadow-sm border border-teal-100/40 p-6" style={{ background: 'linear-gradient(135deg, #ffffff 0%, #f0fdfa 100%)' }}>
+                    <div className="rounded-2xl shadow-sm border p-6" style={{ background: 'linear-gradient(135deg, #F5DFBF 0%, #FAF0DD 50%, #E6CFA9 100%)', borderColor: '#ECD7B4' }}>
                       <div className="flex items-center justify-between mb-4">
                         <h3 className="text-base font-bold text-slate-800 flex items-center gap-2">
                           <TrendingUp className="w-4 h-4" style={{ color: '#0ABAB5' }} /> Upcoming Trips
@@ -380,7 +380,7 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                     </div>
 
                     {/* Quick Actions & Digital Ticket */}
-                    <div className="rounded-2xl shadow-sm border border-violet-100/50 p-6" style={{ background: 'linear-gradient(135deg, #ffffff 0%, #faf5ff 100%)' }}>
+                    <div className="rounded-2xl shadow-sm border p-6" style={{ background: 'linear-gradient(135deg, #F5DFBF 0%, #FAF0DD 50%, #E6CFA9 100%)', borderColor: '#ECD7B4' }}>
                       <h3 className="text-sm font-bold text-slate-700 mb-4 flex items-center gap-2">
                         <Sparkles className="w-4 h-4" style={{ color: '#F7B500' }} /> Quick Actions & Vouchers
                       </h3>
@@ -436,7 +436,7 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                 {/* ── CREDITS ── */}
                 {activeTab === 'credits' && (
                   <div className="space-y-5">
-                    <div className="rounded-2xl shadow-sm border border-teal-100/40 p-6" style={{ background: 'linear-gradient(135deg, #ffffff 0%, #f0fdfa 100%)' }}>
+                    <div className="rounded-2xl shadow-sm border p-6" style={{ background: 'linear-gradient(135deg, #F5DFBF 0%, #FAF0DD 50%, #E6CFA9 100%)', borderColor: '#ECD7B4' }}>
                       <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2 mb-1">
                         <CreditCard className="w-5 h-5" style={{ color: '#0ABAB5' }} /> My Discount Credits
                       </h2>
@@ -487,7 +487,7 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                 {/* ── DRAWS ── */}
                 {activeTab === 'draws' && (
                   <div className="space-y-5">
-                    <div className="rounded-2xl shadow-sm border border-violet-100/40 p-6" style={{ background: 'linear-gradient(135deg, #ffffff 0%, #faf5ff 100%)' }}>
+                    <div className="rounded-2xl shadow-sm border p-6" style={{ background: 'linear-gradient(135deg, #F5DFBF 0%, #FAF0DD 50%, #E6CFA9 100%)', borderColor: '#ECD7B4' }}>
                       <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2 mb-1">
                         <Ticket className="w-5 h-5" style={{ color: '#0ABAB5' }} /> Lucky Draw Status
                       </h2>
@@ -548,7 +548,7 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                 {/* ── BOOKINGS ── */}
                 {activeTab === 'bookings' && (
                   <div className="space-y-5">
-                    <div className="rounded-2xl shadow-sm border border-teal-100/40 p-6" style={{ background: 'linear-gradient(135deg, #ffffff 0%, #f0fdfa 100%)' }}>
+                    <div className="rounded-2xl shadow-sm border p-6" style={{ background: 'linear-gradient(135deg, #F5DFBF 0%, #FAF0DD 50%, #E6CFA9 100%)', borderColor: '#ECD7B4' }}>
                       <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2 mb-1">
                         <Plane className="w-5 h-5" style={{ color: '#0ABAB5' }} /> Book Your Travel
                       </h2>
@@ -600,7 +600,7 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                 {/* ── EDIT PROFILE ── */}
                 {activeTab === 'edit-profile' && (
                   <div className="space-y-5">
-                    <div className="rounded-2xl shadow-sm border border-teal-100/40 p-6" style={{ background: 'linear-gradient(135deg, #ffffff 0%, #f0fdfa 100%)' }}>
+                    <div className="rounded-2xl shadow-sm border p-6" style={{ background: 'linear-gradient(135deg, #F5DFBF 0%, #FAF0DD 50%, #E6CFA9 100%)', borderColor: '#ECD7B4' }}>
                       <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2 mb-1">
                         <Edit className="w-5 h-5 text-teal-600" /> Edit Profile Details
                       </h2>
@@ -735,7 +735,7 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                 {/* ── LUCKY STATUS ── */}
                 {activeTab === 'lucky-status' && (
                   <div className="space-y-5">
-                    <div className="rounded-2xl shadow-sm border border-teal-100/40 p-6" style={{ background: 'linear-gradient(135deg, #ffffff 0%, #f0fdfa 100%)' }}>
+                    <div className="rounded-2xl shadow-sm border p-6" style={{ background: 'linear-gradient(135deg, #F5DFBF 0%, #FAF0DD 50%, #E6CFA9 100%)', borderColor: '#ECD7B4' }}>
                       <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2 mb-1">
                         <Heart className="w-5 h-5 text-rose-500" /> Lucky Status & History
                       </h2>
@@ -814,7 +814,7 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
             className="hidden lg:flex flex-col gap-5"
           >
             {/* Trip Card 1 */}
-            <div className="rounded-2xl shadow-sm border border-sky-100 overflow-hidden" style={{ background: 'linear-gradient(135deg, #ffffff 0%, #f0f9ff 100%)' }}>
+            <div className="rounded-2xl shadow-sm border overflow-hidden" style={{ background: 'linear-gradient(135deg, #F5DFBF 0%, #FAF0DD 50%, #E6CFA9 100%)', borderColor: '#ECD7B4' }}>
               <div className="flex items-center justify-between px-5 pt-4 pb-2">
                 <h4 className="text-sm font-bold text-slate-700 font-sans">Upcoming Trip</h4>
                 <ChevronRight className="w-4 h-4 text-sky-400" />
@@ -835,7 +835,7 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
             </div>
 
             {/* Trip Card 2 */}
-            <div className="rounded-2xl shadow-sm border border-orange-100 overflow-hidden" style={{ background: 'linear-gradient(135deg, #ffffff 0%, #fff7ed 100%)' }}>
+            <div className="rounded-2xl shadow-sm border overflow-hidden" style={{ background: 'linear-gradient(135deg, #F5DFBF 0%, #FAF0DD 50%, #E6CFA9 100%)', borderColor: '#ECD7B4' }}>
               <div className="flex items-center justify-between px-5 pt-4 pb-2">
                 <h4 className="text-sm font-bold text-slate-700 font-sans">Upcoming Trip</h4>
                 <ChevronRight className="w-4 h-4 text-orange-400" />
