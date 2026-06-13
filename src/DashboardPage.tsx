@@ -47,7 +47,7 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
   ];
 
   return (
-    <div className="min-h-screen pt-20 lg:pt-24 pb-10" style={{ background: 'linear-gradient(135deg, #f0f9f9 0%, #f5f7fa 50%, #eef6f6 100%)' }}>
+    <div className="min-h-screen pt-20 lg:pt-24 pb-10" style={{ background: 'linear-gradient(135deg, #eefcfb 0%, #f7f0ff 40%, #fff3ec 80%, #f0fdfa 100%)' }}>
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6">
         
         {/* ═══ TOP NAV BAR ═══ */}
@@ -75,7 +75,8 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
           {/* ──────── LEFT SIDEBAR ──────── */}
           <motion.aside 
             initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }}
-            className="hidden lg:flex flex-col gap-1.5 bg-white rounded-2xl p-4 shadow-sm border border-slate-100 h-fit sticky top-28"
+            className="hidden lg:flex flex-col gap-1.5 rounded-2xl p-4 shadow-sm border border-teal-100/50 h-fit sticky top-28"
+            style={{ background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(240, 253, 250, 0.9) 100%)', backdropFilter: 'blur(8px)' }}
           >
             {/* Brand */}
             <div className="flex items-center gap-2.5 px-3 py-3 mb-2">
@@ -159,7 +160,7 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
           <motion.main initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}>
             
             {/* Profile Summary Card */}
-            <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 mb-5">
+            <div className="rounded-2xl shadow-sm border border-teal-100/40 p-6 mb-5" style={{ background: 'linear-gradient(135deg, #ffffff 0%, #f0fdfa 50%, #faf5ff 100%)' }}>
               <div className="flex items-center justify-between mb-5">
                 <h2 className="text-lg font-bold text-slate-800">Profile Summary</h2>
                 <ChevronRight className="w-4 h-4 text-slate-300" />
@@ -200,25 +201,25 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
               </div>
 
               {/* Action Buttons */}
-              <div className="flex flex-wrap gap-3 mt-5 pt-5 border-t border-slate-100">
+              <div className="flex flex-wrap gap-3 mt-5 pt-5 border-t border-slate-100/60">
                 <button 
                   onClick={() => setActiveTab('credits')}
                   className="px-5 py-2.5 rounded-full text-xs font-bold text-white border-none cursor-pointer transition-all hover:scale-[1.03] shadow-sm"
-                  style={{ background: 'linear-gradient(135deg, #0ABAB5, #08979D)' }}
+                  style={{ background: 'linear-gradient(135deg, #3b82f6, #2563eb)' }}
                 >
                   💎 Loyalty Points
                 </button>
                 <button 
                   onClick={() => setActiveTab('credits')}
-                  className="px-5 py-2.5 rounded-full text-xs font-bold border-2 cursor-pointer transition-all hover:scale-[1.03] bg-white flex items-center gap-1.5"
-                  style={{ borderColor: '#0ABAB5', color: '#0ABAB5' }}
+                  className="px-5 py-2.5 rounded-full text-xs font-bold border border-teal-200 cursor-pointer transition-all hover:scale-[1.03] flex items-center gap-1.5 shadow-sm"
+                  style={{ background: 'linear-gradient(135deg, #f0fdfa, #ccfbf1)', color: '#08979D' }}
                 >
-                  <CreditCard className="w-3.5 h-3.5" /> Discount Credits
+                  <CreditCard className="w-3.5 h-3.5 text-teal-600" /> Discount Credits
                 </button>
                 <button 
                   onClick={() => setActiveTab('draws')}
                   className="px-5 py-2.5 rounded-full text-xs font-bold text-white border-none cursor-pointer transition-all hover:scale-[1.03] shadow-sm"
-                  style={{ background: 'linear-gradient(135deg, #0ABAB5, #08979D)' }}
+                  style={{ background: 'linear-gradient(135deg, #ec4899, #db2777)' }}
                 >
                   🎰 Lucky Draw
                 </button>
@@ -239,7 +240,7 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                 {activeTab === 'overview' && (
                   <div className="space-y-5">
                     {/* Upcoming Trips Progress */}
-                    <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+                    <div className="rounded-2xl shadow-sm border border-teal-100/40 p-6" style={{ background: 'linear-gradient(135deg, #ffffff 0%, #f0fdfa 100%)' }}>
                       <div className="flex items-center justify-between mb-4">
                         <h3 className="text-base font-bold text-slate-800 flex items-center gap-2">
                           <TrendingUp className="w-4 h-4" style={{ color: '#0ABAB5' }} /> Upcoming Trips
@@ -282,15 +283,15 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                     {/* Plan Stats Cards */}
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                       {[
-                        { label: 'Plan Tier', value: displayPlan, icon: Crown, color: '#F7B500' },
-                        { label: 'Plan Status', value: isSubscribed ? 'Active' : 'Inactive', icon: Shield, color: '#10b981' },
-                        { label: 'Draw Token', value: user?.drawToken || 'N/A', icon: Ticket, color: '#0ABAB5' },
+                        { label: 'Plan Tier', value: displayPlan, icon: Crown, color: '#F7B500', bg: 'linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%)', border: 'border-amber-100' },
+                        { label: 'Plan Status', value: isSubscribed ? 'Active' : 'Inactive', icon: Shield, color: '#10b981', bg: 'linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)', border: 'border-emerald-100' },
+                        { label: 'Draw Token', value: user?.drawToken || 'N/A', icon: Ticket, color: '#0ABAB5', bg: 'linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 100%)', border: 'border-teal-100' },
                       ].map((card, i) => {
                         const Icon = card.icon;
                         return (
-                          <div key={i} className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5 relative overflow-hidden">
-                            <div className="absolute top-3 right-3 opacity-10"><Icon className="w-10 h-10" style={{ color: card.color }} /></div>
-                            <span className="text-[9px] uppercase tracking-wider text-slate-400 font-mono block">{card.label}</span>
+                          <div key={i} className={`rounded-2xl border ${card.border} shadow-sm p-5 relative overflow-hidden`} style={{ background: card.bg }}>
+                            <div className="absolute top-3 right-3 opacity-20"><Icon className="w-10 h-10" style={{ color: card.color }} /></div>
+                            <span className="text-[9px] uppercase tracking-wider text-slate-500 font-mono block">{card.label}</span>
                             <span className="text-lg font-bold text-slate-800 block mt-1">{card.value}</span>
                             <span className="text-[10px] block mt-1" style={{ color: card.color }}>● Active</span>
                           </div>
@@ -299,7 +300,7 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                     </div>
 
                     {/* Quick Actions & Digital Ticket */}
-                    <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+                    <div className="rounded-2xl shadow-sm border border-violet-100/50 p-6" style={{ background: 'linear-gradient(135deg, #ffffff 0%, #faf5ff 100%)' }}>
                       <h3 className="text-sm font-bold text-slate-700 mb-4 flex items-center gap-2">
                         <Sparkles className="w-4 h-4" style={{ color: '#F7B500' }} /> Quick Actions & Vouchers
                       </h3>
@@ -336,7 +337,7 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                             <span className="text-[10px] text-slate-400">Keep for checkout confirmation</span>
                           </div>
                         </div>
-                        <button onClick={() => window.print()} className="px-4 py-2 rounded-lg border border-slate-200 hover:border-teal-300 text-xs font-bold text-slate-500 hover:text-teal-600 transition-all cursor-pointer bg-white">
+                        <button onClick={() => window.print()} className="px-4 py-2 rounded-lg border border-teal-200 hover:border-teal-400 text-xs font-bold text-teal-700 hover:text-teal-900 transition-all cursor-pointer shadow-sm" style={{ background: 'linear-gradient(135deg, #f0fdfa, #ccfbf1)' }}>
                           Download
                         </button>
                       </div>
@@ -355,35 +356,36 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                 {/* ── CREDITS ── */}
                 {activeTab === 'credits' && (
                   <div className="space-y-5">
-                    <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+                    <div className="rounded-2xl shadow-sm border border-teal-100/40 p-6" style={{ background: 'linear-gradient(135deg, #ffffff 0%, #f0fdfa 100%)' }}>
                       <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2 mb-1">
                         <CreditCard className="w-5 h-5" style={{ color: '#0ABAB5' }} /> My Discount Credits
                       </h2>
                       <p className="text-xs text-slate-400 mb-5">Guaranteed value recovery — redeem on paid tours</p>
 
                       {/* Balance */}
-                      <div className="rounded-2xl p-6 text-center mb-5" style={{ background: 'linear-gradient(135deg, #e0f7f6, #f0faf9)', border: '1px solid #c5eeec' }}>
-                        <span className="text-[10px] uppercase tracking-wider font-mono block" style={{ color: '#08979D' }}>TOTAL WALLET BALANCE</span>
-                        <span className="text-4xl font-black block mt-1" style={{ color: '#0ABAB5' }}>₹{voucherCount * 500}</span>
-                        <span className="text-xs text-slate-400 mt-1 block">Available for paid bookings</span>
+                      <div className="rounded-2xl p-6 text-center mb-5 border" style={{ background: 'linear-gradient(135deg, #ccfbf1 0%, #e0f2fe 100%)', borderColor: '#99f6e4' }}>
+                        <span className="text-[10px] uppercase tracking-wider font-mono block text-teal-700 font-bold">TOTAL WALLET BALANCE</span>
+                        <span className="text-4xl font-black block mt-1 text-teal-800">₹{voucherCount * 500}</span>
+                        <span className="text-xs text-slate-500 mt-1 block">Available for paid bookings</span>
                       </div>
 
                       {/* Voucher Cards */}
                       <div className="grid sm:grid-cols-2 gap-4 mb-5">
                         {Array.from({ length: voucherCount }).map((_, idx) => (
                           <motion.div key={idx} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.1 }}
-                            className="p-5 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md hover:border-teal-200 transition-all relative overflow-hidden bg-white"
+                            className="p-5 rounded-2xl border border-teal-100/50 shadow-sm hover:shadow-md hover:border-teal-300 transition-all relative overflow-hidden"
+                            style={{ background: 'linear-gradient(135deg, #ffffff 0%, #f0fdfa 100%)' }}
                           >
-                            <div className="absolute -top-4 -right-4 w-16 h-16 rounded-full opacity-10" style={{ background: '#0ABAB5' }} />
+                            <div className="absolute -top-4 -right-4 w-16 h-16 rounded-full opacity-20" style={{ background: '#0ABAB5' }} />
                             <div className="flex justify-between items-start">
                               <div>
-                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-bold" style={{ background: '#0ABAB515', color: '#0ABAB5' }}>
+                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-bold" style={{ background: '#ccfbf1', color: '#0d9488' }}>
                                   <Zap className="w-3 h-3" /> ACTIVE
                                 </span>
                                 <div className="text-2xl font-black text-slate-800 mt-2">₹500</div>
                               </div>
-                              <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: '#F7B50015' }}>
-                                <Gift className="w-4 h-4" style={{ color: '#F7B500' }} />
+                              <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: '#fef3c7' }}>
+                                <Gift className="w-4 h-4" style={{ color: '#d97706' }} />
                               </div>
                             </div>
                             <div className="mt-3 pt-3 border-t border-slate-100 flex justify-between items-center text-xs">
@@ -405,7 +407,7 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                 {/* ── DRAWS ── */}
                 {activeTab === 'draws' && (
                   <div className="space-y-5">
-                    <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+                    <div className="rounded-2xl shadow-sm border border-violet-100/40 p-6" style={{ background: 'linear-gradient(135deg, #ffffff 0%, #faf5ff 100%)' }}>
                       <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2 mb-1">
                         <Ticket className="w-5 h-5" style={{ color: '#0ABAB5' }} /> Lucky Draw Status
                       </h2>
@@ -413,29 +415,29 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
 
                       <div className="grid md:grid-cols-2 gap-5">
                         {/* Token Card */}
-                        <div className="p-5 rounded-2xl border border-slate-100 space-y-4" style={{ background: 'linear-gradient(135deg, #f0faf9, #f5f7fa)' }}>
+                        <div className="p-5 rounded-2xl border border-teal-100 space-y-4 shadow-sm" style={{ background: 'linear-gradient(135deg, #f0fdfa, #e0f2fe)' }}>
                           <div>
-                            <span className="text-[10px] text-slate-400 uppercase font-mono tracking-wider block">ACTIVE DRAW TOKEN</span>
-                            <span className="text-2xl font-black tracking-widest font-mono mt-1 block" style={{ color: '#0ABAB5' }}>{user?.drawToken || 'N/A'}</span>
+                            <span className="text-[10px] text-slate-500 uppercase font-mono tracking-wider block font-bold">ACTIVE DRAW TOKEN</span>
+                            <span className="text-2xl font-black tracking-widest font-mono mt-1 block text-teal-800">{user?.drawToken || 'N/A'}</span>
                           </div>
-                          <div className="flex items-center justify-between text-xs text-slate-500 border-t border-slate-100 pt-3">
+                          <div className="flex items-center justify-between text-xs text-slate-600 border-t border-teal-200/50 pt-3">
                             <span>Upcoming Draw:</span>
-                            <span className="font-semibold text-slate-700 flex items-center gap-1">
-                              <Calendar className="w-3.5 h-3.5" style={{ color: '#0ABAB5' }} /> Next Sunday
+                            <span className="font-bold text-teal-700 flex items-center gap-1">
+                              <Calendar className="w-3.5 h-3.5 text-teal-600" /> Next Sunday
                             </span>
                           </div>
-                          <div className="text-[10px] leading-relaxed p-3 rounded-xl" style={{ background: '#FFF8E1', border: '1px solid #FFE082', color: '#92400e' }}>
+                          <div className="text-[10px] leading-relaxed p-3 rounded-xl" style={{ background: '#fffbeb', border: '1px solid #fde68a', color: '#b45309' }}>
                             ⚠️ <strong>Note:</strong> Draws are 100% transparent. Winners travel free. Non-selected retain full voucher credits.
                           </div>
                         </div>
 
                         {/* Simulator */}
-                        <div className="p-5 rounded-2xl border-2 border-dashed flex flex-col justify-between" style={{ borderColor: '#0ABAB540', background: '#f0faf9' }}>
+                        <div className="p-5 rounded-2xl border-2 border-dashed flex flex-col justify-between" style={{ borderColor: '#a78bfa', background: 'linear-gradient(135deg, #f5f3ff, #faf5ff)' }}>
                           <div>
-                            <h3 className="text-sm font-bold text-slate-700 flex items-center gap-1">
-                              <Sparkles className="w-4 h-4" style={{ color: '#F7B500' }} /> RNG Test Simulator
+                            <h3 className="text-sm font-bold text-slate-800 flex items-center gap-1">
+                              <Sparkles className="w-4 h-4 text-purple-600" /> RNG Test Simulator
                             </h3>
-                            <p className="text-[11px] text-slate-400 mt-1">Simulate a mock draw to see how our system works</p>
+                            <p className="text-[11px] text-slate-500 mt-1">Simulate a mock draw to see how our system works</p>
                           </div>
                           <div className="my-4 min-h-[55px] flex items-center justify-center">
                             {isSimulatingDraw ? (
@@ -466,7 +468,7 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                 {/* ── BOOKINGS ── */}
                 {activeTab === 'bookings' && (
                   <div className="space-y-5">
-                    <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+                    <div className="rounded-2xl shadow-sm border border-teal-100/40 p-6" style={{ background: 'linear-gradient(135deg, #ffffff 0%, #f0fdfa 100%)' }}>
                       <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2 mb-1">
                         <Plane className="w-5 h-5" style={{ color: '#0ABAB5' }} /> Book Your Travel
                       </h2>
@@ -525,52 +527,56 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
             className="hidden lg:flex flex-col gap-5"
           >
             {/* Trip Card 1 */}
-            <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+            <div className="rounded-2xl shadow-sm border border-sky-100 overflow-hidden" style={{ background: 'linear-gradient(135deg, #ffffff 0%, #f0f9ff 100%)' }}>
               <div className="flex items-center justify-between px-5 pt-4 pb-2">
-                <h4 className="text-sm font-bold text-slate-700">Upcoming Trip</h4>
-                <ChevronRight className="w-4 h-4 text-slate-300" />
+                <h4 className="text-sm font-bold text-slate-700 font-sans">Upcoming Trip</h4>
+                <ChevronRight className="w-4 h-4 text-sky-400" />
               </div>
               <div className="px-3 pb-3">
-                <div className="rounded-xl overflow-hidden h-[150px] relative">
+                <div className="rounded-xl overflow-hidden h-[150px] relative group cursor-pointer">
                   <img 
                     src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=600&q=80" 
                     alt="Mountain destination" 
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   />
-                  <div className="absolute bottom-0 left-0 right-0 p-3" style={{ background: 'linear-gradient(transparent, rgba(0,0,0,0.6))' }}>
-                    <span className="text-white text-xs font-bold">Kashmir Valley</span>
+                  <div className="absolute bottom-2 left-2 right-2 p-2 rounded-lg backdrop-blur-md bg-black/40 border border-white/15">
+                    <span className="text-white text-xs font-bold block">Kashmir Valley</span>
+                    <span className="text-[9px] text-white/75 block">Next scheduled departure</span>
                   </div>
                 </div>
               </div>
             </div>
 
             {/* Trip Card 2 */}
-            <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+            <div className="rounded-2xl shadow-sm border border-orange-100 overflow-hidden" style={{ background: 'linear-gradient(135deg, #ffffff 0%, #fff7ed 100%)' }}>
               <div className="flex items-center justify-between px-5 pt-4 pb-2">
-                <h4 className="text-sm font-bold text-slate-700">Upcoming Trip</h4>
-                <ChevronRight className="w-4 h-4 text-slate-300" />
+                <h4 className="text-sm font-bold text-slate-700 font-sans">Upcoming Trip</h4>
+                <ChevronRight className="w-4 h-4 text-orange-400" />
               </div>
               <div className="px-3 pb-3">
-                <div className="rounded-xl overflow-hidden h-[150px] relative">
+                <div className="rounded-xl overflow-hidden h-[150px] relative group cursor-pointer">
                   <img 
                     src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80" 
                     alt="Beach destination" 
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   />
-                  <div className="absolute bottom-0 left-0 right-0 p-3" style={{ background: 'linear-gradient(transparent, rgba(0,0,0,0.6))' }}>
-                    <span className="text-white text-xs font-bold">Puri Beach</span>
+                  <div className="absolute bottom-2 left-2 right-2 p-2 rounded-lg backdrop-blur-md bg-black/40 border border-white/15">
+                    <span className="text-white text-xs font-bold block">Puri Beach</span>
+                    <span className="text-[9px] text-white/75 block">Popular weekend getaway</span>
                   </div>
                 </div>
               </div>
             </div>
 
             {/* Membership Card */}
-            <div className="rounded-2xl p-5 text-center" style={{ background: 'linear-gradient(135deg, #0ABAB5, #08979D)', boxShadow: '0 8px 25px rgba(10,186,181,0.25)' }}>
-              <Crown className="w-6 h-6 text-white/80 mx-auto mb-2" />
-              <h4 className="text-sm font-bold text-white mb-1">Beduine Member</h4>
-              <p className="text-[10px] text-white/70 leading-relaxed">Exclusive travel discounts, lucky draws & guaranteed vouchers</p>
-              <div className="mt-3 w-full h-1 rounded-full bg-white/20 overflow-hidden">
-                <div className="h-full w-1/3 rounded-full bg-white/60" />
+            <div className="rounded-2xl p-5 text-center relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #0ABAB5 0%, #6366f1 50%, #d946ef 100%)', boxShadow: '0 8px 30px rgba(99,102,241,0.3)' }}>
+              <div className="absolute -top-10 -left-10 w-24 h-24 bg-white/10 rounded-full blur-xl pointer-events-none" />
+              <div className="absolute -bottom-10 -right-10 w-24 h-24 bg-white/15 rounded-full blur-xl pointer-events-none" />
+              <Crown className="w-6 h-6 text-white/90 mx-auto mb-2 relative z-10" />
+              <h4 className="text-sm font-bold text-white mb-1 relative z-10">Beduine Elite Member</h4>
+              <p className="text-[10px] text-white/85 leading-relaxed relative z-10">Exclusive travel benefits, transparent lucky draws & guaranteed vouchers</p>
+              <div className="mt-3 w-full h-1 rounded-full bg-white/20 overflow-hidden relative z-10">
+                <div className="h-full w-1/2 rounded-full bg-white/80" />
               </div>
             </div>
           </motion.aside>
