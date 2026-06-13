@@ -215,6 +215,21 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
             >
               <LogOut className="w-4 h-4" style={{ color: '#D66A5D' }} /> Log Out
             </button>
+
+            {/* Sidebar Featured Destination Banner */}
+            <div className="mt-4 p-1">
+              <div className="rounded-xl overflow-hidden relative group cursor-pointer border border-[#E7DCCF] h-[105px] shadow-sm">
+                <img 
+                  src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=300&q=80" 
+                  alt="Dubai Marina" 
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 flex flex-col justify-end p-2.5" style={{ background: 'linear-gradient(to top, rgba(30,49,71,0.85) 0%, rgba(30,49,71,0.15) 100%)' }}>
+                  <span className="text-[8px] text-[#C89C53] uppercase tracking-widest font-black font-mono">Next Week Draw</span>
+                  <span className="text-white text-xs font-bold leading-tight">Dubai Marina Sands</span>
+                </div>
+              </div>
+            </div>
           </motion.aside>
 
           {/* Mobile Tab Bar */}
@@ -426,6 +441,35 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                         <button onClick={() => window.print()} className="px-4 py-2 rounded-lg text-white text-xs font-bold transition-all cursor-pointer shadow-md hover:scale-[1.03] border-none" style={{ background: 'linear-gradient(135deg, #138A8A, #0E6F70)' }}>
                           Download
                         </button>
+                      </div>
+                    </div>
+
+                    {/* Destination Gallery */}
+                    <div className="rounded-2xl shadow-sm border p-6" style={{ backgroundColor: '#FFFCF8', borderColor: '#E7DCCF' }}>
+                      <h3 className="text-sm font-bold mb-1 flex items-center gap-2" style={{ color: '#1E3147' }}>
+                        <Plane className="w-4 h-4" style={{ color: '#138A8A' }} /> Explore Subscribed Destinations
+                      </h3>
+                      <p className="text-xs text-slate-400 mb-4">Subscriber-favorite travel highlights included in your lucky draw entries</p>
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                        {[
+                          { name: 'Kashmir Valley', desc: 'Misty Pines & Houseboats', img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=300&q=80' },
+                          { name: 'Darjeeling Hills', desc: 'Tea Gardens & Toy Train', img: 'https://images.unsplash.com/photo-1589308078059-be1415eab4c3?auto=format&fit=crop&w=300&q=80' },
+                          { name: 'Puri Golden Beach', desc: 'Sun Temples & Waves', img: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=300&q=80' },
+                          { name: 'Sundarbans Forest', desc: 'Royal Mangrove Safari', img: 'https://images.unsplash.com/photo-1627581176214-cb985ea846fa?auto=format&fit=crop&w=300&q=80' },
+                        ].map((dest, i) => (
+                          <div key={i} className="rounded-xl overflow-hidden border border-[#E7DCCF] relative group cursor-pointer h-[120px]">
+                            <img 
+                              src={dest.img} 
+                              alt={dest.name} 
+                              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                            />
+                            <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(30,49,71,0.85) 0%, rgba(30,49,71,0.15) 100%)' }} />
+                            <div className="absolute bottom-2.5 left-2.5 right-2.5 flex flex-col">
+                              <span className="text-[11px] font-bold text-white leading-tight">{dest.name}</span>
+                              <span className="text-[8px] text-slate-300 leading-tight mt-0.5">{dest.desc}</span>
+                            </div>
+                          </div>
+                        ))}
                       </div>
                     </div>
 
