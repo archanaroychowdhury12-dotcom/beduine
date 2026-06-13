@@ -18,6 +18,76 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
   const [isSimulatingDraw, setIsSimulatingDraw] = useState(false);
   const [simulationResult, setSimulationResult] = useState<string | null>(null);
 
+  const [profileName, setProfileName] = useState(user?.fullName || '');
+  const [profileEmail, setProfileEmail] = useState(user?.email || '');
+  const [profileMobile, setProfileMobile] = useState(user?.mobile || '');
+  const [profileAddress, setProfileAddress] = useState(user?.address || '');
+  const [profileAvatar, setProfileAvatar] = useState<string | null>(user?.avatar || null);
+
+  // Edit states (to commit only on Save)
+  const [editName, setEditName] = useState(user?.fullName || '');
+  const [editEmail, setEditEmail] = useState(user?.email || '');
+  const [editMobile, setEditMobile] = useState(user?.mobile || '');
+  const [editAddress, setEditAddress] = useState(user?.address || '');
+
+  // Error states
+  const [errors, setErrors] = useState<{ name?: string; email?: string; mobile?: string }>({});
+
+  const validateForm = () => {
+    const newErrors: { name?: string; email?: string; mobile?: string } = {};
+    
+    // Name validation
+    if (!editName.trim()) {
+      newErrors.name = 'Full name is required';
+    } else if (editName.trim().length < 3) {
+      newErrors.name = 'Name must be at least 3 characters long';
+    }
+
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!editEmail.trim()) {
+      newErrors.email = 'Email address is required';
+    } else if (!emailRegex.test(editEmail.trim())) {
+      newErrors.email = 'Please enter a valid email address';
+    }
+
+    // Mobile validation
+    const mobileRegex = /^[6-9]\d{9}$/;
+    if (!editMobile.trim()) {
+      newErrors.mobile = 'Mobile number is required';
+    } else if (!mobileRegex.test(editMobile.trim())) {
+      newErrors.mobile = 'Please enter a valid 10-digit mobile number';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSaveProfile = () => {
+    if (validateForm()) {
+      setProfileName(editName);
+      setProfileEmail(editEmail);
+      setProfileMobile(editMobile);
+      setProfileAddress(editAddress);
+      alert('✅ Profile details updated successfully!');
+    }
+  };
+
+  const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 2 * 1024 * 1024) {
+        alert('❌ Image size should be less than 2MB');
+        return;
+      }
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProfileAvatar(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleSimulateDraw = () => {
     setIsSimulatingDraw(true);
     setSimulationResult(null);
@@ -62,7 +132,7 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
             <span className="text-sm font-bold text-slate-700 tracking-wide">Dashboard</span>
           </div>
           <div className="flex items-center gap-4">
-            <span className="text-sm text-slate-500 hidden sm:block">{user?.fullName}</span>
+            <span className="text-sm text-slate-500 hidden sm:block">{profileName}</span>
             <Phone className="w-4 h-4 text-slate-400 cursor-pointer hover:text-teal-600 transition-colors" />
             <User className="w-4 h-4 text-slate-400 cursor-pointer hover:text-teal-600 transition-colors" />
             <MoreVertical className="w-4 h-4 text-slate-400 cursor-pointer hover:text-teal-600 transition-colors" />
@@ -179,9 +249,17 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                 {/* Avatar */}
                 <div className="relative shrink-0">
                   <div className="w-[90px] h-[90px] rounded-full p-[3px]" style={{ background: 'linear-gradient(135deg, #0ABAB5, #F7B500, #0ABAB5)' }}>
-                    <div className="w-full h-full rounded-full flex items-center justify-center text-3xl font-black uppercase" style={{ background: 'linear-gradient(135deg, #e0f7f6, #f0faf9)', color: '#0ABAB5' }}>
-                      {user?.fullName?.charAt(0) || 'U'}
-                    </div>
+                    {profileAvatar ? (
+                      <img 
+                        src={profileAvatar} 
+                        alt="Profile" 
+                        className="w-full h-full rounded-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full rounded-full flex items-center justify-center text-3xl font-black uppercase" style={{ background: 'linear-gradient(135deg, #e0f7f6, #f0faf9)', color: '#0ABAB5' }}>
+                        {profileName?.charAt(0) || 'U'}
+                      </div>
+                    )}
                   </div>
                   <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full flex items-center justify-center shadow-md" style={{ background: '#0ABAB5' }}>
                     <Check className="w-3 h-3 text-white" />
@@ -205,7 +283,7 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                   </div>
 
                   <p className="text-xs font-bold text-slate-600 mb-0.5">Prized Subscription Plan ID</p>
-                  <p className="text-xs text-slate-400 leading-relaxed">{user?.email || user?.mobile} • Member ID: <strong className="text-slate-600 font-mono">{user?.memberId}</strong></p>
+                  <p className="text-xs text-slate-400 leading-relaxed">{profileEmail || profileMobile} • Member ID: <strong className="text-slate-600 font-mono">{user?.memberId}</strong></p>
                 </div>
               </div>
 
@@ -526,50 +604,127 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                       <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2 mb-1">
                         <Edit className="w-5 h-5 text-teal-600" /> Edit Profile Details
                       </h2>
-                      <p className="text-xs text-slate-400 mb-6">Manage your account information and preferences</p>
+                      <p className="text-xs text-slate-400 mb-6">Manage your account information, upload your profile picture, and configure preferences</p>
                       
-                      <div className="space-y-4 max-w-md">
-                        <div>
-                          <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Full Name</label>
-                          <input 
-                            type="text" 
-                            defaultValue={user?.fullName || ''} 
-                            className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-none text-sm text-slate-700 bg-white" 
-                          />
+                      <div className="flex flex-col md:flex-row gap-8 items-start">
+                        {/* Profile Photo Upload Section */}
+                        <div className="flex flex-col items-center gap-3 shrink-0 bg-teal-50/30 p-5 rounded-2xl border border-teal-100/50">
+                          <span className="text-xs font-bold text-slate-600 uppercase">Profile Picture</span>
+                          <div className="relative group">
+                            <div className="w-24 h-24 rounded-full p-[3px] shadow-md" style={{ background: 'linear-gradient(135deg, #0ABAB5, #F7B500)' }}>
+                              {profileAvatar ? (
+                                <img src={profileAvatar} alt="Avatar Preview" className="w-full h-full rounded-full object-cover" />
+                              ) : (
+                                <div className="w-full h-full rounded-full flex items-center justify-center text-3xl font-black uppercase text-teal-600 bg-white">
+                                  {editName?.charAt(0) || 'U'}
+                                </div>
+                              )}
+                            </div>
+                            
+                            {/* Upload overlay */}
+                            <label className="absolute inset-0 bg-black/40 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
+                              <span className="text-[10px] text-white font-bold text-center px-2">Click to Upload</span>
+                              <input 
+                                type="file" 
+                                accept="image/*" 
+                                onChange={handleAvatarChange} 
+                                className="hidden" 
+                              />
+                            </label>
+                          </div>
+                          
+                          <div className="flex flex-col gap-1.5 w-full items-center">
+                            <label className="px-4 py-1.5 rounded-full text-[10px] font-bold text-teal-700 bg-teal-100/60 border border-teal-200 cursor-pointer hover:bg-teal-100 transition-all text-center">
+                              Select Image
+                              <input 
+                                type="file" 
+                                accept="image/*" 
+                                onChange={handleAvatarChange} 
+                                className="hidden" 
+                              />
+                            </label>
+                            {profileAvatar && (
+                              <button 
+                                onClick={() => setProfileAvatar(null)}
+                                className="text-[10px] text-red-500 font-bold hover:underline cursor-pointer border-none bg-transparent"
+                              >
+                                Remove Photo
+                              </button>
+                            )}
+                          </div>
+                          <span className="text-[9px] text-slate-400">JPG, PNG up to 2MB</span>
                         </div>
-                        <div>
-                          <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Email Address</label>
-                          <input 
-                            type="email" 
-                            defaultValue={user?.email || ''} 
-                            className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-none text-sm text-slate-700 bg-white" 
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Mobile Number</label>
-                          <input 
-                            type="tel" 
-                            defaultValue={user?.mobile || ''} 
-                            className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-none text-sm text-slate-700 bg-white" 
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Communication Address</label>
-                          <textarea 
-                            rows={3} 
-                            placeholder="Enter your address..." 
-                            className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-none text-sm text-slate-700 bg-white resize-none"
-                          />
-                        </div>
-                        
-                        <div className="pt-2">
-                          <button 
-                            onClick={() => alert('Profile details updated successfully! (Simulation)')}
-                            className="px-6 py-2.5 rounded-xl text-xs font-bold text-white border-none cursor-pointer transition-all hover:scale-[1.02] shadow-md"
-                            style={{ background: 'linear-gradient(135deg, #0ABAB5, #08979D)' }}
-                          >
-                            Save Profile Changes
-                          </button>
+
+                        {/* Fields Form */}
+                        <div className="flex-1 space-y-4 w-full max-w-md">
+                          <div>
+                            <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Full Name</label>
+                            <input 
+                              type="text" 
+                              value={editName} 
+                              onChange={(e) => {
+                                setEditName(e.target.value);
+                                if (errors.name) setErrors(prev => ({ ...prev, name: undefined }));
+                              }}
+                              className={`w-full px-4 py-2.5 rounded-xl border outline-none text-sm text-slate-700 bg-white transition-all ${
+                                errors.name ? 'border-red-400 focus:border-red-500 focus:ring-red-500' : 'border-slate-200 focus:border-teal-500 focus:ring-teal-500'
+                              }`} 
+                            />
+                            {errors.name && <span className="text-[10px] font-semibold text-red-500 mt-1 block">{errors.name}</span>}
+                          </div>
+                          
+                          <div>
+                            <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Email Address</label>
+                            <input 
+                              type="email" 
+                              value={editEmail} 
+                              onChange={(e) => {
+                                setEditEmail(e.target.value);
+                                if (errors.email) setErrors(prev => ({ ...prev, email: undefined }));
+                              }}
+                              className={`w-full px-4 py-2.5 rounded-xl border outline-none text-sm text-slate-700 bg-white transition-all ${
+                                errors.email ? 'border-red-400 focus:border-red-500 focus:ring-red-500' : 'border-slate-200 focus:border-teal-500 focus:ring-teal-500'
+                              }`} 
+                            />
+                            {errors.email && <span className="text-[10px] font-semibold text-red-500 mt-1 block">{errors.email}</span>}
+                          </div>
+                          
+                          <div>
+                            <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Mobile Number</label>
+                            <input 
+                              type="tel" 
+                              value={editMobile} 
+                              onChange={(e) => {
+                                setEditMobile(e.target.value);
+                                if (errors.mobile) setErrors(prev => ({ ...prev, mobile: undefined }));
+                              }}
+                              className={`w-full px-4 py-2.5 rounded-xl border outline-none text-sm text-slate-700 bg-white transition-all ${
+                                errors.mobile ? 'border-red-400 focus:border-red-500 focus:ring-red-500' : 'border-slate-200 focus:border-teal-500 focus:ring-teal-500'
+                              }`} 
+                            />
+                            {errors.mobile && <span className="text-[10px] font-semibold text-red-500 mt-1 block">{errors.mobile}</span>}
+                          </div>
+                          
+                          <div>
+                            <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Communication Address</label>
+                            <textarea 
+                              rows={3} 
+                              value={editAddress}
+                              onChange={(e) => setEditAddress(e.target.value)}
+                              placeholder="Enter your address..." 
+                              className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:border-teal-500 focus:ring-teal-500 outline-none text-sm text-slate-700 bg-white resize-none"
+                            />
+                          </div>
+                          
+                          <div className="pt-2">
+                            <button 
+                              onClick={handleSaveProfile}
+                              className="px-6 py-2.5 rounded-xl text-xs font-bold text-white border-none cursor-pointer transition-all hover:scale-[1.02] shadow-md"
+                              style={{ background: 'linear-gradient(135deg, #0ABAB5, #08979D)' }}
+                            >
+                              Save Profile Changes
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </div>
