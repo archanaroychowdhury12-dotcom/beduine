@@ -5,7 +5,7 @@ import {
   Download, Crown, LogOut, Ticket, Calendar, Check, AlertCircle,
   MapPin, Star, Zap, Shield, TrendingUp, Clock, Users,
   ChevronRight, Phone, MoreVertical, User, Edit, Award, Heart,
-  Megaphone, Lock, BarChart3
+  Lock, BarChart3
 } from 'lucide-react';
 
 interface DashboardPageProps {
@@ -14,7 +14,7 @@ interface DashboardPageProps {
 }
 
 export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
-  const [activeTab, setActiveTab] = useState<'overview' | 'credits' | 'draws' | 'bookings'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'credits' | 'draws' | 'bookings' | 'edit-profile' | 'loyalty' | 'lucky-status'>('overview');
   const [isSimulatingDraw, setIsSimulatingDraw] = useState(false);
   const [simulationResult, setSimulationResult] = useState<string | null>(null);
 
@@ -113,15 +113,21 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
             {/* Extra Nav */}
             <div className="border-t border-slate-100 mt-3 pt-3 space-y-1">
               {[
-                { icon: Edit, label: 'Edit Profile' },
-                { icon: Award, label: 'Loyalty Points' },
-                { icon: Heart, label: 'Lucky Status' },
-                { icon: Megaphone, label: 'Promoted' },
-              ].map((item, i) => {
+                { id: 'edit-profile', icon: Edit, label: 'Edit Profile' },
+                { id: 'loyalty', icon: Award, label: 'Loyalty Points' },
+                { id: 'lucky-status', icon: Heart, label: 'Lucky Status' },
+              ].map((item) => {
                 const Icon = item.icon;
+                const isActive = activeTab === item.id;
                 return (
-                  <button key={i} className="w-full text-left px-4 py-2.5 rounded-xl flex items-center gap-3 cursor-pointer transition-all text-sm font-medium text-slate-400 hover:bg-slate-50 hover:text-slate-600 border-none bg-transparent">
-                    <Icon className="w-4 h-4" /> {item.label}
+                  <button
+                    key={item.id}
+                    onClick={() => setActiveTab(item.id as any)}
+                    className={`w-full text-left px-4 py-2.5 rounded-xl flex items-center gap-3 cursor-pointer transition-all text-sm font-medium border-none bg-transparent ${
+                      isActive ? 'font-bold text-teal-600 bg-teal-50/50' : 'text-slate-400 hover:bg-slate-50 hover:text-slate-600'
+                    }`}
+                  >
+                    <Icon className={`w-4 h-4 ${isActive ? 'text-teal-600' : 'text-slate-400'}`} /> {item.label}
                   </button>
                 );
               })}
@@ -138,7 +144,12 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
 
           {/* Mobile Tab Bar */}
           <div className="lg:hidden flex gap-2 overflow-x-auto pb-3 mb-2">
-            {sidebarItems.map((item) => {
+            {[
+              ...sidebarItems,
+              { id: 'edit-profile', label: 'Edit Profile', icon: Edit },
+              { id: 'loyalty', label: 'Loyalty Points', icon: Award },
+              { id: 'lucky-status', label: 'Lucky Status', icon: Heart },
+            ].map((item) => {
               const Icon = item.icon;
               const isActive = activeTab === item.id;
               return (
@@ -512,6 +523,201 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                           </div>
                           <ArrowRight className="w-4 h-4 text-slate-300 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" />
                         </a>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* ── EDIT PROFILE ── */}
+                {activeTab === 'edit-profile' && (
+                  <div className="space-y-5">
+                    <div className="rounded-2xl shadow-sm border border-teal-100/40 p-6" style={{ background: 'linear-gradient(135deg, #ffffff 0%, #f0fdfa 100%)' }}>
+                      <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2 mb-1">
+                        <Edit className="w-5 h-5 text-teal-600" /> Edit Profile Details
+                      </h2>
+                      <p className="text-xs text-slate-400 mb-6">Manage your account information and preferences</p>
+                      
+                      <div className="space-y-4 max-w-md">
+                        <div>
+                          <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Full Name</label>
+                          <input 
+                            type="text" 
+                            defaultValue={user?.fullName || ''} 
+                            className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-none text-sm text-slate-700 bg-white" 
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Email Address</label>
+                          <input 
+                            type="email" 
+                            defaultValue={user?.email || ''} 
+                            className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-none text-sm text-slate-700 bg-white" 
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Mobile Number</label>
+                          <input 
+                            type="tel" 
+                            defaultValue={user?.mobile || ''} 
+                            className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-none text-sm text-slate-700 bg-white" 
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Communication Address</label>
+                          <textarea 
+                            rows={3} 
+                            placeholder="Enter your address..." 
+                            className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-none text-sm text-slate-700 bg-white resize-none"
+                          />
+                        </div>
+                        
+                        <div className="pt-2">
+                          <button 
+                            onClick={() => alert('Profile details updated successfully! (Simulation)')}
+                            className="px-6 py-2.5 rounded-xl text-xs font-bold text-white border-none cursor-pointer transition-all hover:scale-[1.02] shadow-md"
+                            style={{ background: 'linear-gradient(135deg, #0ABAB5, #08979D)' }}
+                          >
+                            Save Profile Changes
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* ── LOYALTY POINTS ── */}
+                {activeTab === 'loyalty' && (
+                  <div className="space-y-5">
+                    <div className="rounded-2xl shadow-sm border border-teal-100/40 p-6" style={{ background: 'linear-gradient(135deg, #ffffff 0%, #f0fdfa 100%)' }}>
+                      <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2 mb-1">
+                        <Award className="w-5 h-5 text-amber-500" /> Beduine Loyalty Club
+                      </h2>
+                      <p className="text-xs text-slate-400 mb-6">Earn loyalty points on every subscription & travel booking</p>
+
+                      <div className="grid md:grid-cols-2 gap-5 mb-6">
+                        {/* Points balance card */}
+                        <div className="p-5 rounded-2xl border border-amber-100 shadow-sm" style={{ background: 'linear-gradient(135deg, #fffbeb, #fef3c7)' }}>
+                          <span className="text-[10px] text-amber-700 uppercase font-mono tracking-wider block font-bold">LOYALTY POINT BALANCE</span>
+                          <span className="text-3xl font-black block mt-1 text-amber-800">
+                            {planName?.toLowerCase()?.includes('platinum') ? '2,500 pts' : planName?.toLowerCase()?.includes('gold') ? '1,200 pts' : '500 pts'}
+                          </span>
+                          <div className="mt-4 pt-3 border-t border-amber-200/50 flex items-center justify-between text-xs text-amber-800">
+                            <span>Club Status:</span>
+                            <span className="font-bold uppercase tracking-wider">{planName || 'Silver Member'}</span>
+                          </div>
+                        </div>
+
+                        {/* Point details */}
+                        <div className="p-5 rounded-2xl border border-teal-100 shadow-sm" style={{ background: 'linear-gradient(135deg, #f0fdfa, #ccfbf1)' }}>
+                          <span className="text-[10px] text-teal-700 uppercase font-mono tracking-wider block font-bold">POINT MULTIPLIER</span>
+                          <span className="text-2xl font-black block mt-1 text-teal-800">1.5x Reward Rate</span>
+                          <span className="text-[10px] text-teal-600 block mt-2">Earn 10 points for every ₹100 spent on booking custom additions</span>
+                        </div>
+                      </div>
+
+                      {/* Redemption options */}
+                      <h3 className="text-sm font-bold text-slate-700 mb-3">Redeem Your Points</h3>
+                      <div className="grid sm:grid-cols-2 gap-3">
+                        {[
+                          { title: 'Free Travel Insurance Upgrade', cost: '300 points', icon: Shield, color: '#10b981' },
+                          { title: 'Additional Name Change Ticket', cost: '500 points', icon: Users, color: '#8b5cf6' },
+                          { title: 'Premium Airport Lounge Access', cost: '1,000 points', icon: Crown, color: '#f59e0b' },
+                          { title: 'Custom Itinerary Customization', cost: '1,200 points', icon: MapPin, color: '#3b82f6' },
+                        ].map((reward, i) => {
+                          const Icon = reward.icon;
+                          return (
+                            <div key={i} className="flex items-center justify-between p-3 rounded-xl border border-slate-100 bg-white/70 hover:bg-slate-50 transition-colors">
+                              <div className="flex items-center gap-3">
+                                <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style={{ background: `${reward.color}15` }}>
+                                  <Icon className="w-4 h-4" style={{ color: reward.color }} />
+                                </div>
+                                <div>
+                                  <span className="text-xs font-semibold text-slate-700 block">{reward.title}</span>
+                                  <span className="text-[9px] text-slate-400 font-mono">Cost: {reward.cost}</span>
+                                </div>
+                              </div>
+                              <button 
+                                onClick={() => alert(`Request to redeem "${reward.title}" submitted successfully!`)}
+                                className="px-3 py-1.5 rounded-lg border-none text-[10px] font-bold text-white cursor-pointer hover:opacity-90"
+                                style={{ background: 'linear-gradient(135deg, #0ABAB5, #08979D)' }}
+                              >
+                                Redeem
+                              </button>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* ── LUCKY STATUS ── */}
+                {activeTab === 'lucky-status' && (
+                  <div className="space-y-5">
+                    <div className="rounded-2xl shadow-sm border border-teal-100/40 p-6" style={{ background: 'linear-gradient(135deg, #ffffff 0%, #f0fdfa 100%)' }}>
+                      <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2 mb-1">
+                        <Heart className="w-5 h-5 text-rose-500" /> Lucky Status & History
+                      </h2>
+                      <p className="text-xs text-slate-400 mb-6">Track your weekly draw participations and success odds</p>
+
+                      <div className="grid sm:grid-cols-3 gap-4 mb-6">
+                        {[
+                          { label: 'Weekly Draw Odds', value: '15.4% Win Rate', desc: 'Average selector likelihood', color: '#8b5cf6', bg: 'linear-gradient(135deg, #f5f3ff, #ede9fe)' },
+                          { label: 'Total Draws Entered', value: '3 Entries', desc: 'Active weeks count', color: '#0abab5', bg: 'linear-gradient(135deg, #f0fdfa, #ccfbf1)' },
+                          { label: 'Draw Ticket status', value: 'Verified Active', desc: 'Ready for next Sunday', color: '#10b981', bg: 'linear-gradient(135deg, #f0fdf4, #dcfce7)' },
+                        ].map((stat, i) => (
+                          <div key={i} className="p-4 rounded-xl border border-slate-100/50 shadow-sm" style={{ background: stat.bg }}>
+                            <span className="text-[9px] uppercase tracking-wider text-slate-500 font-mono font-bold block">{stat.label}</span>
+                            <span className="text-base font-bold text-slate-800 block mt-1">{stat.value}</span>
+                            <span className="text-[10px] text-slate-400 block mt-0.5">{stat.desc}</span>
+                          </div>
+                        ))}
+                      </div>
+
+                      <h3 className="text-sm font-bold text-slate-700 mb-3">Participation History</h3>
+                      <div className="overflow-x-auto">
+                        <table className="w-full text-left text-xs border-collapse">
+                          <thead>
+                            <tr className="border-b border-slate-100 text-slate-400 font-bold uppercase tracking-wider">
+                              <th className="py-2.5">Week ID</th>
+                              <th className="py-2.5">Draw Date</th>
+                              <th className="py-2.5">Ticket ID</th>
+                              <th className="py-2.5">Result / Status</th>
+                            </tr>
+                          </thead>
+                          <tbody className="divide-y divide-slate-100 text-slate-600">
+                            <tr>
+                              <td className="py-3 font-semibold text-slate-700">WK-22</td>
+                              <td className="py-3">June 07, 2026</td>
+                              <td className="py-3 font-mono">{user?.drawToken || 'BDN-7822-M'}</td>
+                              <td className="py-3">
+                                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-100">
+                                  Not Selected — Voucher Issued
+                                </span>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td className="py-3 font-semibold text-slate-700">WK-21</td>
+                              <td className="py-3">May 31, 2026</td>
+                              <td className="py-3 font-mono">BDN-7612-A</td>
+                              <td className="py-3">
+                                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-100">
+                                  Not Selected — Voucher Issued
+                                </span>
+                              </td>
+                            </tr>
+                            <tr className="bg-teal-50/20">
+                              <td className="py-3 font-semibold text-teal-800">WK-23</td>
+                              <td className="py-3 text-teal-800 font-medium">June 14, 2026</td>
+                              <td className="py-3 font-mono text-teal-800 font-semibold">{user?.drawToken || 'Pending'}</td>
+                              <td className="py-3">
+                                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-teal-100 text-teal-800 border border-teal-200 animate-pulse">
+                                  Active Entry for Sunday
+                                </span>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </div>
                   </div>
