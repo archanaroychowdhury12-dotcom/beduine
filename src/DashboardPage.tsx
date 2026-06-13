@@ -14,7 +14,7 @@ interface DashboardPageProps {
 }
 
 export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
-  const [activeTab, setActiveTab] = useState<'overview' | 'credits' | 'draws' | 'bookings' | 'edit-profile' | 'loyalty' | 'lucky-status'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'credits' | 'draws' | 'bookings' | 'edit-profile' | 'lucky-status'>('overview');
   const [isSimulatingDraw, setIsSimulatingDraw] = useState(false);
   const [simulationResult, setSimulationResult] = useState<string | null>(null);
 
@@ -114,7 +114,6 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
             <div className="border-t border-slate-100 mt-3 pt-3 space-y-1">
               {[
                 { id: 'edit-profile', icon: Edit, label: 'Edit Profile' },
-                { id: 'loyalty', icon: Award, label: 'Loyalty Points' },
                 { id: 'lucky-status', icon: Heart, label: 'Lucky Status' },
               ].map((item) => {
                 const Icon = item.icon;
@@ -147,7 +146,6 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
             {[
               ...sidebarItems,
               { id: 'edit-profile', label: 'Edit Profile', icon: Edit },
-              { id: 'loyalty', label: 'Loyalty Points', icon: Award },
               { id: 'lucky-status', label: 'Lucky Status', icon: Heart },
             ].map((item) => {
               const Icon = item.icon;
@@ -213,13 +211,6 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
 
               {/* Action Buttons */}
               <div className="flex flex-wrap gap-3 mt-5 pt-5 border-t border-slate-100/60">
-                <button 
-                  onClick={() => setActiveTab('credits')}
-                  className="px-5 py-2.5 rounded-full text-xs font-bold text-white border-none cursor-pointer transition-all hover:scale-[1.03] shadow-sm"
-                  style={{ background: 'linear-gradient(135deg, #3b82f6, #2563eb)' }}
-                >
-                  💎 Loyalty Points
-                </button>
                 <button 
                   onClick={() => setActiveTab('credits')}
                   className="px-5 py-2.5 rounded-full text-xs font-bold border border-teal-200 cursor-pointer transition-all hover:scale-[1.03] flex items-center gap-1.5 shadow-sm"
@@ -585,71 +576,6 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                   </div>
                 )}
 
-                {/* ── LOYALTY POINTS ── */}
-                {activeTab === 'loyalty' && (
-                  <div className="space-y-5">
-                    <div className="rounded-2xl shadow-sm border border-teal-100/40 p-6" style={{ background: 'linear-gradient(135deg, #ffffff 0%, #f0fdfa 100%)' }}>
-                      <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2 mb-1">
-                        <Award className="w-5 h-5 text-amber-500" /> Beduine Loyalty Club
-                      </h2>
-                      <p className="text-xs text-slate-400 mb-6">Earn loyalty points on every subscription & travel booking</p>
-
-                      <div className="grid md:grid-cols-2 gap-5 mb-6">
-                        {/* Points balance card */}
-                        <div className="p-5 rounded-2xl border border-amber-100 shadow-sm" style={{ background: 'linear-gradient(135deg, #fffbeb, #fef3c7)' }}>
-                          <span className="text-[10px] text-amber-700 uppercase font-mono tracking-wider block font-bold">LOYALTY POINT BALANCE</span>
-                          <span className="text-3xl font-black block mt-1 text-amber-800">
-                            {planName?.toLowerCase()?.includes('platinum') ? '2,500 pts' : planName?.toLowerCase()?.includes('gold') ? '1,200 pts' : '500 pts'}
-                          </span>
-                          <div className="mt-4 pt-3 border-t border-amber-200/50 flex items-center justify-between text-xs text-amber-800">
-                            <span>Club Status:</span>
-                            <span className="font-bold uppercase tracking-wider">{planName || 'Silver Member'}</span>
-                          </div>
-                        </div>
-
-                        {/* Point details */}
-                        <div className="p-5 rounded-2xl border border-teal-100 shadow-sm" style={{ background: 'linear-gradient(135deg, #f0fdfa, #ccfbf1)' }}>
-                          <span className="text-[10px] text-teal-700 uppercase font-mono tracking-wider block font-bold">POINT MULTIPLIER</span>
-                          <span className="text-2xl font-black block mt-1 text-teal-800">1.5x Reward Rate</span>
-                          <span className="text-[10px] text-teal-600 block mt-2">Earn 10 points for every ₹100 spent on booking custom additions</span>
-                        </div>
-                      </div>
-
-                      {/* Redemption options */}
-                      <h3 className="text-sm font-bold text-slate-700 mb-3">Redeem Your Points</h3>
-                      <div className="grid sm:grid-cols-2 gap-3">
-                        {[
-                          { title: 'Free Travel Insurance Upgrade', cost: '300 points', icon: Shield, color: '#10b981' },
-                          { title: 'Additional Name Change Ticket', cost: '500 points', icon: Users, color: '#8b5cf6' },
-                          { title: 'Premium Airport Lounge Access', cost: '1,000 points', icon: Crown, color: '#f59e0b' },
-                          { title: 'Custom Itinerary Customization', cost: '1,200 points', icon: MapPin, color: '#3b82f6' },
-                        ].map((reward, i) => {
-                          const Icon = reward.icon;
-                          return (
-                            <div key={i} className="flex items-center justify-between p-3 rounded-xl border border-slate-100 bg-white/70 hover:bg-slate-50 transition-colors">
-                              <div className="flex items-center gap-3">
-                                <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style={{ background: `${reward.color}15` }}>
-                                  <Icon className="w-4 h-4" style={{ color: reward.color }} />
-                                </div>
-                                <div>
-                                  <span className="text-xs font-semibold text-slate-700 block">{reward.title}</span>
-                                  <span className="text-[9px] text-slate-400 font-mono">Cost: {reward.cost}</span>
-                                </div>
-                              </div>
-                              <button 
-                                onClick={() => alert(`Request to redeem "${reward.title}" submitted successfully!`)}
-                                className="px-3 py-1.5 rounded-lg border-none text-[10px] font-bold text-white cursor-pointer hover:opacity-90"
-                                style={{ background: 'linear-gradient(135deg, #0ABAB5, #08979D)' }}
-                              >
-                                Redeem
-                              </button>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  </div>
-                )}
 
                 {/* ── LUCKY STATUS ── */}
                 {activeTab === 'lucky-status' && (
