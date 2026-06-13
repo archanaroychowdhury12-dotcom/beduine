@@ -356,14 +356,14 @@ export default function LoginPage({ onBack, onLoginSuccess, initialMode = 'login
                 {viewMode === 'signup-auth' ? (
                   <div className="w-full flex items-center justify-between gap-3 px-5 py-3.5 rounded-2xl bg-white/10 backdrop-blur-md border border-white/15 shadow-[0_4px_25px_rgba(0,0,0,0.15)] hover:border-white/25 transition-all">
                     <div className="flex flex-col text-left">
-                      <span className="text-[9px] text-[#148C8C] uppercase tracking-widest font-mono font-black">Existing Subscriber?</span>
+                      <span className="text-[9px] text-[#138A8A] uppercase tracking-widest font-mono font-black">Existing Subscriber?</span>
                       <span className="text-xs text-white font-bold mt-0.5">Already have an account?</span>
                     </div>
                     <button
                       type="button"
                       onClick={() => setViewMode('login')}
                       className="px-5 py-2 rounded-full text-xs font-bold text-white transition-all hover:scale-[1.05] active:scale-[0.98] cursor-pointer shadow-lg border-none flex items-center gap-1 hover:brightness-110"
-                      style={{ background: 'linear-gradient(135deg, #148C8C, #0E6B6B)' }}
+                      style={{ background: 'linear-gradient(135deg, #138A8A, #0E6F70)' }}
                     >
                       Login Here
                     </button>
@@ -371,14 +371,14 @@ export default function LoginPage({ onBack, onLoginSuccess, initialMode = 'login
                 ) : (
                   <div className="w-full flex items-center justify-between gap-3 px-5 py-3.5 rounded-2xl bg-white/10 backdrop-blur-md border border-white/15 shadow-[0_4px_25px_rgba(0,0,0,0.15)] hover:border-white/25 transition-all">
                     <div className="flex flex-col text-left">
-                      <span className="text-[9px] text-[#D9B26F] uppercase tracking-widest font-mono font-black">New Traveler?</span>
+                      <span className="text-[9px] text-[#C89C53] uppercase tracking-widest font-mono font-black">New Traveler?</span>
                       <span className="text-xs text-white font-bold mt-0.5">Don't have an account?</span>
                     </div>
                     <button
                       type="button"
                       onClick={() => setViewMode('signup-auth')}
                       className="px-5 py-2 rounded-full text-xs font-bold text-white transition-all hover:scale-[1.05] active:scale-[0.98] cursor-pointer shadow-lg border border-white/10 hover:border-white/20 flex items-center gap-1 hover:brightness-110"
-                      style={{ background: 'linear-gradient(135deg, #148C8C, #3C7BDA)' }}
+                      style={{ background: 'linear-gradient(135deg, #138A8A, #3C7BDA)' }}
                     >
                       Sign Up Now
                     </button>

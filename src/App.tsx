@@ -768,9 +768,9 @@ function Navbar({ view, setView, currentUser, handleMemberLogin }: NavbarProps) 
         <div 
           className={`rounded-2xl transition-all duration-500 ${scrolled ? 'shadow-md' : ''} border`}
           style={{
-            backgroundColor: isDashboard ? '#FFFDFC' : scrolled ? 'rgba(255, 255, 255, 0.72)' : 'transparent',
+            backgroundColor: isDashboard ? '#FFFCF8' : scrolled ? 'rgba(255, 255, 255, 0.72)' : 'transparent',
             backdropFilter: isDashboard ? 'none' : 'blur(24px) saturate(180%)',
-            borderColor: isDashboard ? '#E8DED0' : scrolled ? 'rgba(148, 163, 184, 0.28)' : 'transparent',
+            borderColor: isDashboard ? '#E7DCCF' : scrolled ? 'rgba(148, 163, 184, 0.28)' : 'transparent',
           }}
         >
           <div className="flex items-center justify-between px-4 lg:px-6 h-14 lg:h-16">
@@ -790,13 +790,13 @@ function Navbar({ view, setView, currentUser, handleMemberLogin }: NavbarProps) 
             >
               <div 
                 className="w-10 h-10 rounded-full overflow-hidden border shadow-lg bg-cosmos flex items-center justify-center p-1.5"
-                style={{ borderColor: isDashboard ? '#E8DED0' : 'rgba(24, 215, 242, 0.3)' }}
+                style={{ borderColor: isDashboard ? '#E7DCCF' : 'rgba(24, 215, 242, 0.3)' }}
               >
                 <img src="/images/bedune_logo_cropped.png" alt="BEDUINE Logo" className="w-full h-full object-contain" />
               </div>
               <div className="leading-tight">
-                <div className="font-display text-base font-bold tracking-tight" style={{ color: '#1F2F46' }}>BEDUINE</div>
-                <div className="text-[9px] uppercase tracking-[0.22em] font-black" style={{ color: '#148C8C' }}>Tour & Travels</div>
+                <div className="font-display text-base font-bold tracking-tight" style={{ color: '#1E3147' }}>BEDUINE</div>
+                <div className="text-[9px] uppercase tracking-[0.22em] font-black" style={{ color: '#138A8A' }}>Tour & Travels</div>
               </div>
             </a>
             <nav className="hidden lg:flex items-center gap-6">
@@ -824,9 +824,9 @@ function Navbar({ view, setView, currentUser, handleMemberLogin }: NavbarProps) 
                     }
                   }}
                   className="text-sm transition-all font-bold whitespace-nowrap hover:scale-105"
-                  style={{ color: isDashboard ? '#1F2F46' : '#7E919D' }}
-                  onMouseEnter={(e) => e.currentTarget.style.color = '#148C8C'}
-                  onMouseLeave={(e) => e.currentTarget.style.color = isDashboard ? '#1F2F46' : '#7E919D'}
+                  style={{ color: isDashboard ? '#1E3147' : '#7E919D' }}
+                  onMouseEnter={(e) => e.currentTarget.style.color = '#138A8A'}
+                  onMouseLeave={(e) => e.currentTarget.style.color = isDashboard ? '#1E3147' : '#7E919D'}
                 >
                   {n.label}
                 </a>
@@ -837,9 +837,9 @@ function Navbar({ view, setView, currentUser, handleMemberLogin }: NavbarProps) 
                 onClick={handleMemberLogin} 
                 data-magnetic 
                 className="text-sm transition-colors font-bold px-3 py-2 whitespace-nowrap bg-transparent border-none cursor-pointer"
-                style={{ color: isDashboard ? '#1F2F46' : '#7E919D' }}
-                onMouseEnter={(e) => e.currentTarget.style.color = '#148C8C'}
-                onMouseLeave={(e) => e.currentTarget.style.color = isDashboard ? '#1F2F46' : '#7E919D'}
+                style={{ color: isDashboard ? '#1E3147' : '#7E919D' }}
+                onMouseEnter={(e) => e.currentTarget.style.color = '#138A8A'}
+                onMouseLeave={(e) => e.currentTarget.style.color = isDashboard ? '#1E3147' : '#7E919D'}
               >
                 {currentUser ? 'My Dashboard' : 'Create Account'}
               </button>
@@ -865,7 +865,7 @@ function Navbar({ view, setView, currentUser, handleMemberLogin }: NavbarProps) 
             <div className="flex items-center gap-2">
               <button
                 className="lg:hidden p-2 border-none bg-transparent cursor-pointer"
-                style={{ color: '#1F2F46' }}
+                style={{ color: '#1E3147' }}
                 onClick={() => setOpen(!open)}
                 aria-label={open ? 'Close menu' : 'Open menu'}
                 aria-expanded={open}
@@ -877,8 +877,8 @@ function Navbar({ view, setView, currentUser, handleMemberLogin }: NavbarProps) 
           </div>
           <AnimatePresence>
             {open && (
-              <motion.div id="mobile-menu" initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="lg:hidden overflow-hidden border-t" style={{ borderColor: '#E8DED0' }}>
-                <div className="px-4 py-3 flex flex-col gap-1" style={{ backgroundColor: '#FFFDFC' }}>
+              <motion.div id="mobile-menu" initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="lg:hidden overflow-hidden border-t" style={{ borderColor: '#E7DCCF' }}>
+                <div className="px-4 py-3 flex flex-col gap-1" style={{ backgroundColor: '#FFFCF8' }}>
                   {NAV.map((n) => (
                     <a 
                       key={n.id} 
@@ -903,7 +903,7 @@ function Navbar({ view, setView, currentUser, handleMemberLogin }: NavbarProps) 
                         }
                       }} 
                       className="py-2.5 text-sm font-bold no-underline"
-                      style={{ color: '#1F2F46' }}
+                      style={{ color: '#1E3147' }}
                     >
                       {n.label}
                     </a>
@@ -914,7 +914,7 @@ function Navbar({ view, setView, currentUser, handleMemberLogin }: NavbarProps) 
                       handleMemberLogin(e);
                     }}
                     className="mt-2 text-center py-2.5 rounded-full border text-xs font-bold transition-all bg-transparent"
-                    style={{ borderColor: '#E8DED0', color: '#1F2F46' }}
+                    style={{ borderColor: '#E7DCCF', color: '#1E3147' }}
                   >
                     {currentUser ? 'My Dashboard' : 'Create Account'}
                   </button>
@@ -932,7 +932,7 @@ function Navbar({ view, setView, currentUser, handleMemberLogin }: NavbarProps) 
                       }
                     }} 
                     className="mt-1.5 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full text-white font-bold text-sm no-underline"
-                    style={{ background: 'linear-gradient(135deg, #148C8C, #0E6B6B)' }}
+                    style={{ background: 'linear-gradient(135deg, #138A8A, #0E6F70)' }}
                   >
                     Choose Plan <ArrowRight className="w-4 h-4" />
                   </a>

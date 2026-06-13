@@ -30,32 +30,32 @@
   --color-bedune-nav-navy: #071B2C;
 
   /* Custom Dashboard Palette Colors */
-  --color-bg-beige: #FAF7F2;
-  --color-card-white: #FFFDFC;
-  --color-premium-beige: #ECD6B7;
-  --color-cream: #F6E9D2;
-  --color-navy: #1F2F46;
-  --color-muted-grey: #6E7A89;
-  --color-teal-accent: #148C8C;
-  --color-gold-accent: #D9B26F;
-  --color-border-beige: #E8DED0;
-  --color-danger-red: #D96B5F;
+  --color-bg-beige: #F7F3ED;
+  --color-card-white: #FFFCF8;
+  --color-premium-beige: #E6D1B1;
+  --color-cream: #F3E7D3;
+  --color-navy: #1E3147;
+  --color-muted-grey: #728091;
+  --color-teal-accent: #138A8A;
+  --color-gold-accent: #C89C53;
+  --color-border-beige: #E7DCCF;
+  --color-danger-red: #D66A5D;
 
-  --color-teal: #148C8C;
-  --color-gold: #D9B26F;
+  --color-teal: #138A8A;
+  --color-gold: #C89C53;
 }
 
 :root {
-  --bg: #FAF7F2;
-  --card: #FFFDFC;
-  --premium-beige: #ECD6B7;
-  --cream: #F6E9D2;
-  --navy: #1F2F46;
-  --muted: #6E7A89;
-  --teal: #148C8C;
-  --gold: #D9B26F;
-  --border: #E8DED0;
-  --danger: #D96B5F;
+  --bg: #F7F3ED;
+  --card: #FFFCF8;
+  --premium-beige: #E6D1B1;
+  --cream: #F3E7D3;
+  --navy: #1E3147;
+  --muted: #728091;
+  --teal: #138A8A;
+  --gold: #C89C53;
+  --border: #E7DCCF;
+  --danger: #D66A5D;
 
   --bedune-text-primary: #F8FAFC;
   --bedune-text-secondary: #D8E4EA;
@@ -1582,21 +1582,21 @@ input:focus-visible,
 }
 
 .glow-cta-teal {
-  background: linear-gradient(135deg, #148C8C 0%, #0E6B6B 100%);
-  color: #FFFDFC !important;
-  box-shadow: 0 0 0 1px rgba(20, 140, 140, 0.4), 0 10px 34px -10px rgba(20, 140, 140, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  background: linear-gradient(135deg, #138A8A 0%, #0E6F70 100%);
+  color: #FFFCF8 !important;
+  box-shadow: 0 0 0 1px rgba(19, 138, 138, 0.4), 0 10px 34px -10px rgba(19, 138, 138, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3);
   transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .glow-cta-teal:hover {
   transform: translateY(-2px);
-  box-shadow: 0 0 0 1px rgba(20, 140, 140, 0.6), 0 15px 42px -8px rgba(20, 140, 140, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  box-shadow: 0 0 0 1px rgba(19, 138, 138, 0.6), 0 15px 42px -8px rgba(19, 138, 138, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.4);
 }
 
 /* Unique premium registration button styling */
 .premium-register-btn {
   position: relative;
   overflow: hidden;
-  background: linear-gradient(135deg, #148C8C 0%, #3C7BDA 50%, #8B5CF6 100%);
+  background: linear-gradient(135deg, #138A8A 0%, #2D5D7B 50%, #8B5CF6 100%);
   background-size: 200% auto;
   color: #FFFFFF !important;
   font-weight: 800;
@@ -1604,7 +1604,7 @@ input:focus-visible,
   letter-spacing: 0.05em;
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 9999px;
-  box-shadow: 0 4px 15px rgba(20, 140, 140, 0.3), 0 0 35px rgba(217, 178, 111, 0.2), inset 0 1.5px 0 rgba(255, 255, 255, 0.4);
+  box-shadow: 0 4px 15px rgba(19, 138, 138, 0.3), 0 0 35px rgba(200, 156, 83, 0.2), inset 0 1.5px 0 rgba(255, 255, 255, 0.4);
   transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
   cursor: pointer;
   animation: premium-grad-shift 6s ease infinite alternate;
@@ -1617,7 +1617,7 @@ input:focus-visible,
 
 .premium-register-btn:hover {
   transform: translateY(-3px) scale(1.02);
-  box-shadow: 0 12px 30px rgba(20, 140, 140, 0.5), 0 0 45px rgba(217, 178, 111, 0.4), inset 0 1.5px 0 rgba(255, 255, 255, 0.5);
+  box-shadow: 0 12px 30px rgba(19, 138, 138, 0.5), 0 0 45px rgba(200, 156, 83, 0.4), inset 0 1.5px 0 rgba(255, 255, 255, 0.5);
   border-color: rgba(255, 255, 255, 0.4);
 }
 
