@@ -3,7 +3,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Compass, Sparkles, Gift, CreditCard, Plane, ArrowRight,
   Download, Crown, LogOut, Ticket, Calendar, Check, AlertCircle,
-  MapPin, Star, Zap, Shield, TrendingUp, Clock, Users
+  MapPin, Star, Zap, Shield, TrendingUp, Clock, Users,
+  ChevronRight, Phone, MoreVertical, User, Edit, Award, Heart,
+  Megaphone, Lock, BarChart3
 } from 'lucide-react';
 
 interface DashboardPageProps {
@@ -21,14 +23,13 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
     setSimulationResult(null);
     setTimeout(() => {
       setIsSimulatingDraw(false);
-      // Random result simulation
       const rand = Math.random();
       if (rand < 0.15) {
         setSimulationResult(`🎉 Congratulations! Selected for Kashmir (Platinum Tier)`);
       } else if (rand < 0.4) {
         setSimulationResult(`🏖️ Selected for Digha Weekend Escape (Silver Tier)`);
       } else {
-        setSimulationResult(`💰 Draw trial finished: ₹500 Discount Credit guaranteed in account!`);
+        setSimulationResult(`💰 Draw trial finished: ₹500 Discount Credit guaranteed!`);
       }
     }, 2500);
   };
@@ -36,557 +37,478 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
   const planName = user?.planName || 'Unsubscribed';
   const isSubscribed = planName && planName !== 'Unsubscribed' && planName !== '';
   const displayPlan = isSubscribed ? planName : 'No Active Plan';
+  const voucherCount = planName?.toLowerCase()?.includes('platinum') ? 4 : planName?.toLowerCase()?.includes('gold') ? 2 : 1;
+
+  const sidebarItems = [
+    { id: 'overview', label: 'Dashboard', icon: Compass },
+    { id: 'credits', label: 'Discount Credits', icon: CreditCard },
+    { id: 'draws', label: 'Lucky Draw', icon: Ticket },
+    { id: 'bookings', label: 'Book Travel', icon: Plane },
+  ];
 
   return (
-    <div className="min-h-screen pt-24 lg:pt-28 pb-20 relative text-ink px-4 sm:px-6 lg:px-8" style={{ background: 'linear-gradient(135deg, #0B1120 0%, #0D1B2A 30%, #1B2838 60%, #0B1120 100%)' }}>
-      
-      {/* Decorative Background Orbs */}
-      <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-gradient-to-br from-cyan/20 via-blue-500/10 to-transparent rounded-full filter blur-[150px] pointer-events-none" />
-      <div className="absolute top-1/3 right-0 w-[400px] h-[400px] bg-gradient-to-bl from-violet/15 via-purple-500/10 to-transparent rounded-full filter blur-[130px] pointer-events-none" />
-      <div className="absolute bottom-0 left-1/3 w-[500px] h-[500px] bg-gradient-to-tr from-neon-gold/8 via-orange-500/5 to-transparent rounded-full filter blur-[140px] pointer-events-none" />
-      <div className="absolute bottom-1/4 right-1/4 w-[300px] h-[300px] bg-gradient-to-tl from-emerald-500/10 to-transparent rounded-full filter blur-[120px] pointer-events-none" />
-
-      <div className="max-w-7xl mx-auto relative z-10">
+    <div className="min-h-screen pt-20 lg:pt-24 pb-10" style={{ background: 'linear-gradient(135deg, #f0f9f9 0%, #f5f7fa 50%, #eef6f6 100%)' }}>
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6">
         
-        {/* ═══════════════ CINEMATIC 3D USER PROFILE ═══════════════ */}
+        {/* ═══ TOP NAV BAR ═══ */}
         <motion.div 
-          initial={{ opacity: 0, y: -30, rotateX: 8 }} 
-          animate={{ opacity: 1, y: 0, rotateX: 0 }} 
-          transition={{ duration: 0.8, type: 'spring', stiffness: 60 }}
-          className="rounded-[28px] mb-8 relative overflow-hidden"
-          style={{ 
-            background: 'linear-gradient(135deg, #1a0533 0%, #0c1445 25%, #0a2351 50%, #062b3e 75%, #0d1f2d 100%)',
-            border: '1px solid rgba(255,255,255,0.08)',
-            boxShadow: '0 25px 80px -20px rgba(99,102,241,0.25), 0 10px 40px -15px rgba(14,165,233,0.15), inset 0 1px 0 rgba(255,255,255,0.06)',
-            perspective: '1200px',
-          }}
+          initial={{ opacity: 0, y: -15 }} animate={{ opacity: 1, y: 0 }}
+          className="flex items-center justify-between mb-6 px-2"
         >
-          {/* ── Animated Aurora Glow Background ── */}
-          <div className="absolute inset-0 pointer-events-none overflow-hidden">
-            {/* Top-left warm glow */}
-            <div className="absolute -top-20 -left-20 w-[350px] h-[350px] rounded-full opacity-40" style={{ background: 'radial-gradient(circle, rgba(251,146,60,0.4) 0%, rgba(244,63,94,0.2) 40%, transparent 70%)', animation: 'pulse 4s ease-in-out infinite' }} />
-            {/* Center violet glow */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[300px] rounded-full opacity-25" style={{ background: 'radial-gradient(ellipse, rgba(139,92,246,0.5) 0%, rgba(99,102,241,0.2) 50%, transparent 80%)', animation: 'pulse 5s ease-in-out infinite reverse' }} />
-            {/* Right cyan glow */}
-            <div className="absolute -top-10 -right-10 w-[300px] h-[300px] rounded-full opacity-35" style={{ background: 'radial-gradient(circle, rgba(6,182,212,0.45) 0%, rgba(14,165,233,0.2) 50%, transparent 75%)', animation: 'pulse 6s ease-in-out infinite' }} />
-            {/* Bottom emerald glow */}
-            <div className="absolute -bottom-16 left-1/3 w-[400px] h-[200px] rounded-full opacity-20" style={{ background: 'radial-gradient(ellipse, rgba(16,185,129,0.4) 0%, transparent 70%)' }} />
-            
-            {/* Floating particles */}
-            {[...Array(6)].map((_, i) => (
-              <div key={i} className="absolute rounded-full" style={{
-                width: `${3 + i * 1.5}px`, height: `${3 + i * 1.5}px`,
-                background: ['rgba(251,146,60,0.6)', 'rgba(139,92,246,0.5)', 'rgba(6,182,212,0.6)', 'rgba(16,185,129,0.5)', 'rgba(244,63,94,0.4)', 'rgba(250,204,21,0.5)'][i],
-                top: `${15 + i * 12}%`, left: `${10 + i * 15}%`,
-                animation: `pulse ${3 + i}s ease-in-out infinite ${i * 0.5}s`,
-                boxShadow: `0 0 ${8 + i * 3}px ${['rgba(251,146,60,0.4)', 'rgba(139,92,246,0.3)', 'rgba(6,182,212,0.4)', 'rgba(16,185,129,0.3)', 'rgba(244,63,94,0.3)', 'rgba(250,204,21,0.3)'][i]}`,
-              }} />
-            ))}
-
-            {/* Shimmer line */}
-            <div className="absolute inset-0" style={{
-              background: 'linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.03) 45%, rgba(255,255,255,0.06) 50%, rgba(255,255,255,0.03) 55%, transparent 60%)',
-              animation: 'shimmer 4s ease-in-out infinite',
-            }} />
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #0ABAB5, #08979D)' }}>
+              <Compass className="w-4 h-4 text-white" />
+            </div>
+            <span className="text-sm font-bold text-slate-700 tracking-wide">Dashboard</span>
           </div>
-
-          {/* ── Main Content ── */}
-          <div className="relative z-10 p-6 lg:p-8">
-            <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-              
-              {/* Left: Avatar + Info */}
-              <div className="flex items-center gap-5">
-                {/* 3D Glowing Avatar */}
-                <motion.div 
-                  className="relative"
-                  whileHover={{ scale: 1.08, rotateY: 10 }}
-                  transition={{ type: 'spring', stiffness: 200 }}
-                >
-                  {/* Outer glow ring */}
-                  <div className="absolute -inset-2 rounded-full opacity-60" style={{
-                    background: 'conic-gradient(from 0deg, #f97316, #ec4899, #8b5cf6, #06b6d4, #10b981, #eab308, #f97316)',
-                    animation: 'spin 6s linear infinite',
-                    filter: 'blur(8px)',
-                  }} />
-                  {/* Avatar ring */}
-                  <div className="w-[80px] h-[80px] rounded-full p-[3px] relative" style={{ 
-                    background: 'conic-gradient(from 0deg, #f97316, #ec4899, #8b5cf6, #06b6d4, #10b981, #eab308, #f97316)',
-                    boxShadow: '0 0 30px rgba(139,92,246,0.3), 0 0 60px rgba(6,182,212,0.15)'
-                  }}>
-                    <div className="w-full h-full rounded-full flex items-center justify-center text-white text-3xl font-black uppercase relative overflow-hidden" style={{
-                      background: 'linear-gradient(135deg, #1e1b4b, #172554)',
-                    }}>
-                      <span className="relative z-10 drop-shadow-lg">{user?.fullName?.charAt(0) || 'U'}</span>
-                      <div className="absolute inset-0 bg-gradient-to-t from-violet-500/20 to-transparent" />
-                    </div>
-                  </div>
-                  {/* Verified badge */}
-                  <motion.div 
-                    initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.5, type: 'spring' }}
-                    className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full flex items-center justify-center shadow-lg"
-                    style={{ background: 'linear-gradient(135deg, #10b981, #059669)', boxShadow: '0 0 12px rgba(16,185,129,0.5)' }}
-                  >
-                    <Check className="w-3.5 h-3.5 text-white" />
-                  </motion.div>
-                </motion.div>
-
-                {/* User Info */}
-                <div>
-                  <div className="flex items-center gap-2.5 flex-wrap">
-                    <h1 className="text-xl sm:text-2xl font-black tracking-tight text-white drop-shadow-sm">{user?.fullName}</h1>
-                    <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-[10px] font-bold font-mono" style={{
-                      background: 'linear-gradient(135deg, rgba(16,185,129,0.2), rgba(6,182,212,0.15))',
-                      border: '1px solid rgba(16,185,129,0.3)',
-                      color: '#6ee7b7',
-                      boxShadow: '0 0 15px rgba(16,185,129,0.1)',
-                    }}>
-                      <Shield className="w-3 h-3" /> VERIFIED
-                    </span>
-                  </div>
-                  <p className="text-sm text-blue-200/60 font-mono mt-1">{user?.email || user?.mobile}</p>
-                  <div className="flex items-center gap-3 mt-2">
-                    <span className="inline-flex items-center gap-1 text-[10px] text-white/40 font-mono">
-                      <Calendar className="w-3 h-3 text-violet-400/60" /> Joined {new Date().toLocaleDateString('en-IN', { month: 'short', year: 'numeric' })}
-                    </span>
-                    <span className="w-1 h-1 rounded-full bg-white/20" />
-                    <span className="inline-flex items-center gap-1 text-[10px] font-mono" style={{ color: isSubscribed ? '#a5f3fc' : '#fbbf24' }}>
-                      <Crown className="w-3 h-3" /> {displayPlan}
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Right: Membership + Actions */}
-              <div className="flex flex-wrap items-center gap-3">
-                {/* Holographic Membership ID */}
-                <motion.div 
-                  whileHover={{ scale: 1.04, rotateY: -5 }}
-                  className="px-5 py-3.5 rounded-2xl text-center relative overflow-hidden cursor-default"
-                  style={{ 
-                    background: 'linear-gradient(135deg, rgba(250,204,21,0.12), rgba(251,146,60,0.1), rgba(244,63,94,0.08))',
-                    border: '1px solid rgba(250,204,21,0.2)',
-                    boxShadow: '0 4px 20px rgba(250,204,21,0.08), inset 0 1px 0 rgba(255,255,255,0.05)',
-                  }}
-                >
-                  {/* Holographic shimmer */}
-                  <div className="absolute inset-0 opacity-30" style={{
-                    background: 'linear-gradient(105deg, transparent 35%, rgba(250,204,21,0.2) 45%, rgba(251,146,60,0.15) 50%, rgba(244,63,94,0.1) 55%, transparent 65%)',
-                    animation: 'shimmer 3s ease-in-out infinite',
-                  }} />
-                  <span className="block text-[8px] uppercase tracking-[0.2em] font-mono relative z-10" style={{ color: 'rgba(250,204,21,0.7)' }}>MEMBERSHIP ID</span>
-                  <span className="text-sm font-black font-mono tracking-[0.15em] relative z-10" style={{ 
-                    background: 'linear-gradient(90deg, #fbbf24, #f97316, #fbbf24)',
-                    backgroundSize: '200% 100%',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    animation: 'shimmer 3s ease-in-out infinite',
-                  }}>{user?.memberId}</span>
-                </motion.div>
-
-                {/* Log Out Button */}
-                <motion.button 
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={onLogout}
-                  className="px-5 py-3 rounded-2xl text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-2 cursor-pointer"
-                  style={{
-                    background: 'linear-gradient(135deg, rgba(239,68,68,0.12), rgba(239,68,68,0.06))',
-                    border: '1px solid rgba(239,68,68,0.2)',
-                    color: '#fca5a5',
-                  }}
-                >
-                  <LogOut className="w-4 h-4" /> Log Out
-                </motion.button>
-              </div>
-            </div>
-
-            {/* Bottom Stats Strip */}
-            <div className="mt-6 pt-5 border-t border-white/5 grid grid-cols-2 md:grid-cols-4 gap-4">
-              {[
-                { label: 'Status', value: isSubscribed ? 'Active' : 'Inactive', color: isSubscribed ? '#34d399' : '#fbbf24', icon: '●' },
-                { label: 'Draw Entry', value: user?.drawToken ? 'Ready' : 'Pending', color: '#a78bfa', icon: '◆' },
-                { label: 'Vouchers', value: `${isSubscribed ? (planName?.toLowerCase()?.includes('platinum') ? 4 : planName?.toLowerCase()?.includes('gold') ? 2 : 1) : 0} Active`, color: '#67e8f9', icon: '★' },
-                { label: 'Next Draw', value: 'Sunday', color: '#fdba74', icon: '▶' },
-              ].map((item, i) => (
-                <motion.div 
-                  key={i}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.6 + i * 0.1 }}
-                  className="flex items-center gap-2.5 p-2.5 rounded-xl"
-                  style={{ background: 'rgba(255,255,255,0.03)' }}
-                >
-                  <span className="text-sm" style={{ color: item.color, textShadow: `0 0 8px ${item.color}40` }}>{item.icon}</span>
-                  <div>
-                    <span className="block text-[8px] uppercase tracking-wider text-white/30 font-mono">{item.label}</span>
-                    <span className="block text-xs font-bold" style={{ color: item.color }}>{item.value}</span>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
+          <div className="flex items-center gap-4">
+            <span className="text-sm text-slate-500 hidden sm:block">{user?.fullName}</span>
+            <Phone className="w-4 h-4 text-slate-400 cursor-pointer hover:text-teal-600 transition-colors" />
+            <User className="w-4 h-4 text-slate-400 cursor-pointer hover:text-teal-600 transition-colors" />
+            <MoreVertical className="w-4 h-4 text-slate-400 cursor-pointer hover:text-teal-600 transition-colors" />
           </div>
         </motion.div>
 
-        {/* ═══════════════ QUICK STATS CARDS ═══════════════ */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }} 
-          animate={{ opacity: 1, y: 0 }} 
-          transition={{ duration: 0.5, delay: 0.15 }}
-          className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8"
-        >
-          {[
-            { label: 'Plan Tier', value: displayPlan, sub: isSubscribed ? 'Active' : 'Subscribe Now', icon: Crown, gradient: 'from-amber-500/20 via-orange-500/10 to-transparent', borderColor: 'border-amber-500/20', iconColor: 'text-amber-400', valueColor: 'text-amber-300' },
-            { label: 'Draw Token', value: user?.drawToken || 'N/A', sub: 'Next: Sunday', icon: Ticket, gradient: 'from-cyan/20 via-blue-500/10 to-transparent', borderColor: 'border-cyan/20', iconColor: 'text-cyan', valueColor: 'text-cyan' },
-            { label: 'Voucher Credits', value: isSubscribed ? `₹${(planName?.toLowerCase()?.includes('platinum') ? 4 : planName?.toLowerCase()?.includes('gold') ? 2 : 1) * 500}` : '₹0', sub: 'Redeemable', icon: Gift, gradient: 'from-emerald-500/20 via-green-500/10 to-transparent', borderColor: 'border-emerald-500/20', iconColor: 'text-emerald-400', valueColor: 'text-emerald-400' },
-            { label: 'Validity', value: '12 Months', sub: 'From activation', icon: Clock, gradient: 'from-violet/20 via-purple-500/10 to-transparent', borderColor: 'border-violet/20', iconColor: 'text-violet', valueColor: 'text-violet' },
-          ].map((stat, idx) => {
-            const Icon = stat.icon;
-            return (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.4, delay: 0.1 * idx }}
-                className={`relative overflow-hidden p-5 rounded-2xl bg-gradient-to-br ${stat.gradient} border ${stat.borderColor} backdrop-blur-sm hover:scale-[1.03] transition-transform cursor-default`}
-              >
-                <div className="absolute top-3 right-3 opacity-20">
-                  <Icon className={`w-10 h-10 ${stat.iconColor}`} />
-                </div>
-                <span className="text-[9px] uppercase tracking-wider text-white/40 font-mono block">{stat.label}</span>
-                <span className={`text-lg font-black ${stat.valueColor} mt-1 block tracking-tight`}>{stat.value}</span>
-                <span className="text-[10px] text-white/40 block mt-1">{stat.sub}</span>
-              </motion.div>
-            );
-          })}
-        </motion.div>
+        {/* ═══ MAIN 3-COLUMN LAYOUT ═══ */}
+        <div className="grid lg:grid-cols-[220px_1fr_280px] gap-5">
 
-        {/* ═══════════════ MAIN LAYOUT: SIDEBAR + CONTENT ═══════════════ */}
-        <div className="grid lg:grid-cols-12 gap-6 items-start">
-          
-          {/* Sidebar Tabs */}
-          <motion.div 
-            initial={{ opacity: 0, x: -20 }} 
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="lg:col-span-3 flex lg:flex-col gap-2 overflow-x-auto lg:overflow-x-visible pb-3 lg:pb-0 shrink-0"
+          {/* ──────── LEFT SIDEBAR ──────── */}
+          <motion.aside 
+            initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }}
+            className="hidden lg:flex flex-col gap-1.5 bg-white rounded-2xl p-4 shadow-sm border border-slate-100 h-fit sticky top-28"
           >
-            {[
-              { id: 'overview', label: 'Dashboard', icon: Compass, color: 'from-cyan to-blue-500' },
-              { id: 'credits', label: 'Discount Credits', icon: CreditCard, color: 'from-emerald-400 to-green-500' },
-              { id: 'draws', label: 'Lucky Draw', icon: Ticket, color: 'from-violet to-purple-500' },
-              { id: 'bookings', label: 'Book Travel', icon: Plane, color: 'from-amber-400 to-orange-500' },
-            ].map((tab) => {
-              const Icon = tab.icon;
-              const isActive = activeTab === tab.id;
+            {/* Brand */}
+            <div className="flex items-center gap-2.5 px-3 py-3 mb-2">
+              <div className="w-9 h-9 rounded-xl overflow-hidden border border-teal-200 bg-white flex items-center justify-center p-1">
+                <img src="/images/bedune_logo_cropped.png" alt="Logo" className="w-full h-full object-contain" />
+              </div>
+              <div>
+                <span className="text-sm font-black text-slate-800 tracking-tight block" style={{ color: '#0ABAB5' }}>BEDUINE</span>
+                <span className="text-[8px] uppercase tracking-[0.2em] text-slate-400 font-mono">Tour Tracker</span>
+              </div>
+            </div>
+
+            {/* Nav Items */}
+            {sidebarItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = activeTab === item.id;
               return (
                 <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id as any)}
-                  className={`w-full text-left px-5 py-4 rounded-2xl border transition-all duration-300 flex items-center gap-3 cursor-pointer whitespace-nowrap lg:whitespace-normal relative overflow-hidden ${
+                  key={item.id}
+                  onClick={() => setActiveTab(item.id as any)}
+                  className={`w-full text-left px-4 py-3 rounded-xl flex items-center gap-3 cursor-pointer transition-all duration-200 border-none text-sm ${
                     isActive 
-                      ? 'border-white/15 text-white font-bold shadow-lg' 
-                      : 'bg-white/3 border-white/5 text-white/60 hover:bg-white/5 hover:border-white/10 hover:text-white/80'
+                      ? 'font-bold text-white shadow-md' 
+                      : 'font-medium text-slate-500 hover:bg-slate-50 hover:text-slate-700 bg-transparent'
                   }`}
-                  style={isActive ? { background: `linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03))` } : undefined}
+                  style={isActive ? { background: 'linear-gradient(135deg, #0ABAB5, #08979D)', boxShadow: '0 4px 15px rgba(10,186,181,0.3)' } : undefined}
                 >
-                  {isActive && (
-                    <div className={`absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b ${tab.color} rounded-r-full`} />
-                  )}
-                  <div className={`w-8 h-8 rounded-xl flex items-center justify-center ${isActive ? `bg-gradient-to-br ${tab.color} shadow-md` : 'bg-white/5'}`}>
-                    <Icon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-white/50'}`} />
-                  </div>
-                  <span className="text-sm">{tab.label}</span>
+                  <Icon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-slate-400'}`} />
+                  {item.label}
                 </button>
               );
             })}
 
-            {/* Promo Card */}
-            <div className="hidden lg:block mt-4 p-5 rounded-2xl relative overflow-hidden" style={{ background: 'linear-gradient(135deg, rgba(139,92,246,0.2), rgba(24,215,242,0.15), rgba(247,181,0,0.1))', border: '1px solid rgba(255,255,255,0.08)' }}>
-              <Star className="w-5 h-5 text-neon-gold mb-2" />
-              <h4 className="text-xs font-bold text-white mb-1">Upgrade Your Plan</h4>
-              <p className="text-[10px] text-white/50 leading-relaxed">Unlock more destinations, extra vouchers & priority draws.</p>
-              <div className="mt-3 w-full h-1 rounded-full bg-white/10 overflow-hidden">
-                <div className="h-full w-1/3 rounded-full bg-gradient-to-r from-cyan to-violet" />
+            {/* Extra Nav */}
+            <div className="border-t border-slate-100 mt-3 pt-3 space-y-1">
+              {[
+                { icon: Edit, label: 'Edit Profile' },
+                { icon: Award, label: 'Loyalty Points' },
+                { icon: Heart, label: 'Lucky Status' },
+                { icon: Megaphone, label: 'Promoted' },
+              ].map((item, i) => {
+                const Icon = item.icon;
+                return (
+                  <button key={i} className="w-full text-left px-4 py-2.5 rounded-xl flex items-center gap-3 cursor-pointer transition-all text-sm font-medium text-slate-400 hover:bg-slate-50 hover:text-slate-600 border-none bg-transparent">
+                    <Icon className="w-4 h-4" /> {item.label}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Logout */}
+            <button 
+              onClick={onLogout}
+              className="w-full mt-4 px-4 py-2.5 rounded-xl flex items-center gap-3 cursor-pointer transition-all text-sm font-bold text-red-400 hover:bg-red-50 border-none bg-transparent"
+            >
+              <LogOut className="w-4 h-4" /> Log Out
+            </button>
+          </motion.aside>
+
+          {/* Mobile Tab Bar */}
+          <div className="lg:hidden flex gap-2 overflow-x-auto pb-3 mb-2">
+            {sidebarItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = activeTab === item.id;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => setActiveTab(item.id as any)}
+                  className={`whitespace-nowrap px-4 py-2.5 rounded-xl flex items-center gap-2 cursor-pointer transition-all text-xs font-bold border-none ${
+                    isActive ? 'text-white shadow-md' : 'text-slate-500 bg-white'
+                  }`}
+                  style={isActive ? { background: 'linear-gradient(135deg, #0ABAB5, #08979D)' } : undefined}
+                >
+                  <Icon className="w-3.5 h-3.5" /> {item.label}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* ──────── MAIN CONTENT ──────── */}
+          <motion.main initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}>
+            
+            {/* Profile Summary Card */}
+            <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 mb-5">
+              <div className="flex items-center justify-between mb-5">
+                <h2 className="text-lg font-bold text-slate-800">Profile Summary</h2>
+                <ChevronRight className="w-4 h-4 text-slate-300" />
+              </div>
+
+              <div className="flex flex-col sm:flex-row items-start gap-5">
+                {/* Avatar */}
+                <div className="relative shrink-0">
+                  <div className="w-[90px] h-[90px] rounded-full p-[3px]" style={{ background: 'linear-gradient(135deg, #0ABAB5, #F7B500, #0ABAB5)' }}>
+                    <div className="w-full h-full rounded-full flex items-center justify-center text-3xl font-black uppercase" style={{ background: 'linear-gradient(135deg, #e0f7f6, #f0faf9)', color: '#0ABAB5' }}>
+                      {user?.fullName?.charAt(0) || 'U'}
+                    </div>
+                  </div>
+                  <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full flex items-center justify-center shadow-md" style={{ background: '#0ABAB5' }}>
+                    <Check className="w-3 h-3 text-white" />
+                  </div>
+                </div>
+
+                {/* Info */}
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2.5 flex-wrap mb-1">
+                    <h3 className="text-base font-bold text-slate-800">Verified Membership ID</h3>
+                    <span className="px-3 py-1 rounded-full text-[10px] font-bold border" style={{ borderColor: '#0ABAB5', color: '#0ABAB5' }}>
+                      {displayPlan}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center gap-3 mb-3">
+                    {['Active', 'Verified', 'Member'].map((tag, i) => (
+                      <span key={i} className="text-xs text-slate-400">{tag}</span>
+                    ))}
+                    {isSubscribed && <span className="text-xs flex items-center gap-1" style={{ color: '#0ABAB5' }}><Heart className="w-3 h-3" /> Subscribed</span>}
+                  </div>
+
+                  <p className="text-xs font-bold text-slate-600 mb-0.5">Prized Subscription Plan ID</p>
+                  <p className="text-xs text-slate-400 leading-relaxed">{user?.email || user?.mobile} • Member ID: <strong className="text-slate-600 font-mono">{user?.memberId}</strong></p>
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex flex-wrap gap-3 mt-5 pt-5 border-t border-slate-100">
+                <button 
+                  onClick={() => setActiveTab('credits')}
+                  className="px-5 py-2.5 rounded-full text-xs font-bold text-white border-none cursor-pointer transition-all hover:scale-[1.03] shadow-sm"
+                  style={{ background: 'linear-gradient(135deg, #0ABAB5, #08979D)' }}
+                >
+                  💎 Loyalty Points
+                </button>
+                <button 
+                  onClick={() => setActiveTab('credits')}
+                  className="px-5 py-2.5 rounded-full text-xs font-bold border-2 cursor-pointer transition-all hover:scale-[1.03] bg-white flex items-center gap-1.5"
+                  style={{ borderColor: '#0ABAB5', color: '#0ABAB5' }}
+                >
+                  <CreditCard className="w-3.5 h-3.5" /> Discount Credits
+                </button>
+                <button 
+                  onClick={() => setActiveTab('draws')}
+                  className="px-5 py-2.5 rounded-full text-xs font-bold text-white border-none cursor-pointer transition-all hover:scale-[1.03] shadow-sm"
+                  style={{ background: 'linear-gradient(135deg, #0ABAB5, #08979D)' }}
+                >
+                  🎰 Lucky Draw
+                </button>
               </div>
             </div>
-          </motion.div>
 
-          {/* Content Panel */}
-          <div className="lg:col-span-9">
+            {/* ═══ TAB CONTENT ═══ */}
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeTab}
-                initial={{ opacity: 0, y: 15 }}
+                initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -15 }}
-                transition={{ duration: 0.3 }}
-                className="rounded-3xl border border-white/8 p-6 lg:p-8 shadow-2xl relative overflow-hidden"
-                style={{ background: 'linear-gradient(180deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%)' }}
+                exit={{ opacity: 0, y: -12 }}
+                transition={{ duration: 0.25 }}
               >
-                
-                {/* ═══ 1. OVERVIEW TAB ═══ */}
+
+                {/* ── OVERVIEW ── */}
                 {activeTab === 'overview' && (
-                  <div className="space-y-6">
-                    <div>
-                      <h2 className="text-xl font-black text-white flex items-center gap-2">
-                        <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-cyan to-blue-500 flex items-center justify-center"><Compass className="w-4 h-4 text-white" /></div>
-                        Active Subscription
-                      </h2>
-                      <p className="text-xs text-white/40 mt-1 ml-10">Your current Beduine membership plan and benefits.</p>
-                    </div>
-
-                    {/* Plan Cards Grid */}
-                    <div className="grid md:grid-cols-3 gap-4">
-                      <div className="p-5 rounded-2xl relative overflow-hidden" style={{ background: 'linear-gradient(135deg, rgba(247,181,0,0.12), rgba(247,181,0,0.04))', border: '1px solid rgba(247,181,0,0.15)' }}>
-                        <div className="absolute top-3 right-3 opacity-15"><Crown className="w-12 h-12 text-neon-gold" /></div>
-                        <span className="text-[9px] uppercase tracking-wider text-neon-gold/60 font-mono block">PLAN TIER</span>
-                        <span className="text-lg font-black text-neon-gold mt-1 block uppercase">{displayPlan}</span>
-                        <span className="text-[10px] text-white/40 block mt-1 font-semibold uppercase">{user?.planType === 'domestic' ? 'Domestic (India)' : user?.planType === 'international' ? 'International' : '—'}</span>
+                  <div className="space-y-5">
+                    {/* Upcoming Trips Progress */}
+                    <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+                      <div className="flex items-center justify-between mb-4">
+                        <h3 className="text-base font-bold text-slate-800 flex items-center gap-2">
+                          <TrendingUp className="w-4 h-4" style={{ color: '#0ABAB5' }} /> Upcoming Trips
+                        </h3>
+                        <span className="text-xs text-slate-400">Your travel journey</span>
                       </div>
-
-                      <div className="p-5 rounded-2xl relative overflow-hidden" style={{ background: 'linear-gradient(135deg, rgba(16,185,129,0.12), rgba(16,185,129,0.04))', border: '1px solid rgba(16,185,129,0.15)' }}>
-                        <span className="text-[9px] uppercase tracking-wider text-emerald-400/60 font-mono block">PLAN STATUS</span>
-                        <span className="text-lg font-black text-emerald-400 mt-1 block">{isSubscribed ? 'Active' : 'Inactive'}</span>
-                        <span className="text-[10px] text-white/40 block mt-1">Expires: {new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
+                      <div className="flex items-baseline gap-1 mb-3">
+                        <span className="text-3xl font-black text-slate-800">{isSubscribed ? 1 : 0}</span>
+                        <span className="text-sm text-slate-400">/ 4 quarterly trips</span>
                       </div>
-
-                      <div className="p-5 rounded-2xl relative overflow-hidden" style={{ background: 'linear-gradient(135deg, rgba(24,215,242,0.12), rgba(24,215,242,0.04))', border: '1px solid rgba(24,215,242,0.15)' }}>
-                        <span className="text-[9px] uppercase tracking-wider text-cyan/60 font-mono block">DRAW ENTRIES</span>
-                        <span className="text-lg font-black text-cyan mt-1 block">{isSubscribed ? '1 Token' : 'None'}</span>
-                        <span className="text-[10px] text-cyan/60 block mt-1 font-mono tracking-wider">{user?.drawToken || '—'}</span>
+                      <p className="text-xs text-slate-400 mb-3">Your current tier: <strong style={{ color: '#0ABAB5' }}>{displayPlan}</strong> — Earn miles on every booking</p>
+                      {/* Progress Bar */}
+                      <div className="h-2.5 rounded-full bg-slate-100 overflow-hidden mb-4">
+                        <motion.div 
+                          initial={{ width: 0 }} animate={{ width: isSubscribed ? '25%' : '5%' }}
+                          transition={{ duration: 1.2, delay: 0.3 }}
+                          className="h-full rounded-full" 
+                          style={{ background: 'linear-gradient(90deg, #F7B500, #0ABAB5)' }} 
+                        />
                       </div>
-                    </div>
-
-                    {/* Quick Actions */}
-                    <div className="p-5 rounded-2xl relative overflow-hidden" style={{ background: 'linear-gradient(135deg, rgba(139,92,246,0.08), rgba(24,215,242,0.06))', border: '1px solid rgba(255,255,255,0.06)' }}>
-                      <h3 className="text-sm font-bold text-white mb-4 flex items-center gap-2"><Sparkles className="w-4 h-4 text-neon-gold" /> Quick Actions & Vouchers</h3>
-                      <div className="grid sm:grid-cols-2 gap-4">
+                      {/* Quick Action Buttons */}
+                      <div className="grid grid-cols-3 gap-3">
                         {[
-                          { title: 'Discount Voucher Credit', desc: '₹500 vouchers credited to your wallet for paid trips.', icon: Gift, color: 'text-emerald-400' },
-                          { title: 'Name Change Policy', desc: 'Platinum plans support unlimited family name adjustments.', icon: Users, color: 'text-violet' },
-                          { title: 'Quarterly Tours', desc: 'Batched travel cycles with curated destinations.', icon: MapPin, color: 'text-cyan' },
-                          { title: 'ROI Guarantee', desc: 'Non-winners get full voucher value — 100% safety net.', icon: TrendingUp, color: 'text-neon-gold' },
-                        ].map((item, i) => {
-                          const Icon = item.icon;
+                          { label: 'Manage Booking', icon: Calendar },
+                          { label: 'Add Guest', icon: Users },
+                          { label: 'View Itinerary', icon: MapPin },
+                        ].map((btn, i) => {
+                          const Icon = btn.icon;
                           return (
-                            <div key={i} className="flex items-start gap-3 p-3 rounded-xl bg-white/3 hover:bg-white/5 transition-colors">
-                              <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center shrink-0">
-                                <Icon className={`w-4 h-4 ${item.color}`} />
-                              </div>
-                              <div>
-                                <span className="text-xs font-semibold text-white/90 block">{item.title}</span>
-                                <span className="text-[10px] text-white/40 leading-relaxed">{item.desc}</span>
-                              </div>
-                            </div>
+                            <a key={i} href="https://wa.me/918768903565" target="_blank" rel="noreferrer"
+                              className="p-3 rounded-xl border border-slate-100 hover:border-teal-200 hover:bg-teal-50/30 transition-all flex items-center gap-2 text-xs font-semibold text-slate-500 hover:text-teal-700 cursor-pointer no-underline"
+                            >
+                              <Icon className="w-3.5 h-3.5" /> {btn.label}
+                            </a>
                           );
                         })}
                       </div>
                     </div>
 
-                    {/* Digital Ticket */}
-                    <div className="border-t border-white/5 pt-6 flex flex-col sm:flex-row items-center justify-between gap-5">
-                      <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 rounded-xl flex items-center justify-center p-1" style={{ background: 'linear-gradient(135deg, rgba(24,215,242,0.15), rgba(139,92,246,0.1))', border: '1px solid rgba(255,255,255,0.1)' }}>
-                          <div className="grid grid-cols-4 gap-0.5 w-full h-full">
-                            {Array.from({ length: 16 }).map((_, i) => (
-                              <div key={i} className={`rounded-sm ${i % 3 === 0 || i % 7 === 0 ? 'bg-white' : 'bg-transparent'}`} />
-                            ))}
+                    {/* Plan Stats Cards */}
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                      {[
+                        { label: 'Plan Tier', value: displayPlan, icon: Crown, color: '#F7B500' },
+                        { label: 'Plan Status', value: isSubscribed ? 'Active' : 'Inactive', icon: Shield, color: '#10b981' },
+                        { label: 'Draw Token', value: user?.drawToken || 'N/A', icon: Ticket, color: '#0ABAB5' },
+                      ].map((card, i) => {
+                        const Icon = card.icon;
+                        return (
+                          <div key={i} className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5 relative overflow-hidden">
+                            <div className="absolute top-3 right-3 opacity-10"><Icon className="w-10 h-10" style={{ color: card.color }} /></div>
+                            <span className="text-[9px] uppercase tracking-wider text-slate-400 font-mono block">{card.label}</span>
+                            <span className="text-lg font-bold text-slate-800 block mt-1">{card.value}</span>
+                            <span className="text-[10px] block mt-1" style={{ color: card.color }}>● Active</span>
                           </div>
-                        </div>
-                        <div>
-                          <h4 className="text-sm font-semibold text-white">Digital Boarding Ticket</h4>
-                          <p className="text-xs text-white/40">Keep your ticket for confirmation at checkout.</p>
-                        </div>
-                      </div>
-                      <button
-                        onClick={() => window.print()}
-                        className="px-5 py-2.5 rounded-xl border border-white/10 hover:bg-white/5 text-xs text-white/80 font-bold flex items-center gap-1.5 transition-colors cursor-pointer hover:border-cyan/30"
-                      >
-                        <Download className="w-4 h-4" /> Download Ticket
-                      </button>
-                    </div>
-                  </div>
-                )}
-
-                {/* ═══ 2. CREDITS TAB ═══ */}
-                {activeTab === 'credits' && (
-                  <div className="space-y-6">
-                    <div>
-                      <h2 className="text-xl font-black text-white flex items-center gap-2">
-                        <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-emerald-400 to-green-500 flex items-center justify-center"><CreditCard className="w-4 h-4 text-white" /></div>
-                        My Discount Credits
-                      </h2>
-                      <p className="text-xs text-white/40 mt-1 ml-10">Guaranteed value recovery — redeem vouchers on paid tour packages.</p>
+                        );
+                      })}
                     </div>
 
-                    {/* Total Balance */}
-                    <div className="p-6 rounded-2xl text-center relative overflow-hidden" style={{ background: 'linear-gradient(135deg, rgba(16,185,129,0.15), rgba(24,215,242,0.1))', border: '1px solid rgba(16,185,129,0.2)' }}>
-                      <span className="text-[10px] uppercase tracking-wider text-emerald-400/60 font-mono">TOTAL WALLET BALANCE</span>
-                      <div className="text-4xl font-black text-emerald-400 mt-1">₹{(planName?.toLowerCase()?.includes('platinum') ? 4 : planName?.toLowerCase()?.includes('gold') ? 2 : 1) * 500}</div>
-                      <span className="text-xs text-white/40 mt-1 block">Available for redemption on paid bookings</span>
-                    </div>
-
-                    {/* Vouchers Grid */}
-                    <div className="grid sm:grid-cols-2 gap-4">
-                      {Array.from({ length: user?.planName?.toLowerCase()?.includes('platinum') ? 4 : user?.planName?.toLowerCase()?.includes('gold') ? 2 : 1 }).map((_, idx) => (
-                        <motion.div 
-                          key={idx} 
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: idx * 0.1 }}
-                          className="p-5 rounded-2xl relative overflow-hidden shadow-lg hover:scale-[1.02] transition-transform"
-                          style={{ background: 'linear-gradient(135deg, rgba(24,215,242,0.08), rgba(139,92,246,0.06))', border: '1px solid rgba(255,255,255,0.08)' }}
-                        >
-                          <div className="absolute -top-6 -right-6 w-24 h-24 bg-cyan/5 rounded-full blur-xl pointer-events-none" />
-                          <div className="flex justify-between items-start">
-                            <div>
-                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/15 text-[9px] text-emerald-400 font-mono font-semibold uppercase">
-                                <Zap className="w-3 h-3" /> ACTIVE VOUCHER
-                              </span>
-                              <div className="text-2xl font-black text-white mt-2">₹500</div>
+                    {/* Quick Actions & Digital Ticket */}
+                    <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+                      <h3 className="text-sm font-bold text-slate-700 mb-4 flex items-center gap-2">
+                        <Sparkles className="w-4 h-4" style={{ color: '#F7B500' }} /> Quick Actions & Vouchers
+                      </h3>
+                      <div className="grid sm:grid-cols-2 gap-3">
+                        {[
+                          { title: 'Discount Voucher', desc: '₹500 vouchers for paid trips', icon: Gift, color: '#10b981' },
+                          { title: 'Name Change Policy', desc: 'Platinum: unlimited family adjustments', icon: Users, color: '#8b5cf6' },
+                          { title: 'Quarterly Tours', desc: 'Curated destinations each cycle', icon: MapPin, color: '#0ABAB5' },
+                          { title: 'ROI Guarantee', desc: '100% voucher safety net', icon: TrendingUp, color: '#F7B500' },
+                        ].map((item, i) => {
+                          const Icon = item.icon;
+                          return (
+                            <div key={i} className="flex items-start gap-3 p-3 rounded-xl bg-slate-50/50 hover:bg-slate-50 transition-colors">
+                              <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style={{ background: `${item.color}15` }}>
+                                <Icon className="w-4 h-4" style={{ color: item.color }} />
+                              </div>
+                              <div>
+                                <span className="text-xs font-semibold text-slate-700 block">{item.title}</span>
+                                <span className="text-[10px] text-slate-400">{item.desc}</span>
+                              </div>
                             </div>
-                            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-neon-gold/20 to-amber-500/10 flex items-center justify-center">
-                              <Gift className="w-5 h-5 text-neon-gold" />
-                            </div>
-                          </div>
-                          
-                          <div className="mt-4 pt-3 border-t border-white/5 flex justify-between items-center text-xs">
-                            <span className="text-white/40">Code: <strong className="font-mono text-white/80">BDN-VOUCH-{idx + 1}04</strong></span>
-                            <span className="text-emerald-400 font-bold flex items-center gap-1"><Check className="w-3 h-3" /> Unused</span>
-                          </div>
-                        </motion.div>
-                      ))}
-                    </div>
-
-                    <div className="p-4 rounded-xl text-xs flex items-start gap-2" style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.1)' }}>
-                      <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-amber-400" />
-                      <div className="text-amber-300/80">
-                        <strong>Redemption Rule:</strong> 1 voucher (₹500) can be redeemed per person per paid tour booking. Credits valid for 12 months.
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {/* ═══ 3. DRAWS TAB ═══ */}
-                {activeTab === 'draws' && (
-                  <div className="space-y-6">
-                    <div>
-                      <h2 className="text-xl font-black text-white flex items-center gap-2">
-                        <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-violet to-purple-500 flex items-center justify-center"><Ticket className="w-4 h-4 text-white" /></div>
-                        Lucky Draw Status
-                      </h2>
-                      <p className="text-xs text-white/40 mt-1 ml-10">View your entries and participate in transparent digital draws.</p>
-                    </div>
-
-                    <div className="grid md:grid-cols-2 gap-6">
-                      {/* Token Card */}
-                      <div className="p-5 rounded-2xl space-y-4 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, rgba(139,92,246,0.1), rgba(24,215,242,0.08))', border: '1px solid rgba(139,92,246,0.15)' }}>
-                        <div>
-                          <span className="text-[10px] text-white/40 uppercase font-mono tracking-wider block">ACTIVE DRAW TOKEN</span>
-                          <span className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan via-violet to-neon-gold tracking-widest font-mono mt-1 block">{user?.drawToken || 'N/A'}</span>
-                        </div>
-                        
-                        <div className="flex items-center justify-between text-xs text-white/60 border-t border-white/5 pt-3">
-                          <span>Upcoming Draw:</span>
-                          <span className="font-semibold text-white flex items-center gap-1">
-                            <Calendar className="w-3.5 h-3.5 text-cyan" /> Next Sunday
-                          </span>
-                        </div>
-                        
-                        <div className="text-[10px] leading-relaxed p-3 rounded-xl" style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.1)', color: 'rgba(251,191,36,0.8)' }}>
-                          ⚠️ <strong>Please Note:</strong> Draws are 100% transparent and verified. Winners travel free. Non-selected retain full voucher credits.
-                        </div>
+                          );
+                        })}
                       </div>
 
-                      {/* Draw Simulator */}
-                      <div className="p-5 rounded-2xl flex flex-col justify-between relative overflow-hidden" style={{ background: 'linear-gradient(135deg, rgba(24,215,242,0.08), rgba(139,92,246,0.06))', border: '1px solid rgba(24,215,242,0.15)' }}>
-                        <div className="absolute -bottom-6 -left-6 w-24 h-24 bg-violet/5 rounded-full blur-xl pointer-events-none" />
-                        <div>
-                          <h3 className="text-sm font-bold text-white flex items-center gap-1"><Sparkles className="w-4 h-4 text-neon-gold" /> RNG Test Simulator</h3>
-                          <p className="text-[11px] text-white/40 mt-1">Simulate a mock draw to see how our verified system operates.</p>
+                      {/* Digital Ticket */}
+                      <div className="mt-5 pt-4 border-t border-slate-100 flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: '#0ABAB515' }}>
+                            <Download className="w-4 h-4" style={{ color: '#0ABAB5' }} />
+                          </div>
+                          <div>
+                            <span className="text-xs font-semibold text-slate-700 block">Digital Boarding Ticket</span>
+                            <span className="text-[10px] text-slate-400">Keep for checkout confirmation</span>
+                          </div>
                         </div>
-
-                        <div className="my-4 min-h-[60px] flex items-center justify-center">
-                          {isSimulatingDraw ? (
-                            <div className="flex flex-col items-center gap-2 text-xs text-cyan font-mono">
-                              <Compass className="w-8 h-8 animate-spin text-cyan" />
-                              <span className="animate-pulse">GENERATING MOCK DRAW...</span>
-                            </div>
-                          ) : simulationResult ? (
-                            <div className="text-center p-3 rounded-xl text-xs text-white font-semibold leading-relaxed" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}>
-                              {simulationResult}
-                            </div>
-                          ) : (
-                            <span className="text-xs text-white/30">Ready to test simulator</span>
-                          )}
-                        </div>
-
-                        <button
-                          onClick={handleSimulateDraw}
-                          disabled={isSimulatingDraw}
-                          className="w-full py-3 rounded-xl font-bold text-xs uppercase tracking-wider disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-all hover:scale-[1.02] text-white"
-                          style={{ background: 'linear-gradient(135deg, #8B5CF6, #18D7F2)' }}
-                        >
-                          ✨ Launch Mock Draw
+                        <button onClick={() => window.print()} className="px-4 py-2 rounded-lg border border-slate-200 hover:border-teal-300 text-xs font-bold text-slate-500 hover:text-teal-600 transition-all cursor-pointer bg-white">
+                          Download
                         </button>
                       </div>
                     </div>
+
+                    {/* Membership Footer */}
+                    <div className="flex items-center justify-between px-2">
+                      <span className="text-xs text-slate-400 flex items-center gap-1.5">
+                        <Star className="w-3.5 h-3.5" style={{ color: '#F7B500' }} /> Beduine Travel Membership
+                      </span>
+                      <ChevronRight className="w-4 h-4 text-slate-300" />
+                    </div>
                   </div>
                 )}
 
-                {/* ═══ 4. BOOKINGS TAB ═══ */}
-                {activeTab === 'bookings' && (
-                  <div className="space-y-6">
-                    <div>
-                      <h2 className="text-xl font-black text-white flex items-center gap-2">
-                        <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center"><Plane className="w-4 h-4 text-white" /></div>
-                        Book Your Travel
+                {/* ── CREDITS ── */}
+                {activeTab === 'credits' && (
+                  <div className="space-y-5">
+                    <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+                      <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2 mb-1">
+                        <CreditCard className="w-5 h-5" style={{ color: '#0ABAB5' }} /> My Discount Credits
                       </h2>
-                      <p className="text-xs text-white/40 mt-1 ml-10">Submit a tour package request and apply your discount wallet credits.</p>
-                    </div>
+                      <p className="text-xs text-slate-400 mb-5">Guaranteed value recovery — redeem on paid tours</p>
 
-                    <div className="p-5 rounded-2xl space-y-4" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                      <p className="text-sm text-white/60 leading-relaxed">
-                        Choose from our curated packages — <strong className="text-white/80">Sundarbans, Darjeeling, Puri, Kashmir, Dubai, Thailand</strong> — and our agents will apply your active member vouchers automatically to reduce costs.
+                      {/* Balance */}
+                      <div className="rounded-2xl p-6 text-center mb-5" style={{ background: 'linear-gradient(135deg, #e0f7f6, #f0faf9)', border: '1px solid #c5eeec' }}>
+                        <span className="text-[10px] uppercase tracking-wider font-mono block" style={{ color: '#08979D' }}>TOTAL WALLET BALANCE</span>
+                        <span className="text-4xl font-black block mt-1" style={{ color: '#0ABAB5' }}>₹{voucherCount * 500}</span>
+                        <span className="text-xs text-slate-400 mt-1 block">Available for paid bookings</span>
+                      </div>
+
+                      {/* Voucher Cards */}
+                      <div className="grid sm:grid-cols-2 gap-4 mb-5">
+                        {Array.from({ length: voucherCount }).map((_, idx) => (
+                          <motion.div key={idx} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.1 }}
+                            className="p-5 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md hover:border-teal-200 transition-all relative overflow-hidden bg-white"
+                          >
+                            <div className="absolute -top-4 -right-4 w-16 h-16 rounded-full opacity-10" style={{ background: '#0ABAB5' }} />
+                            <div className="flex justify-between items-start">
+                              <div>
+                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-bold" style={{ background: '#0ABAB515', color: '#0ABAB5' }}>
+                                  <Zap className="w-3 h-3" /> ACTIVE
+                                </span>
+                                <div className="text-2xl font-black text-slate-800 mt-2">₹500</div>
+                              </div>
+                              <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: '#F7B50015' }}>
+                                <Gift className="w-4 h-4" style={{ color: '#F7B500' }} />
+                              </div>
+                            </div>
+                            <div className="mt-3 pt-3 border-t border-slate-100 flex justify-between items-center text-xs">
+                              <span className="text-slate-400">Code: <strong className="font-mono text-slate-600">BDN-{idx + 1}04</strong></span>
+                              <span className="font-bold flex items-center gap-1" style={{ color: '#10b981' }}><Check className="w-3 h-3" /> Unused</span>
+                            </div>
+                          </motion.div>
+                        ))}
+                      </div>
+
+                      <div className="p-4 rounded-xl text-xs flex items-start gap-2" style={{ background: '#FFF8E1', border: '1px solid #FFE082' }}>
+                        <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-amber-500" />
+                        <span className="text-amber-700"><strong>Redemption:</strong> 1 voucher (₹500) per person per booking. Valid 12 months.</span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* ── DRAWS ── */}
+                {activeTab === 'draws' && (
+                  <div className="space-y-5">
+                    <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+                      <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2 mb-1">
+                        <Ticket className="w-5 h-5" style={{ color: '#0ABAB5' }} /> Lucky Draw Status
+                      </h2>
+                      <p className="text-xs text-slate-400 mb-5">Transparent digital draws — view entries & simulate</p>
+
+                      <div className="grid md:grid-cols-2 gap-5">
+                        {/* Token Card */}
+                        <div className="p-5 rounded-2xl border border-slate-100 space-y-4" style={{ background: 'linear-gradient(135deg, #f0faf9, #f5f7fa)' }}>
+                          <div>
+                            <span className="text-[10px] text-slate-400 uppercase font-mono tracking-wider block">ACTIVE DRAW TOKEN</span>
+                            <span className="text-2xl font-black tracking-widest font-mono mt-1 block" style={{ color: '#0ABAB5' }}>{user?.drawToken || 'N/A'}</span>
+                          </div>
+                          <div className="flex items-center justify-between text-xs text-slate-500 border-t border-slate-100 pt-3">
+                            <span>Upcoming Draw:</span>
+                            <span className="font-semibold text-slate-700 flex items-center gap-1">
+                              <Calendar className="w-3.5 h-3.5" style={{ color: '#0ABAB5' }} /> Next Sunday
+                            </span>
+                          </div>
+                          <div className="text-[10px] leading-relaxed p-3 rounded-xl" style={{ background: '#FFF8E1', border: '1px solid #FFE082', color: '#92400e' }}>
+                            ⚠️ <strong>Note:</strong> Draws are 100% transparent. Winners travel free. Non-selected retain full voucher credits.
+                          </div>
+                        </div>
+
+                        {/* Simulator */}
+                        <div className="p-5 rounded-2xl border-2 border-dashed flex flex-col justify-between" style={{ borderColor: '#0ABAB540', background: '#f0faf9' }}>
+                          <div>
+                            <h3 className="text-sm font-bold text-slate-700 flex items-center gap-1">
+                              <Sparkles className="w-4 h-4" style={{ color: '#F7B500' }} /> RNG Test Simulator
+                            </h3>
+                            <p className="text-[11px] text-slate-400 mt-1">Simulate a mock draw to see how our system works</p>
+                          </div>
+                          <div className="my-4 min-h-[55px] flex items-center justify-center">
+                            {isSimulatingDraw ? (
+                              <div className="flex flex-col items-center gap-2 text-xs font-mono" style={{ color: '#0ABAB5' }}>
+                                <Compass className="w-7 h-7 animate-spin" />
+                                <span className="animate-pulse">GENERATING...</span>
+                              </div>
+                            ) : simulationResult ? (
+                              <div className="text-center p-3 rounded-xl text-xs font-semibold leading-relaxed bg-white border border-slate-100 text-slate-700 shadow-sm">
+                                {simulationResult}
+                              </div>
+                            ) : (
+                              <span className="text-xs text-slate-300">Ready to simulate</span>
+                            )}
+                          </div>
+                          <button onClick={handleSimulateDraw} disabled={isSimulatingDraw}
+                            className="w-full py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider disabled:opacity-50 cursor-pointer text-white border-none transition-all hover:scale-[1.02]"
+                            style={{ background: 'linear-gradient(135deg, #0ABAB5, #08979D)' }}
+                          >
+                            ✨ Launch Mock Draw
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* ── BOOKINGS ── */}
+                {activeTab === 'bookings' && (
+                  <div className="space-y-5">
+                    <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+                      <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2 mb-1">
+                        <Plane className="w-5 h-5" style={{ color: '#0ABAB5' }} /> Book Your Travel
+                      </h2>
+                      <p className="text-xs text-slate-400 mb-5">Submit requests and apply discount vouchers</p>
+
+                      <p className="text-sm text-slate-500 leading-relaxed mb-5">
+                        Choose from <strong className="text-slate-700">Sundarbans, Darjeeling, Puri, Kashmir, Dubai, Thailand</strong> — vouchers applied automatically.
                       </p>
 
-                      <div className="grid md:grid-cols-2 gap-4 pt-2">
-                        <a 
-                          href="https://wa.me/918768903565?text=Hello%20BEDUINE%2C%20I%20want%20to%20book%20a%20tour%20package%20using%20my%20member%20discount%20vouchers." 
-                          target="_blank" 
-                          rel="noreferrer"
-                          className="p-4 rounded-xl flex items-center justify-between group transition-all hover:scale-[1.02]"
-                          style={{ background: 'linear-gradient(135deg, rgba(16,185,129,0.1), rgba(16,185,129,0.04))', border: '1px solid rgba(16,185,129,0.15)' }}
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <a href="https://wa.me/918768903565?text=Hello%20BEDUINE%2C%20I%20want%20to%20book%20a%20tour%20package%20using%20my%20member%20discount%20vouchers." 
+                          target="_blank" rel="noreferrer"
+                          className="p-5 rounded-2xl border border-slate-100 hover:border-teal-300 hover:shadow-md transition-all flex items-center justify-between group no-underline"
+                          style={{ background: 'linear-gradient(135deg, #f0faf9, #ffffff)' }}
                         >
                           <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-xl bg-emerald-500/15 flex items-center justify-center">
-                              <Plane className="w-5 h-5 text-emerald-400" />
+                            <div className="w-11 h-11 rounded-xl flex items-center justify-center" style={{ background: '#10b98115' }}>
+                              <Plane className="w-5 h-5" style={{ color: '#10b981' }} />
                             </div>
-                            <div className="text-left">
-                              <span className="block text-xs font-bold text-white">Book Paid Tour</span>
-                              <span className="block text-[10px] text-white/40">Apply vouchers to save</span>
+                            <div>
+                              <span className="block text-sm font-bold text-slate-700">Book Paid Tour</span>
+                              <span className="block text-[10px] text-slate-400">Apply vouchers to save</span>
                             </div>
                           </div>
-                          <ArrowRight className="w-4 h-4 text-white/30 group-hover:text-emerald-400 group-hover:translate-x-1 transition-all" />
+                          <ArrowRight className="w-4 h-4 text-slate-300 group-hover:text-teal-500 group-hover:translate-x-1 transition-all" />
                         </a>
 
-                        <a 
-                          href="https://wa.me/918768903565?text=Hello%20BEDUINE%2C%20I%20have%20questions%20about%20the%20upcoming%20Sunday%20lucky%20draw%20schedule." 
-                          target="_blank" 
-                          rel="noreferrer"
-                          className="p-4 rounded-xl flex items-center justify-between group transition-all hover:scale-[1.02]"
-                          style={{ background: 'linear-gradient(135deg, rgba(139,92,246,0.1), rgba(139,92,246,0.04))', border: '1px solid rgba(139,92,246,0.15)' }}
+                        <a href="https://wa.me/918768903565?text=Hello%20BEDUINE%2C%20I%20have%20questions%20about%20the%20upcoming%20Sunday%20lucky%20draw%20schedule."
+                          target="_blank" rel="noreferrer"
+                          className="p-5 rounded-2xl border border-slate-100 hover:border-teal-300 hover:shadow-md transition-all flex items-center justify-between group no-underline"
+                          style={{ background: 'linear-gradient(135deg, #f5f3ff, #ffffff)' }}
                         >
                           <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-xl bg-violet/15 flex items-center justify-center">
-                              <Ticket className="w-5 h-5 text-violet" />
+                            <div className="w-11 h-11 rounded-xl flex items-center justify-center" style={{ background: '#8b5cf615' }}>
+                              <Ticket className="w-5 h-5" style={{ color: '#8b5cf6' }} />
                             </div>
-                            <div className="text-left">
-                              <span className="block text-xs font-bold text-white">Draw Support Info</span>
-                              <span className="block text-[10px] text-white/40">Inquire about rules</span>
+                            <div>
+                              <span className="block text-sm font-bold text-slate-700">Draw Support</span>
+                              <span className="block text-[10px] text-slate-400">Inquire about rules</span>
                             </div>
                           </div>
-                          <ArrowRight className="w-4 h-4 text-white/30 group-hover:text-violet group-hover:translate-x-1 transition-all" />
+                          <ArrowRight className="w-4 h-4 text-slate-300 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" />
                         </a>
                       </div>
                     </div>
@@ -595,10 +517,65 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
 
               </motion.div>
             </AnimatePresence>
-          </div>
+          </motion.main>
+
+          {/* ──────── RIGHT SIDEBAR: UPCOMING TRIPS ──────── */}
+          <motion.aside 
+            initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+            className="hidden lg:flex flex-col gap-5"
+          >
+            {/* Trip Card 1 */}
+            <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+              <div className="flex items-center justify-between px-5 pt-4 pb-2">
+                <h4 className="text-sm font-bold text-slate-700">Upcoming Trip</h4>
+                <ChevronRight className="w-4 h-4 text-slate-300" />
+              </div>
+              <div className="px-3 pb-3">
+                <div className="rounded-xl overflow-hidden h-[150px] relative">
+                  <img 
+                    src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=600&q=80" 
+                    alt="Mountain destination" 
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute bottom-0 left-0 right-0 p-3" style={{ background: 'linear-gradient(transparent, rgba(0,0,0,0.6))' }}>
+                    <span className="text-white text-xs font-bold">Kashmir Valley</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Trip Card 2 */}
+            <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+              <div className="flex items-center justify-between px-5 pt-4 pb-2">
+                <h4 className="text-sm font-bold text-slate-700">Upcoming Trip</h4>
+                <ChevronRight className="w-4 h-4 text-slate-300" />
+              </div>
+              <div className="px-3 pb-3">
+                <div className="rounded-xl overflow-hidden h-[150px] relative">
+                  <img 
+                    src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80" 
+                    alt="Beach destination" 
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute bottom-0 left-0 right-0 p-3" style={{ background: 'linear-gradient(transparent, rgba(0,0,0,0.6))' }}>
+                    <span className="text-white text-xs font-bold">Puri Beach</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Membership Card */}
+            <div className="rounded-2xl p-5 text-center" style={{ background: 'linear-gradient(135deg, #0ABAB5, #08979D)', boxShadow: '0 8px 25px rgba(10,186,181,0.25)' }}>
+              <Crown className="w-6 h-6 text-white/80 mx-auto mb-2" />
+              <h4 className="text-sm font-bold text-white mb-1">Beduine Member</h4>
+              <p className="text-[10px] text-white/70 leading-relaxed">Exclusive travel discounts, lucky draws & guaranteed vouchers</p>
+              <div className="mt-3 w-full h-1 rounded-full bg-white/20 overflow-hidden">
+                <div className="h-full w-1/3 rounded-full bg-white/60" />
+              </div>
+            </div>
+          </motion.aside>
 
         </div>
-
       </div>
     </div>
   );
