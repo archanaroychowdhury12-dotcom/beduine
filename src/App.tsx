@@ -356,7 +356,7 @@ function ParticleButton({ children, onClick, variant = 'gold', className = '', .
     }
     onClick?.(e);
   };
-  const btnClass = variant === 'gold' ? 'glow-cta' : 'glow-cta-cyan';
+  const btnClass = variant === 'gold' ? 'glow-cta' : variant === 'teal' ? 'glow-cta-teal' : 'glow-cta-cyan';
   return (
     <button ref={btnRef} data-magnetic onClick={handleClick} className={`relative overflow-visible ${btnClass} ${className}`} {...rest}>
       {children}
@@ -760,10 +760,19 @@ function Navbar({ view, setView, currentUser, handleMemberLogin }: NavbarProps) 
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  const isDashboard = view === 'dashboard';
+
   return (
     <header className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${scrolled ? 'py-2' : 'py-4'}`}>
       <div className="max-w-7xl mx-auto px-4 lg:px-6">
-        <div className={`glass rounded-2xl transition-all duration-500 ${scrolled ? 'neon-border-cyan' : ''}`}>
+        <div 
+          className={`rounded-2xl transition-all duration-500 ${scrolled ? 'shadow-md' : ''} border`}
+          style={{
+            backgroundColor: isDashboard ? '#FFFDFC' : scrolled ? 'rgba(255, 255, 255, 0.72)' : 'transparent',
+            backdropFilter: isDashboard ? 'none' : 'blur(24px) saturate(180%)',
+            borderColor: isDashboard ? '#E8DED0' : scrolled ? 'rgba(148, 163, 184, 0.28)' : 'transparent',
+          }}
+        >
           <div className="flex items-center justify-between px-4 lg:px-6 h-14 lg:h-16">
             <a 
               href="#top" 
@@ -779,12 +788,15 @@ function Navbar({ view, setView, currentUser, handleMemberLogin }: NavbarProps) 
                 }
               }}
             >
-              <div className="w-10 h-10 rounded-full overflow-hidden border border-cyan/30 shadow-lg shadow-cyan/20 bg-cosmos flex items-center justify-center p-1.5">
+              <div 
+                className="w-10 h-10 rounded-full overflow-hidden border shadow-lg bg-cosmos flex items-center justify-center p-1.5"
+                style={{ borderColor: isDashboard ? '#E8DED0' : 'rgba(24, 215, 242, 0.3)' }}
+              >
                 <img src="/images/bedune_logo_cropped.png" alt="BEDUINE Logo" className="w-full h-full object-contain" />
               </div>
               <div className="leading-tight">
-                <div className="font-display text-base font-bold text-ink tracking-tight">BEDUINE</div>
-                <div className="text-[9px] uppercase tracking-[0.22em] neon-cyan">Tour & Travels</div>
+                <div className="font-display text-base font-bold tracking-tight" style={{ color: '#1F2F46' }}>BEDUINE</div>
+                <div className="text-[9px] uppercase tracking-[0.22em] font-black" style={{ color: '#148C8C' }}>Tour & Travels</div>
               </div>
             </a>
             <nav className="hidden lg:flex items-center gap-6">
@@ -811,21 +823,26 @@ function Navbar({ view, setView, currentUser, handleMemberLogin }: NavbarProps) 
                       }, 100);
                     }
                   }}
-                  className="text-sm text-[#7E919D] hover:text-[#18D7F2] hover:scale-105 transition-all font-medium whitespace-nowrap"
+                  className="text-sm transition-all font-bold whitespace-nowrap hover:scale-105"
+                  style={{ color: isDashboard ? '#1F2F46' : '#7E919D' }}
+                  onMouseEnter={(e) => e.currentTarget.style.color = '#148C8C'}
+                  onMouseLeave={(e) => e.currentTarget.style.color = isDashboard ? '#1F2F46' : '#7E919D'}
                 >
                   {n.label}
                 </a>
               ))}
             </nav>
             <div className="hidden lg:flex items-center gap-3">
-              <a 
-                href="#login" 
+              <button 
                 onClick={handleMemberLogin} 
                 data-magnetic 
-                className="text-sm text-[#7E919D] hover:text-[#18D7F2] transition-colors font-medium px-3 py-2 whitespace-nowrap"
+                className="text-sm transition-colors font-bold px-3 py-2 whitespace-nowrap bg-transparent border-none cursor-pointer"
+                style={{ color: isDashboard ? '#1F2F46' : '#7E919D' }}
+                onMouseEnter={(e) => e.currentTarget.style.color = '#148C8C'}
+                onMouseLeave={(e) => e.currentTarget.style.color = isDashboard ? '#1F2F46' : '#7E919D'}
               >
                 {currentUser ? 'My Dashboard' : 'Create Account'}
-              </a>
+              </button>
               <a 
                 href="#plans"
                 onClick={(e) => {
@@ -839,7 +856,7 @@ function Navbar({ view, setView, currentUser, handleMemberLogin }: NavbarProps) 
                   }
                 }}
               >
-                <ParticleButton variant="cyan" className="px-4 py-2 rounded-full font-semibold text-sm inline-flex items-center gap-1.5">
+                <ParticleButton variant={isDashboard ? 'teal' : 'cyan'} className="px-4 py-2 rounded-full font-bold text-sm inline-flex items-center gap-1.5 text-white">
                   Choose Plan <ArrowRight className="w-3.5 h-3.5" />
                 </ParticleButton>
               </a>
@@ -847,7 +864,8 @@ function Navbar({ view, setView, currentUser, handleMemberLogin }: NavbarProps) 
 
             <div className="flex items-center gap-2">
               <button
-                className="lg:hidden text-ink p-2"
+                className="lg:hidden p-2 border-none bg-transparent cursor-pointer"
+                style={{ color: '#1F2F46' }}
                 onClick={() => setOpen(!open)}
                 aria-label={open ? 'Close menu' : 'Open menu'}
                 aria-expanded={open}
@@ -859,8 +877,8 @@ function Navbar({ view, setView, currentUser, handleMemberLogin }: NavbarProps) 
           </div>
           <AnimatePresence>
             {open && (
-              <motion.div id="mobile-menu" initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="lg:hidden overflow-hidden border-t border-slate-line">
-                <div className="px-4 py-3 flex flex-col gap-1">
+              <motion.div id="mobile-menu" initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="lg:hidden overflow-hidden border-t" style={{ borderColor: '#E8DED0' }}>
+                <div className="px-4 py-3 flex flex-col gap-1" style={{ backgroundColor: '#FFFDFC' }}>
                   {NAV.map((n) => (
                     <a 
                       key={n.id} 
@@ -884,7 +902,8 @@ function Navbar({ view, setView, currentUser, handleMemberLogin }: NavbarProps) 
                           }, 100);
                         }
                       }} 
-                      className="py-2.5 text-ink/90 text-sm font-medium"
+                      className="py-2.5 text-sm font-bold no-underline"
+                      style={{ color: '#1F2F46' }}
                     >
                       {n.label}
                     </a>
@@ -894,7 +913,8 @@ function Navbar({ view, setView, currentUser, handleMemberLogin }: NavbarProps) 
                       setOpen(false);
                       handleMemberLogin(e);
                     }}
-                    className="mt-2 text-center py-2.5 rounded-full border border-white/10 text-xs font-semibold text-white/95"
+                    className="mt-2 text-center py-2.5 rounded-full border text-xs font-bold transition-all bg-transparent"
+                    style={{ borderColor: '#E8DED0', color: '#1F2F46' }}
                   >
                     {currentUser ? 'My Dashboard' : 'Create Account'}
                   </button>
@@ -911,7 +931,8 @@ function Navbar({ view, setView, currentUser, handleMemberLogin }: NavbarProps) 
                         }, 100);
                       }
                     }} 
-                    className="mt-1 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-gradient-to-r from-neon-gold to-gold text-cosmos font-semibold text-sm"
+                    className="mt-1.5 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full text-white font-bold text-sm no-underline"
+                    style={{ background: 'linear-gradient(135deg, #148C8C, #0E6B6B)' }}
                   >
                     Choose Plan <ArrowRight className="w-4 h-4" />
                   </a>

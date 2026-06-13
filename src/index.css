@@ -28,9 +28,35 @@
   --color-bedune-gold: #F7B500;
   --color-bedune-bright-text: #0B1F2E;
   --color-bedune-nav-navy: #071B2C;
+
+  /* Custom Dashboard Palette Colors */
+  --color-bg-beige: #FAF7F2;
+  --color-card-white: #FFFDFC;
+  --color-premium-beige: #ECD6B7;
+  --color-cream: #F6E9D2;
+  --color-navy: #1F2F46;
+  --color-muted-grey: #6E7A89;
+  --color-teal-accent: #148C8C;
+  --color-gold-accent: #D9B26F;
+  --color-border-beige: #E8DED0;
+  --color-danger-red: #D96B5F;
+
+  --color-teal: #148C8C;
+  --color-gold: #D9B26F;
 }
 
 :root {
+  --bg: #FAF7F2;
+  --card: #FFFDFC;
+  --premium-beige: #ECD6B7;
+  --cream: #F6E9D2;
+  --navy: #1F2F46;
+  --muted: #6E7A89;
+  --teal: #148C8C;
+  --gold: #D9B26F;
+  --border: #E8DED0;
+  --danger: #D96B5F;
+
   --bedune-text-primary: #F8FAFC;
   --bedune-text-secondary: #D8E4EA;
   --bedune-text-muted: #AFC0CA;
@@ -1555,11 +1581,22 @@ input:focus-visible,
   box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.6), 0 0 45px rgba(0, 199, 163, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
 }
 
+.glow-cta-teal {
+  background: linear-gradient(135deg, #148C8C 0%, #0E6B6B 100%);
+  color: #FFFDFC !important;
+  box-shadow: 0 0 0 1px rgba(20, 140, 140, 0.4), 0 10px 34px -10px rgba(20, 140, 140, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.glow-cta-teal:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 0 1px rgba(20, 140, 140, 0.6), 0 15px 42px -8px rgba(20, 140, 140, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
 /* Unique premium registration button styling */
 .premium-register-btn {
   position: relative;
   overflow: hidden;
-  background: linear-gradient(135deg, #00D9FF 0%, #8B5CF6 50%, #FF2E93 100%);
+  background: linear-gradient(135deg, #148C8C 0%, #3C7BDA 50%, #8B5CF6 100%);
   background-size: 200% auto;
   color: #FFFFFF !important;
   font-weight: 800;
@@ -1567,7 +1604,7 @@ input:focus-visible,
   letter-spacing: 0.05em;
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 9999px;
-  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3), 0 0 35px rgba(0, 217, 255, 0.2), inset 0 1.5px 0 rgba(255, 255, 255, 0.4);
+  box-shadow: 0 4px 15px rgba(20, 140, 140, 0.3), 0 0 35px rgba(217, 178, 111, 0.2), inset 0 1.5px 0 rgba(255, 255, 255, 0.4);
   transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
   cursor: pointer;
   animation: premium-grad-shift 6s ease infinite alternate;
@@ -1580,7 +1617,7 @@ input:focus-visible,
 
 .premium-register-btn:hover {
   transform: translateY(-3px) scale(1.02);
-  box-shadow: 0 12px 30px rgba(139, 92, 246, 0.5), 0 0 45px rgba(0, 217, 255, 0.4), inset 0 1.5px 0 rgba(255, 255, 255, 0.5);
+  box-shadow: 0 12px 30px rgba(20, 140, 140, 0.5), 0 0 45px rgba(217, 178, 111, 0.4), inset 0 1.5px 0 rgba(255, 255, 255, 0.5);
   border-color: rgba(255, 255, 255, 0.4);
 }
 

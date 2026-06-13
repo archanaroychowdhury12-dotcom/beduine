@@ -117,7 +117,7 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
   ];
 
   return (
-    <div className="min-h-screen pt-20 lg:pt-24 pb-10" style={{ background: 'linear-gradient(135deg, #eefcfb 0%, #f7f0ff 40%, #fff3ec 80%, #f0fdfa 100%)' }}>
+    <div className="min-h-screen pt-20 lg:pt-24 pb-10" style={{ backgroundColor: '#FAF7F2' }}>
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6">
         
         {/* ═══ TOP NAV BAR ═══ */}
@@ -126,16 +126,16 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
           className="flex items-center justify-between mb-6 px-2"
         >
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #0ABAB5, #08979D)' }}>
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center animate-pulse" style={{ background: 'linear-gradient(135deg, #148C8C, #0E6B6B)' }}>
               <Compass className="w-4 h-4 text-white" />
             </div>
-            <span className="text-sm font-bold text-slate-700 tracking-wide">Dashboard</span>
+            <span className="text-sm font-bold tracking-wide" style={{ color: '#1F2F46' }}>Dashboard</span>
           </div>
           <div className="flex items-center gap-4">
-            <span className="text-sm text-slate-500 hidden sm:block">{profileName}</span>
-            <Phone className="w-4 h-4 text-slate-400 cursor-pointer hover:text-teal-600 transition-colors" />
-            <User className="w-4 h-4 text-slate-400 cursor-pointer hover:text-teal-600 transition-colors" />
-            <MoreVertical className="w-4 h-4 text-slate-400 cursor-pointer hover:text-teal-600 transition-colors" />
+            <span className="text-sm hidden sm:block font-bold" style={{ color: '#1F2F46' }}>{profileName}</span>
+            <Phone className="w-4 h-4 cursor-pointer hover:text-[#148C8C] transition-colors" style={{ color: '#5D6978' }} />
+            <User className="w-4 h-4 cursor-pointer hover:text-[#148C8C] transition-colors" style={{ color: '#5D6978' }} />
+            <MoreVertical className="w-4 h-4 cursor-pointer hover:text-[#148C8C] transition-colors" style={{ color: '#5D6978' }} />
           </div>
         </motion.div>
 
@@ -145,16 +145,16 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
           {/* ──────── LEFT SIDEBAR ──────── */}
           <motion.aside 
             initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }}
-            className="hidden lg:flex flex-col gap-1.5 rounded-2xl p-4 shadow-sm border border-teal-100/50 h-fit sticky top-28"
-            style={{ background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(240, 253, 250, 0.9) 100%)', backdropFilter: 'blur(8px)' }}
+            className="hidden lg:flex flex-col gap-1.5 rounded-2xl p-4 shadow-sm border h-fit sticky top-28"
+            style={{ backgroundColor: '#FFFDFC', borderColor: '#E8DED0', backdropFilter: 'blur(8px)' }}
           >
             {/* Brand */}
             <div className="flex items-center gap-2.5 px-3 py-3 mb-2">
-              <div className="w-9 h-9 rounded-xl overflow-hidden border border-teal-200 bg-white flex items-center justify-center p-1">
+              <div className="w-9 h-9 rounded-xl overflow-hidden border bg-white flex items-center justify-center p-1" style={{ borderColor: '#E8DED0' }}>
                 <img src="/images/bedune_logo_cropped.png" alt="Logo" className="w-full h-full object-contain" />
               </div>
               <div>
-                <span className="text-sm font-black text-slate-800 tracking-tight block" style={{ color: '#0ABAB5' }}>BEDUINE</span>
+                <span className="text-sm font-black tracking-tight block animate-pulse" style={{ color: '#148C8C' }}>BEDUINE</span>
                 <span className="text-[8px] uppercase tracking-[0.2em] text-slate-400 font-mono">Tour Tracker</span>
               </div>
             </div>
@@ -169,19 +169,22 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                   onClick={() => setActiveTab(item.id as any)}
                   className={`w-full text-left px-4 py-3 rounded-xl flex items-center gap-3 cursor-pointer transition-all duration-200 border-none text-sm ${
                     isActive 
-                      ? 'font-bold text-white shadow-md' 
-                      : 'font-medium text-slate-500 hover:bg-slate-50 hover:text-slate-700 bg-transparent'
+                      ? 'font-bold text-white shadow-sm' 
+                      : 'font-medium hover:bg-[#FAF7F2] bg-transparent'
                   }`}
-                  style={isActive ? { background: 'linear-gradient(135deg, #0ABAB5, #08979D)', boxShadow: '0 4px 15px rgba(10,186,181,0.3)' } : undefined}
+                  style={{
+                    backgroundColor: isActive ? '#148C8C' : 'transparent',
+                    color: isActive ? '#FFFDFC' : '#5D6978'
+                  }}
                 >
-                  <Icon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-slate-400'}`} />
+                  <Icon className="w-4 h-4" style={{ color: isActive ? '#FFFDFC' : '#5D6978' }} />
                   {item.label}
                 </button>
               );
             })}
 
             {/* Extra Nav */}
-            <div className="border-t border-slate-100 mt-3 pt-3 space-y-1">
+            <div className="border-t mt-3 pt-3 space-y-1" style={{ borderColor: '#E8DED0' }}>
               {[
                 { id: 'edit-profile', icon: Edit, label: 'Edit Profile' },
                 { id: 'lucky-status', icon: Heart, label: 'Lucky Status' },
@@ -192,11 +195,13 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                   <button
                     key={item.id}
                     onClick={() => setActiveTab(item.id as any)}
-                    className={`w-full text-left px-4 py-2.5 rounded-xl flex items-center gap-3 cursor-pointer transition-all text-sm font-medium border-none bg-transparent ${
-                      isActive ? 'font-bold text-teal-600 bg-teal-50/50' : 'text-slate-400 hover:bg-slate-50 hover:text-slate-600'
-                    }`}
+                    className="w-full text-left px-4 py-2.5 rounded-xl flex items-center gap-3 cursor-pointer transition-all text-sm font-medium border-none"
+                    style={{
+                      backgroundColor: isActive ? '#148C8C' : 'transparent',
+                      color: isActive ? '#FFFDFC' : '#5D6978'
+                    }}
                   >
-                    <Icon className={`w-4 h-4 ${isActive ? 'text-teal-600' : 'text-slate-400'}`} /> {item.label}
+                    <Icon className="w-4 h-4" style={{ color: isActive ? '#FFFDFC' : '#5D6978' }} /> {item.label}
                   </button>
                 );
               })}
@@ -205,9 +210,10 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
             {/* Logout */}
             <button 
               onClick={onLogout}
-              className="w-full mt-4 px-4 py-2.5 rounded-xl flex items-center gap-3 cursor-pointer transition-all text-sm font-bold text-red-400 hover:bg-red-50 border-none bg-transparent"
+              className="w-full mt-4 px-4 py-2.5 rounded-xl flex items-center gap-3 cursor-pointer transition-all text-sm font-bold border-none bg-transparent hover:bg-red-50/50"
+              style={{ color: '#D96B5F' }}
             >
-              <LogOut className="w-4 h-4" /> Log Out
+              <LogOut className="w-4 h-4" style={{ color: '#D96B5F' }} /> Log Out
             </button>
           </motion.aside>
 
@@ -225,9 +231,9 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                   key={item.id}
                   onClick={() => setActiveTab(item.id as any)}
                   className={`whitespace-nowrap px-4 py-2.5 rounded-xl flex items-center gap-2 cursor-pointer transition-all text-xs font-bold border-none ${
-                    isActive ? 'text-white shadow-md' : 'text-slate-500 bg-white'
+                    isActive ? 'text-white shadow-sm' : 'text-slate-500 bg-white'
                   }`}
-                  style={isActive ? { background: 'linear-gradient(135deg, #0ABAB5, #08979D)' } : undefined}
+                  style={isActive ? { background: 'linear-gradient(135deg, #148C8C, #0E6B6B)' } : undefined}
                 >
                   <Icon className="w-3.5 h-3.5" /> {item.label}
                 </button>
@@ -239,16 +245,16 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
           <motion.main initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}>
             
             {/* Profile Summary Card */}
-            <div className="rounded-2xl shadow-sm border p-6 mb-5" style={{ background: 'linear-gradient(135deg, #F5DFBF 0%, #FAF0DD 50%, #E6CFA9 100%)', borderColor: '#ECD7B4' }}>
+            <div className="rounded-2xl shadow-sm border p-6 mb-5" style={{ backgroundColor: '#ECD6B7', borderColor: '#E8DED0' }}>
               <div className="flex items-center justify-between mb-5">
-                <h2 className="text-lg font-bold text-slate-800">Profile Summary</h2>
-                <ChevronRight className="w-4 h-4 text-slate-300" />
+                <h2 className="text-lg font-bold" style={{ color: '#1F2F46' }}>Profile Summary</h2>
+                <ChevronRight className="w-4 h-4 text-slate-500" />
               </div>
 
               <div className="flex flex-col sm:flex-row items-start gap-5">
                 {/* Avatar */}
                 <div className="relative shrink-0">
-                  <div className="w-[90px] h-[90px] rounded-full p-[3px]" style={{ background: 'linear-gradient(135deg, #0ABAB5, #F7B500, #0ABAB5)' }}>
+                  <div className="w-[90px] h-[90px] rounded-full p-[3px]" style={{ background: 'linear-gradient(135deg, #148C8C, #D9B26F, #148C8C)' }}>
                     {profileAvatar ? (
                       <img 
                         src={profileAvatar} 
@@ -256,12 +262,12 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                         className="w-full h-full rounded-full object-cover"
                       />
                     ) : (
-                      <div className="w-full h-full rounded-full flex items-center justify-center text-3xl font-black uppercase" style={{ background: 'linear-gradient(135deg, #e0f7f6, #f0faf9)', color: '#0ABAB5' }}>
+                      <div className="w-full h-full rounded-full flex items-center justify-center text-3xl font-black uppercase" style={{ background: '#FAF7F2', color: '#1F2F46' }}>
                         {profileName?.charAt(0) || 'U'}
                       </div>
                     )}
                   </div>
-                  <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full flex items-center justify-center shadow-md" style={{ background: '#0ABAB5' }}>
+                  <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full flex items-center justify-center shadow-md animate-pulse" style={{ background: '#148C8C' }}>
                     <Check className="w-3 h-3 text-white" />
                   </div>
                 </div>
@@ -269,37 +275,37 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                 {/* Info */}
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2.5 flex-wrap mb-1">
-                    <h3 className="text-base font-bold text-slate-800">Verified Membership ID</h3>
-                    <span className="px-3 py-1 rounded-full text-[10px] font-bold border" style={{ borderColor: '#0ABAB5', color: '#0ABAB5' }}>
+                    <h3 className="text-base font-bold" style={{ color: '#1F2F46' }}>Verified Membership ID</h3>
+                    <span className="px-3 py-1 rounded-full text-[10px] font-bold border" style={{ borderColor: '#D9B26F', color: '#1F2F46' }}>
                       {displayPlan}
                     </span>
                   </div>
 
                   <div className="flex items-center gap-3 mb-3">
                     {['Active', 'Verified', 'Member'].map((tag, i) => (
-                      <span key={i} className="text-xs text-slate-400">{tag}</span>
+                      <span key={i} className="text-xs font-semibold" style={{ color: '#5D6978' }}>{tag}</span>
                     ))}
-                    {isSubscribed && <span className="text-xs flex items-center gap-1" style={{ color: '#0ABAB5' }}><Heart className="w-3 h-3" /> Subscribed</span>}
+                    {isSubscribed && <span className="text-xs flex items-center gap-1 font-bold" style={{ color: '#148C8C' }}><Heart className="w-3 h-3" /> Subscribed</span>}
                   </div>
 
-                  <p className="text-xs font-bold text-slate-600 mb-0.5">Prized Subscription Plan ID</p>
-                  <p className="text-xs text-slate-400 leading-relaxed">{profileEmail || profileMobile} • Member ID: <strong className="text-slate-600 font-mono">{user?.memberId}</strong></p>
+                  <p className="text-xs font-bold mb-0.5" style={{ color: '#1F2F46' }}>Prized Subscription Plan ID</p>
+                  <p className="text-xs leading-relaxed" style={{ color: '#5D6978' }}>{profileEmail || profileMobile} • Member ID: <strong className="font-mono text-slate-800">{user?.memberId}</strong></p>
                 </div>
               </div>
 
               {/* Action Buttons */}
-              <div className="flex flex-wrap gap-3 mt-5 pt-5 border-t border-slate-100/60">
+              <div className="flex flex-wrap gap-3 mt-5 pt-5 border-t" style={{ borderColor: '#E8DED0' }}>
                 <button 
                   onClick={() => setActiveTab('credits')}
-                  className="px-5 py-2.5 rounded-full text-xs font-bold border border-teal-200 cursor-pointer transition-all hover:scale-[1.03] flex items-center gap-1.5 shadow-sm"
-                  style={{ background: 'linear-gradient(135deg, #f0fdfa, #ccfbf1)', color: '#08979D' }}
+                  className="px-5 py-2.5 rounded-full text-xs font-bold border cursor-pointer transition-all hover:scale-[1.03] flex items-center gap-1.5 shadow-sm bg-white"
+                  style={{ borderColor: '#E8DED0', color: '#1F2F46' }}
                 >
-                  <CreditCard className="w-3.5 h-3.5 text-teal-600" /> Discount Credits
+                  <CreditCard className="w-3.5 h-3.5" style={{ color: '#148C8C' }} /> Discount Credits
                 </button>
                 <button 
                   onClick={() => setActiveTab('draws')}
-                  className="px-5 py-2.5 rounded-full text-xs font-bold text-white border-none cursor-pointer transition-all hover:scale-[1.03] shadow-sm"
-                  style={{ background: 'linear-gradient(135deg, #ec4899, #db2777)' }}
+                  className="px-5 py-2.5 rounded-full text-xs font-bold text-white border-none cursor-pointer transition-all hover:scale-[1.03] shadow-md"
+                  style={{ background: 'linear-gradient(135deg, #148C8C, #0E6B6B)' }}
                 >
                   🎰 Lucky Draw
                 </button>
@@ -320,7 +326,7 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                 {activeTab === 'overview' && (
                   <div className="space-y-5">
                     {/* Upcoming Trips Progress */}
-                    <div className="rounded-2xl shadow-sm border p-6" style={{ background: 'linear-gradient(135deg, #F5DFBF 0%, #FAF0DD 50%, #E6CFA9 100%)', borderColor: '#ECD7B4' }}>
+                    <div className="rounded-2xl shadow-sm border p-6" style={{ backgroundColor: '#FFFDFC', borderColor: '#E8DED0' }}>
                       <div className="flex items-center justify-between mb-4">
                         <h3 className="text-base font-bold text-slate-800 flex items-center gap-2">
                           <TrendingUp className="w-4 h-4" style={{ color: '#0ABAB5' }} /> Upcoming Trips
@@ -338,7 +344,7 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                           initial={{ width: 0 }} animate={{ width: isSubscribed ? '25%' : '5%' }}
                           transition={{ duration: 1.2, delay: 0.3 }}
                           className="h-full rounded-full" 
-                          style={{ background: 'linear-gradient(90deg, #F7B500, #0ABAB5)' }} 
+                          style={{ background: 'linear-gradient(90deg, #D9B26F, #148C8C)' }} 
                         />
                       </div>
                       {/* Quick Action Buttons */}
@@ -363,9 +369,9 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                     {/* Plan Stats Cards */}
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                       {[
-                        { label: 'Plan Tier', value: displayPlan, icon: Crown, color: '#F7B500', bg: 'linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%)', border: 'border-amber-100' },
-                        { label: 'Plan Status', value: isSubscribed ? 'Active' : 'Inactive', icon: Shield, color: '#10b981', bg: 'linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)', border: 'border-emerald-100' },
-                        { label: 'Draw Token', value: user?.drawToken || 'N/A', icon: Ticket, color: '#0ABAB5', bg: 'linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 100%)', border: 'border-teal-100' },
+                        { label: 'Plan Tier', value: displayPlan, icon: Crown, color: '#D9B26F', bg: 'linear-gradient(135deg, #FFFDFC 0%, #F6E9D2 100%)', border: 'border-[#E8DED0]' },
+                        { label: 'Plan Status', value: isSubscribed ? 'Active' : 'Inactive', icon: Shield, color: '#148C8C', bg: 'linear-gradient(135deg, #FFFDFC 0%, #F6E9D2 100%)', border: 'border-[#E8DED0]' },
+                        { label: 'Draw Token', value: user?.drawToken || 'N/A', icon: Ticket, color: '#148C8C', bg: 'linear-gradient(135deg, #FFFDFC 0%, #F6E9D2 100%)', border: 'border-[#E8DED0]' },
                       ].map((card, i) => {
                         const Icon = card.icon;
                         return (
@@ -380,7 +386,7 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                     </div>
 
                     {/* Quick Actions & Digital Ticket */}
-                    <div className="rounded-2xl shadow-sm border p-6" style={{ background: 'linear-gradient(135deg, #F5DFBF 0%, #FAF0DD 50%, #E6CFA9 100%)', borderColor: '#ECD7B4' }}>
+                    <div className="rounded-2xl shadow-sm border p-6" style={{ backgroundColor: '#FFFDFC', borderColor: '#E8DED0' }}>
                       <h3 className="text-sm font-bold text-slate-700 mb-4 flex items-center gap-2">
                         <Sparkles className="w-4 h-4" style={{ color: '#F7B500' }} /> Quick Actions & Vouchers
                       </h3>
@@ -417,7 +423,7 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                             <span className="text-[10px] text-slate-400">Keep for checkout confirmation</span>
                           </div>
                         </div>
-                        <button onClick={() => window.print()} className="px-4 py-2 rounded-lg border border-teal-200 hover:border-teal-400 text-xs font-bold text-teal-700 hover:text-teal-900 transition-all cursor-pointer shadow-sm" style={{ background: 'linear-gradient(135deg, #f0fdfa, #ccfbf1)' }}>
+                        <button onClick={() => window.print()} className="px-4 py-2 rounded-lg text-white text-xs font-bold transition-all cursor-pointer shadow-md hover:scale-[1.03] border-none" style={{ background: 'linear-gradient(135deg, #148C8C, #0E6B6B)' }}>
                           Download
                         </button>
                       </div>
@@ -436,14 +442,14 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                 {/* ── CREDITS ── */}
                 {activeTab === 'credits' && (
                   <div className="space-y-5">
-                    <div className="rounded-2xl shadow-sm border p-6" style={{ background: 'linear-gradient(135deg, #F5DFBF 0%, #FAF0DD 50%, #E6CFA9 100%)', borderColor: '#ECD7B4' }}>
-                      <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2 mb-1">
-                        <CreditCard className="w-5 h-5" style={{ color: '#0ABAB5' }} /> My Discount Credits
+                    <div className="rounded-2xl shadow-sm border p-6" style={{ backgroundColor: '#FFFDFC', borderColor: '#E8DED0' }}>
+                      <h2 className="text-lg font-bold flex items-center gap-2 mb-1" style={{ color: '#1F2F46' }}>
+                        <CreditCard className="w-5 h-5" style={{ color: '#148C8C' }} /> My Discount Credits
                       </h2>
                       <p className="text-xs text-slate-400 mb-5">Guaranteed value recovery — redeem on paid tours</p>
 
                       {/* Balance */}
-                      <div className="rounded-2xl p-6 text-center mb-5 border" style={{ background: 'linear-gradient(135deg, #ccfbf1 0%, #e0f2fe 100%)', borderColor: '#99f6e4' }}>
+                      <div className="rounded-2xl p-6 text-center mb-5 border" style={{ background: 'linear-gradient(135deg, #F6E9D2 0%, #FFFDFC 100%)', borderColor: '#E8DED0' }}>
                         <span className="text-[10px] uppercase tracking-wider font-mono block text-teal-700 font-bold">TOTAL WALLET BALANCE</span>
                         <span className="text-4xl font-black block mt-1 text-teal-800">₹{voucherCount * 500}</span>
                         <span className="text-xs text-slate-500 mt-1 block">Available for paid bookings</span>
@@ -453,19 +459,19 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                       <div className="grid sm:grid-cols-2 gap-4 mb-5">
                         {Array.from({ length: voucherCount }).map((_, idx) => (
                           <motion.div key={idx} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.1 }}
-                            className="p-5 rounded-2xl border border-teal-100/50 shadow-sm hover:shadow-md hover:border-teal-300 transition-all relative overflow-hidden"
-                            style={{ background: 'linear-gradient(135deg, #ffffff 0%, #f0fdfa 100%)' }}
+                            className="p-5 rounded-2xl border shadow-sm hover:shadow-md transition-all relative overflow-hidden"
+                            style={{ backgroundColor: '#FFFDFC', borderColor: '#E8DED0' }}
                           >
-                            <div className="absolute -top-4 -right-4 w-16 h-16 rounded-full opacity-20" style={{ background: '#0ABAB5' }} />
+                            <div className="absolute -top-4 -right-4 w-16 h-16 rounded-full opacity-20" style={{ background: '#148C8C' }} />
                             <div className="flex justify-between items-start">
                               <div>
-                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-bold" style={{ background: '#ccfbf1', color: '#0d9488' }}>
+                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-bold" style={{ background: '#F6E9D2', color: '#148C8C' }}>
                                   <Zap className="w-3 h-3" /> ACTIVE
                                 </span>
                                 <div className="text-2xl font-black text-slate-800 mt-2">₹500</div>
                               </div>
-                              <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: '#fef3c7' }}>
-                                <Gift className="w-4 h-4" style={{ color: '#d97706' }} />
+                              <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: 'rgba(217, 178, 111, 0.15)' }}>
+                                <Gift className="w-4 h-4" style={{ color: '#D9B26F' }} />
                               </div>
                             </div>
                             <div className="mt-3 pt-3 border-t border-slate-100 flex justify-between items-center text-xs">
@@ -476,9 +482,9 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                         ))}
                       </div>
 
-                      <div className="p-4 rounded-xl text-xs flex items-start gap-2" style={{ background: '#FFF8E1', border: '1px solid #FFE082' }}>
-                        <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-amber-500" />
-                        <span className="text-amber-700"><strong>Redemption:</strong> 1 voucher (₹500) per person per booking. Valid 12 months.</span>
+                      <div className="p-4 rounded-xl text-xs flex items-start gap-2" style={{ backgroundColor: '#F6E9D2', border: '1px solid #D9B26F' }}>
+                        <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" style={{ color: '#148C8C' }} />
+                        <span style={{ color: '#1F2F46' }}><strong>Redemption:</strong> 1 voucher (₹500) per person per booking. Valid 12 months.</span>
                       </div>
                     </div>
                   </div>
@@ -487,32 +493,32 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                 {/* ── DRAWS ── */}
                 {activeTab === 'draws' && (
                   <div className="space-y-5">
-                    <div className="rounded-2xl shadow-sm border p-6" style={{ background: 'linear-gradient(135deg, #F5DFBF 0%, #FAF0DD 50%, #E6CFA9 100%)', borderColor: '#ECD7B4' }}>
-                      <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2 mb-1">
-                        <Ticket className="w-5 h-5" style={{ color: '#0ABAB5' }} /> Lucky Draw Status
+                    <div className="rounded-2xl shadow-sm border p-6" style={{ backgroundColor: '#FFFDFC', borderColor: '#E8DED0' }}>
+                      <h2 className="text-lg font-bold flex items-center gap-2 mb-1" style={{ color: '#1F2F46' }}>
+                        <Ticket className="w-5 h-5" style={{ color: '#148C8C' }} /> Lucky Draw Status
                       </h2>
                       <p className="text-xs text-slate-400 mb-5">Transparent digital draws — view entries & simulate</p>
 
                       <div className="grid md:grid-cols-2 gap-5">
                         {/* Token Card */}
-                        <div className="p-5 rounded-2xl border border-teal-100 space-y-4 shadow-sm" style={{ background: 'linear-gradient(135deg, #f0fdfa, #e0f2fe)' }}>
+                        <div className="p-5 rounded-2xl border space-y-4 shadow-sm" style={{ background: 'linear-gradient(135deg, #F6E9D2, #FFFDFC)', borderColor: '#E8DED0' }}>
                           <div>
                             <span className="text-[10px] text-slate-500 uppercase font-mono tracking-wider block font-bold">ACTIVE DRAW TOKEN</span>
                             <span className="text-2xl font-black tracking-widest font-mono mt-1 block text-teal-800">{user?.drawToken || 'N/A'}</span>
                           </div>
-                          <div className="flex items-center justify-between text-xs text-slate-600 border-t border-teal-200/50 pt-3">
+                          <div className="flex items-center justify-between text-xs text-slate-600 border-t pt-3" style={{ borderColor: '#E8DED0' }}>
                             <span>Upcoming Draw:</span>
                             <span className="font-bold text-teal-700 flex items-center gap-1">
                               <Calendar className="w-3.5 h-3.5 text-teal-600" /> Next Sunday
                             </span>
                           </div>
-                          <div className="text-[10px] leading-relaxed p-3 rounded-xl" style={{ background: '#fffbeb', border: '1px solid #fde68a', color: '#b45309' }}>
+                          <div className="text-[10px] leading-relaxed p-3 rounded-xl" style={{ background: '#FAF7F2', border: '1px solid #E8DED0', color: '#1F2F46' }}>
                             ⚠️ <strong>Note:</strong> Draws are 100% transparent. Winners travel free. Non-selected retain full voucher credits.
                           </div>
                         </div>
 
                         {/* Simulator */}
-                        <div className="p-5 rounded-2xl border-2 border-dashed flex flex-col justify-between" style={{ borderColor: '#a78bfa', background: 'linear-gradient(135deg, #f5f3ff, #faf5ff)' }}>
+                        <div className="p-5 rounded-2xl border-2 border-dashed flex flex-col justify-between" style={{ borderColor: '#E8DED0', background: 'linear-gradient(135deg, #FAF7F2, #FFFDFC)' }}>
                           <div>
                             <h3 className="text-sm font-bold text-slate-800 flex items-center gap-1">
                               <Sparkles className="w-4 h-4 text-purple-600" /> RNG Test Simulator
@@ -535,7 +541,7 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                           </div>
                           <button onClick={handleSimulateDraw} disabled={isSimulatingDraw}
                             className="w-full py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider disabled:opacity-50 cursor-pointer text-white border-none transition-all hover:scale-[1.02]"
-                            style={{ background: 'linear-gradient(135deg, #0ABAB5, #08979D)' }}
+                            style={{ background: 'linear-gradient(135deg, #148C8C, #0E6B6B)' }}
                           >
                             ✨ Launch Mock Draw
                           </button>
@@ -548,9 +554,9 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                 {/* ── BOOKINGS ── */}
                 {activeTab === 'bookings' && (
                   <div className="space-y-5">
-                    <div className="rounded-2xl shadow-sm border p-6" style={{ background: 'linear-gradient(135deg, #F5DFBF 0%, #FAF0DD 50%, #E6CFA9 100%)', borderColor: '#ECD7B4' }}>
-                      <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2 mb-1">
-                        <Plane className="w-5 h-5" style={{ color: '#0ABAB5' }} /> Book Your Travel
+                    <div className="rounded-2xl shadow-sm border p-6" style={{ backgroundColor: '#FFFDFC', borderColor: '#E8DED0' }}>
+                      <h2 className="text-lg font-bold flex items-center gap-2 mb-1" style={{ color: '#1F2F46' }}>
+                        <Plane className="w-5 h-5" style={{ color: '#148C8C' }} /> Book Your Travel
                       </h2>
                       <p className="text-xs text-slate-400 mb-5">Submit requests and apply discount vouchers</p>
 
@@ -561,12 +567,12 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                       <div className="grid md:grid-cols-2 gap-4">
                         <a href="https://wa.me/918768903565?text=Hello%20BEDUINE%2C%20I%20want%20to%20book%20a%20tour%20package%20using%20my%20member%20discount%20vouchers." 
                           target="_blank" rel="noreferrer"
-                          className="p-5 rounded-2xl border border-slate-100 hover:border-teal-300 hover:shadow-md transition-all flex items-center justify-between group no-underline"
-                          style={{ background: 'linear-gradient(135deg, #f0faf9, #ffffff)' }}
+                          className="p-5 rounded-2xl border hover:shadow-md transition-all flex items-center justify-between group no-underline"
+                          style={{ background: 'linear-gradient(135deg, #F6E9D2, #FFFDFC)', borderColor: '#E8DED0' }}
                         >
                           <div className="flex items-center gap-3">
-                            <div className="w-11 h-11 rounded-xl flex items-center justify-center" style={{ background: '#10b98115' }}>
-                              <Plane className="w-5 h-5" style={{ color: '#10b981' }} />
+                            <div className="w-11 h-11 rounded-xl flex items-center justify-center" style={{ background: 'rgba(20,140,140,0.1)' }}>
+                              <Plane className="w-5 h-5" style={{ color: '#148C8C' }} />
                             </div>
                             <div>
                               <span className="block text-sm font-bold text-slate-700">Book Paid Tour</span>
@@ -578,8 +584,8 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
 
                         <a href="https://wa.me/918768903565?text=Hello%20BEDUINE%2C%20I%20have%20questions%20about%20the%20upcoming%20Sunday%20lucky%20draw%20schedule."
                           target="_blank" rel="noreferrer"
-                          className="p-5 rounded-2xl border border-slate-100 hover:border-teal-300 hover:shadow-md transition-all flex items-center justify-between group no-underline"
-                          style={{ background: 'linear-gradient(135deg, #f5f3ff, #ffffff)' }}
+                          className="p-5 rounded-2xl border hover:shadow-md transition-all flex items-center justify-between group no-underline"
+                          style={{ background: 'linear-gradient(135deg, #FAF7F2, #FFFDFC)', borderColor: '#E8DED0' }}
                         >
                           <div className="flex items-center gap-3">
                             <div className="w-11 h-11 rounded-xl flex items-center justify-center" style={{ background: '#8b5cf615' }}>
@@ -590,7 +596,7 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                               <span className="block text-[10px] text-slate-400">Inquire about rules</span>
                             </div>
                           </div>
-                          <ArrowRight className="w-4 h-4 text-slate-300 group-hover:text-violet-500 group-hover:translate-x-1 transition-all" />
+                          <ArrowRight className="w-4 h-4 text-slate-300 group-hover:text-[#D9B26F] group-hover:translate-x-1 transition-all" />
                         </a>
                       </div>
                     </div>
@@ -600,22 +606,22 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                 {/* ── EDIT PROFILE ── */}
                 {activeTab === 'edit-profile' && (
                   <div className="space-y-5">
-                    <div className="rounded-2xl shadow-sm border p-6" style={{ background: 'linear-gradient(135deg, #F5DFBF 0%, #FAF0DD 50%, #E6CFA9 100%)', borderColor: '#ECD7B4' }}>
-                      <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2 mb-1">
-                        <Edit className="w-5 h-5 text-teal-600" /> Edit Profile Details
+                    <div className="rounded-2xl shadow-sm border p-6" style={{ backgroundColor: '#FFFDFC', borderColor: '#E8DED0' }}>
+                      <h2 className="text-lg font-bold flex items-center gap-2 mb-1" style={{ color: '#1F2F46' }}>
+                        <Edit className="w-5 h-5" style={{ color: '#148C8C' }} /> Edit Profile Details
                       </h2>
                       <p className="text-xs text-slate-400 mb-6">Manage your account information, upload your profile picture, and configure preferences</p>
                       
                       <div className="flex flex-col md:flex-row gap-8 items-start">
                         {/* Profile Photo Upload Section */}
-                        <div className="flex flex-col items-center gap-3 shrink-0 bg-teal-50/30 p-5 rounded-2xl border border-teal-100/50">
-                          <span className="text-xs font-bold text-slate-600 uppercase">Profile Picture</span>
+                        <div className="flex flex-col items-center gap-3 shrink-0 p-5 rounded-2xl border" style={{ backgroundColor: '#F6E9D2', borderColor: '#E8DED0' }}>
+                          <span className="text-xs font-bold uppercase" style={{ color: '#1F2F46' }}>Profile Picture</span>
                           <div className="relative group">
-                            <div className="w-24 h-24 rounded-full p-[3px] shadow-md" style={{ background: 'linear-gradient(135deg, #0ABAB5, #F7B500)' }}>
+                            <div className="w-24 h-24 rounded-full p-[3px] shadow-md" style={{ background: 'linear-gradient(135deg, #148C8C, #D9B26F)' }}>
                               {profileAvatar ? (
                                 <img src={profileAvatar} alt="Avatar Preview" className="w-full h-full rounded-full object-cover" />
                               ) : (
-                                <div className="w-full h-full rounded-full flex items-center justify-center text-3xl font-black uppercase text-teal-600 bg-white">
+                                <div className="w-full h-full rounded-full flex items-center justify-center text-3xl font-black uppercase text-teal-800 bg-white">
                                   {editName?.charAt(0) || 'U'}
                                 </div>
                               )}
@@ -720,7 +726,7 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                             <button 
                               onClick={handleSaveProfile}
                               className="px-6 py-2.5 rounded-xl text-xs font-bold text-white border-none cursor-pointer transition-all hover:scale-[1.02] shadow-md"
-                              style={{ background: 'linear-gradient(135deg, #0ABAB5, #08979D)' }}
+                              style={{ background: 'linear-gradient(135deg, #148C8C, #0E6B6B)' }}
                             >
                               Save Profile Changes
                             </button>
@@ -735,19 +741,19 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                 {/* ── LUCKY STATUS ── */}
                 {activeTab === 'lucky-status' && (
                   <div className="space-y-5">
-                    <div className="rounded-2xl shadow-sm border p-6" style={{ background: 'linear-gradient(135deg, #F5DFBF 0%, #FAF0DD 50%, #E6CFA9 100%)', borderColor: '#ECD7B4' }}>
-                      <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2 mb-1">
+                    <div className="rounded-2xl shadow-sm border p-6" style={{ backgroundColor: '#FFFDFC', borderColor: '#E8DED0' }}>
+                      <h2 className="text-lg font-bold flex items-center gap-2 mb-1" style={{ color: '#1F2F46' }}>
                         <Heart className="w-5 h-5 text-rose-500" /> Lucky Status & History
                       </h2>
                       <p className="text-xs text-slate-400 mb-6">Track your weekly draw participations and success odds</p>
 
                       <div className="grid sm:grid-cols-3 gap-4 mb-6">
                         {[
-                          { label: 'Weekly Draw Odds', value: '15.4% Win Rate', desc: 'Average selector likelihood', color: '#8b5cf6', bg: 'linear-gradient(135deg, #f5f3ff, #ede9fe)' },
-                          { label: 'Total Draws Entered', value: '3 Entries', desc: 'Active weeks count', color: '#0abab5', bg: 'linear-gradient(135deg, #f0fdfa, #ccfbf1)' },
-                          { label: 'Draw Ticket status', value: 'Verified Active', desc: 'Ready for next Sunday', color: '#10b981', bg: 'linear-gradient(135deg, #f0fdf4, #dcfce7)' },
+                          { label: 'Weekly Draw Odds', value: '15.4% Win Rate', desc: 'Average selector likelihood', color: '#D9B26F', bg: 'linear-gradient(135deg, #FFFDFC 0%, #F6E9D2 100%)', border: 'border-[#E8DED0]' },
+                          { label: 'Total Draws Entered', value: '3 Entries', desc: 'Active weeks count', color: '#148C8C', bg: 'linear-gradient(135deg, #FFFDFC 0%, #F6E9D2 100%)', border: 'border-[#E8DED0]' },
+                          { label: 'Draw Ticket status', value: 'Verified Active', desc: 'Ready for next Sunday', color: '#148C8C', bg: 'linear-gradient(135deg, #FFFDFC 0%, #F6E9D2 100%)', border: 'border-[#E8DED0]' },
                         ].map((stat, i) => (
-                          <div key={i} className="p-4 rounded-xl border border-slate-100/50 shadow-sm" style={{ background: stat.bg }}>
+                          <div key={i} className={`p-4 rounded-xl border ${stat.border} shadow-sm`} style={{ background: stat.bg }}>
                             <span className="text-[9px] uppercase tracking-wider text-slate-500 font-mono font-bold block">{stat.label}</span>
                             <span className="text-base font-bold text-slate-800 block mt-1">{stat.value}</span>
                             <span className="text-[10px] text-slate-400 block mt-0.5">{stat.desc}</span>
@@ -772,7 +778,7 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                               <td className="py-3">June 07, 2026</td>
                               <td className="py-3 font-mono">{user?.drawToken || 'BDN-7822-M'}</td>
                               <td className="py-3">
-                                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-100">
+                                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold border" style={{ backgroundColor: '#F6E9D2', color: '#1F2F46', borderColor: '#D9B26F' }}>
                                   Not Selected — Voucher Issued
                                 </span>
                               </td>
@@ -782,7 +788,7 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                               <td className="py-3">May 31, 2026</td>
                               <td className="py-3 font-mono">BDN-7612-A</td>
                               <td className="py-3">
-                                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-100">
+                                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold border" style={{ backgroundColor: '#F6E9D2', color: '#1F2F46', borderColor: '#D9B26F' }}>
                                   Not Selected — Voucher Issued
                                 </span>
                               </td>
@@ -792,7 +798,7 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                               <td className="py-3 text-teal-800 font-medium">June 14, 2026</td>
                               <td className="py-3 font-mono text-teal-800 font-semibold">{user?.drawToken || 'Pending'}</td>
                               <td className="py-3">
-                                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-teal-100 text-teal-800 border border-teal-200 animate-pulse">
+                                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold text-white border animate-pulse" style={{ backgroundColor: '#148C8C', borderColor: '#148C8C' }}>
                                   Active Entry for Sunday
                                 </span>
                               </td>
@@ -814,10 +820,10 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
             className="hidden lg:flex flex-col gap-5"
           >
             {/* Trip Card 1 */}
-            <div className="rounded-2xl shadow-sm border overflow-hidden" style={{ background: 'linear-gradient(135deg, #F5DFBF 0%, #FAF0DD 50%, #E6CFA9 100%)', borderColor: '#ECD7B4' }}>
+            <div className="rounded-2xl shadow-sm border overflow-hidden" style={{ backgroundColor: '#FFFDFC', borderColor: '#E8DED0' }}>
               <div className="flex items-center justify-between px-5 pt-4 pb-2">
-                <h4 className="text-sm font-bold text-slate-700 font-sans">Upcoming Trip</h4>
-                <ChevronRight className="w-4 h-4 text-sky-400" />
+                <h4 className="text-sm font-bold font-sans" style={{ color: '#1F2F46' }}>Upcoming Trip</h4>
+                <ChevronRight className="w-4 h-4" style={{ color: '#148C8C' }} />
               </div>
               <div className="px-3 pb-3">
                 <div className="rounded-xl overflow-hidden h-[150px] relative group cursor-pointer">
@@ -835,10 +841,10 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
             </div>
 
             {/* Trip Card 2 */}
-            <div className="rounded-2xl shadow-sm border overflow-hidden" style={{ background: 'linear-gradient(135deg, #F5DFBF 0%, #FAF0DD 50%, #E6CFA9 100%)', borderColor: '#ECD7B4' }}>
+            <div className="rounded-2xl shadow-sm border overflow-hidden" style={{ backgroundColor: '#FFFDFC', borderColor: '#E8DED0' }}>
               <div className="flex items-center justify-between px-5 pt-4 pb-2">
-                <h4 className="text-sm font-bold text-slate-700 font-sans">Upcoming Trip</h4>
-                <ChevronRight className="w-4 h-4 text-orange-400" />
+                <h4 className="text-sm font-bold font-sans" style={{ color: '#1F2F46' }}>Upcoming Trip</h4>
+                <ChevronRight className="w-4 h-4" style={{ color: '#D9B26F' }} />
               </div>
               <div className="px-3 pb-3">
                 <div className="rounded-xl overflow-hidden h-[150px] relative group cursor-pointer">
@@ -856,7 +862,7 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
             </div>
 
             {/* Membership Card */}
-            <div className="rounded-2xl p-5 text-center relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #0ABAB5 0%, #6366f1 50%, #d946ef 100%)', boxShadow: '0 8px 30px rgba(99,102,241,0.3)' }}>
+            <div className="rounded-2xl p-5 text-center relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #D9B26F, #C89A52, #9F6B2E)', boxShadow: '0 8px 30px rgba(217,178,111,0.25)' }}>
               <div className="absolute -top-10 -left-10 w-24 h-24 bg-white/10 rounded-full blur-xl pointer-events-none" />
               <div className="absolute -bottom-10 -right-10 w-24 h-24 bg-white/15 rounded-full blur-xl pointer-events-none" />
               <Crown className="w-6 h-6 text-white/90 mx-auto mb-2 relative z-10" />
