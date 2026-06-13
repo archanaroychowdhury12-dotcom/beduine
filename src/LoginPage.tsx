@@ -351,23 +351,32 @@ export default function LoginPage({ onBack, onLoginSuccess, initialMode = 'login
                 </form>
               )}
 
-              <div className="text-center pt-3 border-t border-white/15 mt-4">
+              {/* Modern bottom action toggle */}
+              <div className="pt-5 border-t border-white/10 mt-6 flex flex-col items-center">
                 {viewMode === 'signup-auth' ? (
-                  <button
-                    type="button"
-                    onClick={() => setViewMode('login')}
-                    className="text-xs text-white/70 hover:text-cyan-bright transition-colors font-medium border-none bg-transparent cursor-pointer"
-                  >
-                    Already have an account? <span className="underline font-bold text-cyan-bright">Login Here</span>
-                  </button>
+                  <div className="w-full flex items-center justify-between gap-3 px-4 py-2.5 rounded-2xl bg-white/5 border border-white/10 shadow-sm">
+                    <span className="text-[11px] text-white/70 font-medium">Already have an account?</span>
+                    <button
+                      type="button"
+                      onClick={() => setViewMode('login')}
+                      className="px-4 py-1.5 rounded-full text-xs font-bold text-slate-900 transition-all hover:scale-[1.05] cursor-pointer shadow-md border-none flex items-center gap-1"
+                      style={{ background: 'linear-gradient(135deg, #18D7F2, #0ABAB5)' }}
+                    >
+                      Login Here
+                    </button>
+                  </div>
                 ) : (
-                  <button
-                    type="button"
-                    onClick={() => setViewMode('signup-auth')}
-                    className="text-xs text-white/70 hover:text-cyan-bright transition-colors font-medium border-none bg-transparent cursor-pointer"
-                  >
-                    Don't have an account? <span className="underline font-bold text-cyan-bright">Register / Create Account</span>
-                  </button>
+                  <div className="w-full flex items-center justify-between gap-3 px-4 py-2.5 rounded-2xl bg-white/5 border border-white/10 shadow-sm">
+                    <span className="text-[11px] text-white/70 font-medium">Don't have an account?</span>
+                    <button
+                      type="button"
+                      onClick={() => setViewMode('signup-auth')}
+                      className="px-4 py-1.5 rounded-full text-xs font-bold text-white transition-all hover:scale-[1.05] cursor-pointer shadow-md border border-white/10 hover:border-cyan-bright/40 flex items-center gap-1"
+                      style={{ background: 'linear-gradient(135deg, rgba(24,215,242,0.15), rgba(10,186,181,0.25))' }}
+                    >
+                      Sign Up
+                    </button>
+                  </div>
                 )}
               </div>
             </div>
