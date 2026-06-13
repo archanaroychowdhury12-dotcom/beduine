@@ -31,7 +31,7 @@
 
   /* Custom Dashboard Palette Colors */
   --color-bg-beige: #F7F3ED;
-  --color-card-white: #FFFCF8;
+  --color-card-white: #FAF2E6;
   --color-premium-beige: #E6D1B1;
   --color-cream: #F3E7D3;
   --color-navy: #1E3147;
@@ -47,7 +47,7 @@
 
 :root {
   --bg: #F7F3ED;
-  --card: #FFFCF8;
+  --card: #FAF2E6;
   --premium-beige: #E6D1B1;
   --cream: #F3E7D3;
   --navy: #1E3147;
@@ -1583,7 +1583,7 @@ input:focus-visible,
 
 .glow-cta-teal {
   background: linear-gradient(135deg, #138A8A 0%, #0E6F70 100%);
-  color: #FFFCF8 !important;
+  color: #FAF2E6 !important;
   box-shadow: 0 0 0 1px rgba(19, 138, 138, 0.4), 0 10px 34px -10px rgba(19, 138, 138, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3);
   transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }

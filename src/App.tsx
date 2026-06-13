@@ -768,7 +768,7 @@ function Navbar({ view, setView, currentUser, handleMemberLogin }: NavbarProps) 
         <div 
           className={`rounded-2xl transition-all duration-500 ${scrolled ? 'shadow-md' : ''} border`}
           style={{
-            backgroundColor: isDashboard ? '#FFFCF8' : scrolled ? 'rgba(255, 255, 255, 0.72)' : 'transparent',
+            backgroundColor: isDashboard ? '#FAF2E6' : scrolled ? 'rgba(255, 255, 255, 0.72)' : 'transparent',
             backdropFilter: isDashboard ? 'none' : 'blur(24px) saturate(180%)',
             borderColor: isDashboard ? '#E7DCCF' : scrolled ? 'rgba(148, 163, 184, 0.28)' : 'transparent',
           }}
@@ -878,7 +878,7 @@ function Navbar({ view, setView, currentUser, handleMemberLogin }: NavbarProps) 
           <AnimatePresence>
             {open && (
               <motion.div id="mobile-menu" initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="lg:hidden overflow-hidden border-t" style={{ borderColor: '#E7DCCF' }}>
-                <div className="px-4 py-3 flex flex-col gap-1" style={{ backgroundColor: '#FFFCF8' }}>
+                <div className="px-4 py-3 flex flex-col gap-1" style={{ backgroundColor: '#FAF2E6' }}>
                   {NAV.map((n) => (
                     <a 
                       key={n.id} 

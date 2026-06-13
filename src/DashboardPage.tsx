@@ -146,7 +146,7 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
           <motion.aside 
             initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }}
             className="hidden lg:flex flex-col gap-1.5 rounded-2xl p-4 shadow-sm border h-fit sticky top-28"
-            style={{ backgroundColor: '#FFFCF8', borderColor: '#E7DCCF', backdropFilter: 'blur(8px)' }}
+            style={{ backgroundColor: '#FAF2E6', borderColor: '#E7DCCF', backdropFilter: 'blur(8px)' }}
           >
             {/* Brand */}
             <div className="flex items-center gap-2.5 px-3 py-3 mb-2">
@@ -174,10 +174,10 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                   }`}
                   style={{
                     backgroundColor: isActive ? '#138A8A' : 'transparent',
-                    color: isActive ? '#FFFCF8' : '#5F6E7E'
+                    color: isActive ? '#FAF2E6' : '#5F6E7E'
                   }}
                 >
-                  <Icon className="w-4 h-4" style={{ color: isActive ? '#FFFCF8' : '#5F6E7E' }} />
+                  <Icon className="w-4 h-4" style={{ color: isActive ? '#FAF2E6' : '#5F6E7E' }} />
                   {item.label}
                 </button>
               );
@@ -198,10 +198,10 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                     className="w-full text-left px-4 py-2.5 rounded-xl flex items-center gap-3 cursor-pointer transition-all text-sm font-medium border-none"
                     style={{
                       backgroundColor: isActive ? '#138A8A' : 'transparent',
-                      color: isActive ? '#FFFCF8' : '#5F6E7E'
+                      color: isActive ? '#FAF2E6' : '#5F6E7E'
                     }}
                   >
-                    <Icon className="w-4 h-4" style={{ color: isActive ? '#FFFCF8' : '#5F6E7E' }} /> {item.label}
+                    <Icon className="w-4 h-4" style={{ color: isActive ? '#FAF2E6' : '#5F6E7E' }} /> {item.label}
                   </button>
                 );
               })}
@@ -341,7 +341,7 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                 {activeTab === 'overview' && (
                   <div className="space-y-5">
                     {/* Upcoming Trips Progress */}
-                    <div className="rounded-2xl shadow-sm border p-6" style={{ backgroundColor: '#FFFCF8', borderColor: '#E7DCCF' }}>
+                    <div className="rounded-2xl shadow-sm border p-6" style={{ backgroundColor: '#FAF2E6', borderColor: '#E7DCCF' }}>
                       <div className="flex items-center justify-between mb-4">
                         <h3 className="text-base font-bold text-slate-800 flex items-center gap-2">
                           <TrendingUp className="w-4 h-4" style={{ color: '#0ABAB5' }} /> Upcoming Trips
@@ -384,9 +384,9 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                     {/* Plan Stats Cards */}
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                       {[
-                        { label: 'Plan Tier', value: displayPlan, icon: Crown, color: '#C89C53', bg: '#FFFCF8', border: 'border-[#E7DCCF]' },
-                        { label: 'Plan Status', value: isSubscribed ? 'Active' : 'Inactive', icon: Shield, color: '#138A8A', bg: '#FFFCF8', border: 'border-[#E7DCCF]' },
-                        { label: 'Draw Token', value: user?.drawToken || 'N/A', icon: Ticket, color: '#138A8A', bg: '#FFFCF8', border: 'border-[#E7DCCF]' },
+                        { label: 'Plan Tier', value: displayPlan, icon: Crown, color: '#C89C53', bg: '#FAF2E6', border: 'border-[#E7DCCF]' },
+                        { label: 'Plan Status', value: isSubscribed ? 'Active' : 'Inactive', icon: Shield, color: '#138A8A', bg: '#FAF2E6', border: 'border-[#E7DCCF]' },
+                        { label: 'Draw Token', value: user?.drawToken || 'N/A', icon: Ticket, color: '#138A8A', bg: '#FAF2E6', border: 'border-[#E7DCCF]' },
                       ].map((card, i) => {
                         const Icon = card.icon;
                         return (
@@ -401,7 +401,7 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                     </div>
 
                     {/* Quick Actions & Digital Ticket */}
-                    <div className="rounded-2xl shadow-sm border p-6" style={{ backgroundColor: '#FFFCF8', borderColor: '#E7DCCF' }}>
+                    <div className="rounded-2xl shadow-sm border p-6" style={{ backgroundColor: '#FAF2E6', borderColor: '#E7DCCF' }}>
                       <h3 className="text-sm font-bold text-slate-700 mb-4 flex items-center gap-2">
                         <Sparkles className="w-4 h-4" style={{ color: '#F7B500' }} /> Quick Actions & Vouchers
                       </h3>
@@ -445,7 +445,7 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                     </div>
 
                     {/* Destination Gallery */}
-                    <div className="rounded-2xl shadow-sm border p-6" style={{ backgroundColor: '#FFFCF8', borderColor: '#E7DCCF' }}>
+                    <div className="rounded-2xl shadow-sm border p-6" style={{ backgroundColor: '#FAF2E6', borderColor: '#E7DCCF' }}>
                       <h3 className="text-sm font-bold mb-1 flex items-center gap-2" style={{ color: '#1E3147' }}>
                         <Plane className="w-4 h-4" style={{ color: '#138A8A' }} /> Explore Subscribed Destinations
                       </h3>
@@ -486,14 +486,14 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                 {/* ── CREDITS ── */}
                 {activeTab === 'credits' && (
                   <div className="space-y-5">
-                    <div className="rounded-2xl shadow-sm border p-6" style={{ backgroundColor: '#FFFCF8', borderColor: '#E7DCCF' }}>
+                    <div className="rounded-2xl shadow-sm border p-6" style={{ backgroundColor: '#FAF2E6', borderColor: '#E7DCCF' }}>
                       <h2 className="text-lg font-bold flex items-center gap-2 mb-1" style={{ color: '#1E3147' }}>
                         <CreditCard className="w-5 h-5" style={{ color: '#138A8A' }} /> My Discount Credits
                       </h2>
                       <p className="text-xs text-slate-400 mb-5">Guaranteed value recovery — redeem on paid tours</p>
 
                       {/* Balance */}
-                      <div className="rounded-2xl p-6 text-center mb-5 border" style={{ background: 'linear-gradient(135deg, #FFFCF8, #FBF9F5)', borderColor: '#E7DCCF' }}>
+                      <div className="rounded-2xl p-6 text-center mb-5 border" style={{ background: 'linear-gradient(135deg, #FAF2E6, #FBF9F5)', borderColor: '#E7DCCF' }}>
                         <span className="text-[10px] uppercase tracking-wider font-mono block text-teal-700 font-bold">TOTAL WALLET BALANCE</span>
                         <span className="text-4xl font-black block mt-1 text-teal-800">₹{voucherCount * 500}</span>
                         <span className="text-xs text-slate-500 mt-1 block">Available for paid bookings</span>
@@ -504,7 +504,7 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                         {Array.from({ length: voucherCount }).map((_, idx) => (
                           <motion.div key={idx} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.1 }}
                             className="p-5 rounded-2xl border shadow-sm hover:shadow-md transition-all relative overflow-hidden"
-                            style={{ backgroundColor: '#FFFCF8', borderColor: '#E7DCCF' }}
+                            style={{ backgroundColor: '#FAF2E6', borderColor: '#E7DCCF' }}
                           >
                             <div className="absolute -top-4 -right-4 w-16 h-16 rounded-full opacity-20" style={{ background: '#138A8A' }} />
                             <div className="flex justify-between items-start">
@@ -537,7 +537,7 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                 {/* ── DRAWS ── */}
                 {activeTab === 'draws' && (
                   <div className="space-y-5">
-                    <div className="rounded-2xl shadow-sm border p-6" style={{ backgroundColor: '#FFFCF8', borderColor: '#E7DCCF' }}>
+                    <div className="rounded-2xl shadow-sm border p-6" style={{ backgroundColor: '#FAF2E6', borderColor: '#E7DCCF' }}>
                       <h2 className="text-lg font-bold flex items-center gap-2 mb-1" style={{ color: '#1E3147' }}>
                         <Ticket className="w-5 h-5" style={{ color: '#138A8A' }} /> Lucky Draw Status
                       </h2>
@@ -545,7 +545,7 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
 
                       <div className="grid md:grid-cols-2 gap-5">
                         {/* Token Card */}
-                        <div className="p-5 rounded-2xl border space-y-4 shadow-sm" style={{ background: 'linear-gradient(135deg, #FFFCF8, #FBF9F5)', borderColor: '#E7DCCF' }}>
+                        <div className="p-5 rounded-2xl border space-y-4 shadow-sm" style={{ background: 'linear-gradient(135deg, #FAF2E6, #FBF9F5)', borderColor: '#E7DCCF' }}>
                           <div>
                             <span className="text-[10px] text-slate-500 uppercase font-mono tracking-wider block font-bold">ACTIVE DRAW TOKEN</span>
                             <span className="text-2xl font-black tracking-widest font-mono mt-1 block text-teal-800">{user?.drawToken || 'N/A'}</span>
@@ -562,7 +562,7 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                         </div>
 
                         {/* Simulator */}
-                        <div className="p-5 rounded-2xl border-2 border-dashed flex flex-col justify-between" style={{ borderColor: '#E7DCCF', background: 'linear-gradient(135deg, #FFFCF8, #F7F3ED)' }}>
+                        <div className="p-5 rounded-2xl border-2 border-dashed flex flex-col justify-between" style={{ borderColor: '#E7DCCF', background: 'linear-gradient(135deg, #FAF2E6, #F7F3ED)' }}>
                           <div>
                             <h3 className="text-sm font-bold text-slate-800 flex items-center gap-1">
                               <Sparkles className="w-4 h-4 text-purple-600" /> RNG Test Simulator
@@ -598,7 +598,7 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                 {/* ── BOOKINGS ── */}
                 {activeTab === 'bookings' && (
                   <div className="space-y-5">
-                    <div className="rounded-2xl shadow-sm border p-6" style={{ backgroundColor: '#FFFCF8', borderColor: '#E7DCCF' }}>
+                    <div className="rounded-2xl shadow-sm border p-6" style={{ backgroundColor: '#FAF2E6', borderColor: '#E7DCCF' }}>
                       <h2 className="text-lg font-bold flex items-center gap-2 mb-1" style={{ color: '#1E3147' }}>
                         <Plane className="w-5 h-5" style={{ color: '#138A8A' }} /> Book Your Travel
                       </h2>
@@ -612,7 +612,7 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                         <a href="https://wa.me/918768903565?text=Hello%20BEDUINE%2C%20I%20want%20to%20book%20a%20tour%20package%20using%20my%20member%20discount%20vouchers." 
                           target="_blank" rel="noreferrer"
                           className="p-5 rounded-2xl border hover:shadow-md transition-all flex items-center justify-between group no-underline"
-                          style={{ background: 'linear-gradient(135deg, #FFFCF8, #FBF9F5)', borderColor: '#E7DCCF' }}
+                          style={{ background: 'linear-gradient(135deg, #FAF2E6, #FBF9F5)', borderColor: '#E7DCCF' }}
                         >
                           <div className="flex items-center gap-3">
                             <div className="w-11 h-11 rounded-xl flex items-center justify-center" style={{ background: 'rgba(20,140,140,0.1)' }}>
@@ -629,7 +629,7 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                         <a href="https://wa.me/918768903565?text=Hello%20BEDUINE%2C%20I%20have%20questions%20about%20the%20upcoming%20Sunday%20lucky%20draw%20schedule."
                           target="_blank" rel="noreferrer"
                           className="p-5 rounded-2xl border hover:shadow-md transition-all flex items-center justify-between group no-underline"
-                          style={{ background: 'linear-gradient(135deg, #FFFCF8, #F7F3ED)', borderColor: '#E7DCCF' }}
+                          style={{ background: 'linear-gradient(135deg, #FAF2E6, #F7F3ED)', borderColor: '#E7DCCF' }}
                         >
                           <div className="flex items-center gap-3">
                             <div className="w-11 h-11 rounded-xl flex items-center justify-center" style={{ background: '#8b5cf615' }}>
@@ -650,7 +650,7 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                 {/* ── EDIT PROFILE ── */}
                 {activeTab === 'edit-profile' && (
                   <div className="space-y-5">
-                    <div className="rounded-2xl shadow-sm border p-6" style={{ backgroundColor: '#FFFCF8', borderColor: '#E7DCCF' }}>
+                    <div className="rounded-2xl shadow-sm border p-6" style={{ backgroundColor: '#FAF2E6', borderColor: '#E7DCCF' }}>
                       <h2 className="text-lg font-bold flex items-center gap-2 mb-1" style={{ color: '#1E3147' }}>
                         <Edit className="w-5 h-5" style={{ color: '#138A8A' }} /> Edit Profile Details
                       </h2>
@@ -785,7 +785,7 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                 {/* ── LUCKY STATUS ── */}
                 {activeTab === 'lucky-status' && (
                   <div className="space-y-5">
-                    <div className="rounded-2xl shadow-sm border p-6" style={{ backgroundColor: '#FFFCF8', borderColor: '#E7DCCF' }}>
+                    <div className="rounded-2xl shadow-sm border p-6" style={{ backgroundColor: '#FAF2E6', borderColor: '#E7DCCF' }}>
                       <h2 className="text-lg font-bold flex items-center gap-2 mb-1" style={{ color: '#1E3147' }}>
                         <Heart className="w-5 h-5 text-rose-500" /> Lucky Status & History
                       </h2>
@@ -793,9 +793,9 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
 
                       <div className="grid sm:grid-cols-3 gap-4 mb-6">
                         {[
-                          { label: 'Weekly Draw Odds', value: '15.4% Win Rate', desc: 'Average selector likelihood', color: '#C89C53', bg: '#FFFCF8', border: 'border-[#E7DCCF]' },
-                          { label: 'Total Draws Entered', value: '3 Entries', desc: 'Active weeks count', color: '#138A8A', bg: '#FFFCF8', border: 'border-[#E7DCCF]' },
-                          { label: 'Draw Ticket status', value: 'Verified Active', desc: 'Ready for next Sunday', color: '#138A8A', bg: '#FFFCF8', border: 'border-[#E7DCCF]' },
+                          { label: 'Weekly Draw Odds', value: '15.4% Win Rate', desc: 'Average selector likelihood', color: '#C89C53', bg: '#FAF2E6', border: 'border-[#E7DCCF]' },
+                          { label: 'Total Draws Entered', value: '3 Entries', desc: 'Active weeks count', color: '#138A8A', bg: '#FAF2E6', border: 'border-[#E7DCCF]' },
+                          { label: 'Draw Ticket status', value: 'Verified Active', desc: 'Ready for next Sunday', color: '#138A8A', bg: '#FAF2E6', border: 'border-[#E7DCCF]' },
                         ].map((stat, i) => (
                           <div key={i} className={`p-4 rounded-xl border ${stat.border} shadow-sm`} style={{ background: stat.bg }}>
                             <span className="text-[9px] uppercase tracking-wider text-slate-500 font-mono font-bold block">{stat.label}</span>
@@ -864,7 +864,7 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
             className="hidden lg:flex flex-col gap-5"
           >
             {/* Trip Card 1 */}
-            <div className="rounded-2xl shadow-sm border overflow-hidden" style={{ backgroundColor: '#FFFCF8', borderColor: '#E7DCCF' }}>
+            <div className="rounded-2xl shadow-sm border overflow-hidden" style={{ backgroundColor: '#FAF2E6', borderColor: '#E7DCCF' }}>
               <div className="flex items-center justify-between px-5 pt-4 pb-2">
                 <h4 className="text-sm font-bold font-sans" style={{ color: '#1E3147' }}>Upcoming Trip</h4>
                 <ChevronRight className="w-4 h-4" style={{ color: '#138A8A' }} />
@@ -888,7 +888,7 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
             </div>
 
             {/* Trip Card 2 */}
-            <div className="rounded-2xl shadow-sm border overflow-hidden" style={{ backgroundColor: '#FFFCF8', borderColor: '#E7DCCF' }}>
+            <div className="rounded-2xl shadow-sm border overflow-hidden" style={{ backgroundColor: '#FAF2E6', borderColor: '#E7DCCF' }}>
               <div className="flex items-center justify-between px-5 pt-4 pb-2">
                 <h4 className="text-sm font-bold font-sans" style={{ color: '#1E3147' }}>Upcoming Trip</h4>
                 <ChevronRight className="w-4 h-4" style={{ color: '#C89C53' }} />
