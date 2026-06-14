@@ -456,7 +456,7 @@ _I confirm my registration and age eligibility (18+). Please guide me on payment
   }
 
   return (
-    <section className="min-h-screen pt-28 pb-16 px-4 sm:px-6 lg:px-8 relative overflow-hidden bg-[#FFF8F6]">
+    <section className="min-h-screen pt-28 pb-16 px-4 sm:px-6 lg:px-8 relative overflow-hidden bg-[#D7EDE4]">
       {/* Travel Background Image (Clear) */}
       <div className="absolute inset-0 z-0">
         <img 
@@ -485,8 +485,18 @@ _I confirm my registration and age eligibility (18+). Please guide me on payment
 
         <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-start">
           <div className="lg:col-span-8">
-            <div className="bg-white/85 backdrop-blur-xl border border-white/50 rounded-3xl overflow-hidden shadow-2xl relative">
-              <div className="bg-slate-50/80 border-b border-slate-100 px-6 py-4 flex items-center justify-between">
+            <div
+              className="backdrop-blur-xl border border-[#c8ddd6]/70 rounded-3xl overflow-hidden shadow-[0_28px_80px_rgba(8,47,73,0.30)] relative"
+              style={{
+                background: 'linear-gradient(135deg, rgba(216, 239, 230, 0.93) 0%, rgba(205, 228, 222, 0.91) 48%, rgba(207, 226, 241, 0.92) 100%)'
+              }}
+            >
+              <div
+                className="border-b border-[#bcd6d0]/70 px-6 py-4 flex items-center justify-between"
+                style={{
+                  background: 'linear-gradient(90deg, rgba(229, 246, 240, 0.88) 0%, rgba(218, 237, 246, 0.84) 100%)'
+                }}
+              >
                 <div className="flex items-center gap-3">
                   <span className="text-xs font-bold font-mono text-[#FF6B6B]">STEP {step} OF 3</span>
                   <h3 className="text-sm font-bold text-slate-800 uppercase tracking-wide">
@@ -844,7 +854,12 @@ _I confirm my registration and age eligibility (18+). Please guide me on payment
           </div>
 
           <div className="lg:col-span-4 lg:sticky lg:top-28">
-            <div className="bg-white/85 backdrop-blur-xl border border-white/50 rounded-3xl overflow-hidden shadow-2xl relative">
+            <div
+              className="backdrop-blur-xl border border-[#c8ddd6]/70 rounded-3xl overflow-hidden shadow-[0_28px_80px_rgba(8,47,73,0.30)] relative"
+              style={{
+                background: 'linear-gradient(135deg, rgba(216, 239, 230, 0.92) 0%, rgba(204, 226, 219, 0.9) 52%, rgba(207, 226, 241, 0.91) 100%)'
+              }}
+            >
               <div className={`p-6 bg-gradient-to-br ${selectedPlan.color} text-white relative`}>
                 <div className="absolute top-0 right-0 w-[150px] h-[150px] bg-white/10 rounded-full filter blur-[40px] pointer-events-none" />
                 <PlanIcon className="w-10 h-10 mb-2 opacity-85" />
@@ -852,7 +867,12 @@ _I confirm my registration and age eligibility (18+). Please guide me on payment
                 <span className="text-[10px] uppercase font-mono font-bold tracking-widest opacity-75">{selectedPlan.type === 'domestic' ? '🇮🇳 Domestic Tier' : '🌐 International Tier'}</span>
               </div>
 
-              <div className="p-6 space-y-5">
+              <div
+                className="p-6 space-y-5"
+                style={{
+                  background: 'linear-gradient(180deg, rgba(221, 240, 232, 0.72) 0%, rgba(210, 226, 219, 0.76) 100%)'
+                }}
+              >
                 <div className="flex justify-between items-baseline border-b border-slate-100 pb-3">
                   <span className="text-xs text-slate-400 font-mono uppercase font-bold">Subscription Cost</span>
                   <div className="flex items-baseline gap-1">

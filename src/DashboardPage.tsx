@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Compass, Sparkles, Gift, CreditCard, Plane, ArrowRight,
@@ -24,6 +24,20 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
   const [dashboardBg, setDashboardBg] = useState<string>(() => {
     return localStorage.getItem('beduine_dashboard_bg') || '/images/dashboard_bg.jpg';
   });
+
+  const [activeDestIndex, setActiveDestIndex] = useState(0);
+  const DESTINATIONS = [
+    { name: 'Kashmir', tagline: 'Serene Lakes & Valleys', image: '/images/kashmir_resort.png' },
+    { name: 'Darjeeling', tagline: 'Tea Gardens & Hills', image: '/images/darjeeling_resort.png' },
+    { name: 'Maldives', tagline: 'Turquoise Waters & Beaches', image: '/images/maldives_resort.png' }
+  ];
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveDestIndex((prev) => (prev + 1) % DESTINATIONS.length);
+    }, 4000);
+    return () => clearInterval(timer);
+  }, [DESTINATIONS.length]);
 
   // Edit states (to commit only on Save)
   const [editName, setEditName] = useState(user?.fullName || '');
@@ -1004,68 +1018,66 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
             initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
             className="hidden lg:flex flex-col gap-5"
           >
-            {/* Live Co-Traveler Tracker (Mockup Inspired Right Map Screen) */}
+            {/* Featured Destinations Carousel */}
             <div className="travel-map-card mb-2">
               <div className="flex items-center justify-between px-5 pt-4 pb-2">
                 <h4 className="text-sm font-bold font-sans flex items-center gap-1.5" style={{ color: '#1E3147' }}>
-                  <MapPin className="w-4 h-4 text-[#0077B6]" /> Co-Travelers Live Map
+                  <Compass className="w-4 h-4 text-[#0077B6]" /> Featured Hotspots
                 </h4>
-                <span className="text-[10px] bg-[#00A676]/15 text-[#008E6A] px-2 py-0.5 rounded-full font-bold animate-pulse">Live</span>
+                <span className="text-[10px] bg-cyan/15 text-cyan-deep px-2 py-0.5 rounded-full font-bold">Recommended</span>
               </div>
               
               <div className="p-3">
-                {/* Generated Beautiful Map Image with Dynamic Overlaid Pins */}
-                <div className="travel-map-frame rounded-xl overflow-hidden h-[200px] relative bg-[#0B1528]">
-                  <img 
-                    src="/images/co_travelers_map.png" 
-                    alt="Live Tracker Map" 
-                    className="w-full h-full object-cover opacity-80"
-                  />
-                  <div className="absolute inset-0 bg-slate-950/20 pointer-events-none" />
+                <div className="travel-map-frame rounded-xl overflow-hidden h-[200px] relative bg-[#0B1528] group cursor-pointer">
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={activeDestIndex}
+                      initial={{ opacity: 0, scale: 1.05 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.5 }}
+                      className="absolute inset-0 w-full h-full"
+                      onClick={() => {
+                        setActiveDestIndex((prev) => (prev + 1) % DESTINATIONS.length);
+                      }}
+                    >
+                      <img 
+                        src={DESTINATIONS[activeDestIndex].image} 
+                        alt={DESTINATIONS[activeDestIndex].name} 
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent pointer-events-none" />
+                      
+                      {/* Destination Details */}
+                      <div className="absolute bottom-3 left-3 right-3 text-white">
+                        <div className="text-xs font-black uppercase tracking-wider text-cyan-bright">{DESTINATIONS[activeDestIndex].name}</div>
+                        <div className="text-[10px] font-bold opacity-90 mt-0.5">{DESTINATIONS[activeDestIndex].tagline}</div>
+                      </div>
+                    </motion.div>
+                  </AnimatePresence>
 
-                  {/* Pulsing Pin Points */}
-                  {/* Pin 1: Nancy */}
-                  <div className="absolute left-[30%] top-[25%] flex flex-col items-center">
-                    <span className="relative flex h-3 w-3">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FF7E40] opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-3 w-3 bg-[#E64A19]"></span>
-                    </span>
-                    <div className="bg-slate-900/90 text-white text-[7px] font-bold px-1.5 py-0.5 rounded-md mt-1 border border-slate-750">
-                      Nancy (Kashmir)
-                    </div>
+                  {/* Dot Indicators */}
+                  <div className="absolute top-3 right-3 flex gap-1 z-20">
+                    {DESTINATIONS.map((_, idx) => (
+                      <button
+                        key={idx}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setActiveDestIndex(idx);
+                        }}
+                        className={`h-1.5 w-1.5 rounded-full transition-all ${idx === activeDestIndex ? 'bg-cyan w-3' : 'bg-white/40'}`}
+                      />
+                    ))}
                   </div>
-
-                  {/* Pin 2: Nattasha (User) */}
-                  <div className="absolute left-[65%] top-[55%] flex flex-col items-center">
-                    <span className="relative flex h-3 w-3">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00A676] opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-3 w-3 bg-[#00A676]"></span>
-                    </span>
-                    <div className="bg-slate-900/90 text-white text-[7px] font-bold px-1.5 py-0.5 rounded-md mt-1 border border-slate-750">
-                      {profileName || 'Nattasha'} (Puri)
-                    </div>
-                  </div>
-
-                  {/* Pin 3: Jhon Martin */}
-                  <div className="absolute left-[20%] top-[80%] flex flex-col items-center">
-                    <span className="relative flex h-3 w-3">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#0077B6] opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-3 w-3 bg-[#0077B6]"></span>
-                    </span>
-                    <div className="bg-slate-900/90 text-white text-[7px] font-bold px-1.5 py-0.5 rounded-md mt-1 border border-slate-750">
-                      Jhon (Sundarbans)
-                    </div>
-                  </div>
-
                 </div>
               </div>
 
-              {/* Map Footer Action Button */}
+              {/* Action Button */}
               <div className="px-3 pb-3 pt-1">
                 <a href="https://wa.me/918768903565" target="_blank" rel="noreferrer"
                   className="w-full py-2.5 rounded-full text-xs font-bold text-slate-700 bg-white/90 border border-slate-200 shadow-sm hover:shadow-md hover:bg-white flex items-center justify-center gap-1.5 transition-all hover:scale-[1.02] cursor-pointer no-underline"
                 >
-                  Friends Near By
+                  Book This Tour
                 </a>
               </div>
             </div>
