@@ -260,7 +260,7 @@ function ScatteredCard({
 
   const feats = d.tag.split(' - ').map(f => f.trim());
 
-  // Check visibility in the sliding window of Rs.3
+  // Check visibility in the sliding window of +/-3
   const isVisible = Math.abs(index - activeIndex) <= 3;
 
   // Visual stacking depth inside the 3D space

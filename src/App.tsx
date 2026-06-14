@@ -1521,7 +1521,7 @@ function HowItWorks() {
                   {/* Step image */}
                   <div className="relative h-40 overflow-hidden">
                     <img src={s.img} alt={s.title} className="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity" loading="lazy" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-abyss via-abyss/60 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#060c10] via-[#060c10]/60 to-transparent" />
                     <div className="absolute top-3 left-4 font-display text-5xl font-bold text-cyan/30 tabular">{s.n}</div>
                     <div className="absolute top-3 right-3">
                       <FloatingIcon delay={i * 0.5}>
@@ -2205,7 +2205,7 @@ function LuckyDrawSystem() {
                     {/* Destination preview image */}
                     <div className="relative h-28 overflow-hidden">
                       <img src={s.img} alt={s.tour} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-abyss via-abyss/40 to-transparent" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#060c10] via-[#060c10]/40 to-transparent" />
                       <div className={`absolute top-2 right-2 w-8 h-8 rounded-lg bg-gradient-to-br ${s.color} flex items-center justify-center shadow-lg`}>
                         <Calendar className="w-4 h-4 text-cosmos" />
                       </div>
@@ -2781,9 +2781,9 @@ function NonWinnerGuarantee() {
               <TiltCard className="h-full" intensity={5}>
                 <div className="glass rounded-3xl overflow-hidden border border-slate-line hover:neon-border-gold transition-all h-full tilt-inner flex flex-col group">
                   {/* Visual Header Image */}
-                  <div className="relative h-32 overflow-hidden bg-gradient-to-br from-abyss to-void">
+                  <div className="relative h-32 overflow-hidden bg-gradient-to-br from-[#060c10] to-[#030c15]">
                     <img src={card.image} alt={card.plan} className="w-full h-full object-cover opacity-80 group-hover:scale-110 transition-transform duration-700" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-cosmos via-cosmos/40 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#060c10] via-[#060c10]/40 to-transparent" />
                     <div className="absolute top-4 left-4 flex items-center gap-3">
                       <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${card.color} flex items-center justify-center shadow-lg`}>
                         <Crown className="w-5 h-5 text-white" />

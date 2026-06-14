@@ -28,7 +28,7 @@ const ALL_PLANS = [
     benefits: [
       '1 Weekly Lucky Draw entry',
       'Winner tour value up to ₹3,000 (2N/3D)',
-      '₹500 discount credit if not selected',
+      '1 x 500-value Discount Credit if not selected',
       'Up to 5% off on other paid tours',
       'Name change – Not available'
     ]
@@ -44,7 +44,7 @@ const ALL_PLANS = [
     benefits: [
       '1 Weekly Lucky Draw entry',
       'Winner tour value up to ₹5,000 (2N/3D)',
-      '₹1,000 discount credits if not selected',
+      '2 x 500-value Discount Credits if not selected',
       'Up to 7% off on other paid tours',
       'Name change – One time allowed'
     ]
@@ -60,7 +60,7 @@ const ALL_PLANS = [
     benefits: [
       '1 Weekly Lucky Draw entry',
       'Winner tour value up to ₹10,000 (3N/4D)',
-      '₹2,000 discount credits if not selected',
+      '4 x 500-value Discount Credits if not selected',
       'Up to 10% off on other paid tours',
       'Name change – Two times allowed'
     ]
@@ -76,7 +76,7 @@ const ALL_PLANS = [
     benefits: [
       '1 Monthly Lucky Draw entry',
       'Winner tour value up to ₹25,000 (3N/4D)',
-      '₹2,500 discount credits if not selected',
+      '5 x 500-value Discount Credits if not selected',
       'Up to 5% off on other paid tours',
       'Name change – One time allowed',
       'Visa assistance included'
@@ -93,7 +93,7 @@ const ALL_PLANS = [
     benefits: [
       '1 Monthly Lucky Draw entry',
       'Winner tour value up to ₹50,000 (4N/5D)',
-      '₹4,000 discount credits if not selected',
+      '8 x 500-value Discount Credits if not selected',
       'Up to 7% off on other paid tours',
       'Name change – Two times allowed',
       'Visa assistance + Airport lounge access'
@@ -110,7 +110,7 @@ const ALL_PLANS = [
     benefits: [
       '1 Monthly Lucky Draw entry',
       'Winner tour value up to ₹1,00,000 (5N/6D)',
-      '₹7,500 discount credits if not selected',
+      '15 x 500-value Discount Credits if not selected',
       'Up to 10% off on other paid tours',
       'Name change – Unlimited allowed',
       'Full visa processing + lounge access',

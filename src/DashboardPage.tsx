@@ -135,7 +135,7 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
       } else if (rand < 0.4) {
         setSimulationResult('Selected for Digha Weekend Escape (Silver Tier)');
       } else {
-        setSimulationResult('Draw trial finished: Rs.500 Discount Credit guaranteed!');
+        setSimulationResult('Draw trial finished: 500-value Discount Credit guaranteed!');
       }
     }, 2500);
   };
@@ -344,7 +344,8 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                   >
                     <CreditCard className="w-4 h-4 mx-auto mb-1 text-white/95" />
                     <span className="text-[8px] uppercase tracking-wider block text-white/80 font-mono">Credits</span>
-                    <span className="text-sm font-black block mt-0.5">Rs.{voucherCount * 500}</span>
+                    <span className="text-sm font-black block mt-0.5">{voucherCount} DC</span>
+                    <span className="text-[8px] uppercase tracking-wide block text-white/75">500-value each</span>
                   </div>
 
                   {/* Card 2 (Draw Entries) - white/frosted */}
@@ -521,7 +522,7 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                       </h3>
                       <div className="grid sm:grid-cols-2 gap-3">
                         {[
-                          { title: 'Discount Voucher', desc: 'Rs.500 vouchers for paid trips', icon: Gift, color: '#FF6B6B' },
+                          { title: 'Discount Voucher', desc: '500-value credits for paid trips', icon: Gift, color: '#FF6B6B' },
                           { title: 'Name Change Policy', desc: 'Platinum: unlimited family adjustments', icon: Users, color: '#0077B6' },
                           { title: 'Quarterly Tours', desc: 'Curated destinations each cycle', icon: MapPin, color: '#FF8E53' },
                           { title: 'ROI Guarantee', desc: '100% voucher safety net', icon: TrendingUp, color: '#FF6B6B' },
@@ -609,8 +610,8 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                         <div className="absolute -top-10 -left-10 w-24 h-24 bg-white/10 rounded-full blur-xl pointer-events-none" />
                         <div className="absolute -bottom-10 -right-10 w-24 h-24 bg-white/15 rounded-full blur-xl pointer-events-none" />
                         <span className="text-[10px] uppercase tracking-wider font-mono block text-white/85 font-bold">TOTAL WALLET BALANCE</span>
-                        <span className="text-4xl font-black block mt-1 text-white">Rs.{voucherCount * 500}</span>
-                        <span className="text-xs text-white/90 mt-1 block font-medium">Available for paid bookings</span>
+                        <span className="text-4xl font-black block mt-1 text-white">{voucherCount} DC</span>
+                        <span className="text-xs text-white/90 mt-1 block font-medium">500-value each, available for paid bookings</span>
                       </div>
 
                       {/* Voucher Cards */}
@@ -629,7 +630,7 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                                 <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[9px] font-bold text-white shadow-sm travel-gradient-button">
                                   <Zap className="w-2.5 h-2.5 animate-pulse" /> ACTIVE
                                 </span>
-                                <div className="text-3xl font-black text-slate-800 mt-2">Rs.500</div>
+                                <div className="text-3xl font-black text-slate-800 mt-2">500-value</div>
                               </div>
                               <div className="w-10 h-10 rounded-xl flex items-center justify-center shadow-inner" style={{ background: 'rgba(255, 107, 107, 0.1)' }}>
                                 <Gift className="w-4 h-4" style={{ color: '#FF6B6B' }} />
@@ -645,7 +646,7 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
 
                       <div className="p-4 rounded-xl text-xs flex items-start gap-2" style={{ backgroundColor: '#FFF5F2', border: '1px solid rgba(255, 107, 107, 0.25)' }}>
                         <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" style={{ color: '#FF6B6B' }} />
-                        <span style={{ color: '#E64A19' }}><strong>Redemption:</strong> 1 voucher (Rs.500) per person per booking. Valid 12 months.</span>
+                        <span style={{ color: '#E64A19' }}><strong>Redemption:</strong> 1 voucher = one 500-value Discount Credit per person per booking. Valid 12 months.</span>
                       </div>
                     </div>
                   </div>
