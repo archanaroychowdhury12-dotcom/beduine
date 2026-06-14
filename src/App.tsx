@@ -4022,7 +4022,7 @@ export default function App() {
             </div>
           )}
         </main>
-        <Footer setView={setView} />
+        {(view === 'landing' || view === 'terms') && <Footer setView={setView} />}
         {view === 'landing' && <FloatingButtons />}
         {view === 'landing' && <MobileSticky onSelectPlan={handleSelectPlan} />}
         {view === 'landing' && (
