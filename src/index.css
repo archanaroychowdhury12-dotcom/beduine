@@ -414,13 +414,23 @@ body {
 }
 
 .travel-stat-card--ocean {
-  border-color: rgba(0, 119, 182, 0.2);
-  background: linear-gradient(135deg, rgba(0, 119, 182, 0.1), rgba(255, 255, 255, 0.94));
+  border-color: rgba(0, 119, 182, 0.18);
+  background: linear-gradient(135deg, #E0F2FE 0%, #FFFFFF 100%);
 }
 
 .travel-stat-card--teal {
-  border-color: rgba(0, 166, 118, 0.22);
-  background: linear-gradient(135deg, rgba(0, 166, 118, 0.1), rgba(255, 255, 255, 0.94));
+  border-color: rgba(0, 166, 118, 0.18);
+  background: linear-gradient(135deg, #DCFCE7 0%, #FFFFFF 100%);
+}
+
+.travel-stat-card--muted {
+  border-color: rgba(148, 163, 184, 0.18);
+  background: linear-gradient(135deg, #F1F5F9 0%, #FFFFFF 100%);
+}
+
+.travel-stat-card--rose {
+  border-color: rgba(239, 68, 68, 0.18);
+  background: linear-gradient(135deg, #FEE2E2 0%, #FFFFFF 100%);
 }
 
 .travel-map-card {

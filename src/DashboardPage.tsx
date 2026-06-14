@@ -499,17 +499,42 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                     {/* Plan Stats Cards */}
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                       {[
-                        { label: 'Plan Tier', value: displayPlan, icon: Crown, color: '#FF6B4A', cardClass: 'travel-stat-card--coral' },
-                        { label: 'Plan Status', value: isSubscribed ? 'Active' : 'Inactive', icon: Shield, color: '#0077B6', cardClass: 'travel-stat-card--ocean' },
-                        { label: 'Draw Token', value: user?.drawToken || 'N/A', icon: Ticket, color: '#00A676', cardClass: 'travel-stat-card--teal' },
+                        { 
+                          label: 'Plan Tier', 
+                          value: displayPlan, 
+                          icon: Crown, 
+                          color: isSubscribed ? '#FF6B4A' : '#7E919D', 
+                          cardClass: isSubscribed ? 'travel-stat-card--coral' : 'travel-stat-card--muted',
+                          statusText: isSubscribed ? 'Active Member' : 'Inactive',
+                          statusColor: isSubscribed ? '#FFFFFF' : '#7E919D'
+                        },
+                        { 
+                          label: 'Plan Status', 
+                          value: isSubscribed ? 'Active' : 'Inactive', 
+                          icon: Shield, 
+                          color: isSubscribed ? '#0077B6' : '#FF6B6B', 
+                          cardClass: isSubscribed ? 'travel-stat-card--ocean' : 'travel-stat-card--rose',
+                          statusText: isSubscribed ? 'Active' : 'Inactive',
+                          statusColor: isSubscribed ? '#0077B6' : '#FF6B6B'
+                        },
+                        { 
+                          label: 'Draw Token', 
+                          value: user?.drawToken || 'N/A', 
+                          icon: Ticket, 
+                          color: isSubscribed ? '#00A676' : '#7E919D', 
+                          cardClass: isSubscribed ? 'travel-stat-card--teal' : 'travel-stat-card--muted',
+                          statusText: isSubscribed ? 'Active' : 'Inactive',
+                          statusColor: isSubscribed ? '#00A676' : '#7E919D'
+                        },
                       ].map((card, i) => {
                         const Icon = card.icon;
+                        const isCoralCard = isSubscribed && i === 0;
                         return (
                           <div key={i} className={`travel-stat-card ${card.cardClass} p-5 relative overflow-hidden`}>
-                            <div className="absolute top-3 right-3 opacity-20"><Icon className="w-10 h-10" style={{ color: i === 0 ? '#FFFFFF' : card.color }} /></div>
-                            <span className={`text-[9px] uppercase tracking-wider font-mono block ${i === 0 ? 'text-white/80' : 'text-slate-500'}`}>{card.label}</span>
-                            <span className={`text-lg font-bold block mt-1 ${i === 0 ? 'text-white' : 'text-slate-800'}`}>{card.value}</span>
-                            <span className={`text-[10px] block mt-1 font-semibold ${i === 0 ? 'text-white/85' : ''}`} style={i === 0 ? undefined : { color: card.color }}>Active</span>
+                            <div className="absolute top-3 right-3 opacity-20"><Icon className="w-10 h-10" style={{ color: isCoralCard ? '#FFFFFF' : card.color }} /></div>
+                            <span className={`text-[9px] uppercase tracking-wider font-mono block ${isCoralCard ? 'text-white/80' : 'text-slate-500'}`}>{card.label}</span>
+                            <span className={`text-lg font-bold block mt-1 ${isCoralCard ? 'text-white' : 'text-slate-800'}`}>{card.value}</span>
+                            <span className={`text-[10px] block mt-1 font-semibold ${isCoralCard ? 'text-white/85' : ''}`} style={isCoralCard ? undefined : { color: card.statusColor }}>{card.statusText}</span>
                           </div>
                         );
                       })}

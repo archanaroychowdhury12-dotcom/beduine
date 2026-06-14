@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
-import { motion, AnimatePresence, useScroll, useSpring, useInView, useTransform } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useInView, useTransform } from 'framer-motion';
 import {
   Compass, Sparkles, Gift, CreditCard, Award, ShieldCheck,
   ChevronRight, CheckCircle2, Check, Star,
@@ -668,13 +668,7 @@ function CustomCursor() {
   );
 }
 
-function ScrollProgress() {
-  const { scrollYProgress } = useScroll();
-  const sx = useSpring(scrollYProgress, { stiffness: 120, damping: 20 });
-  const [scale, setScale] = useState(0);
-  useEffect(() => sx.on('change', (v) => setScale(v)), [sx]);
-  return <div className="scroll-progress" style={{ width: `${scale * 100}%` }} />;
-}
+
 
 /* ============ 3-SECOND CINEMATIC INTRO ============ */
 function CinematicIntro({ onComplete }: { onComplete: () => void }) {
@@ -748,109 +742,155 @@ interface NavbarProps {
   setCurrentUser: (user: any) => void;
   setLoginInitialMode: (mode: 'login' | 'register') => void;
   onSelectPlan?: (planName: string) => void;
+  introComplete?: boolean;
 }
 
-function Navbar({ view, setView, currentUser, setCurrentUser, setLoginInitialMode }: NavbarProps) {
+function Navbar({ view, setView, currentUser, setCurrentUser, setLoginInitialMode, introComplete }: NavbarProps) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState<string>('');
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
+
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 30);
     window.addEventListener('scroll', onScroll);
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  useEffect(() => {
+    if (view !== 'landing' || !introComplete) {
+      setActiveSection('');
+      return;
+    }
+
+    const handleScroll = () => {
+      if (window.scrollY < 120) {
+        setActiveSection('');
+        return;
+      }
+
+      const sections = ['about', 'plans', 'destinations', 'contact'];
+      let closestSection = '';
+      let minDistance = Infinity;
+
+      for (const id of sections) {
+        const el = document.getElementById(id);
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          const distance = Math.abs(rect.top - 120);
+          
+          if (rect.top <= window.innerHeight * 0.75 && rect.bottom >= 120) {
+            if (distance < minDistance) {
+              minDistance = distance;
+              closestSection = id;
+            }
+          }
+        }
+      }
+
+      setActiveSection(closestSection);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    const timer = setTimeout(handleScroll, 100);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      clearTimeout(timer);
+    };
+  }, [view, introComplete]);
+
   const isDashboard = view === 'dashboard';
 
   return (
-    <header className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${scrolled ? 'py-2' : 'py-4'}`}>
-      <div className="max-w-7xl mx-auto px-4 lg:px-6">
+    <header className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${scrolled ? 'py-1.5' : 'py-3'}`}>
+      <div className="max-w-4xl mx-auto px-4 lg:px-6">
         <div 
           className={`rounded-2xl transition-all duration-500 ${isDashboard ? '' : 'shadow-[0_8px_32px_0_rgba(31,38,135,0.03)]'} ${scrolled ? 'shadow-md shadow-slate-100/5' : ''} border`}
           style={{
-            backgroundColor: isDashboard 
-              ? '#FAF2E6' 
-              : (scrolled ? 'rgba(255, 255, 255, 0.85)' : 'rgba(255, 255, 255, 0.65)'),
-            backdropFilter: isDashboard ? 'none' : 'blur(20px) saturate(180%)',
-            borderColor: isDashboard 
-              ? '#E7DCCF' 
-              : (scrolled ? 'rgba(148, 163, 184, 0.25)' : 'rgba(148, 163, 184, 0.18)'),
+            backgroundColor: isDashboard ? '#FAF2E6' : '#FFFFFF',
+            backdropFilter: 'none',
+            borderColor: isDashboard ? '#E7DCCF' : 'rgba(148, 163, 184, 0.22)',
           }}
         >
-          <div className="flex items-center justify-between px-4 lg:px-6 h-14 lg:h-16">
-            <a 
-              href="#top" 
-              className="flex items-center gap-2.5" 
-              data-magnetic
-              onClick={(e) => {
-                if (view !== 'landing') {
-                  e.preventDefault();
-                  setView('landing');
-                  setTimeout(() => {
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                  }, 100);
-                }
-              }}
-            >
-              <div 
-                className="w-10 h-10 rounded-full overflow-hidden border shadow-lg bg-cosmos flex items-center justify-center p-1.5"
-                style={{ borderColor: isDashboard ? '#E7DCCF' : 'rgba(24, 215, 242, 0.3)' }}
+          <div className="flex items-center justify-between px-4 lg:px-6 h-12 lg:h-14">
+            <div className="flex items-center gap-8">
+              <a 
+                href="#top" 
+                className="flex items-center gap-2.5" 
+                data-magnetic
+                onClick={(e) => {
+                  if (view !== 'landing') {
+                    e.preventDefault();
+                    setView('landing');
+                    setTimeout(() => {
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }, 100);
+                  }
+                }}
               >
-                <img src="/images/bedune_logo_cropped.png" alt="BEDUINE Logo" className="w-full h-full object-contain" />
-              </div>
-              <div className="leading-tight">
-                <div className="font-display text-base font-bold tracking-tight" style={{ color: '#1E3147' }}>BEDUINE</div>
-                <div className="text-[9px] uppercase tracking-[0.22em] font-black" style={{ color: '#138A8A' }}>Tour & Travels</div>
-              </div>
-            </a>
-            <nav className="hidden lg:flex items-center gap-6">
-              {DESKTOP_NAV.map((n) => (
-                <a 
-                  key={n.id} 
-                  href={`#${n.id}`} 
-                  data-magnetic 
-                  onClick={(e) => {
-                    if (n.id === 'terms') {
+                <div 
+                  className="w-10 h-10 rounded-full overflow-hidden border shadow-lg bg-cosmos flex items-center justify-center p-1.5"
+                  style={{ borderColor: isDashboard ? '#E7DCCF' : 'rgba(24, 215, 242, 0.3)' }}
+                >
+                  <img src="/images/bedune_logo_cropped.png" alt="BEDUINE Logo" className="w-full h-full object-contain" />
+                </div>
+                <div className="leading-tight">
+                  <div className="font-display text-base font-bold tracking-tight" style={{ color: '#1E3147' }}>BEDUINE</div>
+                  <div className="text-[9px] uppercase tracking-[0.22em] font-black" style={{ color: '#138A8A' }}>Tour & Travels</div>
+                </div>
+              </a>
+              <nav className="hidden lg:flex items-center gap-6">
+                {DESKTOP_NAV.map((n) => (
+                  <a 
+                    key={n.id} 
+                    href={`#${n.id}`} 
+                    data-magnetic 
+                    onClick={(e) => {
+                      if (n.id === 'terms') {
+                        e.preventDefault();
+                        setView('terms');
+                        setTimeout(() => {
+                          window.scrollTo({ top: 0, behavior: 'smooth' });
+                        }, 100);
+                        return;
+                      }
                       e.preventDefault();
-                      setView('terms');
-                      setTimeout(() => {
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
-                      }, 100);
-                      return;
-                    }
-                    if (view !== 'landing') {
-                      e.preventDefault();
-                      setView('landing');
-                      setTimeout(() => {
+                      if (view !== 'landing') {
+                        setView('landing');
+                        setTimeout(() => {
+                          const el = document.getElementById(n.id);
+                          if (el) el.scrollIntoView({ behavior: 'smooth' });
+                        }, 100);
+                      } else {
                         const el = document.getElementById(n.id);
                         if (el) el.scrollIntoView({ behavior: 'smooth' });
-                      }, 100);
-                    }
-                  }}
-                  className="text-sm transition-all font-bold whitespace-nowrap hover:scale-105"
-                  style={{ color: isDashboard ? '#1E3147' : '#7E919D' }}
-                  onMouseEnter={(e) => e.currentTarget.style.color = '#138A8A'}
-                  onMouseLeave={(e) => e.currentTarget.style.color = isDashboard ? '#1E3147' : '#7E919D'}
-                >
-                  {n.label}
-                </a>
-              ))}
-            </nav>
+                      }
+                    }}
+                    className="relative text-sm font-bold whitespace-nowrap px-3.5 py-1.5 rounded-full transition-all duration-300 hover:scale-105"
+                    style={{ 
+                      color: activeSection === n.id || hoveredId === n.id 
+                        ? '#138A8A' 
+                        : isDashboard ? '#1E3147' : '#7E919D' 
+                    }}
+                    onMouseEnter={() => setHoveredId(n.id)}
+                    onMouseLeave={() => setHoveredId(null)}
+                  >
+                    {activeSection === n.id && (
+                      <motion.div 
+                        layoutId="activeNavBackground" 
+                        className="absolute inset-0 bg-[#138A8A]/12 border border-[#138A8A]/20 rounded-full shadow-sm" 
+                        transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                      />
+                    )}
+                    <span className="relative z-10">{n.label}</span>
+                  </a>
+                ))}
+              </nav>
+            </div>
             <div className="hidden lg:flex items-center gap-3">
               {currentUser ? (
                 <>
-                  <button 
-                    onClick={() => {
-                      setView('dashboard');
-                      window.scrollTo({ top: 0, behavior: 'smooth' });
-                    }} 
-                    data-magnetic 
-                    className="text-sm transition-colors font-bold px-3 py-2 whitespace-nowrap bg-transparent border-none cursor-pointer"
-                    style={{ color: isDashboard ? '#1E3147' : '#7E919D' }}
-                    onMouseEnter={(e) => e.currentTarget.style.color = '#138A8A'}
-                    onMouseLeave={(e) => e.currentTarget.style.color = isDashboard ? '#1E3147' : '#7E919D'}
-                  >
-                    My Dashboard
-                  </button>
                   <button 
                     onClick={() => {
                       setCurrentUser(null);
@@ -858,10 +898,37 @@ function Navbar({ view, setView, currentUser, setCurrentUser, setLoginInitialMod
                       window.scrollTo({ top: 0, behavior: 'smooth' });
                     }} 
                     data-magnetic 
-                    className="text-xs transition-all font-bold px-4 py-2 rounded-full border border-slate-200 hover:border-red-400 hover:text-red-500 hover:bg-red-50/20 whitespace-nowrap cursor-pointer bg-white"
-                    style={{ color: '#1E3147' }}
+                    className="text-xs transition-colors font-bold px-3 py-2 whitespace-nowrap bg-transparent border-none cursor-pointer text-slate-500 hover:text-red-500"
                   >
                     Log Out
+                  </button>
+                  <a 
+                    href="#plans"
+                    onClick={(e) => {
+                      if (view !== 'landing') {
+                        e.preventDefault();
+                        setView('landing');
+                        setTimeout(() => {
+                          const el = document.getElementById('plans');
+                          if (el) el.scrollIntoView({ behavior: 'smooth' });
+                        }, 100);
+                      }
+                    }}
+                  >
+                    <ParticleButton variant={isDashboard ? 'teal' : 'cyan'} className="px-4 py-2 rounded-full font-bold text-sm inline-flex items-center gap-1.5 text-white">
+                      Subscribe Now <ArrowRight className="w-3.5 h-3.5" />
+                    </ParticleButton>
+                  </a>
+                  <button 
+                    onClick={() => {
+                      setView('dashboard');
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }} 
+                    data-magnetic 
+                    className="rounded-full w-9 h-9 bg-gradient-to-br from-[#0096C7] to-[#00B4D8] text-white flex items-center justify-center font-bold text-xs shadow-sm hover:scale-105 hover:shadow-md transition-all cursor-pointer border border-slate-200/80 uppercase"
+                    title={currentUser.fullName || 'My Dashboard'}
+                  >
+                    {currentUser.fullName ? currentUser.fullName.split(' ').map((n: string) => n.charAt(0)).join('').slice(0, 2) : 'U'}
                   </button>
                 </>
               ) : (
@@ -891,25 +958,25 @@ function Navbar({ view, setView, currentUser, setCurrentUser, setLoginInitialMod
                   >
                     Create Account
                   </button>
+                  <a 
+                    href="#plans"
+                    onClick={(e) => {
+                      if (view !== 'landing') {
+                        e.preventDefault();
+                        setView('landing');
+                        setTimeout(() => {
+                          const el = document.getElementById('plans');
+                          if (el) el.scrollIntoView({ behavior: 'smooth' });
+                        }, 100);
+                      }
+                    }}
+                  >
+                    <ParticleButton variant={isDashboard ? 'teal' : 'cyan'} className="px-4 py-2 rounded-full font-bold text-sm inline-flex items-center gap-1.5 text-white">
+                      Subscribe Now <ArrowRight className="w-3.5 h-3.5" />
+                    </ParticleButton>
+                  </a>
                 </>
               )}
-              <a 
-                href="#plans"
-                onClick={(e) => {
-                  if (view !== 'landing') {
-                    e.preventDefault();
-                    setView('landing');
-                    setTimeout(() => {
-                      const el = document.getElementById('plans');
-                      if (el) el.scrollIntoView({ behavior: 'smooth' });
-                    }, 100);
-                  }
-                }}
-              >
-                <ParticleButton variant={isDashboard ? 'teal' : 'cyan'} className="px-4 py-2 rounded-full font-bold text-sm inline-flex items-center gap-1.5 text-white">
-                  Choose Plan <ArrowRight className="w-3.5 h-3.5" />
-                </ParticleButton>
-              </a>
             </div>
 
             <div className="flex items-center gap-2">
@@ -959,18 +1026,28 @@ function Navbar({ view, setView, currentUser, setCurrentUser, setLoginInitialMod
                     </a>
                   ))}
                   {currentUser ? (
-                    <>
-                      <button 
+                    <div className="mt-2 flex flex-col gap-2 p-3 border border-slate-200/80 bg-white rounded-2xl shadow-sm">
+                      <div 
                         onClick={() => {
                           setOpen(false);
                           setView('dashboard');
                           window.scrollTo({ top: 0, behavior: 'smooth' });
                         }}
-                        className="mt-2 text-center py-2.5 rounded-full border text-xs font-bold transition-all bg-transparent cursor-pointer"
-                        style={{ borderColor: '#E7DCCF', color: '#1E3147' }}
+                        className="flex items-center gap-3 cursor-pointer p-1 rounded-xl hover:bg-slate-50 transition-colors"
                       >
-                        My Dashboard
-                      </button>
+                        <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[#0096C7] to-[#00B4D8] text-white flex items-center justify-center text-xs font-extrabold uppercase shadow-sm">
+                          {currentUser.fullName ? currentUser.fullName.split(' ').map((n: string) => n.charAt(0)).join('').slice(0, 2) : 'U'}
+                        </div>
+                        <div className="flex flex-col min-w-0">
+                          <span className="text-xs font-bold text-slate-800 truncate">
+                            {currentUser.fullName || 'My Profile'}
+                          </span>
+                          <span className="text-[9px] font-semibold text-[#138A8A] uppercase tracking-wider">
+                            View Dashboard
+                          </span>
+                        </div>
+                      </div>
+                      <div className="h-px bg-slate-100 my-0.5" />
                       <button 
                         onClick={() => {
                           setOpen(false);
@@ -978,11 +1055,11 @@ function Navbar({ view, setView, currentUser, setCurrentUser, setLoginInitialMod
                           setView('landing');
                           window.scrollTo({ top: 0, behavior: 'smooth' });
                         }}
-                        className="mt-1 text-center py-2.5 rounded-full border text-xs font-bold transition-all bg-white text-red-500 border-red-200 cursor-pointer"
+                        className="w-full text-center py-2 rounded-xl text-xs font-bold transition-all bg-red-50 text-red-500 border border-red-100 hover:bg-red-100/60 cursor-pointer"
                       >
                         Log Out
                       </button>
-                    </>
+                    </div>
                   ) : (
                     <>
                       <button 
@@ -1026,7 +1103,7 @@ function Navbar({ view, setView, currentUser, setCurrentUser, setLoginInitialMod
                     className="mt-1.5 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full text-white font-bold text-sm no-underline"
                     style={{ background: 'linear-gradient(135deg, #138A8A, #0E6F70)' }}
                   >
-                    Choose Plan <ArrowRight className="w-4 h-4" />
+                    Subscribe Now <ArrowRight className="w-4 h-4" />
                   </a>
                 </div>
               </motion.div>
@@ -1655,7 +1732,7 @@ function PlanCard({ plan, index, onSelectPlan }: { plan: typeof PLANS[number]; i
                 variant={plan.featured ? 'gold' : 'cyan'}
                 className="block text-center w-full py-3.5 rounded-full font-bold"
               >
-                {`Choose ${plan.name}`}
+                {`Subscribe ${plan.name}`}
               </ParticleButton>
             )}
             <div className="text-center text-[11px] text-slate-400 font-bold mt-3 font-mono">// 12-mo validity - pickup included</div>
@@ -2669,7 +2746,7 @@ function CreditArchitecture(_props: { activePlan: string | null; ldcTokens: numb
                   "Every Sunday, BEDUINE runs a fair digital draw. If I win, I travel free. If not, I still get discounts. Either way, I gain."
                 </p>
               </div>
-              <a href="#plans"><ParticleButton variant="gold" className="px-8 py-4 rounded-full font-bold text-base shrink-0 inline-flex items-center gap-2"><Crown className="w-5 h-5" />Choose Your Plan<ChevronRight className="w-5 h-5" /></ParticleButton></a>
+              <a href="#plans"><ParticleButton variant="gold" className="px-8 py-4 rounded-full font-bold text-base shrink-0 inline-flex items-center gap-2"><Crown className="w-5 h-5" />Subscribe Now<ChevronRight className="w-5 h-5" /></ParticleButton></a>
             </div>
           </div>
         </Reveal>
@@ -2932,7 +3009,7 @@ function NonWinnerGuarantee() {
                   "Every Sunday, BEDUINE runs a fair digital draw. If I win, I travel free. If not, I still get discounts. Either way, I gain."
                 </p>
               </div>
-              <a href="#plans" className="shrink-0"><ParticleButton variant="gold" className="px-6 py-3.5 rounded-full font-extrabold text-sm inline-flex items-center gap-2 shadow-lg hover:scale-105 transition-transform"><Crown className="w-4 h-4" />Choose Plan<ChevronRight className="w-4 h-4" /></ParticleButton></a>
+              <a href="#plans" className="shrink-0"><ParticleButton variant="gold" className="px-6 py-3.5 rounded-full font-extrabold text-sm inline-flex items-center gap-2 shadow-lg hover:scale-105 transition-transform"><Crown className="w-4 h-4" />Subscribe Now<ChevronRight className="w-4 h-4" /></ParticleButton></a>
             </div>
           </div>
         </Reveal>
@@ -3860,7 +3937,6 @@ export default function App() {
     <div className="min-h-screen bg-cosmos text-ink relative">
       <AnimatePresence>{!introComplete && <CinematicIntro onComplete={handleIntroComplete} />}</AnimatePresence>
       
-      {introComplete && <ScrollProgress />}
       {introComplete && <CustomCursor />}
 
       {/* Main page content container - invisible during intro to prevent menu leak, then fades in beautifully */}
@@ -3872,6 +3948,7 @@ export default function App() {
           currentUser={currentUser} 
           setCurrentUser={setCurrentUser}
           setLoginInitialMode={setLoginInitialMode}
+          introComplete={introComplete}
         />
 
         <main className="relative z-10 flex flex-col gap-0">
@@ -4031,7 +4108,7 @@ export default function App() {
             className="choose-btn hidden lg:inline-flex cursor-pointer border-none bg-transparent p-0"
           >
             <ParticleButton variant="gold" className="px-5 py-3 rounded-full font-bold text-sm shadow-xl shadow-neon-gold/30 flex items-center gap-1.5 hover:scale-110 transition-transform">
-              <Crown className="w-4 h-4" /> Choose Plan
+              <Crown className="w-4 h-4" /> Subscribe Now
             </ParticleButton>
           </button>
         )}
