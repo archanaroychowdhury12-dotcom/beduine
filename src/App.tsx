@@ -8,7 +8,7 @@ import {
   Download, Lock, Eye, TrendingUp, Crown,
   Video, Camera, Send, Tv, Share2, FileText,
   BadgeCheck, Zap, Bot, Fingerprint, Scan,
-  Heart, Globe, Users, Rocket, Wallet, Shield, HeartHandshake
+  Heart, Globe, Rocket, Wallet, Shield, HeartHandshake
 } from 'lucide-react';
 import ScatteredShowcase from './ScatteredShowcase';
 import RegistrationPage from './RegistrationPage';
@@ -29,7 +29,6 @@ const NAV = [
   { id: 'credits', label: 'Credits' },
   { id: 'destinations', label: 'Destinations' },
   { id: 'services', label: 'Services' },
-  { id: 'terms', label: 'Terms' },
   { id: 'contact', label: 'Contact' },
 ];
 
@@ -37,7 +36,6 @@ const DESKTOP_NAV = [
   { id: 'about', label: 'About' },
   { id: 'plans', label: 'Plans' },
   { id: 'destinations', label: 'Destinations' },
-  { id: 'terms', label: 'Terms' },
   { id: 'contact', label: 'Contact' },
 ];
 
@@ -93,7 +91,7 @@ const INTL_PLANS = [
     image: '/images/nepal.png',
     imageLabel: 'Nepal - Valley & Peaks',
     destinations: ['Nepal', 'Bhutan'],
-    benefits: ['1 Monthly Promotional Draw entry', 'Winner tour value up to ₹25,000 (3N/4D)', '₹2,500 discount credits if not selected', 'Up to 5% off on paid international tours', 'Travel insurance – 50% off', 'One-time family name change allowed', '18+ Membership Only'],
+    benefits: ['1 Monthly Promotional Draw entry', 'Winner tour value up to ₹25,000 (3N/4D)', '₹2,500 discount credits if not selected', 'Up to 5% off on paid international tours', 'One-time family name change allowed', '18+ Membership Only'],
   },
   {
     name: 'Gold', price: 7999, tagline: 'Premium Explorer', icon: Plane,
@@ -103,7 +101,7 @@ const INTL_PLANS = [
     image: '/images/thailand.png',
     imageLabel: 'Thailand - Temples & Beaches',
     destinations: ['Thailand', 'Bali (Indonesia)'],
-    benefits: ['1 Monthly Promotional Draw entry', 'Winner tour value up to ₹50,000 (4N/5D)', '₹4,000 discount credits if not selected', 'Up to 7% off on paid international tours', 'Travel insurance – Free', 'Two family name changes allowed', '18+ Membership Only'],
+    benefits: ['1 Monthly Promotional Draw entry', 'Winner tour value up to ₹50,000 (4N/5D)', '₹4,000 discount credits if not selected', 'Up to 7% off on paid international tours', 'Two family name changes allowed', '18+ Membership Only'],
   },
   {
     name: 'Platinum', price: 14999, tagline: 'Ultimate World Pass', icon: Rocket,
@@ -113,7 +111,7 @@ const INTL_PLANS = [
     image: '/images/vietnam.png',
     imageLabel: 'Vietnam - Bays & Cities',
     destinations: ['Dubai', 'Vietnam'],
-    benefits: ['1 Monthly Promotional Draw entry', 'Winner tour value up to ₹1,00,000 (5N/6D)', '₹7,500 discount credits if not selected', 'Up to 10% off on paid international tours', 'Travel insurance – Free', 'Unlimited name changes allowed', '18+ Membership Only'],
+    benefits: ['1 Monthly Promotional Draw entry', 'Winner tour value up to ₹1,00,000 (5N/6D)', '₹7,500 discount credits if not selected', 'Up to 10% off on paid international tours', 'Unlimited name changes allowed', '18+ Membership Only'],
   },
 ];
 
@@ -261,10 +259,10 @@ function SubSectionBadge({ text, theme = 'cyan' }: { text: string; theme?: 'cyan
   );
 }
 
-function GoldCheck({ size = 18, variant = 'gold' }: { size?: number; variant?: 'gold' | 'cyan' }) {
+function GoldCheck({ size = 18, variant = 'gold', className = '' }: { size?: number; variant?: 'gold' | 'cyan'; className?: string }) {
   const checkClass = variant === 'cyan' ? 'cyan-check' : 'gold-check';
   return (
-    <span className={`inline-flex items-center justify-center rounded-full ${checkClass} shrink-0`} style={{ width: size, height: size }}>
+    <span className={`inline-flex items-center justify-center rounded-full ${checkClass} shrink-0 ${className}`} style={{ width: size, height: size }}>
       <Check className="text-cosmos" style={{ width: size * 0.6, height: size * 0.6 }} strokeWidth={3.5} />
     </span>
   );
@@ -747,11 +745,12 @@ interface NavbarProps {
   view: 'landing' | 'login' | 'register' | 'terms' | 'dashboard';
   setView: (v: 'landing' | 'login' | 'register' | 'terms' | 'dashboard') => void;
   currentUser: any;
+  setCurrentUser: (user: any) => void;
+  setLoginInitialMode: (mode: 'login' | 'register') => void;
   onSelectPlan?: (planName: string) => void;
-  handleMemberLogin: (e: React.MouseEvent) => void;
 }
 
-function Navbar({ view, setView, currentUser, handleMemberLogin }: NavbarProps) {
+function Navbar({ view, setView, currentUser, setCurrentUser, setLoginInitialMode }: NavbarProps) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
@@ -766,11 +765,15 @@ function Navbar({ view, setView, currentUser, handleMemberLogin }: NavbarProps) 
     <header className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${scrolled ? 'py-2' : 'py-4'}`}>
       <div className="max-w-7xl mx-auto px-4 lg:px-6">
         <div 
-          className={`rounded-2xl transition-all duration-500 ${scrolled ? 'shadow-md' : ''} border`}
+          className={`rounded-2xl transition-all duration-500 ${isDashboard ? '' : 'shadow-[0_8px_32px_0_rgba(31,38,135,0.03)]'} ${scrolled ? 'shadow-md shadow-slate-100/5' : ''} border`}
           style={{
-            backgroundColor: isDashboard ? '#FAF2E6' : scrolled ? 'rgba(255, 255, 255, 0.72)' : 'transparent',
-            backdropFilter: isDashboard ? 'none' : 'blur(24px) saturate(180%)',
-            borderColor: isDashboard ? '#E7DCCF' : scrolled ? 'rgba(148, 163, 184, 0.28)' : 'transparent',
+            backgroundColor: isDashboard 
+              ? '#FAF2E6' 
+              : (scrolled ? 'rgba(255, 255, 255, 0.85)' : 'rgba(255, 255, 255, 0.65)'),
+            backdropFilter: isDashboard ? 'none' : 'blur(20px) saturate(180%)',
+            borderColor: isDashboard 
+              ? '#E7DCCF' 
+              : (scrolled ? 'rgba(148, 163, 184, 0.25)' : 'rgba(148, 163, 184, 0.18)'),
           }}
         >
           <div className="flex items-center justify-between px-4 lg:px-6 h-14 lg:h-16">
@@ -833,16 +836,63 @@ function Navbar({ view, setView, currentUser, handleMemberLogin }: NavbarProps) 
               ))}
             </nav>
             <div className="hidden lg:flex items-center gap-3">
-              <button 
-                onClick={handleMemberLogin} 
-                data-magnetic 
-                className="text-sm transition-colors font-bold px-3 py-2 whitespace-nowrap bg-transparent border-none cursor-pointer"
-                style={{ color: isDashboard ? '#1E3147' : '#7E919D' }}
-                onMouseEnter={(e) => e.currentTarget.style.color = '#138A8A'}
-                onMouseLeave={(e) => e.currentTarget.style.color = isDashboard ? '#1E3147' : '#7E919D'}
-              >
-                {currentUser ? 'My Dashboard' : 'Create Account'}
-              </button>
+              {currentUser ? (
+                <>
+                  <button 
+                    onClick={() => {
+                      setView('dashboard');
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }} 
+                    data-magnetic 
+                    className="text-sm transition-colors font-bold px-3 py-2 whitespace-nowrap bg-transparent border-none cursor-pointer"
+                    style={{ color: isDashboard ? '#1E3147' : '#7E919D' }}
+                    onMouseEnter={(e) => e.currentTarget.style.color = '#138A8A'}
+                    onMouseLeave={(e) => e.currentTarget.style.color = isDashboard ? '#1E3147' : '#7E919D'}
+                  >
+                    My Dashboard
+                  </button>
+                  <button 
+                    onClick={() => {
+                      setCurrentUser(null);
+                      setView('landing');
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }} 
+                    data-magnetic 
+                    className="text-xs transition-all font-bold px-4 py-2 rounded-full border border-slate-200 hover:border-red-400 hover:text-red-500 hover:bg-red-50/20 whitespace-nowrap cursor-pointer bg-white"
+                    style={{ color: '#1E3147' }}
+                  >
+                    Log Out
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button 
+                    onClick={() => {
+                      setLoginInitialMode('login');
+                      setView('login');
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }} 
+                    data-magnetic 
+                    className="text-sm transition-colors font-bold px-3 py-2 whitespace-nowrap bg-transparent border-none cursor-pointer"
+                    style={{ color: isDashboard ? '#1E3147' : '#7E919D' }}
+                    onMouseEnter={(e) => e.currentTarget.style.color = '#138A8A'}
+                    onMouseLeave={(e) => e.currentTarget.style.color = isDashboard ? '#1E3147' : '#7E919D'}
+                  >
+                    Log In
+                  </button>
+                  <button 
+                    onClick={() => {
+                      setLoginInitialMode('register');
+                      setView('login');
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }} 
+                    data-magnetic 
+                    className="text-xs transition-all font-extrabold px-5 py-2.5 rounded-full border whitespace-nowrap uppercase tracking-wider cursor-pointer premium-register-btn"
+                  >
+                    Create Account
+                  </button>
+                </>
+              )}
               <a 
                 href="#plans"
                 onClick={(e) => {
@@ -908,16 +958,58 @@ function Navbar({ view, setView, currentUser, handleMemberLogin }: NavbarProps) 
                       {n.label}
                     </a>
                   ))}
-                  <button 
-                    onClick={(e) => {
-                      setOpen(false);
-                      handleMemberLogin(e);
-                    }}
-                    className="mt-2 text-center py-2.5 rounded-full border text-xs font-bold transition-all bg-transparent"
-                    style={{ borderColor: '#E7DCCF', color: '#1E3147' }}
-                  >
-                    {currentUser ? 'My Dashboard' : 'Create Account'}
-                  </button>
+                  {currentUser ? (
+                    <>
+                      <button 
+                        onClick={() => {
+                          setOpen(false);
+                          setView('dashboard');
+                          window.scrollTo({ top: 0, behavior: 'smooth' });
+                        }}
+                        className="mt-2 text-center py-2.5 rounded-full border text-xs font-bold transition-all bg-transparent cursor-pointer"
+                        style={{ borderColor: '#E7DCCF', color: '#1E3147' }}
+                      >
+                        My Dashboard
+                      </button>
+                      <button 
+                        onClick={() => {
+                          setOpen(false);
+                          setCurrentUser(null);
+                          setView('landing');
+                          window.scrollTo({ top: 0, behavior: 'smooth' });
+                        }}
+                        className="mt-1 text-center py-2.5 rounded-full border text-xs font-bold transition-all bg-white text-red-500 border-red-200 cursor-pointer"
+                      >
+                        Log Out
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <button 
+                        onClick={() => {
+                          setOpen(false);
+                          setLoginInitialMode('login');
+                          setView('login');
+                          window.scrollTo({ top: 0, behavior: 'smooth' });
+                        }}
+                        className="mt-2 text-center py-2.5 rounded-full border text-xs font-bold transition-all bg-transparent cursor-pointer"
+                        style={{ borderColor: '#E7DCCF', color: '#1E3147' }}
+                      >
+                        Log In
+                      </button>
+                      <button 
+                        onClick={() => {
+                          setOpen(false);
+                          setLoginInitialMode('register');
+                          setView('login');
+                          window.scrollTo({ top: 0, behavior: 'smooth' });
+                        }}
+                        className="mt-1.5 text-center py-2.5 rounded-full text-xs font-extrabold transition-all premium-register-btn uppercase tracking-wider text-white border-none cursor-pointer"
+                      >
+                        Create Account
+                      </button>
+                    </>
+                  )}
                   <a 
                     href="#plans" 
                     onClick={(e) => {
@@ -1539,8 +1631,8 @@ function PlanCard({ plan, index, onSelectPlan }: { plan: typeof PLANS[number]; i
           <div className="p-7 space-y-2.5">{plan.benefits.slice(0, 4).map((b) => <div key={b} className="flex items-start gap-2.5 text-sm text-slate-200 font-bold"><GoldCheck size={16} /><span>{b}</span></div>)}</div>
 
           <div className="px-7 pb-5">
-            <div className="grid grid-cols-2 gap-2">
-              {[{ l: 'Discount Credits', v: `₹ ${plan.discountValue.toLocaleString('en-IN')}` }, { l: 'Paid Tour Off', v: `Up to ${plan.paidDiscount}` }, { l: 'Insurance', v: plan.insurance }, { l: 'Name Change', v: plan.nameChange }].map((c) => (
+            <div className="grid grid-cols-3 gap-2">
+              {[{ l: 'Discount Credits', v: `₹ ${plan.discountValue.toLocaleString('en-IN')}` }, { l: 'Paid Tour Off', v: `Up to ${plan.paidDiscount}` }, { l: 'Name Change', v: plan.nameChange }].map((c) => (
                 <div key={c.l} className="bg-slate-900/60 border border-slate-800/50 rounded-lg p-2.5">
                   <div className="text-[9px] uppercase tracking-widest text-slate-400 font-bold">{c.l}</div>
                   <div className="text-xs font-black text-slate-100 mt-0.5">{c.v}</div>
@@ -1734,7 +1826,7 @@ function Plans({ onSelectPlan }: { onSelectPlan: (planName: string) => void }) {
 }
 
 /* ---------- International Plans ---------- */
-function IntlPlanCard({ plan, index, onSelectPlan }: { plan: typeof INTL_PLANS[number]; index: number; onSelectPlan: (planName: string) => void }) {
+function IntlPlanCard({ plan, index }: { plan: typeof INTL_PLANS[number]; index: number; onSelectPlan?: (planName: string) => void }) {
   const [hovered, setHovered] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
   const [imgStyle, setImgStyle] = useState<React.CSSProperties>({});
@@ -1793,8 +1885,8 @@ function IntlPlanCard({ plan, index, onSelectPlan }: { plan: typeof INTL_PLANS[n
           <div className="p-7 space-y-2.5">{plan.benefits.slice(0, 4).map((b) => <div key={b} className="flex items-start gap-2.5 text-sm text-slate-200 font-bold"><GoldCheck size={16} variant="cyan" /><span>{b}</span></div>)}</div>
 
           <div className="px-7 pb-5">
-            <div className="grid grid-cols-2 gap-2">
-              {[{ l: 'Discount Credits', v: `₹ ${plan.discountValue.toLocaleString('en-IN')}` }, { l: 'Tour Discount', v: plan.paidDiscount.startsWith('Up to') ? plan.paidDiscount : `Up to ${plan.paidDiscount}` }, { l: 'Insurance', v: plan.insurance }, { l: 'Name Change', v: plan.nameChange }].map((c) => (
+            <div className="grid grid-cols-3 gap-2">
+              {[{ l: 'Discount Credits', v: `₹ ${plan.discountValue.toLocaleString('en-IN')}` }, { l: 'Tour Discount', v: plan.paidDiscount.startsWith('Up to') ? plan.paidDiscount : `Up to ${plan.paidDiscount}` }, { l: 'Name Change', v: plan.nameChange }].map((c) => (
                 <div key={c.l} className="bg-slate-900/60 border border-slate-800/50 rounded-lg p-2.5">
                   <div className="text-[9px] uppercase tracking-widest text-slate-400 font-bold">{c.l}</div>
                   <div className="text-xs font-black text-slate-100 mt-0.5">{c.v}</div>
@@ -1842,8 +1934,8 @@ function InternationalPlans({ onSelectPlan }: { onSelectPlan: (planName: string)
         <Reveal>
           <div className="mt-14 glass rounded-2xl p-6 lg:p-8 border border-slate-line neon-border-cyan">
             <div className="text-center text-[11px] uppercase tracking-widest neon-cyan font-semibold mb-5">Included in every international plan</div>
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
-              {[{ type: 'calendar', t: '12 Months Validity', d: 'Full subscription coverage' }, { type: 'filecheck', t: 'Visa Assistance', d: 'End-to-end documentation' }, { type: 'plane', t: 'Airport Lounge', d: 'Premium access included' }, { type: 'shield', t: 'Travel Insurance', d: 'International coverage' }].map((b) => (
+            <div className="grid grid-cols-2 lg:grid-cols-3 gap-5">
+              {[{ type: 'calendar', t: '12 Months Validity', d: 'Full subscription coverage' }, { type: 'filecheck', t: 'Visa Assistance', d: 'End-to-end documentation' }, { type: 'plane', t: 'Airport Lounge', d: 'Premium access included' }].map((b) => (
                 <div key={b.t} className="flex items-center gap-3.5">
                   <AIIcon type={b.type} />
                   <div><div className="font-bold text-white text-sm">{b.t}</div><div className="text-xs text-slate-400 mt-0.5">{b.d}</div></div>
@@ -3751,17 +3843,6 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [currentUser]);
 
-  const handleMemberLogin = useCallback((e: React.MouseEvent) => {
-    e.preventDefault();
-    if (currentUser) {
-      setView('dashboard');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else {
-      setLoginInitialMode('register');
-      setView('login');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  }, [currentUser]);
 
   // Manage body cursor visibility: default cursor during intro, hidden after intro for the custom cursor
   useEffect(() => {
@@ -3785,7 +3866,13 @@ export default function App() {
       {/* Main page content container - invisible during intro to prevent menu leak, then fades in beautifully */}
       <div className={`transition-opacity duration-700 ${introComplete ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
         <div className="noise fixed inset-0 pointer-events-none z-30" />
-        <Navbar view={view} setView={setView} currentUser={currentUser} handleMemberLogin={handleMemberLogin} />
+        <Navbar 
+          view={view} 
+          setView={setView} 
+          currentUser={currentUser} 
+          setCurrentUser={setCurrentUser}
+          setLoginInitialMode={setLoginInitialMode}
+        />
 
         <main className="relative z-10 flex flex-col gap-0">
           {view === 'landing' ? (

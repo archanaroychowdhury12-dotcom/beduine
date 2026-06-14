@@ -10,7 +10,7 @@ interface WelcomeScreenProps {
   description: string;
   buttonText: string;
   onButtonClick: () => void;
-  secondaryActionText?: string;
+  secondaryActionText?: React.ReactNode;
   onSecondaryActionClick?: () => void;
   className?: string;
 }
@@ -46,7 +46,7 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
       y: 0,
       opacity: 1,
       transition: {
-        type: 'spring',
+        type: 'spring' as const,
         stiffness: 100,
         damping: 15,
       },
@@ -59,7 +59,7 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
       y: 0,
       opacity: 1,
       transition: {
-        type: 'spring',
+        type: 'spring' as const,
         duration: 0.8,
       },
     },
