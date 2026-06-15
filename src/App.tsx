@@ -1442,6 +1442,12 @@ function TrustStrip() {
 
 /* ---------- About Us / Mission / Vision ---------- */
 function AboutUs() {
+  const officeMapsUrl = 'https://maps.app.goo.gl/JEqUWXKofJTKfFNY6';
+  const officeHighlights = [
+    { label: 'Office Area', value: 'Fulia, Nadia' },
+    { label: 'PIN Code', value: '741402' },
+    { label: 'Route', value: 'Google Maps' },
+  ];
   const pillars = [
     {
       icon: Heart,
@@ -1537,23 +1543,66 @@ function AboutUs() {
                   <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-gold text-neon-gold text-[10px] font-bold uppercase tracking-widest mb-4">
                     <MapPin className="w-3.5 h-3.5" /> Registered Office
                   </div>
-                  <h3 className="font-display text-2xl lg:text-4xl font-bold text-ink leading-tight mb-4">
+                  <h3 className="font-display text-2xl lg:text-4xl font-bold text-white leading-tight mb-4">
                     Fulia, Nadia,<br />West Bengal - 741402
                   </h3>
-                  <p className="text-sm text-ink/75 leading-relaxed mb-6">
+                  <p className="text-sm text-white/78 leading-relaxed mb-6 max-w-xl">
                     Step inside BEDUINE Tour & Travels. Visit our head office in Fulia for customized tour planning, group holiday bookings, or to grab a hot cup of tea while we design your next memory.
                   </p>
+                  
+                  {/* Highlights Grid */}
+                  <div className="grid sm:grid-cols-3 gap-3 mb-6">
+                    {officeHighlights.map((item) => (
+                      <div key={item.label} className="rounded-2xl border border-white/10 bg-white/10 px-4 py-3 backdrop-blur-md">
+                        <span className="block text-[10px] font-bold text-white/50 uppercase tracking-wider">{item.label}</span>
+                        <span className="block text-xs font-bold text-white mt-0.5">{item.value}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Google Maps Route link */}
+                  <a
+                    href={officeMapsUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="group inline-flex w-full sm:w-auto items-center justify-between gap-4 rounded-2xl border border-cyan/30 bg-cyan/10 px-4 py-3 text-left no-underline transition-all hover:bg-cyan/15 hover:border-cyan/55"
+                  >
+                    <span className="flex items-center gap-3">
+                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#138A8A] to-[#00A676] text-white shadow-lg shadow-teal-500/25">
+                        <MapPin className="w-5 h-5" />
+                      </span>
+                      <span>
+                        <span className="block text-sm font-black text-white">Open Fulia office route</span>
+                        <span className="block text-[11px] text-cyan font-semibold">Google Maps location link</span>
+                      </span>
+                    </span>
+                    <ArrowRight className="w-4 h-4 text-cyan transition-transform group-hover:translate-x-1" />
+                  </a>
                 </div>
-                <div className="flex flex-col sm:flex-row gap-3 pt-6 border-t border-slate-line/50">
+
+                <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3 pt-6 mt-6 border-t border-white/10">
                   <a href="https://www.beduine.in" target="_blank" rel="noreferrer" data-magnetic className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full border border-cyan/50 text-cyan text-sm font-semibold hover:bg-cyan/10 transition-all"><Globe className="w-4 h-4" />www.beduine.in</a>
                   <a href="tel:+918768903565" data-magnetic className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full border border-neon-gold/50 text-neon-gold text-sm font-semibold hover:bg-neon-gold/10 transition-all"><Phone className="w-4 h-4" />+91 87689 03565</a>
                 </div>
               </div>
-              <div className="relative min-h-[300px] lg:min-h-full overflow-hidden group">
-                <img src="/images/office_setup.png" alt="BEDUINE Fulia Office" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-slate-950/20 to-transparent" />
+              <div className="relative min-h-[420px] lg:min-h-full overflow-hidden group bg-slate-950">
+                <img src="/images/office_setup.png" alt="BEDUINE Fulia office reception" className="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700" />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-slate-950/10 to-transparent" />
+                
+                {/* Badge Left */}
+                <div className="absolute left-5 top-5 z-10 inline-flex items-center gap-2 rounded-full border border-white/15 bg-slate-950/55 px-3 py-1.5 text-[10px] font-black uppercase tracking-widest text-white backdrop-blur-md">
+                  <ShieldCheck className="w-3.5 h-3.5 text-neon-gold" /> Fulia Head Office
+                </div>
+                
+                {/* Logo Wall Close-up Overlay Right */}
+                <div className="absolute right-5 top-5 z-10 hidden sm:block w-36 overflow-hidden rounded-3xl border border-white/15 bg-slate-950/50 p-1.5 shadow-2xl backdrop-blur-md text-left">
+                  <img src="/images/office_logo.png" alt="BEDUINE office logo wall" className="h-32 w-full rounded-2xl object-cover object-center" loading="lazy" />
+                  <div className="px-2 py-2 text-[10px] font-bold text-white/85">Logo wall close-up</div>
+                </div>
+
+                {/* Bottom Overlay with Subscribe Now button */}
                 <div className="absolute bottom-5 left-5 right-5 z-10 p-4 bg-slate-950/80 border border-white/10 rounded-2xl backdrop-blur-md flex items-center justify-between gap-4 flex-wrap sm:flex-nowrap">
-                  <div>
+                  <div className="text-left">
                     <div className="text-xs text-neon-gold font-mono">// Fulia HQ Setup</div>
                     <div className="font-display font-semibold text-white text-sm mt-0.5">Welcome to BEDUINE Tour & Travels</div>
                   </div>
