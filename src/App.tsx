@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { motion, AnimatePresence, useScroll, useInView, useTransform } from 'framer-motion';
 import {
-  Compass, Sparkles, Gift, CreditCard, Award, ShieldCheck,
+  Compass, Sparkles, Gift, CreditCard, Award, Ticket, ShieldCheck,
   ChevronRight, CheckCircle2, Check, Star,
   Phone, Calendar, MapPin, Hotel, Train, Plane,
   FileCheck2, Banknote, ArrowRight, Menu, X, MessageCircle,
@@ -21,22 +21,22 @@ import LoginPage from './LoginPage';
 
 /* ---------- Data ---------- */
 const NAV = [
-  { id: 'about', label: 'About' },
-  { id: 'how', label: 'How It Works' },
-  { id: 'plans', label: 'Plans' },
-  { id: 'intl-plans', label: 'International' },
-  { id: 'luckydraw', label: 'Lucky Draw' },
-  { id: 'credits', label: 'Credits' },
-  { id: 'destinations', label: 'Destinations' },
-  { id: 'services', label: 'Services' },
-  { id: 'contact', label: 'Contact' },
+  { id: 'about', label: 'About', icon: Compass },
+  { id: 'how', label: 'How It Works', icon: Sparkles },
+  { id: 'plans', label: 'Plans', icon: Crown },
+  { id: 'intl-plans', label: 'International', icon: Globe },
+  { id: 'luckydraw', label: 'Member Selection', icon: Ticket },
+  { id: 'credits', label: 'Credits', icon: CreditCard },
+  { id: 'destinations', label: 'Destinations', icon: MapPin },
+  { id: 'services', label: 'Services', icon: Hotel },
+  { id: 'contact', label: 'Contact', icon: MessageCircle },
 ];
 
 const DESKTOP_NAV = [
-  { id: 'about', label: 'About' },
-  { id: 'plans', label: 'Plans' },
-  { id: 'destinations', label: 'Destinations' },
-  { id: 'contact', label: 'Contact' },
+  { id: 'about', label: 'About', icon: Compass },
+  { id: 'plans', label: 'Plans', icon: Crown },
+  { id: 'destinations', label: 'Destinations', icon: MapPin },
+  { id: 'contact', label: 'Contact', icon: MessageCircle },
 ];
 
 const PLANS = [
@@ -803,21 +803,30 @@ function Navbar({ view, setView, currentUser, setCurrentUser, setLoginInitialMod
   const isDashboard = view === 'dashboard';
 
   return (
-    <header className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${scrolled ? 'py-1.5' : 'py-3'}`}>
-      <div className="max-w-4xl mx-auto px-4 lg:px-6">
+    <header className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${scrolled ? 'py-2' : 'py-4'}`}>
+      <div className="max-w-6xl mx-auto px-3 sm:px-5 lg:px-8">
         <div 
-          className={`rounded-2xl transition-all duration-500 ${isDashboard ? '' : 'shadow-[0_8px_32px_0_rgba(31,38,135,0.03)]'} ${scrolled ? 'shadow-md shadow-slate-100/5' : ''} border`}
+          className="relative overflow-hidden rounded-[26px] border transition-all duration-500"
           style={{
-            backgroundColor: isDashboard ? '#FAF2E6' : '#FFFFFF',
-            backdropFilter: 'none',
-            borderColor: isDashboard ? '#E7DCCF' : 'rgba(148, 163, 184, 0.22)',
+            background: isDashboard
+              ? 'linear-gradient(135deg, rgba(250,242,230,0.96), rgba(255,255,255,0.9))'
+              : 'linear-gradient(135deg, rgba(255,255,255,0.94), rgba(234,247,251,0.86))',
+            backdropFilter: 'blur(18px) saturate(160%)',
+            borderColor: isDashboard ? 'rgba(231,220,207,0.92)' : 'rgba(24, 215, 242, 0.22)',
+            boxShadow: scrolled
+              ? '0 16px 44px rgba(22,35,58,0.14), inset 0 1px 0 rgba(255,255,255,0.85)'
+              : '0 24px 70px rgba(22,35,58,0.12), inset 0 1px 0 rgba(255,255,255,0.9)',
           }}
         >
-          <div className="flex items-center justify-between px-4 lg:px-6 h-12 lg:h-14">
-            <div className="flex items-center gap-8">
+          <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white to-transparent" />
+          <div className="pointer-events-none absolute -left-14 top-1/2 h-24 w-24 -translate-y-1/2 rounded-full bg-[#18D7F2]/10 blur-2xl" />
+          <div className="pointer-events-none absolute -right-14 top-1/2 h-24 w-24 -translate-y-1/2 rounded-full bg-[#F7B500]/10 blur-2xl" />
+
+          <div className="relative flex items-center justify-between px-3 sm:px-4 lg:px-5 h-14 lg:h-16">
+            <div className="flex items-center gap-4 lg:gap-5 min-w-0">
               <a 
                 href="#top" 
-                className="flex items-center gap-2.5" 
+                className="group flex items-center gap-3 rounded-2xl pr-2 no-underline" 
                 data-magnetic
                 onClick={(e) => {
                   if (view !== 'landing') {
@@ -830,17 +839,18 @@ function Navbar({ view, setView, currentUser, setCurrentUser, setLoginInitialMod
                 }}
               >
                 <div 
-                  className="w-10 h-10 rounded-full overflow-hidden border shadow-lg bg-cosmos flex items-center justify-center p-1.5"
-                  style={{ borderColor: isDashboard ? '#E7DCCF' : 'rgba(24, 215, 242, 0.3)' }}
+                  className="relative w-11 h-11 rounded-2xl overflow-hidden border bg-white flex items-center justify-center p-1.5 shadow-lg shadow-cyan-900/10 transition-transform duration-300 group-hover:scale-105"
+                  style={{ borderColor: isDashboard ? '#E7DCCF' : 'rgba(24, 215, 242, 0.32)' }}
                 >
                   <img src="/images/bedune_logo_cropped.png" alt="BEDUINE Logo" className="w-full h-full object-contain" />
+                  <span className="absolute bottom-1 right-1 h-2.5 w-2.5 rounded-full border-2 border-white bg-[#00A676]" />
                 </div>
-                <div className="leading-tight">
-                  <div className="font-display text-base font-bold tracking-tight" style={{ color: '#1E3147' }}>BEDUINE</div>
-                  <div className="text-[9px] uppercase tracking-[0.22em] font-black" style={{ color: '#138A8A' }}>Tour & Travels</div>
+                <div className="leading-tight min-w-0">
+                  <div className="font-display text-base lg:text-lg font-black tracking-normal" style={{ color: '#1E3147' }}>BEDUINE</div>
+                  <div className="hidden sm:block text-[9px] uppercase tracking-[0.22em] font-black whitespace-nowrap" style={{ color: '#138A8A' }}>Tour & Travels</div>
                 </div>
               </a>
-              <nav className="hidden lg:flex items-center gap-6">
+              <nav className="hidden lg:flex items-center gap-1 rounded-full border border-white/70 bg-white/55 p-1 shadow-inner shadow-slate-200/40">
                 {DESKTOP_NAV.map((n) => (
                   <a 
                     key={n.id} 
@@ -867,7 +877,7 @@ function Navbar({ view, setView, currentUser, setCurrentUser, setLoginInitialMod
                         if (el) el.scrollIntoView({ behavior: 'smooth' });
                       }
                     }}
-                    className="relative text-sm font-bold whitespace-nowrap px-3.5 py-1.5 rounded-full transition-all duration-300 hover:scale-105"
+                    className="relative inline-flex items-center gap-1.5 text-sm font-bold whitespace-nowrap px-3.5 py-2 rounded-full transition-all duration-300 hover:scale-[1.03] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#18D7F2]/45"
                     style={{ 
                       color: activeSection === n.id || hoveredId === n.id 
                         ? '#138A8A' 
@@ -879,16 +889,17 @@ function Navbar({ view, setView, currentUser, setCurrentUser, setLoginInitialMod
                     {activeSection === n.id && (
                       <motion.div 
                         layoutId="activeNavBackground" 
-                        className="absolute inset-0 bg-[#138A8A]/12 border border-[#138A8A]/20 rounded-full shadow-sm" 
+                        className="absolute inset-0 bg-gradient-to-r from-[#EAF7FB] to-white border border-[#138A8A]/20 rounded-full shadow-sm" 
                         transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                       />
                     )}
+                    <n.icon className="relative z-10 w-3.5 h-3.5" strokeWidth={2.3} />
                     <span className="relative z-10">{n.label}</span>
                   </a>
                 ))}
               </nav>
             </div>
-            <div className="hidden lg:flex items-center gap-3">
+            <div className="hidden lg:flex items-center gap-2.5">
               {currentUser ? (
                 <>
                   <button 
@@ -898,7 +909,7 @@ function Navbar({ view, setView, currentUser, setCurrentUser, setLoginInitialMod
                       window.scrollTo({ top: 0, behavior: 'smooth' });
                     }} 
                     data-magnetic 
-                    className="text-xs transition-colors font-bold px-3 py-2 whitespace-nowrap bg-transparent border-none cursor-pointer text-slate-500 hover:text-red-500"
+                    className="text-xs transition-colors font-bold px-3 py-2 whitespace-nowrap bg-white/45 border border-slate-200/70 rounded-full cursor-pointer text-slate-500 hover:text-red-500 hover:border-red-200"
                   >
                     Log Out
                   </button>
@@ -925,7 +936,7 @@ function Navbar({ view, setView, currentUser, setCurrentUser, setLoginInitialMod
                       window.scrollTo({ top: 0, behavior: 'smooth' });
                     }} 
                     data-magnetic 
-                    className="rounded-full w-9 h-9 bg-gradient-to-br from-[#0096C7] to-[#00B4D8] text-white flex items-center justify-center font-bold text-xs shadow-sm hover:scale-105 hover:shadow-md transition-all cursor-pointer border border-slate-200/80 uppercase"
+                    className="rounded-full w-10 h-10 bg-gradient-to-br from-[#0096C7] to-[#00B4D8] text-white flex items-center justify-center font-bold text-xs shadow-sm hover:scale-105 hover:shadow-md transition-all cursor-pointer border-2 border-white uppercase"
                     title={currentUser.fullName || 'My Dashboard'}
                   >
                     {currentUser.fullName ? currentUser.fullName.split(' ').map((n: string) => n.charAt(0)).join('').slice(0, 2) : 'U'}
@@ -940,7 +951,7 @@ function Navbar({ view, setView, currentUser, setCurrentUser, setLoginInitialMod
                       window.scrollTo({ top: 0, behavior: 'smooth' });
                     }} 
                     data-magnetic 
-                    className="text-sm transition-colors font-bold px-3 py-2 whitespace-nowrap bg-transparent border-none cursor-pointer"
+                    className="text-sm transition-colors font-bold px-4 py-2 whitespace-nowrap bg-white/45 border border-slate-200/70 rounded-full cursor-pointer"
                     style={{ color: isDashboard ? '#1E3147' : '#7E919D' }}
                     onMouseEnter={(e) => e.currentTarget.style.color = '#138A8A'}
                     onMouseLeave={(e) => e.currentTarget.style.color = isDashboard ? '#1E3147' : '#7E919D'}
@@ -954,7 +965,7 @@ function Navbar({ view, setView, currentUser, setCurrentUser, setLoginInitialMod
                       window.scrollTo({ top: 0, behavior: 'smooth' });
                     }} 
                     data-magnetic 
-                    className="text-xs transition-all font-extrabold px-5 py-2.5 rounded-full border whitespace-nowrap uppercase tracking-wider cursor-pointer premium-register-btn"
+                    className="text-xs transition-all font-extrabold px-5 py-2.5 rounded-full border whitespace-nowrap uppercase tracking-wider cursor-pointer premium-register-btn shadow-lg shadow-[#FF6B4A]/15"
                   >
                     Create Account
                   </button>
@@ -979,10 +990,9 @@ function Navbar({ view, setView, currentUser, setCurrentUser, setLoginInitialMod
               )}
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="lg:hidden ml-auto flex shrink-0 items-center">
               <button
-                className="lg:hidden p-2 border-none bg-transparent cursor-pointer"
-                style={{ color: '#1E3147' }}
+                className="relative z-10 w-10 h-10 rounded-2xl border border-white/70 bg-[#1E3147] text-white shadow-lg shadow-slate-900/15 cursor-pointer inline-flex items-center justify-center shrink-0"
                 onClick={() => setOpen(!open)}
                 aria-label={open ? 'Close menu' : 'Open menu'}
                 aria-expanded={open}
@@ -994,39 +1004,47 @@ function Navbar({ view, setView, currentUser, setCurrentUser, setLoginInitialMod
           </div>
           <AnimatePresence>
             {open && (
-              <motion.div id="mobile-menu" initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="lg:hidden overflow-hidden border-t" style={{ borderColor: '#E7DCCF' }}>
-                <div className="px-4 py-3 flex flex-col gap-1" style={{ backgroundColor: '#FAF2E6' }}>
-                  {NAV.map((n) => (
-                    <a 
-                      key={n.id} 
-                      href={`#${n.id}`} 
-                      onClick={(e) => {
-                        setOpen(false);
-                        if (n.id === 'terms') {
-                          e.preventDefault();
-                          setView('terms');
-                          setTimeout(() => {
-                            window.scrollTo({ top: 0, behavior: 'smooth' });
-                          }, 100);
-                          return;
-                        }
-                        if (view !== 'landing') {
-                          e.preventDefault();
-                          setView('landing');
-                          setTimeout(() => {
+              <motion.div id="mobile-menu" initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="lg:hidden overflow-hidden border-t" style={{ borderColor: 'rgba(231,220,207,0.9)' }}>
+                <div className="px-4 py-4" style={{ background: 'linear-gradient(180deg, rgba(255,255,255,0.96), rgba(250,242,230,0.96))' }}>
+                  <div className="grid grid-cols-2 gap-2">
+                    {NAV.map((n) => (
+                      <a 
+                        key={n.id} 
+                        href={`#${n.id}`} 
+                        onClick={(e) => {
+                          setOpen(false);
+                          if (n.id === 'terms') {
+                            e.preventDefault();
+                            setView('terms');
+                            setTimeout(() => {
+                              window.scrollTo({ top: 0, behavior: 'smooth' });
+                            }, 100);
+                            return;
+                          }
+                          if (view !== 'landing') {
+                            e.preventDefault();
+                            setView('landing');
+                            setTimeout(() => {
+                              const el = document.getElementById(n.id);
+                              if (el) el.scrollIntoView({ behavior: 'smooth' });
+                            }, 100);
+                          } else {
                             const el = document.getElementById(n.id);
                             if (el) el.scrollIntoView({ behavior: 'smooth' });
-                          }, 100);
-                        }
-                      }} 
-                      className="py-2.5 text-sm font-bold no-underline"
-                      style={{ color: '#1E3147' }}
-                    >
-                      {n.label}
-                    </a>
-                  ))}
+                          }
+                        }} 
+                        className="group flex items-center gap-2.5 rounded-2xl border border-slate-200/70 bg-white/70 px-3 py-3 text-sm font-bold no-underline shadow-sm transition-all hover:border-[#138A8A]/30 hover:bg-[#EAF7FB]"
+                        style={{ color: '#1E3147' }}
+                      >
+                        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#EAF7FB] text-[#138A8A] transition-colors group-hover:bg-[#138A8A] group-hover:text-white">
+                          <n.icon className="w-4 h-4" strokeWidth={2.3} />
+                        </span>
+                        <span className="leading-tight">{n.label}</span>
+                      </a>
+                    ))}
+                  </div>
                   {currentUser ? (
-                    <div className="mt-2 flex flex-col gap-2 p-3 border border-slate-200/80 bg-white rounded-2xl shadow-sm">
+                    <div className="mt-3 flex flex-col gap-2 p-3 border border-slate-200/80 bg-white rounded-2xl shadow-sm">
                       <div 
                         onClick={() => {
                           setOpen(false);
@@ -1069,7 +1087,7 @@ function Navbar({ view, setView, currentUser, setCurrentUser, setLoginInitialMod
                           setView('login');
                           window.scrollTo({ top: 0, behavior: 'smooth' });
                         }}
-                        className="mt-2 text-center py-2.5 rounded-full border text-xs font-bold transition-all bg-transparent cursor-pointer"
+                        className="mt-3 w-full text-center py-2.5 rounded-full border text-xs font-bold transition-all bg-transparent cursor-pointer"
                         style={{ borderColor: '#E7DCCF', color: '#1E3147' }}
                       >
                         Log In
@@ -1081,7 +1099,7 @@ function Navbar({ view, setView, currentUser, setCurrentUser, setLoginInitialMod
                           setView('login');
                           window.scrollTo({ top: 0, behavior: 'smooth' });
                         }}
-                        className="mt-1.5 text-center py-2.5 rounded-full text-xs font-extrabold transition-all premium-register-btn uppercase tracking-wider text-white border-none cursor-pointer"
+                        className="mt-2 w-full text-center py-2.5 rounded-full text-xs font-extrabold transition-all premium-register-btn uppercase tracking-wider text-white border-none cursor-pointer"
                       >
                         Create Account
                       </button>
@@ -1098,9 +1116,12 @@ function Navbar({ view, setView, currentUser, setCurrentUser, setLoginInitialMod
                           const el = document.getElementById('plans');
                           if (el) el.scrollIntoView({ behavior: 'smooth' });
                         }, 100);
+                      } else {
+                        const el = document.getElementById('plans');
+                        if (el) el.scrollIntoView({ behavior: 'smooth' });
                       }
                     }} 
-                    className="mt-1.5 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full text-white font-bold text-sm no-underline"
+                    className="mt-2 w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full text-white font-bold text-sm no-underline"
                     style={{ background: 'linear-gradient(135deg, #138A8A, #0E6F70)' }}
                   >
                     Subscribe Now <ArrowRight className="w-4 h-4" />
@@ -3449,156 +3470,6 @@ function CTABanner({ onSelectPlan }: { onSelectPlan: (planName: string) => void 
   );
 }
 
-/* ---------- Membership Inquiry Form ---------- */
-function MembershipInquiryForm({ onStartRegistration }: { onStartRegistration: (data: any) => void }) {
-  const [formData, setFormData] = useState({
-    name: '',
-    mobile: '',
-    email: '',
-    plan: 'Silver Domestic - ₹499',
-    city: '',
-    is18Plus: false,
-    agreeTerms: false
-  });
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!formData.is18Plus || !formData.agreeTerms) {
-      alert("Please confirm you are 18+ and agree to the Terms & Conditions.");
-      return;
-    }
-    onStartRegistration(formData);
-  };
-
-  return (
-    <section id="join" className="relative py-14 lg:py-20 overflow-hidden">
-      <div className="max-w-3xl mx-auto px-5 relative z-10">
-        <Reveal>
-          <div className="text-center mb-10">
-            <div className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.3em] neon-cyan font-semibold mb-4">
-              <div className="w-8 h-px bg-cyan" /> Join Beduin <div className="w-8 h-px bg-cyan" />
-            </div>
-            <h2 className="font-display text-4xl lg:text-5xl font-bold text-ink leading-tight">
-              Membership Registration
-            </h2>
-            <p className="mt-4 text-ink/70 text-sm">
-              Ready to start? Fill in the details below to begin your sign-up verification. Active 18+ status is required.
-            </p>
-          </div>
-        </Reveal>
-
-        <Reveal>
-          <div className="glass rounded-3xl p-8 lg:p-10 border border-slate-line/80 shadow-2xl relative">
-            <form onSubmit={handleSubmit} className="space-y-5">
-              <div className="grid md:grid-cols-2 gap-5">
-                <div>
-                  <label className="block text-xs uppercase tracking-wider text-ink/60 font-semibold mb-2" htmlFor="fullName">Full Name</label>
-                  <input 
-                    type="text" 
-                    id="fullName" 
-                    required
-                    placeholder="e.g. Rahul Sen"
-                    value={formData.name}
-                    onChange={(e) => setFormData({...formData, name: e.target.value})}
-                    className="w-full px-4 py-3 rounded-xl bg-cosmos border border-slate-300 text-ink text-sm outline-none focus:border-cyan transition-colors"
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs uppercase tracking-wider text-ink/60 font-semibold mb-2" htmlFor="mobileNumber">Mobile Number</label>
-                  <input 
-                    type="tel" 
-                    id="mobileNumber" 
-                    required
-                    placeholder="e.g. +91 9876543210"
-                    value={formData.mobile}
-                    onChange={(e) => setFormData({...formData, mobile: e.target.value})}
-                    className="w-full px-4 py-3 rounded-xl bg-cosmos border border-slate-300 text-ink text-sm outline-none focus:border-cyan transition-colors"
-                  />
-                </div>
-              </div>
-
-              <div className="grid md:grid-cols-2 gap-5">
-                <div>
-                  <label className="block text-xs uppercase tracking-wider text-ink/60 font-semibold mb-2" htmlFor="emailAddress">Email Address</label>
-                  <input 
-                    type="email" 
-                    id="emailAddress" 
-                    required
-                    placeholder="e.g. rahul@example.com"
-                    value={formData.email}
-                    onChange={(e) => setFormData({...formData, email: e.target.value})}
-                    className="w-full px-4 py-3 rounded-xl bg-cosmos border border-slate-300 text-ink text-sm outline-none focus:border-cyan transition-colors"
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs uppercase tracking-wider text-ink/60 font-semibold mb-2" htmlFor="cityLocation">City / Location</label>
-                  <input 
-                    type="text" 
-                    id="cityLocation" 
-                    required
-                    placeholder="e.g. Kolkata, Fulia"
-                    value={formData.city}
-                    onChange={(e) => setFormData({...formData, city: e.target.value})}
-                    className="w-full px-4 py-3 rounded-xl bg-cosmos border border-slate-300 text-ink text-sm outline-none focus:border-cyan transition-colors"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-xs uppercase tracking-wider text-ink/60 font-semibold mb-2" htmlFor="planSelection">Select Subscription Plan</label>
-                <select 
-                  id="planSelection" 
-                  value={formData.plan}
-                  onChange={(e) => setFormData({...formData, plan: e.target.value})}
-                  className="w-full px-4 py-3 rounded-xl bg-cosmos border border-slate-300 text-ink text-sm outline-none focus:border-cyan transition-colors font-semibold"
-                >
-                  <option>Silver Domestic - ₹499</option>
-                  <option disabled>Gold Domestic - ₹799 (Coming Soon)</option>
-                  <option disabled>Platinum Domestic - ₹1499 (Coming Soon)</option>
-                  <option disabled>Silver International - ₹4999 (Coming Soon)</option>
-                  <option disabled>Gold International - ₹7999 (Coming Soon)</option>
-                  <option disabled>Platinum International - ₹14999 (Coming Soon)</option>
-                </select>
-              </div>
-
-              <div className="space-y-3 pt-2">
-                <label className="flex items-start gap-3 cursor-pointer text-sm text-ink/75">
-                  <input 
-                    type="checkbox" 
-                    checked={formData.is18Plus}
-                    onChange={(e) => setFormData({...formData, is18Plus: e.target.checked})}
-                    className="mt-1 accent-cyan w-4 h-4"
-                  />
-                  <span>I confirm that I am <strong>18 years of age or older</strong> and possess a valid government ID.</span>
-                </label>
-
-                <label className="flex items-start gap-3 cursor-pointer text-sm text-ink/75">
-                  <input 
-                    type="checkbox" 
-                    checked={formData.agreeTerms}
-                    onChange={(e) => setFormData({...formData, agreeTerms: e.target.checked})}
-                    className="mt-1 accent-cyan w-4 h-4"
-                  />
-                  <span>I agree to the <a href="#terms" className="text-cyan underline font-semibold">Terms & Conditions</a> of Beduin Tour & Travels.</span>
-                </label>
-              </div>
-
-              <div className="pt-4">
-                <button 
-                  type="submit"
-                  className="w-full py-4 premium-register-btn text-white font-bold rounded-full text-sm uppercase tracking-wider cursor-pointer border-none"
-                >
-                  Proceed to Register
-                </button>
-              </div>
-            </form>
-          </div>
-        </Reveal>
-      </div>
-    </section>
-  );
-}
-
 /* ---------- Terms And Conditions Accordion ---------- */
 function TermsAndConditions() {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
@@ -3947,33 +3818,6 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [currentUser]);
 
-  const handleStartRegistration = useCallback((data: any) => {
-    const prefill = {
-      fullName: data.name,
-      mobile: data.mobile,
-      email: data.email,
-      city: data.city,
-      is18Plus: data.is18Plus,
-      agreeTerms: data.agreeTerms,
-    };
-    setPrefilledData(prefill);
-    
-    // Parse selection from "Silver Domestic - ₹499" format
-    const planPart = data.plan.split(' ')[0];
-    const isIntl = data.plan.toLowerCase().includes('international');
-    const finalPlanName = planPart + (isIntl ? ' International' : '');
-    setSelectedPlanName(finalPlanName);
-    
-    if (currentUser) {
-      setView('register');
-    } else {
-      setPendingPlan(finalPlanName);
-      setLoginInitialMode('login');
-      setView('login');
-    }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [currentUser]);
-
 
   // Manage body cursor visibility: default cursor during intro, hidden after intro for the custom cursor
   useEffect(() => {
@@ -4062,7 +3906,6 @@ export default function App() {
                   <ScrollRoundedSection><Winners /></ScrollRoundedSection>
                   <ScrollRoundedSection><Services /></ScrollRoundedSection>
                   <ScrollRoundedSection><Transparency /></ScrollRoundedSection>
-                  <ScrollRoundedSection><MembershipInquiryForm onStartRegistration={handleStartRegistration} /></ScrollRoundedSection>
                   <ScrollRoundedSection><CTABanner onSelectPlan={handleSelectPlan} /></ScrollRoundedSection>
                 </div>
               </div>
