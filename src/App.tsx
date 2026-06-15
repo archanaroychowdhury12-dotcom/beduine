@@ -1552,9 +1552,17 @@ function AboutUs() {
               <div className="relative min-h-[300px] lg:min-h-full overflow-hidden group">
                 <img src="/images/office_setup.png" alt="BEDUINE Fulia Office" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-slate-950/20 to-transparent" />
-                <div className="absolute bottom-5 left-5 right-5 z-10 p-4 bg-slate-950/75 border border-white/10 rounded-2xl backdrop-blur-md">
-                  <div className="text-xs text-neon-gold font-mono">// Fulia HQ Setup</div>
-                  <div className="font-display font-semibold text-white text-sm mt-0.5">Welcome to BEDUINE Tour & Travels</div>
+                <div className="absolute bottom-5 left-5 right-5 z-10 p-4 bg-slate-950/80 border border-white/10 rounded-2xl backdrop-blur-md flex items-center justify-between gap-4 flex-wrap sm:flex-nowrap">
+                  <div>
+                    <div className="text-xs text-neon-gold font-mono">// Fulia HQ Setup</div>
+                    <div className="font-display font-semibold text-white text-sm mt-0.5">Welcome to BEDUINE Tour & Travels</div>
+                  </div>
+                  <a href="#plans" className="shrink-0 w-full sm:w-auto">
+                    <button className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-gradient-to-r from-yellow-400 via-amber-400 to-yellow-500 hover:from-yellow-500 hover:via-amber-500 hover:to-yellow-600 text-slate-950 text-xs font-black uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-lg shadow-yellow-500/20 hover:scale-[1.03] transition-all duration-300 cursor-pointer border-none">
+                      <Crown className="w-4 h-4 fill-current" />
+                      Subscribe Now
+                    </button>
+                  </a>
                 </div>
               </div>
             </div>
