@@ -135,7 +135,7 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
       } else if (rand < 0.4) {
         setSimulationResult('Selected for Digha Weekend Escape (Silver Tier)');
       } else {
-        setSimulationResult('Draw trial finished: 500-value Discount Credit guaranteed!');
+        setSimulationResult('Selection preview finished: fixed 500-value Discount Credit remains available.');
       }
     }, 2500);
   };
@@ -147,7 +147,7 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
 
   const sidebarItems = [
     { id: 'overview', label: 'Dashboard', icon: Compass },
-    { id: 'draws', label: 'Lucky Draw', icon: Ticket },
+    { id: 'draws', label: 'Member Selection', icon: Ticket },
     { id: 'bookings', label: 'Book Travel', icon: Plane },
     { id: 'credits', label: 'Discount Credits', icon: CreditCard },
   ];
@@ -264,7 +264,7 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                 />
                 <div className="absolute inset-0 flex flex-col justify-end p-2.5" style={{ background: 'linear-gradient(to top, rgba(30,49,71,0.85) 0%, rgba(30,49,71,0.15) 100%)' }}>
-                  <span className="text-[8px] text-[#F7B500] uppercase tracking-widest font-black font-mono">Next Week Draw</span>
+                  <span className="text-[8px] text-[#F7B500] uppercase tracking-widest font-black font-mono">Next Week Selection</span>
                   <span className="text-white text-xs font-bold leading-tight">Dubai Marina Sands</span>
                 </div>
               </div>
@@ -348,7 +348,7 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                     <span className="text-[8px] uppercase tracking-wide block text-white/75">500-value each</span>
                   </div>
 
-                  {/* Card 2 (Draw Entries) - white/frosted */}
+                  {/* Card 2 (Weekly Entries) - white/frosted */}
                   <div 
                     onClick={() => setActiveTab('draws')}
                     className="travel-stat-card travel-stat-card--ocean p-3.5 text-center cursor-pointer"
@@ -358,14 +358,14 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                     <span className="text-sm font-black block mt-0.5 text-slate-800">{isSubscribed ? '3 Wks' : 'N/A'}</span>
                   </div>
 
-                  {/* Card 3 (Win Odds) - white/frosted */}
+                  {/* Card 3 (Status) - white/frosted */}
                   <div 
                     onClick={() => setActiveTab('lucky-status')}
                     className="travel-stat-card travel-stat-card--teal p-3.5 text-center cursor-pointer"
                   >
-                    <Heart className="w-4 h-4 mx-auto mb-1 text-[#00A676]" />
-                    <span className="text-[8px] uppercase tracking-wider block text-slate-400 font-mono">Odds</span>
-                    <span className="text-sm font-black block mt-0.5 text-slate-800">{isSubscribed ? '15.4%' : 'N/A'}</span>
+                    <Shield className="w-4 h-4 mx-auto mb-1 text-[#00A676]" />
+                    <span className="text-[8px] uppercase tracking-wider block text-slate-400 font-mono">Status</span>
+                    <span className="text-sm font-black block mt-0.5 text-slate-800">{isSubscribed ? 'Active' : 'N/A'}</span>
                   </div>
                 </div>
 
@@ -375,7 +375,7 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                     onClick={() => setActiveTab('draws')}
                     className="w-full py-2.5 rounded-full text-xs font-bold cursor-pointer travel-gradient-button"
                   >
-                    Enter Lucky Draw Simulator
+                    Open Weekly Selection Preview
                   </button>
                   <p className="text-[9px] text-slate-400 font-mono">{profileEmail || profileMobile} - Member ID: {user?.memberId || 'BDN-9022-X'}</p>
                 </div>
@@ -439,7 +439,7 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
 
                       {/* Wavy Activity Chart (Exactly like the mockup line chart) */}
                       <div className="pt-5 border-t border-slate-100/80">
-                        <span className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">Weekly Active Draw Odds Trend</span>
+                        <span className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">Weekly Entry Activity Trend</span>
                         <div className="relative h-28 w-full">
                           {/* Background vertical bar lines */}
                           <div className="absolute inset-0 flex justify-between px-4 pointer-events-none">
@@ -476,7 +476,7 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                           {/* Marker Point 1 */}
                           <div className="absolute left-[33%] top-[49px] w-2.5 h-2.5 rounded-full bg-white border-[3px] border-[#FF6B6B] shadow-sm" />
                           <div className="absolute left-[24%] top-[14px] bg-[#FF6B6B] text-white text-[9px] font-bold px-2 py-0.5 rounded-md shadow-sm after:content-[''] after:absolute after:top-full after:left-1/2 after:-translate-x-1/2 after:border-4 after:border-transparent after:border-t-[#FF6B6B]">
-                            Draw WK-22
+                            Entry WK-22
                           </div>
 
                           {/* Marker Point 2 */}
@@ -518,7 +518,7 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                           statusColor: isSubscribed ? '#0077B6' : '#FF6B6B'
                         },
                         { 
-                          label: 'Draw Token', 
+                          label: 'Entry Token', 
                           value: user?.drawToken || 'N/A', 
                           icon: Ticket, 
                           color: isSubscribed ? '#00A676' : '#7E919D', 
@@ -550,7 +550,7 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                           { title: 'Discount Voucher', desc: '500-value credits for paid trips', icon: Gift, color: '#FF6B6B' },
                           { title: 'Name Change Policy', desc: 'Platinum: unlimited family adjustments', icon: Users, color: '#0077B6' },
                           { title: 'Quarterly Tours', desc: 'Curated destinations each cycle', icon: MapPin, color: '#FF8E53' },
-                          { title: 'ROI Guarantee', desc: '100% voucher safety net', icon: TrendingUp, color: '#FF6B6B' },
+                          { title: 'Value Protection', desc: 'Non-cash credit safety net', icon: TrendingUp, color: '#FF6B6B' },
                         ].map((item, i) => {
                           const Icon = item.icon;
                           return (
@@ -589,7 +589,7 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                       <h3 className="text-sm font-bold mb-1 flex items-center gap-2" style={{ color: '#1E3147' }}>
                         <Plane className="w-4 h-4" style={{ color: '#FF6B6B' }} /> Explore Subscribed Destinations
                       </h3>
-                      <p className="text-xs text-slate-400 mb-4">Subscriber-favorite travel highlights included in your lucky draw entries</p>
+                      <p className="text-xs text-slate-400 mb-4">Subscriber-favorite travel highlights included in your weekly eligible entries</p>
                       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                         {[
                           { name: 'Kashmir Valley', desc: 'Misty Pines & Houseboats', img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=300&q=80' },
@@ -628,7 +628,7 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                       <h2 className="text-lg font-bold flex items-center gap-2 mb-1" style={{ color: '#1E3147' }}>
                         <CreditCard className="w-5 h-5" style={{ color: '#FF6B6B' }} /> My Discount Credits
                       </h2>
-                      <p className="text-xs text-slate-400 mb-5">Guaranteed value recovery - redeem on paid tours</p>
+                      <p className="text-xs text-slate-400 mb-5">Non-cash credit value protection for paid tours</p>
 
                       {/* Balance */}
                       <div className="travel-blue-wave rounded-2xl p-6 text-center mb-5 border border-white/30">
@@ -682,25 +682,25 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                   <div className="space-y-5">
                     <div className="travel-soft-card p-6">
                       <h2 className="text-lg font-bold flex items-center gap-2 mb-1" style={{ color: '#1E3147' }}>
-                        <Ticket className="w-5 h-5" style={{ color: '#FF6B6B' }} /> Lucky Draw Status
+                        <Ticket className="w-5 h-5" style={{ color: '#FF6B6B' }} /> Member Selection Status
                       </h2>
-                      <p className="text-xs text-slate-400 mb-5">Transparent digital draws - view entries & simulate</p>
+                      <p className="text-xs text-slate-400 mb-5">Weekly member selection records - view entries & preview</p>
 
                       <div className="grid md:grid-cols-2 gap-5">
                         {/* Token Card */}
                         <div className="travel-stat-card travel-stat-card--ocean p-5 space-y-4">
                           <div>
-                            <span className="text-[10px] text-slate-500 uppercase font-mono tracking-wider block font-bold">ACTIVE DRAW TOKEN</span>
+                            <span className="text-[10px] text-slate-500 uppercase font-mono tracking-wider block font-bold">ACTIVE ENTRY TOKEN</span>
                             <span className="text-3xl font-black tracking-widest font-mono mt-1 block" style={{ background: 'linear-gradient(135deg, #0077B6, #00A676)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>{user?.drawToken || 'N/A'}</span>
                           </div>
                           <div className="flex items-center justify-between text-xs text-slate-600 border-t pt-3" style={{ borderColor: 'rgba(255, 107, 107, 0.12)' }}>
-                            <span>Upcoming Draw:</span>
+                            <span>Upcoming Selection:</span>
                             <span className="font-bold flex items-center gap-1" style={{ color: '#FF7E40' }}>
                               <Calendar className="w-3.5 h-3.5" style={{ color: '#FF7E40' }} /> Next Sunday
                             </span>
                           </div>
                           <div className="text-[10px] leading-relaxed p-3 rounded-xl" style={{ background: '#FFF8F6', border: '1px solid rgba(255, 107, 107, 0.15)', color: '#1E3147' }}>
-                            <strong>Note:</strong> Draws are 100% transparent. Winners travel free. Non-selected retain full voucher credits.
+                            <strong>Note:</strong> Weekly selections are automated. Selected members receive tour benefits; non-selected members retain fixed Discount Credits.
                           </div>
                         </div>
 
@@ -710,7 +710,7 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                             <h3 className="text-sm font-bold text-slate-800 flex items-center gap-1">
                               <Sparkles className="w-4 h-4 text-[#00A676]" /> RNG Test Simulator
                             </h3>
-                            <p className="text-[11px] text-slate-500 mt-1">Simulate a mock draw to see how our system works</p>
+                            <p className="text-[11px] text-slate-500 mt-1">Preview the weekly selection flow</p>
                           </div>
                           <div className="my-4 min-h-[55px] flex items-center justify-center">
                             {isSimulatingDraw ? (
@@ -729,7 +729,7 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                           <button onClick={handleSimulateDraw} disabled={isSimulatingDraw}
                             className="w-full py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider disabled:opacity-50 cursor-pointer travel-gradient-button travel-gradient-button--ocean"
                           >
-                            Launch Mock Draw
+                            Launch Preview
                           </button>
                         </div>
                       </div>
@@ -768,7 +768,7 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                           <ArrowRight className="w-4 h-4 text-slate-300 group-hover:text-[#FF6B6B] group-hover:translate-x-1 transition-all" />
                         </a>
 
-                        <a href="https://wa.me/918768903565?text=Hello%20BEDUINE%2C%20I%20have%20questions%20about%20the%20upcoming%20Sunday%20lucky%20draw%20schedule."
+                        <a href="https://wa.me/918768903565?text=Hello%20BEDUINE%2C%20I%20have%20questions%20about%20the%20upcoming%20Sunday%20member%20selection%20schedule."
                           target="_blank" rel="noreferrer"
                           className="p-5 rounded-2xl border hover:shadow-md transition-all flex items-center justify-between group no-underline border-l-4 border-l-[#0077B6]"
                           style={{ background: 'linear-gradient(135deg, rgba(0,119,182,0.08), rgba(255,255,255,0.95))', borderColor: 'rgba(0, 119, 182, 0.2)' }}
@@ -778,7 +778,7 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                               <Ticket className="w-5 h-5 text-[#0077B6]" />
                             </div>
                             <div>
-                              <span className="block text-sm font-bold text-slate-700">Draw Support</span>
+                              <span className="block text-sm font-bold text-slate-700">Selection Support</span>
                               <span className="block text-[10px] text-slate-400">Inquire about rules</span>
                             </div>
                           </div>
@@ -970,13 +970,13 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                       <h2 className="text-lg font-bold flex items-center gap-2 mb-1" style={{ color: '#1E3147' }}>
                         <Heart className="w-5 h-5 text-[#FF6B6B]" /> Lucky Status & History
                       </h2>
-                      <p className="text-xs text-slate-400 mb-6">Track your weekly draw participations and success odds</p>
+                      <p className="text-xs text-slate-400 mb-6">Track your weekly eligible entries and active status</p>
 
                       <div className="grid sm:grid-cols-3 gap-4 mb-6">
                         {[
-                          { label: 'Weekly Draw Odds', value: '15.4% Win Rate', desc: 'Average selector likelihood', cardClass: 'travel-stat-card--coral' },
-                          { label: 'Total Draws Entered', value: '3 Entries', desc: 'Active weeks count', cardClass: 'travel-stat-card--ocean' },
-                          { label: 'Draw Ticket status', value: 'Verified Active', desc: 'Ready for next Sunday', cardClass: 'travel-stat-card--teal' },
+                          { label: 'Selection Schedule', value: 'Every Sunday', desc: 'Weekly selection cycle', cardClass: 'travel-stat-card--coral' },
+                          { label: 'Total Weekly Entries', value: '3 Entries', desc: 'Active weeks count', cardClass: 'travel-stat-card--ocean' },
+                          { label: 'Entry Ticket status', value: 'Verified Active', desc: 'Ready for next Sunday', cardClass: 'travel-stat-card--teal' },
                         ].map((stat, i) => (
                           <div key={i} className={`travel-stat-card ${stat.cardClass} p-4`}>
                             <span className={`text-[9px] uppercase tracking-wider font-mono font-bold block ${i === 0 ? 'text-white/80' : 'text-slate-500'}`}>{stat.label}</span>
@@ -992,7 +992,7 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
                           <thead>
                             <tr className="border-b border-slate-100 text-slate-400 font-bold uppercase tracking-wider">
                               <th className="py-2.5">Week ID</th>
-                              <th className="py-2.5">Draw Date</th>
+                              <th className="py-2.5">Selection Date</th>
                               <th className="py-2.5">Ticket ID</th>
                               <th className="py-2.5">Result / Status</th>
                             </tr>
@@ -1113,8 +1113,8 @@ export default function DashboardPage({ user, onLogout }: DashboardPageProps) {
               <div className="absolute -top-10 -left-10 w-24 h-24 bg-white/10 rounded-full blur-xl pointer-events-none" />
               <div className="absolute -bottom-10 -right-10 w-24 h-24 bg-white/15 rounded-full blur-xl pointer-events-none" />
               <Crown className="w-6 h-6 text-[#F7B500] mx-auto mb-2 relative z-10 animate-bounce" />
-              <h4 className="text-sm font-bold text-white mb-1 relative z-10">Beduine Elite Member</h4>
-              <p className="text-[10px] text-white/85 leading-relaxed relative z-10">Exclusive travel benefits, transparent lucky draws & guaranteed vouchers</p>
+              <h4 className="text-sm font-bold text-white mb-1 relative z-10">Selected = Beduine Elite Member</h4>
+              <p className="text-[10px] text-white/85 leading-relaxed relative z-10">Selected members unlock elite tour benefits; fixed Discount Credits stay active.</p>
               <div className="mt-3 w-full h-1 rounded-full bg-white/20 overflow-hidden relative z-10">
                 <div className="h-full w-1/2 rounded-full bg-white/80" />
               </div>

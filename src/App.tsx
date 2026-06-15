@@ -1120,59 +1120,59 @@ function Navbar({ view, setView, currentUser, setCurrentUser, setLoginInitialMod
 const HERO_SLIDES = [
   {
     image: '/images/beduine_travel_hero_1779521651766.png',
-    tagline: 'BEDUINE Tour & Travels',
-    title1: 'Journeys that',
-    title2: 'stay with you.',
-    desc: 'A futuristic travel subscription that combines AI-curated journeys, weekly reward draws, and guaranteed travel credits.',
+    tagline: 'Safar Jo Yaad Rahe',
+    title1: 'Explore More.',
+    title2: 'Pay Less.',
+    desc: "India's first subscription-based travel company. Get guaranteed non-cash Discount Credits and weekly promotional member tour benefits.",
   },
   {
     image: '/images/kashmir_dal_lake_1779521728036.png',
-    tagline: 'Kashmir Paradise',
+    tagline: 'Paradise on Earth',
     title1: 'Misty Peaks &',
-    title2: 'Shikara Rides.',
-    desc: 'Unwind in the pristine valleys of Srinagar, ride through the snows of Gulmarg, and stay in premium houseboats.',
+    title2: 'Heavenly Valleys.',
+    desc: 'Glide through the tranquil Dal Lake in a Shikara and explore the snow-kissed mountains of Gulmarg.',
   },
   {
     image: '/images/kerala_houseboat_1779521772928.png',
-    tagline: 'Kerala Backwaters',
-    title1: 'Green Valleys &',
-    title2: 'Houseboat Stays.',
-    desc: "Float down the quiet backwaters of Alleppey and walk through Munnar's sprawling, aromatic tea plantations.",
+    tagline: "God's Own Country",
+    title1: 'Emerald Backwaters &',
+    title2: 'Tropical Sunsets.',
+    desc: "Unwind in private luxury houseboats and walk through the mist-laden green tea plantations of Munnar.",
   },
   {
     image: '/images/darjeeling_tea_1779521805614.png',
-    tagline: 'Himalayan Beauty',
-    title1: 'Sunrise over Gold',
-    title2: 'Mountain Peaks.',
-    desc: 'Watch the sunrise paint Kanchenjunga from Tiger Hill and travel on the historic Himalayan Toy Train.',
+    tagline: 'Queen of the Hills',
+    title1: 'Golden Sunrise &',
+    title2: 'Himalayan Peaks.',
+    desc: 'Watch the sunrise paint Mount Kanchenjunga from Tiger Hill and ride the historic Himalayan Toy Train.',
   },
   {
     image: '/images/dubai_skyline_1779539448313.png',
-    tagline: 'Dubai Metropolis',
+    tagline: 'City of Gold',
     title1: 'Modern Wonders &',
     title2: 'Golden Dunes.',
-    desc: 'Gaze out from the heights of Burj Khalifa, cruise the Marina, and enjoy a traditional desert safari sunset.',
+    desc: 'Gaze out from the heights of Burj Khalifa, cruise the Dubai Marina, and enjoy a traditional desert safari sunset.',
   },
   {
     image: '/images/singapore_skyline_1779539502293.png',
-    tagline: 'Futuristic Singapore',
-    title1: 'Gardens by the Bay',
-    title2: 'City Wonder.',
-    desc: 'Explore the spectacular supertrees, walk the modern skyline, and enjoy the beautiful theme parks of Sentosa.',
+    tagline: 'Urban Oasis',
+    title1: 'Futuristic Gardens &',
+    title2: 'Neon Supertrees.',
+    desc: 'Explore the spectacular Gardens by the Bay, walk the iconic modern skyline, and enjoy the beauty of Sentosa.',
   },
   {
     image: '/images/rajasthan_palace_1779521744228.png',
-    tagline: 'Royal Rajasthan',
-    title1: 'Majestic Forts &',
-    title2: 'Heritage Palaces.',
+    tagline: 'Land of Kings',
+    title1: 'Heritage Forts &',
+    title2: 'Royal Luxury.',
     desc: 'Step into history with royal palaces in Udaipur, ancient forts in Jaipur, and camps under the stars in Jaisalmer.',
   },
   {
     image: '/images/maldives_overwater_1779539482305.png',
-    tagline: 'Maldives Paradise',
+    tagline: 'Ocean Paradise',
     title1: 'Overwater Villas &',
-    title2: 'Coral Reefs.',
-    desc: 'Relax on powder-white sands, stay over crystal waters, and snorkel with colorful marine life in tropical warmth.',
+    title2: 'Turquoise Waters.',
+    desc: 'Relax on powder-white sands, stay over crystal-clear lagoons, and snorkel with colorful marine life in tropical warmth.',
   },
 ];
 
@@ -1230,29 +1230,26 @@ function Hero() {
               {/* Company Name & Secondary Tagline */}
               <div className="mb-2 flex flex-col">
                 <span className="text-xs uppercase tracking-widest text-[#0096C7] font-extrabold font-mono">
-                  BEDUIN TOUR & TRAVELS
+                  BEDUINE TOUR & TRAVELS
                 </span>
                 <span className="font-pacifico text-3xl md:text-4xl text-[#0096C7] leading-relaxed drop-shadow-[0_2px_4px_rgba(255,255,255,0.9)] mt-1">
-                  Safar Jo Yaad Rahe
+                  {slide.tagline}
                 </span>
               </div>
 
               {/* Headline (Main Tagline) */}
               <h1 className="font-display font-black text-4xl sm:text-5xl lg:text-6xl tracking-tight leading-[1.1] uppercase mb-4 flex flex-col">
                 <span className="text-[#0B1F2E] drop-shadow-[0_2px_8px_rgba(255,255,255,0.9)]">
-                  Choose Your Plan.
+                  {slide.title1}
                 </span>
                 <span className="bg-gradient-to-r from-[#0096C7] via-[#00B4D8] to-[#0077B6] bg-clip-text text-transparent drop-shadow-[0_1.5px_4px_rgba(255,255,255,0.4)]">
-                  Try Your Luck.
-                </span>
-                <span className="text-[#0B1F2E] drop-shadow-[0_2px_8px_rgba(255,255,255,0.9)] text-3xl sm:text-4xl lg:text-5xl mt-1">
-                  Travel Beyond Limits.
+                  {slide.title2}
                 </span>
               </h1>
 
               {/* Description */}
               <p className="text-sm sm:text-base text-slate-700/95 font-bold leading-relaxed max-w-md mb-6 drop-shadow-[0_1.5px_3px_rgba(255,255,255,0.9)]">
-                Join a Beduin subscription plan, get discount credits on paid tours, and become eligible for weekly promotional winner tour benefits.
+                {slide.desc}
               </p>
 
               {/* Action Buttons */}

@@ -130,10 +130,10 @@ export default function LoginPage({ onBack, onLoginSuccess, initialMode = 'login
             imageUrl="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=compress&cs=tinysrgb&w=800&q=80"
             title={
               <>
-                Welcome to <span className="text-[#FF6B6B] font-black">Beduin</span>
+                Welcome to <span className="text-[#FF6B6B] font-black">Beduine</span>
               </>
             }
-            description="Create your membership account to participate in weekly lucky draws, secure travel discounts, and explore beautiful destinations."
+            description="Create your membership account to receive weekly eligible entry access, fixed travel Discount Credits, and curated destination benefits."
             buttonText="Create Your Account"
             onButtonClick={() => setViewMode('signup-auth')}
             secondaryActionText="Already have an account? Login Here"

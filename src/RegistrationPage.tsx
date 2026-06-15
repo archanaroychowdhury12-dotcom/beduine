@@ -26,9 +26,9 @@ const ALL_PLANS = [
     glow: 'rgba(148, 163, 184, 0.4)',
     icon: Star,
     benefits: [
-      '1 Weekly Lucky Draw entry',
-      'Winner tour value up to ₹3,000 (2N/3D)',
-      '1 x 500-value Discount Credit if not selected',
+      '1 weekly eligible entry during subscription',
+      'Selected member tour benefit up to ₹3,000 (2N/3D)',
+      '1 x 500-value Discount Credit issued once per subscription',
       'Up to 5% off on other paid tours',
       'Name change – Not available'
     ]
@@ -42,9 +42,9 @@ const ALL_PLANS = [
     glow: 'rgba(16, 185, 129, 0.4)',
     icon: Award,
     benefits: [
-      '1 Weekly Lucky Draw entry',
-      'Winner tour value up to ₹5,000 (2N/3D)',
-      '2 x 500-value Discount Credits if not selected',
+      '1 weekly eligible entry during subscription',
+      'Selected member tour benefit up to ₹5,000 (2N/3D)',
+      '2 x 500-value Discount Credits issued once per subscription',
       'Up to 7% off on other paid tours',
       'Name change – One time allowed'
     ]
@@ -58,9 +58,9 @@ const ALL_PLANS = [
     glow: 'rgba(245, 158, 11, 0.4)',
     icon: Crown,
     benefits: [
-      '1 Weekly Lucky Draw entry',
-      'Winner tour value up to ₹10,000 (3N/4D)',
-      '4 x 500-value Discount Credits if not selected',
+      '1 weekly eligible entry during subscription',
+      'Selected member tour benefit up to ₹10,000 (3N/4D)',
+      '4 x 500-value Discount Credits issued once per subscription',
       'Up to 10% off on other paid tours',
       'Name change – Two times allowed'
     ]
@@ -74,9 +74,9 @@ const ALL_PLANS = [
     glow: 'rgba(59, 130, 246, 0.4)',
     icon: Star,
     benefits: [
-      '1 Monthly Lucky Draw entry',
-      'Winner tour value up to ₹25,000 (3N/4D)',
-      '5 x 500-value Discount Credits if not selected',
+      '1 weekly eligible entry during subscription',
+      'Selected member tour benefit up to ₹25,000 (3N/4D)',
+      '5 x 500-value Discount Credits issued once per subscription',
       'Up to 5% off on other paid tours',
       'Name change – One time allowed',
       'Visa assistance included'
@@ -91,9 +91,9 @@ const ALL_PLANS = [
     glow: 'rgba(20, 184, 166, 0.4)',
     icon: Award,
     benefits: [
-      '1 Monthly Lucky Draw entry',
-      'Winner tour value up to ₹50,000 (4N/5D)',
-      '8 x 500-value Discount Credits if not selected',
+      '1 weekly eligible entry during subscription',
+      'Selected member tour benefit up to ₹50,000 (4N/5D)',
+      '8 x 500-value Discount Credits issued once per subscription',
       'Up to 7% off on other paid tours',
       'Name change – Two times allowed',
       'Visa assistance + Airport lounge access'
@@ -108,9 +108,9 @@ const ALL_PLANS = [
     glow: 'rgba(6, 182, 212, 0.4)',
     icon: Crown,
     benefits: [
-      '1 Monthly Lucky Draw entry',
-      'Winner tour value up to ₹1,00,000 (5N/6D)',
-      '15 x 500-value Discount Credits if not selected',
+      '1 weekly eligible entry during subscription',
+      'Selected member tour benefit up to ₹1,00,000 (5N/6D)',
+      '15 x 500-value Discount Credits issued once per subscription',
       'Up to 10% off on other paid tours',
       'Name change – Unlimited allowed',
       'Full visa processing + lounge access',
@@ -232,7 +232,7 @@ export default function RegistrationPage({ initialPlanName, onBack, prefilledDat
 *Member ID:* ${receipt.memberId}
 *Plan Chosen:* ${receipt.planName} (${receipt.planPrice})
 *Registration Date:* ${receipt.date}
-*Lucky Draw Token:* ${receipt.drawToken}
+*Weekly Entry Token:* ${receipt.drawToken}
 
 *MEMBER DETAILS:*
 - *Name:* ${receipt.fullName}
@@ -280,10 +280,10 @@ _I confirm my registration and age eligibility (18+). Please guide me on payment
             imageUrl="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=compress&cs=tinysrgb&w=800&q=80"
             title={
               <>
-                Welcome to <span className="text-[#00F5D4] font-black">Beduin</span>
+                Welcome to <span className="text-[#00F5D4] font-black">Beduine</span>
               </>
             }
-            description="Create your membership account to participate in weekly lucky draws, secure travel discounts, and explore beautiful destinations."
+            description="Create your membership account to receive weekly eligible entry access, fixed travel Discount Credits, and curated destination benefits."
             buttonText="Create Your Account"
             onButtonClick={() => setShowWelcome(false)}
             secondaryActionText="Already have an account? Login Here"
@@ -398,12 +398,12 @@ _I confirm my registration and age eligibility (18+). Please guide me on payment
 
             <div className="md:col-span-4 pt-6 md:pt-0 md:pl-8 flex flex-col justify-between items-center text-center">
               <div className="w-full">
-                <span className="block text-[9px] uppercase tracking-wider text-slate-400 font-mono mb-2 font-bold">Draw Entry Token</span>
+                <span className="block text-[9px] uppercase tracking-wider text-slate-400 font-mono mb-2 font-bold">Weekly Entry Token</span>
                 <div className="py-2.5 px-4 bg-rose-50/50 border border-dashed border-[#FF6B6B]/40 rounded-xl inline-block font-mono text-sm font-bold tracking-widest text-[#FF6B6B] shadow-inner">
                   {receipt.drawToken}
                 </div>
                 <div className="text-[9px] text-amber-500 mt-2 font-bold">
-                  ★ Weekly Sunday Draw Active ★
+                  ★ Weekly Sunday Entry Active ★
                 </div>
               </div>
 
@@ -661,7 +661,7 @@ _I confirm my registration and age eligibility (18+). Please guide me on payment
                   >
                     <div>
                       <h2 className="text-xl font-bold text-slate-800">Nominee & Location Details</h2>
-                      <p className="text-xs text-slate-400 mt-1">Nominee information is mandatory to securely assign lucky draw claim rights.</p>
+                      <p className="text-xs text-slate-400 mt-1">Nominee information is mandatory to securely assign selected-member benefit claim rights.</p>
                     </div>
 
                     <div className="grid sm:grid-cols-2 gap-5">
@@ -895,7 +895,7 @@ _I confirm my registration and age eligibility (18+). Please guide me on payment
 
                 <div className="p-3 bg-rose-50 border border-rose-100 rounded-xl">
                   <p className="text-[10px] text-slate-600 leading-relaxed font-medium">
-                    <strong className="text-[#FF6B6B]">100% Value Recovery Floor:</strong> Subscription cost is converted into Discount Vouchers if not chosen in draws. No financial risk.
+                    <strong className="text-[#FF6B6B]">Value Protection Floor:</strong> Discount Credits are issued once per subscription and stay available for eligible paid tours.
                   </p>
                 </div>
               </div>
