@@ -272,15 +272,15 @@ _I confirm my registration and age eligibility (18+). Please guide me on payment
         </div>
 
         {/* Decorative Glowing Orbs */}
-        <div className="absolute top-1/4 left-1/4 w-[350px] h-[350px] rounded-full filter blur-[120px] pointer-events-none opacity-20 bg-cyan-500/20 z-[1]" />
-        <div className="absolute bottom-1/4 right-1/4 w-[350px] h-[350px] rounded-full filter blur-[120px] pointer-events-none opacity-25 bg-blue-500/20 z-[1]" />
+        <div className="absolute top-1/4 left-1/4 w-[350px] h-[350px] rounded-full filter blur-[120px] pointer-events-none opacity-20 bg-[#FF6B6B]/20 z-[1]" />
+        <div className="absolute bottom-1/4 right-1/4 w-[350px] h-[350px] rounded-full filter blur-[120px] pointer-events-none opacity-25 bg-[#8B5CF6]/15 z-[1]" />
 
-        <div className="max-w-md w-full z-10 bg-[#081F2E]/80 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden shadow-2xl relative">
+        <div className="max-w-md w-full z-10 bg-white/85 backdrop-blur-2xl border border-white/50 rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(30,49,71,0.18)] relative">
           <WelcomeScreen
             imageUrl="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=compress&cs=tinysrgb&w=800&q=80"
             title={
               <>
-                Welcome to <span className="text-[#00F5D4] font-black">Beduine</span>
+                Welcome to <span className="text-[#FF6B6B] font-black">Beduine</span>
               </>
             }
             description="Create your membership account to receive weekly eligible entry access, fixed travel Discount Credits, and curated destination benefits."

@@ -1,0 +1,544 @@
+DOCX: E:\busness\BEDUIN TOUR AND TRAVELS.docx
+has_comments=False; tracked_insertions=0; tracked_deletions=0
+
+001 [] Addres – Fulia, Nadia, West Bengal, Pin-741402
+002 [] www.beduin.in
+003 [] BUSINESS PLAN
+004 [] About us
+005 [] Beduin Tour & Travels is a customer-first travel company dedicated to crafting memorable journeys across India and beyond. We combine curated itineraries, transparent pricing and a unique subscription model that rewards members with monthly lucky draws, exclusive discounts, and group luxury tours. Whether it’s a family getaway, a romantic escape, or an adventure with friends, our experienced team handles the planning so you can relax and collect moments that last a lifetime. Join Beduin — where every trip becomes a memory.
+006 [] Mission
+007 [] At Beduin Tour & Travels, our mission is to transform travel into an accessible, reliable, and rewarding experience for everyone. We strive to:
+008 [] Offer carefully crafted tours that balance culture, comfort and adventure.
+009 [] Provide a unique subscription-based model where members enjoy weekly lucky draws and guaranteed discounts.
+010 [] Deliver luxury tours for winners while ensuring that non-winners never feel left behind, thanks to fair and transparent benefits.
+011 [] Build a community of happy travelers who see Beduin not just as a company, but as a trusted partner in creating memories.
+012 [] We believe travel is not just about visiting destinations — it’s about building stories, emotions, and connections that last a lifetime.
+013 [] Vision
+014 [] The vision of Beduin Tour & Travels is to revolutionize the travel industry with a sustainable, inclusive, and transparent model that benefits every traveler.
+015 [] We seek to:
+016 [] Expand our presence across India with a franchise and agent-driven network, reaching even the remotest travelers.
+017 [] Integrate cutting-edge technology to ensure seamless subscriptions, lucky draw transparency, and hassle-free tour management.
+018 [] Position Beduin as a global name in innovative travel solutions, starting from domestic roots and branching out to international experiences.
+019 [] Build a community of loyal subscribers who see travel not as an expense but as a lifetime investment in memories.
+020 [] Our ultimate vision is simple: “Safar jo yad rahe” — journeys that live forever in the hearts of our travelers.
+021 [] Destination we serve
+022 [ListParagraph] Domestic Destination
+023 [ListParagraph] International Destination
+024 [] Our Services
+025 [ListParagraph] Tour Package
+026 [ListParagraph] Customized Tour Pckage
+027 [ListParagraph] Hotel Booking
+028 [ListParagraph] Train Ticket Booking
+029 [ListParagraph] Flight Ticket Booking
+030 [ListParagraph] Visa Application
+031 [ListParagraph] Currency Exchange
+032 [] Our Business Model
+033 [] Subscription & Lucky Draw Model
+034 [] At Beduin Tour & Travels, we have introduced a unique subscription-based travel model that blends excitement, transparency, and guaranteed value for every customer.
+035 [ListParagraph] How It Works
+036 [] 1. Choose a Subscription Plan (12 months validity):
+037 [ListParagraph] Silver Plan – ₹499
+038 [] ✔ Lucky Draw Credit (1) → Weekly Lucky Draw Participation
+039 [] ✔ Winner Tour Value: ₹3,000
+040 [] ✔ Tour Duration: 2N/3D
+041 [] ✔ Winner Destinations (Seasonal):
+042 [ListParagraph] Sundarbans (Boat Safari + Tiger Reserve)
+043 [ListParagraph] Bakkhali (Beach Escape)
+044 [ListParagraph] Mousuni Island (Sea & Camping Experience)
+045 [ListParagraph] Mukutmanipur (Dam, Hills & Lake)
+046 [] ✔ Non-Winner Facility: 1 Discount Credit (₹500 off on 1 Domestic Tour)
+047 [] ✔ Travel insurance – Payable
+048 [] ✔ Others Paid tour discount upto 5% (In Subscription Period)
+049 [] ✔ Name change for family members – No Option
+050 [ListParagraph] Gold Plan – ₹799
+051 [] ✔ Lucky Draw Credit (1) → Weekly Lucky Draw Participation
+052 [] ✔ Winner Tour Value: ₹5,000
+053 [] ✔ Tour Duration: 2N/3D
+054 [] ✔ Winner Destinations (Seasonal):
+055 [ListParagraph] Darjeeling (Toy Train + Tiger Hill Sunrise)
+056 [ListParagraph] Dooars (Jungle Safari + Tea Gardens)
+057 [ListParagraph] Puri + Konark (Jagannath Temple + Sun Temple)
+058 [ListParagraph] Vizag + Araku Valley (Beach + Hills Combo)
+059 [] ✔ Non-Winner Facility: 2 Discount Credits (₹500 × 2 = ₹1000 off on 2 Domestic Tours)
+060 [] ✔ Travel insurance – 50% off
+061 [] ✔ Others Paid tour discount up to 7% (In Subscription Period)
+062 [] ✔ Name change for family members – One Time
+063 [ListParagraph] Platinum Plan – ₹1499
+064 [] ✔ Lucky Draw Credit (1) → Weekly Lucky Draw Participation
+065 [] ✔ Winner Tour Value: ₹10,000
+066 [] ✔ Tour Duration: 3N/4D (sometimes 4N/5D depending on destination)
+067 [] ✔ Winner Destinations (Seasonal):
+068 [ListParagraph] Kashmir (Srinagar, Gulmarg, Pahalgam)
+069 [ListParagraph] Rajasthan (Jaipur, Udaipur, Jodhpur, Jaisalmer)
+070 [ListParagraph] Kerala (Munnar, Alleppey Houseboat, Kovalam)
+071 [ListParagraph] Himachal (Shimla–Manali Circuit)
+072 [] ✔ Non-Winner Facility: 4 Discount Credits (₹500 × 4 = ₹2000 off on 4 Domestic Tours)
+073 [] ✔ Travel insurance – Free
+074 [] ✔ Others Paid tour discount up to 10% (In Subscription Period)
+075 [] ✔ Name change for family members – Two Times
+076 [ListParagraph] Common Facilities for All Subscribers
+077 [ListParagraph] Subscription Validity → 12 Months
+078 [ListParagraph] Pickup & Drop Facility → From company-selected points
+079 [ListParagraph] Tours conducted Quarterly for Winners (Jan–Mar → July batch, Apr–Jun → October batch, etc.)
+080 [ListParagraph] Non-Winners always get assured discounts on paid domestic tours
+081 [ListParagraph] Digital customer dashboard for → Lucky Draw entry, credits, booking updates
+082 [ListParagraph] Tagline Suggestion:
+083 [] “Choose Your Plan. Try Your Luck. Travel Beyond Limits.”
+084 [] 2. Weekly Lucky Draw:
+085 [] Every Sunday, a transparent lucky draw is held among all active subscribers.
+086 [] 5% of total subscribers win (Always rounded up to the next whole number).
+087 [] Winners are grouped by quarter, and enjoy a luxury tour (2N/3D or 3N/4D) arranged by the company in the following travel cycle.
+088 [] 3. Tour Execution:
+089 [ListParagraph] Jan–Mar Winners → Tour in July
+090 [ListParagraph] Apr–Jun Winners → Tour in October
+091 [ListParagraph] Jul–Sep Winners → Tour in January (next year)
+092 [ListParagraph] Oct–Dec Winners → Tour in April (next year)
+093 [ListParagraph] Winner Benefits
+094 [] Winners enjoy fully planned luxury tours to destinations chosen seasonally by the company (e.g., Sundarbans, Darjeeling, Kashmir, Rajasthan, and Kerala).
+095 [] All expenses for accommodation, transport, meals and experiences are covered — subscribers only pay their subscription fee.
+096 [ListParagraph] Non-Winner Benefits
+097 [] No subscriber is ever left out! Even if you don’t win the weekly draw, you still enjoy guaranteed benefits:
+098 [ListParagraph] Silver Plan (₹499): Flat ₹500 discount on 1 domestic tour package within 12 months.
+099 [ListParagraph] Gold Plan (₹799): Flat ₹500 discount × 2 (on any 2 domestic tours within 12 months).
+100 [ListParagraph] Platinum Plan (₹1499): Flat ₹500 discount × 4 (on any 4 domestic tours within 12 months).
+101 [] This ensures that every subscriber gets more value than their subscription fee, whether they win or not.
+102 [ListParagraph] Why This Model Works
+103 [] Fair & Transparent: Winners selected through a live/recorded digital draw.
+104 [] Value for All: Winners enjoy luxury tours, non-winners enjoy discounts.
+105 [] Sustainable & Scalable: Tours are planned quarterly, allowing bulk bookings and premium experiences.
+106 [] Engaging:  Weekly excitement keeps customers connected with the brand.
+107 [] How Lucky Draw will execute
+108 [ListParagraph] How Beduin Lucky Draw Will Be Conducted
+109 [ListParagraph] Data Collection & Verification
+110 [] All subscriptions made during the week (up to Saturday 11:59 PM) are collected.
+111 [] Each subscriber is assigned a unique ticket ID / number.
+112 [] Duplicate or invalid entries (unverified payments, fake accounts) are filtered out.
+113 [] Final subscriber list is frozen for that week’s draw.
+114 [ListParagraph] Winner Count Calculation
+115 [] Total number of active subscribers = N.
+116 [] Winners = 5% of N (rounded up).
+117 [] Example: 1047 subscriber’s → 52.35 → 53 winners.
+118 [] Example: 1051 subscriber’s → 52.55 → 53 winners.
+119 [] Formula: Winners = ROUNDUP (N × 0.05, 0)
+120 [ListParagraph] Random Selection Process
+121 [] Random number generator (RNG) software is used to pick winners.
+122 [] Example: Random.org, Google Random Picker, or an in-house secured system.
+123 [] The RNG is run live or recorded with screen share for full transparency.
+124 [] The selected Ticket IDs = Final Winners.
+125 [ListParagraph] Transparency & Proof
+126 [] The entire draw is screen recorded or lives streamed (FB / YouTube)
+127 [] A winner report (CSV / PDF) is generated with:
+128 [] Total subscribers
+129 [] Total winners selected
+130 [] List of winner IDs / Names
+131 [] Date & Time of draw
+132 [] RNG seed / verification log
+133 [] Report is saved in company records for audit.
+134 [ListParagraph] Winner Announcement
+135 [] Winners are announced every Sunday evening via:
+136 [] Company Website (Winners Page)
+137 [] Social Media (FB, Instagram, WhatsApp groups)
+138 [] SMS & Email notification
+139 [] Example SMS:
+140 [ListParagraph] Congratulations [Name]! You are a Beduin Lucky Draw Winner! Your coupon: BEDWIN-JULY-12345. Call ‪+91 8768903565‬ for details.
+141 [ListParagraph] Post-Draw Process
+142 [] Each winner gets a unique digital coupon code (QR/UUID) stored in the company system.
+143 [] Winners are grouped into their quarterly tour batch (Jan–Mar → July, Apr–Jun → October, etc.).
+144 [] Non-winners get reminder SMS about their discount benefits (₹500 × 1/2/4 depending on plan).
+145 [ListParagraph] Why Customers Will Trust the System
+146 [] Always Round Up Rule: ensures fairness (more winners, never less).
+147 [] Digital RNG + Live/Recorded Proof: no manual manipulation.
+148 [] Public Announcements: winners’ names are visible, transparent.
+149 [] Coupon Codes: secure, unique, cannot be duplicated.
+150 [ListParagraph] So the customer knows: “Every Sunday, Beduin runs a fair digital draw. If I win, I travel free. If not, I still get discounts. Either way, I gain.”
+151 [] Lucky Draw Will Be Conducted (Customer-End Model)
+152 [ListParagraph] How Beduin Lucky Draw Will Be Conducted (Customer-End Model)
+153 [ListParagraph] Subscription & Credit System
+154 [] Every subscriber who buys a 12-month subscription plan (Silver, Gold, Platinum) will receive 1 Lucky Draw Credit.
+155 [] 1 Credit = 1 Chance to participate in the Lucky Draw.
+156 [] Credits are automatically added to the customer’s account once the subscription payment is verified.
+157 [ListParagraph] Weekly Lucky Draw Participation
+158 [] Every Sunday, subscribers can log in to their Beduin account / mobile app / web portal.
+159 [] They will use their 1 Credit to activate their entry for that week’s Lucky Draw.
+160 [] Once they enter, their Ticket ID is confirmed and locked for that week’s draw.
+161 [] No extra credits can be purchased — fair chance for everyone.
+162 [ListParagraph] Winner Count Calculation
+163 [] The system counts all participants for that week (N).
+164 [] Winners = 5% of N (rounded up).
+165 [] Example: 1047 participant’s → 52.35 → 53 winners.
+166 [] Example: 1051 participant’s → 52.55 → 53 winners.
+167 [] The system automatically calculates and confirms this number before the draw.
+168 [ListParagraph] Draw Execution (Customer-Side Transparency)
+169 [] Instead of being done secretly by the company, the draw is triggered by the system itself in front of customers.
+170 [] Options:
+171 [] Digital Scratch Card: Customers scratch their card online and instantly see if they win.
+172 [] Spin-Free RNG Animation: A neutral random selection where customer IDs flash, and winners are highlighted.
+173 [] Quiz/Engagement Draw: Optional fun-based entry.
+174 [ListParagraph] In all cases, the process is automated and equal for every customer, without manual control from the company.
+175 [ListParagraph] Winner Notification & Benefits
+176 [] Winners instantly see their result on screen:
+177 [ListParagraph] “Congratulations! You are a Beduin Lucky Draw Winner! Your tour coupon: BEDWIN-JULY-12345.”
+178 [] They also receive confirmation by SMS + Email.
+179 [] Their account automatically stores the e-coupon for the upcoming quarterly tour.
+180 [ListParagraph] Non-Winner Notification & Benefits
+181 [ListParagraph] Non-winners will see:
+182 [] “Better luck next time! Don’t worry, you still enjoy your guaranteed discount benefit.”
+183 [] Their account dashboard shows how many ₹500 discounts remain for their subscription (Silver = 1, Gold = 2, Platinum = 4).
+184 [ListParagraph] Why This Model Is Even Better
+185 [] Customer-Driven: Every subscriber controls their own participation.
+186 [] Transparency: No manual handling by the company → removes doubt of manipulation.
+187 [] Engagement: Weekly log-in keeps customers connected to the brand.
+188 [] Fairness: 1 Credit = 1 Attempt → equal opportunity for all.
+189 [] Trust: Customers feel in control → “I tried my own luck.”
+190 [ListParagraph] So the message to customers is:
+191 [ListParagraph] “With Beduin, you don’t just wait for a lucky draw — you take part in it yourself. One subscription = one credit = one real chance to win.”
+192 [] Customer Credit Model
+193 [ListParagraph] Lucky Draw Credit (LDC) → for weekly lucky draw participation
+194 [ListParagraph] Discount Credits (DC) → for guaranteed savings on paid tours
+195 [ListParagraph] Beduin Tour & Travels – Subscription & Credit-Based Lucky Draw Model
+196 [] Two Types of Credits for Every Subscriber
+197 [] When a customer purchases a 12-month subscription plan, they automatically receive:
+198 [ListParagraph] Lucky Draw Credit (LDC):
+199 [] 1 Credit = 1 Entry in the weekly Lucky Draw.
+200 [] Every subscriber gets 1 Lucky Draw Credit per subscription.
+201 [] Used to participate every Sunday in the live digital draw.
+202 [ListParagraph] Discount Credits (DC):
+203 [] These are Unlucky Credits, used when the subscriber does not win.
+204 [] They can redeem these credits for discounts on any paid domestic tours.
+205 [ListParagraph] Credit Allocation by Plan:
+206 [ListParagraph] Silver Plan (₹499) → 1 Discount Credit (worth ₹500 off)
+207 [ListParagraph] Gold Plan (₹799) → 2 Discount Credits (worth ₹500 × 2 = ₹1000 off)
+208 [ListParagraph] Platinum Plan (₹1499) → 4 Discount Credits (worth ₹500 × 4 = ₹2000 off)
+209 [ListParagraph] Rule: 1 Domestic Tour Booking = 1 Discount Credit can be applied.
+210 [ListParagraph] Weekly Lucky Draw Participation
+211 [] Every Sunday, subscribers log in to their account / mobile app.
+212 [] They use their 1 Lucky Draw Credit (LDC) to enter the draw.
+213 [] The system confirms all entries and freezes the list at cut-off time.
+214 [] Winners = 5% of total entries (always rounded up).
+215 [ListParagraph] Draw Execution (Customer-End Transparency)
+216 [] The draw happens digitally in front of customers (via RNG animation / scratch card).
+217 [] Each participant instantly knows if they are a Winner or Non-Winner.
+218 [ListParagraph] Winner Benefits
+219 [] Winners get a Luxury Tour Coupon (valid for quarterly tour batches).
+220 [] Tours are arranged seasonally, worth ₹3,000 – ₹10,000 depending on plan (Silver/Gold/Platinum).
+221 [] Example: Silver → Sundarbans, Gold → Darjeeling/Puri, Platinum → Kashmir/Kerala.
+222 [ListParagraph] Non-Winner Benefits
+223 [] Non-Winners immediately receive a notification:
+224 [] “Better luck next time! You still have [X] Discount Credits to use on paid tours.”
+225 [] They can use these Discount Credits to get flat ₹500 off per domestic tour booking.
+226 [] Example:
+227 [] Silver → 1 Discount Credit → 1× ₹500 off
+228 [] Gold → 2 Discount Credits → 2× ₹500 off (on 2 different tours)
+229 [] Platinum → 4 Discount Credits → 4× ₹500 off (on 4 different tours)
+230 [ListParagraph] Why Customers Love This Model
+231 [] 1. Double Benefits: Win → Luxury Tour, Lose → Guaranteed Discounts.
+232 [] 2. Fair Play: Everyone gets the same chance in weekly draws.
+233 [] 3. Transparency: Company doesn’t control winners; customers activate their own luck.
+234 [] 4. Continuous Engagement: Weekly participation keeps customers connected.
+235 [] 5. Assured Value: Even if unlucky, subscription fee is recovered via discount credits.
+236 [ListParagraph] In simple words:
+237 [] Every Beduin member gets 2 types of credits:
+238 [] Lucky Draw Credit (1 per subscription) → chance to win free luxury trips.
+239 [] Discount Credits (1/2/4 depending on plan) → guaranteed savings on paid tours.
+240 [] So, nobody loses — everyone gains!
+241 [] Lucky Draw Winner Tour Details for Subscribers
+242 [ListParagraph] Silver Plan – ₹499
+243 [] Budget Equivalent Tour Value: ₹3,000
+244 [] Tour Type: Short Domestic Gateway (Nature & Adventure)
+245 [] Seasonal Destinations (chosen by company):
+246 [ListParagraph] Sundarbans Safari (Tiger Reserve + Boat Cruise)
+247 [ListParagraph] Bakkhali Beach Escape
+248 [ListParagraph] Mousuni Island (Sea + Camping Experience)
+249 [ListParagraph] Mukutmanipur (Dam, Hills & Lake)
+250 [ListParagraph] Perfect for quick escapes with full luxury stay, meals and sightseeing.
+251 [ListParagraph] Lucky Winners under this plan will enjoy a 2N/3D luxury tour to any of these destinations — included within the subscription itself.
+252 [ListParagraph] Gold Plan – ₹799
+253 [] Budget Equivalent Tour Value: ₹5,000
+254 [] Tour Type: Premium Domestic Experiences (Hill Stations, Beaches, Culture)
+255 [] Seasonal Destinations (chosen by company):
+256 [ListParagraph] Darjeeling (Toy Train, Tiger Hill Sunrise)
+257 [ListParagraph] Dooars (Jungle Safari + Tea Gardens)
+258 [ListParagraph] Puri & Konark (Jagannath Temple + Sun Temple)
+259 [ListParagraph] Vizag + Araku Valley (Beach + Hills Combo)
+260 [ListParagraph] Best for couples, friends or family who want short but premium trips.
+261 [ListParagraph] Winners under this plan will enjoy Premium 2N/3D Tour Packages — covering hill stations, beaches, and cultural destinations.
+262 [ListParagraph] Platinum Plan – ₹1499
+263 [] Budget Equivalent Tour Value: ₹10,000
+264 [] Tour Type: Luxury Long Tours (Hill, Desert, Backwater, Culture)
+265 [] Seasonal Destinations (chosen by company):
+266 [ListParagraph] Kashmir (Srinagar + Gulmarg + Pahalgam)
+267 [ListParagraph] Rajasthan (Jaipur, Udaipur, Jodhpur)
+268 [ListParagraph] Kerala (Munnar, Alleppey Houseboat, Kovalam)
+269 [ListParagraph] Himachal (Shimla–Manali Circuit)
+270 [ListParagraph] Winners enjoy full luxury hotels, sightseeing, transfers, and curated cultural experiences.
+271 [ListParagraph] Platinum Winners will enjoy a Full Luxury Experience, with 2N/3D or 3N/4D or 4N/5D (depending on destination) trips depending on the destination.
+272 [ListParagraph] Special Notes
+273 [] Tour destinations will be selected by the company based on the season.
+274 [] These tours are exclusively available to Lucky Draw Winners.
+275 [] Non-Winners will still enjoy benefits through our Discount Benefit System (subscription money adjustment).
+276 [] Tours for winners will be arranged once every 3 months, allowing proper luxury planning and group experiences.
+277 [ListParagraph] Benefits of This Model
+278 [] 1. Low Entry Cost → High Reward Value (very attractive for customers).
+279 [] 2. Exclusive Experience → Only winners enjoy these luxury tours.
+280 [] 3. Seasonal Flexibility → Best destinations offered in the best seasons.
+281 [] 4. Company Profitability → Bulk tour bookings help optimize costs.
+282 [] 5. Brand Loyalty → Customers are motivated to renew subscriptions again and again.
+283 [ListParagraph] This positions Beduin Tour & Travels as a unique, customer-focused brand — where every subscription brings value, but winners enjoy unforgettable journeys.
+284 [] Lucky Draw Non-Winner Benefits in Details
+285 [] At Beduin Tour & Travels, no subscriber ever leaves empty-handed. Even if you don’t win the weekly lucky draw, you still enjoy guaranteed benefits throughout your 12-month subscription period.
+286 [ListParagraph] Silver Plan – ₹499
+287 [] Discount Value: Flat ₹500 discount
+288 [] Usage: Valid for 1 domestic tour package of your choice
+289 [] Validity: Anytime within your 12-month subscription period
+290 [] Example: If you book a domestic tour worth ₹10,000, you pay only ₹9,500
+291 [ListParagraph] Ensures that even a ₹499 subscription pays back fully through discounts.
+292 [ListParagraph] Gold Plan – ₹799
+293 [] Discount Value: Flat ₹500 discount × 2 times = ₹1,000 total value
+294 [] Usage: Valid for any 2 domestic tour packages (can be used separately)
+295 [] Validity: 12-month subscription period
+296 [] Example:
+297 [] First tour: ₹15,000 package → Pay ₹14,500
+298 [] Second tour: ₹12,000 package → Pay ₹11,500
+299 [ListParagraph] Twice the benefit, making the Gold Plan more rewarding.
+300 [ListParagraph] Platinum Plan – ₹1499
+301 [] Discount Value: Flat ₹500 discount × 4 times = ₹2,000 total value
+302 [] Usage: Valid for any 4 domestic tour packages
+303 [] Validity: 12-month subscription period
+304 [] Example:
+305 [] Tour 1: ₹20,000 package → Pay ₹19,500
+306 [] Tour 2: ₹12,000 package → Pay ₹11,500
+307 [] Tour 3: ₹10,000 package → Pay ₹9,500
+308 [] Tour 4: ₹18,000 package → Pay ₹17,500
+309 [ListParagraph] Platinum subscribers enjoy maximum flexibility and savings, ensuring the subscription pays back multiple times.
+310 [ListParagraph] Non winners can participate with Lucky Draw winners tour through paying the package value. (According to the discount rules)
+311 [ListParagraph] Key Rules & Conditions
+312 [] Discounts apply only to Beduin-organized domestic tours.
+313 [] Discounts are non-transferable and valid only during the 12-month subscription period.
+314 [] They cannot be clubbed with other offers unless explicitly allowed.
+315 [] If a discounted tour is canceled, the discount is considered used, unless company policy allows reinstatement.
+316 [ListParagraph] Benefits for Customers
+317 [] Guaranteed Value: Every subscriber gets more than what they paid for.
+318 [] Freedom of Choice: Apply discounts on tours that match your preference.
+319 [] Flexibility: Use once, twice, or multiple times depending on your plan.
+320 [] Trust & Loyalty: Even if you don’t win, you never lose.
+321 [] Benefits for the Company
+322 [] Builds trust and transparency — customers know they’ll always gain.
+323 [] Encourages repeat bookings, as discounts motivate customers to take multiple tours.
+324 [] Strengthens subscription renewals, since customers see continuous value.
+325 [ListParagraph] In short: Winners enjoy free luxury tours, and non-winners still enjoy assured savings. With Beduin, nobody loses — everyone gains.
+326 [] Pickup & Drop Facility
+327 [ListParagraph] For every Beduin Tour & Travels package — whether it’s a Lucky Draw Winner Tour or a Non-Winner Paid Tour — we provide a Pickup & Drop Facility.
+328 [ListParagraph] The pickup point will be a company-selected location based on the tour destination.
+329 [ListParagraph] Customers must arrive on time as per the schedule announced by the company.
+330 [ListParagraph] This ensures safe, comfortable, and hassle-free travel for all our guests.
+331 [ListParagraph] With Beduin, your journey begins the moment you step into our pickup zone
+332 [] Franchise Model
+333 [ListParagraph] Beduin Tour & Travels – State-Wise Franchise Model
+334 [ListParagraph] Core Franchise Concept
+335 [] Purpose: Expand Beduin Tour & Travels PAN-India through trusted local entrepreneurs.
+336 [] Franchise Role: Handle local subscriptions, customer service, and tour promotion.
+337 [] Company Role: Provide technology, branding, lucky draw system, tour execution, training, and support.
+338 [ListParagraph] Franchise Types
+339 [] 1. City/State Associate Franchise (Small Scale)
+340 [] Investment: ₹50,000 – ₹75,000
+341 [] Commission: 5–8% on subscriptions sold
+342 [] Target: Small towns / Tier-3 cities
+343 [] 2. Standard Franchise (District/Metro)
+344 [] Investment: ₹2,00,000 – ₹3,00,000
+345 [] Commission: 8–10% on subscriptions + share on tour packages
+346 [] Target: State capitals & Tier-2 cities
+347 [] 3. Master State Franchise (State-Level Rights)
+348 [] Investment: ₹7,00,000 – ₹12,00,000
+349 [] Commission: 12–15% on subscriptions + royalties from sub-franchisees
+350 [] Target: One per state (handles marketing, training & support of all city franchises under them)
+351 [ListParagraph] State-Wise Franchise Allocation Plan
+352 [ListParagraph] East India
+353 [] West Bengal (HQ State) → Master Franchise at Kolkata; city/district franchises at Siliguri, Asansol, Durgapur, Howrah, Malda.
+354 [] Odisha → Master Franchise at Bhubaneswar; city franchises at Cuttack, Puri, Rourkela.
+355 [] Bihar & Jharkhand → Master at Patna/Ranchi; local hubs at Gaya, Muzaffarpur, Dhanbad, Jamshedpur.
+356 [] North-East India → Master at Guwahati (Assam); city franchises in Shillong, Agartala, Imphal, Aizawl, Gangtok.
+357 [ListParagraph] North India
+358 [] Delhi NCR → State-level franchise at Delhi; city franchises at Noida, Gurgaon, Ghaziabad.
+359 [] Uttar Pradesh → Master at Lucknow; city franchises at Varanasi, Kanpur, Agra, Prayagraj.
+360 [] Punjab, Haryana, Himachal → Master at Chandigarh; city hubs at Amritsar, Shimla, Manali.
+361 [] Rajasthan → Master at Jaipur; city hubs at Udaipur, Jodhpur, Jaisalmer.
+362 [ListParagraph] West India
+363 [] Maharashtra → Master at Mumbai; franchises in Pune, Nagpur, Nashik.
+364 [] Gujarat → Master at Ahmedabad; franchises in Surat, Vadodara, Rajkot.
+365 [] Goa → Direct company-operated or mini franchise (due to tourism demand).
+366 [ListParagraph] South India
+367 [] Karnataka → Master at Bangalore; city franchises at Mysore, Mangalore, Hampi.
+368 [] Tamil Nadu → Master at Chennai; city hubs at Coimbatore, Madurai, Ooty.
+369 [] Kerala → Master at Kochi; city hubs at Trivandrum, Munnar, Alleppey.
+370 [] Andhra Pradesh & Telangana → Master at Hyderabad; hubs at Vizag, Vijayawada, Warangal.
+371 [ListParagraph] Franchise Benefits
+372 [] Exclusive State/City rights
+373 [] Fixed commission on subscriptions & packages
+374 [] Marketing support (digital creatives, campaigns)
+375 [] Backend access to CRM & Lucky Draw system
+376 [] Training (sales, customer handling, tour operations)
+377 [] Brand identity under Beduin Tour & Travels
+378 [ListParagraph] Company Benefits
+379 [] Rapid PAN-India expansion without heavy infrastructure costs
+380 [] Local franchise owners ensure regional trust & customer handling
+381 [] Higher subscription sales through local networks
+382 [] Shared marketing cost burden with franchise partners
+383 [ListParagraph] Possible Challenges
+384 [] Maintaining consistency in service quality across states
+385 [] Monitoring fraud/false subscriptions by franchisees
+386 [] Legal agreements for franchise termination/disputes
+387 [] Regional demand differences (tour preferences vary state to state)
+388 [] Agent Model
+389 [ListParagraph] Beduin Tour & Travels – PAN India Agent Recruitment & Management Model
+390 [ListParagraph] Agent Structure under Franchise Model
+391 [] Franchise Hierarchy:
+392 [] Head Office (HO) → Manages entire India operations.
+393 [] State Master Franchise → One per state (training + monitoring).
+394 [] District/City Franchise → Sub-franchise handling specific regions.
+395 [] Agents → Recruited under each Franchise, directly handling customer acquisition.
+396 [ListParagraph] Every Agent is mapped to one Franchise, and that Franchise is mapped to the State → HO.
+397 [ListParagraph] Agent Recruitment
+398 [] Franchise Owners are responsible for hiring Agents.
+399 [] Recruitment Channels:
+400 [] Local recruitment drives
+401 [] Online applications through Beduin Agent Portal
+402 [] Referrals from existing agents
+403 [ListParagraph] Requirements:
+404 [] Minimum 18+ years
+405 [] Basic Smartphone/computer knowledge
+406 [] Strong local network & communication skills
+407 [ListParagraph] Agent Work Responsibility
+408 [] Create & manage new customer subscriptions via the Agent Portal.
+409 [] Assist customers with subscription plans (Silver/Gold/Platinum).
+410 [] Promote Lucky Draw & Non-Winner Discount Benefits.
+411 [] Maintain customer trust & transparency.
+412 [] Report daily activity through Portal.
+413 [ListParagraph] Agent Earning Models
+414 [] A) Salary-Based Agent
+415 [] Fixed Monthly Salary (₹10,000–₹15,000 depending on state/city).
+416 [] Monthly Target of Registrations (e.g., 50–100 subscriptions).
+417 [] Incentives if they exceed targets.
+418 [] B) Commission-Based Agent
+419 [] No fixed salary.
+420 [] Commission per successful subscription:
+421 [] Silver Plan: ₹50–₹75 per registration
+422 [] Gold Plan: ₹100–₹150 per registration
+423 [] Platinum Plan: ₹200–₹300 per registration
+424 [] Monthly commission auto-calculated by Portal & transferred.
+425 [ListParagraph] Agents can choose their preferred model at the time of joining.
+426 [ListParagraph] Agent Portal Features
+427 [] Each Agent will have a dedicated login under their Franchise.
+428 [ListParagraph] Dashboard:
+429 [] Agent Profile & Franchise Mapping
+430 [] Total Registrations: Daily / Monthly / Yearly (with date filter)
+431 [] Plan-wise Registration Split (Silver/Gold/Platinum)
+432 [ListParagraph] Customer Creation Page:
+433 [] Add new customer (Name, Mobile, Email, Plan, Payment Screenshot/UPI ref)
+434 [] Auto-generate Customer ID
+435 [] Track status (Active, Pending Payment Verification, Completed)
+436 [] Commission Page (for Commission-Based Agents):
+437 [] Subscription List with Commission Earned per customer
+438 [] Total Commission Earned (Monthly, Filter by Date)
+439 [] Download Commission Report (PDF/Excel)
+440 [ListParagraph] Salary Page (for Salary-Based Agents):
+441 [] Target vs Achieved Registrations
+442 [] Bonus/Extra Incentive if applicable
+443 [] Salary Slip Download
+444 [ListParagraph] Reports & Filters:
+445 [] Daily/Monthly/Yearly Reports
+446 [] Custom date filter
+447 [] Export option (Excel/PDF)
+448 [ListParagraph] Payment & Distribution System
+449 [] Salary-Based Agents: Salary auto-generated in system at month-end → Transferred via bank/UPI.
+450 [] Commission-Based Agents: Portal auto-calculates commission → Approved by Franchise → Monthly payout by 5th of every month.
+451 [] Transparency: Agents can see all their earnings in the portal (real-time updates).
+452 [ListParagraph] Franchise Role in Agent Management
+453 [] Recruit Agents → Train them in subscription model & Lucky Draw process.
+454 [] Monitor performance via Franchise Dashboard (aggregate of all agents under them).
+455 [] Approve payments (salary/commission) for agents.
+456 [] Maintain quality & service delivery.
+457 [ListParagraph] Company Benefits of Agent Model
+458 [] Rapid scaling without heavy direct manpower cost.
+459 [] Local market penetration via trusted local agents.
+460 [] Performance-based payout → higher productivity.
+461 [] Franchise bears recruitment/training responsibility → company saves overheads.
+462 [ListParagraph] Possible Challenges & Solutions
+463 [] Challenge: Fake customer creation for commission.
+464 [ListParagraph] Solution: Payment verification mandatory (subscription activates only after company payment confirmation)
+465 [] Challenge: Agent churn (high turnover).
+466 [ListParagraph] Solution: Incentive program + Career growth path (senior agent, area manager)
+467 [] Challenge: Unequal performance across states.
+468 [ListParagraph] Solution: Monthly training webinars + Quarterly performance review
+469 [ListParagraph] Agent Earning Example
+470 [ListParagraph] Commission-Based Agent (Monthly)
+471 [] Registers 20 Silver (₹50×20 = ₹1,000)
+472 [] Registers 15 Gold (₹100×15 = ₹1,500)
+473 [] Registers 10 Platinum (₹200×10 = ₹2,000)
+474 [] Total Commission = ₹4,500 (plus extra incentives if target achieved).
+475 [ListParagraph] Salary-Based Agent
+476 [] Fixed ₹12,000/month + Incentive (₹2,000 if target achieved)
+477 [] Total Salary = ₹14,000
+478 [ListParagraph] Summary
+479 [] Every subscription = 2 Credits for customers (Lucky Draw + Discount).
+480 [] Every agent = 2 earning models (Salary or Commission).
+481 [] Every franchise = 2 responsibilities (Recruitment + Payment Distribution)
+482 [] Customers Referrals Program
+483 [ListParagraph] Beduin Tour & Travels – Customer Referral Program
+484 [ListParagraph] Objective
+485 [] Encourage existing subscribers to bring new members by rewarding them with extra travel benefits, credits, and discounts — but no cash withdrawal option.
+486 [ListParagraph] How It Works
+487 [] Every subscriber gets a Unique Referral Code/Link.
+488 [] If a new customer joins Beduin using that code:
+489 [] The new customer gets a welcome benefit (₹100–₹200 discount on their first subscription).
+490 [] The referring customer gets Referral Rewards in the form of Credits & Discounts.
+491 [ListParagraph] Referral Rewards for Existing Customers
+492 [] When you refer a friend and they successfully subscribe:
+493 [ListParagraph] Silver Plan Subscriber Referral
+494 [] 1 successful referral = 1 Extra Discount Credit (worth ₹500 off on a tour).
+495 [] Max limit: 2 credits per year.
+496 [ListParagraph] Gold Plan Subscriber Referral
+497 [] 1 successful referral = 1 Extra Discount Credit (worth ₹500 off).
+498 [] 3 referrals = 1 Bonus Lucky Draw Credit (extra entry for weekly draw).
+499 [] Max limit: 4 credits per year.
+500 [ListParagraph] Platinum Plan Subscriber Referral
+501 [] 1 successful referral = 1 Extra Discount Credit (worth ₹500 off).
+502 [] 3 referrals = 1 Bonus Lucky Draw Credit.
+503 [] 5 referrals = 1 Mini Tour Voucher (short 1-day trip organized by Beduin).
+504 [] Max limit: 6 credits per year.
+505 [ListParagraph] What Customers Can’t  Do
+506 [] No referral reward can be converted into cash.
+507 [] Rewards cannot be withdrawn or transferred to another person.
+508 [] Referral credits are valid only during the 12-month subscription period.
+509 [ListParagraph] Customer Benefits
+510 [] Extra chances to win (via extra Lucky Draw Credits).
+511 [] Guaranteed travel savings (via Discount Credits).
+512 [] Loyalty rewards (mini tour vouchers for top referrers).
+513 [] Community pride: “I brought my friends/family to Beduin.”
+514 [ListParagraph] Company Benefits
+515 [] Organic customer acquisition at low cost.
+516 [] Builds strong word-of-mouth marketing.
+517 [] Improves subscription renewals as customers feel rewarded.
+518 [] Keeps benefits inside the ecosystem (no money leakage).
+519 [ListParagraph] Example Scenario
+520 [] A Platinum subscriber refers 5 friends → earns:
+521 [] 5 Discount Credits (₹500 × 5 = ₹2,500 worth)
+522 [] 1 Bonus Lucky Draw Credit
+523 [] 1 Free Mini Tour Voucher
+524 [ListParagraph] This subscriber has now recovered much more value than their plan, without costing the company direct cash.
+525 [ListParagraph] Summary
+526 [ListParagraph] Referral = Travel Rewards, not cash.
+527 [ListParagraph] Rewards include: Extra Discount Credits, Extra Lucky Draw Credits, Mini Tour Vouchers.
+528 [ListParagraph] Limits per year to avoid misuse.
+529 [ListParagraph] Stronger loyalty & organic growth for Beduin.
+530 [] Conclusion – The BEDUIN Promise
+531 [] At Beduin Tour & Travels, we believe that travel is more than a journey — it’s a collection of unforgettable memories. Our Subscription + Lucky Draw Model ensures that every member wins, either through free luxury tours or assured discounts on paid packages. This unique approach has already set us apart as one of the most innovative travel companies in India.
+532 [] But this is just the beginning.
+533 [] Very soon, we are expanding beyond our current plans with:
+534 [] Domestic Level Subscription Plans — covering premium destinations across India.
+535 [] International Level Subscription Plans — offering unforgettable trips abroad at unbeatable value.
+536 [] End-to-End Travel Solutions ✈ — including Hotel Booking, Train Tickets, Flight Tickets, Visa Applications, and Customized Travel Packages.
+537 [] With these upcoming services, Beduin Tour & Travels will become your one-stop travel partner — whether you are exploring India or the world.
+538 [] Our mission is simple:
+539 [ListParagraph] To make travel accessible, transparent, and rewarding for everyone.
+540 [] Because at Beduin, it’s not just about the destination — it’s about the journey, the memories, and the happiness you carry forever.
+541 [] Safar jo yad rahe… always

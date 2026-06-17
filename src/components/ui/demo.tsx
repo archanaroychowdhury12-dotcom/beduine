@@ -16,7 +16,7 @@ const WelcomeScreenDemo = () => {
         imageUrl="https://images.pexels.com/photos/3225528/pexels-photo-3225528.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
         title={
           <>
-            Welcome To <span className="text-[#00F5D4]">Doorin</span>
+            Welcome To <span className="text-[#FF6B6B]">Doorin</span>
           </>
         }
         description="Discover and book hotels effortlessly with Doorin, your personalized hotel booking app."
@@ -24,7 +24,7 @@ const WelcomeScreenDemo = () => {
         onButtonClick={handleGetStarted}
         secondaryActionText={
           <>
-            Already have an account? <span className="font-semibold text-[#00F5D4]">Login Now</span>
+            Already have an account? <span className="font-semibold text-[#FF6B6B]">Login Now</span>
           </>
         }
         onSecondaryActionClick={handleLogin}

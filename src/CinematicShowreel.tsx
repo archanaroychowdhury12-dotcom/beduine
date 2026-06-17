@@ -1,380 +1,12 @@
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Volume2, VolumeX, Camera, Sun, Moon, Sunrise,
   MapPin, RotateCcw, Play, Pause, ChevronRight,
   Compass, Eye, Sparkles, SlidersHorizontal
 } from 'lucide-react';
-
-/* ---------- Enhanced Sound Synthesizer via Native Web Audio API ---------- */
-class AmbientSoundscapeSynth {
-  private ctx: AudioContext | null = null;
-  private filterNode: BiquadFilterNode | null = null;
-  private gainNode: GainNode | null = null;
-  private masterVolume: number = 0.45;
-
-  // Node tracking for sub-oscillators to allow proper cleanup
-  private soundNodes: Array<AudioNode | AudioScheduledSourceNode> = [];
-  private oscillationInterval: any = null;
-  private subInterval1: any = null;
-  private subInterval2: any = null;
-
-  start(type: 'wind' | 'waves' | 'chimes', volume: number) {
-    this.stop();
-    this.masterVolume = volume;
-
-    const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
-    if (!AudioContextClass) return;
-
-    this.ctx = new AudioContextClass();
-
-    // Main Gain Node
-    this.gainNode = this.ctx.createGain();
-    this.gainNode.gain.setValueAtTime(0, this.ctx.currentTime);
-    this.gainNode.connect(this.ctx.destination);
-
-    // Master Filter
-    this.filterNode = this.ctx.createBiquadFilter();
-    this.filterNode.type = 'lowpass';
-    this.filterNode.frequency.setValueAtTime(400, this.ctx.currentTime);
-    this.filterNode.Q.setValueAtTime(2.0, this.ctx.currentTime);
-    this.filterNode.connect(this.gainNode);
-
-    // Synthesize White Noise Buffer for ambient beds
-    const bufferSize = 2 * this.ctx.sampleRate;
-    const noiseBuffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
-    const output = noiseBuffer.getChannelData(0);
-    for (let i = 0; i < bufferSize; i++) {
-      output[i] = Math.random() * 2 - 1;
-    }
-
-    const noiseSource = this.ctx.createBufferSource();
-    noiseSource.buffer = noiseBuffer;
-    noiseSource.loop = true;
-    noiseSource.connect(this.filterNode);
-    noiseSource.start(0);
-    this.soundNodes.push(noiseSource);
-
-    // Fade in main gain
-    this.gainNode.gain.linearRampToValueAtTime(this.masterVolume, this.ctx.currentTime + 1.5);
-
-    if (type === 'wind') {
-      // --- KASHMIR ALPINE WIND + GUSTY HOWLS ---
-      this.filterNode.type = 'bandpass';
-      this.filterNode.Q.setValueAtTime(7.0, this.ctx.currentTime);
-
-      let phase = 0;
-      this.oscillationInterval = setInterval(() => {
-        if (!this.ctx || !this.filterNode || !this.gainNode) return;
-        phase += 0.06;
-
-        // Dynamic base frequency sweeps (200Hz to 600Hz)
-        const baseFreq = 360 + Math.sin(phase) * 150 + Math.sin(phase * 0.35) * 80;
-        this.filterNode.frequency.setValueAtTime(baseFreq, this.ctx.currentTime);
-
-        // Simulating howls (higher pitch sweeps on random peaks)
-        if (Math.sin(phase * 2.1) > 0.82) {
-          const howlFreq = baseFreq + 350 * Math.sin(phase * 2.1);
-          this.filterNode.frequency.exponentialRampToValueAtTime(howlFreq, this.ctx.currentTime + 0.1);
-        }
-
-        // Wind gusts amplitude scaling
-        const gustVolume = this.masterVolume * (0.6 + Math.sin(phase) * 0.4);
-        this.gainNode.gain.setValueAtTime(gustVolume, this.ctx.currentTime);
-      }, 70);
-
-    } else if (type === 'waves') {
-      // --- KERALA RAIN OR SUNDARBANS CRICKETS + WAVES ---
-      this.filterNode.type = 'lowpass';
-      this.filterNode.frequency.setValueAtTime(200, this.ctx.currentTime);
-      this.filterNode.Q.setValueAtTime(1.0, this.ctx.currentTime);
-
-      let phase = 0;
-      // 1. Wave ocean swells
-      this.oscillationInterval = setInterval(() => {
-        if (!this.ctx || !this.gainNode || !this.filterNode) return;
-        phase += 0.02; // Slow rhythmic breathing swell
-        const swell = Math.sin(phase);
-
-        const swellVolume = this.masterVolume * (0.35 + (swell + 1) * 0.35);
-        this.gainNode.gain.linearRampToValueAtTime(swellVolume, this.ctx.currentTime + 0.2);
-
-        const sweepFreq = 160 + (swell + 1) * 120;
-        this.filterNode.frequency.setValueAtTime(sweepFreq, this.ctx.currentTime);
-      }, 120);
-
-    } else if (type === 'chimes') {
-      // --- DARJEELING WIND CHIMES + LOW TOY TRAIN RUMBLE ---
-      this.filterNode.type = 'lowpass';
-      this.filterNode.frequency.setValueAtTime(1200, this.ctx.currentTime);
-
-      // 1. Chime Bell Trigger
-      const playChimeNode = () => {
-        if (!this.ctx || !this.gainNode) return;
-        const now = this.ctx.currentTime;
-
-        const frequencies = [392.00, 440.00, 523.25, 587.33, 659.25, 783.99, 880.00, 1046.50]; // Pentatonic bells
-        const chimeFreq = frequencies[Math.floor(Math.random() * frequencies.length)];
-
-        const chimeOsc = this.ctx.createOscillator();
-        const overtoneOsc = this.ctx.createOscillator();
-        const chimeGain = this.ctx.createGain();
-        const overtoneGain = this.ctx.createGain();
-
-        chimeOsc.type = 'sine';
-        chimeOsc.frequency.setValueAtTime(chimeFreq, now);
-
-        overtoneOsc.type = 'sine';
-        overtoneOsc.frequency.setValueAtTime(chimeFreq * 2.016, now); // Metallic ring detuning
-
-        chimeGain.gain.setValueAtTime(0, now);
-        chimeGain.gain.linearRampToValueAtTime(this.masterVolume * 0.38, now + 0.03);
-        chimeGain.gain.exponentialRampToValueAtTime(0.0001, now + 3.5);
-
-        overtoneGain.gain.setValueAtTime(0, now);
-        overtoneGain.gain.linearRampToValueAtTime(this.masterVolume * 0.15, now + 0.03);
-        overtoneGain.gain.exponentialRampToValueAtTime(0.0001, now + 1.8);
-
-        chimeOsc.connect(chimeGain);
-        overtoneOsc.connect(overtoneGain);
-        chimeGain.connect(this.gainNode!);
-        overtoneGain.connect(this.gainNode!);
-
-        chimeOsc.start(now);
-        overtoneOsc.start(now);
-
-        chimeOsc.stop(now + 3.6);
-        overtoneOsc.stop(now + 2.0);
-      };
-
-      playChimeNode();
-      this.oscillationInterval = setInterval(playChimeNode, 2600);
-
-      // 2. Toy Train low frequency rumble synth overlay
-      try {
-        const trainOsc = this.ctx.createOscillator();
-        const trainGain = this.ctx.createGain();
-        trainOsc.type = 'triangle';
-        trainOsc.frequency.setValueAtTime(36, this.ctx.currentTime); // Deep hum
-
-        // Track wheel clicks via LFO modulation
-        const modOsc = this.ctx.createOscillator();
-        modOsc.type = 'sawtooth';
-        modOsc.frequency.setValueAtTime(3.8, this.ctx.currentTime); // Rhythmic click rate
-
-        const modGain = this.ctx.createGain();
-        modGain.gain.setValueAtTime(0.012, this.ctx.currentTime);
-
-        modOsc.connect(modGain);
-        modGain.connect(trainGain.gain);
-
-        trainGain.gain.setValueAtTime(this.masterVolume * 0.18, this.ctx.currentTime);
-        trainOsc.connect(trainGain);
-        trainGain.connect(this.gainNode!);
-
-        trainOsc.start(0);
-        modOsc.start(0);
-
-        this.soundNodes.push(trainOsc, modOsc, trainGain, modGain);
-      } catch (e) {
-        console.error("Train rumble synthesis error:", e);
-      }
-    }
-  }
-
-  // Set secondary overlays triggered periodically (crickets for Sundarbans, rain clicks for Kerala)
-  triggerSubOverlays(type: 'sundarbans' | 'kerala') {
-    this.stopSubOverlays();
-    if (!this.ctx || !this.gainNode) return;
-
-    if (type === 'sundarbans') {
-      // --- SUNDARBANS CRICKETS IN MANGROVES ---
-      const playCricketChirp = () => {
-        if (!this.ctx || !this.gainNode) return;
-        const now = this.ctx.currentTime;
-
-        const chirpOsc = this.ctx.createOscillator();
-        const chirpGain = this.ctx.createGain();
-        chirpOsc.type = 'sine';
-        chirpOsc.frequency.setValueAtTime(3400 + Math.random() * 200, now);
-
-        // High frequency vibration pulse sequence
-        chirpGain.gain.setValueAtTime(0, now);
-        for (let i = 0; i < 7; i++) {
-          const t = now + i * 0.07;
-          chirpGain.gain.setValueAtTime(this.masterVolume * 0.045, t);
-          chirpGain.gain.exponentialRampToValueAtTime(0.0001, t + 0.055);
-        }
-
-        chirpOsc.connect(chirpGain);
-        chirpGain.connect(this.gainNode);
-        chirpOsc.start(now);
-        chirpOsc.stop(now + 0.6);
-      };
-
-      playCricketChirp();
-      this.subInterval1 = setInterval(playCricketChirp, 3300);
-
-    } else if (type === 'kerala') {
-      // --- KERALA RAIN PATTER CLICKS ---
-      const playRaindrops = () => {
-        if (!this.ctx || !this.gainNode) return;
-        const now = this.ctx.currentTime;
-
-        // Synthesize 12 individual drop taps
-        for (let i = 0; i < 12; i++) {
-          const dropTime = now + Math.random() * 1.8;
-          const dropOsc = this.ctx.createOscillator();
-          const dropGain = this.ctx.createGain();
-
-          dropOsc.type = 'triangle';
-          // Filter resonance frequency mimicking rain hitting hollow bamboo/leaves
-          dropOsc.frequency.setValueAtTime(1000 + Math.random() * 700, dropTime);
-
-          dropGain.gain.setValueAtTime(this.masterVolume * 0.024, dropTime);
-          dropGain.gain.exponentialRampToValueAtTime(0.0001, dropTime + 0.025);
-
-          dropOsc.connect(dropGain);
-          dropGain.connect(this.gainNode);
-
-          dropOsc.start(dropTime);
-          dropOsc.stop(dropTime + 0.03);
-        }
-      };
-
-      playRaindrops();
-      this.subInterval2 = setInterval(playRaindrops, 1600);
-    }
-  }
-
-  setVolume(volume: number) {
-    this.masterVolume = volume;
-    if (this.ctx && this.gainNode) {
-      this.gainNode.gain.linearRampToValueAtTime(volume, this.ctx.currentTime + 0.08);
-    }
-  }
-
-  stopSubOverlays() {
-    if (this.subInterval1) { clearInterval(this.subInterval1); this.subInterval1 = null; }
-    if (this.subInterval2) { clearInterval(this.subInterval2); this.subInterval2 = null; }
-  }
-
-  stop() {
-    this.stopSubOverlays();
-    if (this.oscillationInterval) {
-      clearInterval(this.oscillationInterval);
-      this.oscillationInterval = null;
-    }
-
-    // Stop all sub oscillator nodes
-    this.soundNodes.forEach((node) => {
-      try {
-        if ('stop' in node) (node as any).stop();
-      } catch(e) {}
-    });
-    this.soundNodes = [];
-
-    if (this.ctx) {
-      try {
-        this.ctx.close();
-      } catch (e) {
-        console.error("Audio Context close error:", e);
-      }
-      this.ctx = null;
-      this.gainNode = null;
-      this.filterNode = null;
-    }
-  }
-}
-
-/* ---------- Data Config ---------- */
-const CINEMATIC_DESTINATIONS = [
-  {
-    id: 'kashmir',
-    name: 'Kashmir',
-    title: 'Misty Valleys & Shikara Ripples',
-    tagline: 'PEAK OF PARADISE',
-    image: '/images/kashmir_dal_lake_1779521728036.png',
-    soundType: 'wind' as const,
-    subOverlay: null,
-    cameraSetup: 'CAM A // SENSOR 01 // KASHMIR RIDGE',
-    focalLength: '50mm f/1.2 L Cinema',
-    iso: '100',
-    shutter: '1/320s',
-    journal: 'Misty morning on Dal Lake. The soft ripple of shikara oars in the freezing water. Distant snow peaks silhouetted against a pale golden sky. The smell of fresh pine and burning saffron floats through the houseboats. Absolute stillness.',
-    details: ['Dal Lake Houseboats', 'Gulmarg Cable Car', 'Pahalgam Pine Trails'],
-    accentColor: '#00d9ff', // cyan
-    glowClass: 'shadow-[0_0_25px_rgba(0,217,255,0.15)] border-cyan/45'
-  },
-  {
-    id: 'darjeeling',
-    name: 'Darjeeling',
-    title: 'Sunrise over Majestic Kanchenjunga',
-    tagline: 'HIMALAYAN TEA TRAILS',
-    image: '/images/darjeeling_tea_1779521805614.png',
-    soundType: 'chimes' as const,
-    subOverlay: null,
-    cameraSetup: 'CAM B // SENSOR 02 // TIGER HILL OBS',
-    focalLength: '85mm f/1.4 Prime Art',
-    iso: '200',
-    shutter: '1/500s',
-    journal: 'Sunrise over Kanchenjunga, painting the peaks in dramatic shades of liquid gold and copper. The crisp mountain air carries the sweet, green aroma of freshly plucked tea leaves. Far below, the toy train whistle echoes in the mist.',
-    details: ['Tiger Hill Sunrise', 'Himalayan Toy Train', 'Happy Valley Tea Estate'],
-    accentColor: '#fbbf24', // amber/gold
-    glowClass: 'shadow-[0_0_25px_rgba(251,191,36,0.15)] border-amber-400/45'
-  },
-  {
-    id: 'sundarbans',
-    name: 'Sundarbans',
-    title: 'Silent Waterways of Mangrove Forests',
-    tagline: 'TIGER TERRITORY DELTA',
-    image: '/images/sundarbans_mangrove_1779521789593.png',
-    soundType: 'waves' as const,
-    subOverlay: 'sundarbans' as const,
-    cameraSetup: 'CAM C // SENSOR 03 // DELTA WATERWAY',
-    focalLength: '200mm f/2.8 IS Master',
-    iso: '400',
-    shutter: '1/1250s',
-    journal: 'Deep silence in the world’s largest mangrove delta. Waterways like narrow veins wind through the dense forest. A sudden rustle in the breathing roots. A heartbeat skips as the eyes search the shade for the gold and black stripes.',
-    details: ['Sundarban Boat Safari', 'Dobanki Canopy Walk', 'Tiger Watchtower Trek'],
-    accentColor: '#34d399', // emerald
-    glowClass: 'shadow-[0_0_25px_rgba(52,211,153,0.15)] border-emerald-400/45'
-  },
-  {
-    id: 'dubai',
-    name: 'Dubai',
-    title: 'Golden Dunes & Futuristic Spires',
-    tagline: 'DESERT OASIS METROPOLIS',
-    image: '/images/dubai_skyline_1779539448313.png',
-    soundType: 'wind' as const,
-    subOverlay: null,
-    cameraSetup: 'CAM D // SENSOR 04 // DUBAI MARINA',
-    focalLength: '24mm f/1.8 Ultra Wide',
-    iso: '320',
-    shutter: '1/80s',
-    journal: 'Crimson dunes stretching into the horizon, meeting a towering city of glass and light. As dusk transitions to midnight, the skyline lights up like an ocean of neon stars. The warm desert wind brushes past the futuristic spires.',
-    details: ['Burj Khalifa Deck', 'Desert Safari Sunset', 'Marina Luxury Cruise'],
-    accentColor: '#f43f5e', // rose
-    glowClass: 'shadow-[0_0_25px_rgba(244,63,94,0.15)] border-rose-500/45'
-  },
-  {
-    id: 'kerala',
-    name: 'Kerala',
-    title: 'Emerald Palms & Houseboat Solitude',
-    tagline: 'GOD\'S OWN HOUSEBOATS',
-    image: '/images/kerala_houseboat_1779521772928.png',
-    soundType: 'waves' as const,
-    subOverlay: 'kerala' as const,
-    cameraSetup: 'CAM E // SENSOR 05 // ALLEPPEY DOCK',
-    focalLength: '35mm f/1.4 Cine Prime',
-    iso: '160',
-    shutter: '1/200s',
-    journal: 'Drifting down the quiet palm-fringed backwaters. The gentle patter of warm rain on the woven bamboo roof of our houseboat. Local life unfolds on narrow strips of land. Spices, coconut trees, and time moving at a crawl.',
-    details: ['Alleppey Backwaters', 'Munnar Tea Slopes', 'Kovalam Beach Shore'],
-    accentColor: '#a78bfa', // violet
-    glowClass: 'shadow-[0_0_25px_rgba(167,139,250,0.15)] border-violet-400/45'
-  }
-];
+import { CINEMATIC_DESTINATIONS } from './data/cinematicShowreelData';
+import { AmbientSoundscapeSynth } from './utils/ambientSoundscapeSynth';
 
 export default function CinematicShowreel() {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -396,37 +28,55 @@ export default function CinematicShowreel() {
   const activeDest = CINEMATIC_DESTINATIONS[activeIndex];
   const synthRef = useRef<AmbientSoundscapeSynth | null>(null);
 
-  // Initialize Synth
+  const getSynth = useCallback(() => {
+    if (!synthRef.current) {
+      synthRef.current = new AmbientSoundscapeSynth();
+    }
+    return synthRef.current;
+  }, []);
+
   useEffect(() => {
-    synthRef.current = new AmbientSoundscapeSynth();
     return () => {
-      synthRef.current?.stop();
+      synthRef.current?.dispose();
+      synthRef.current = null;
     };
   }, []);
 
-  // Update soundscape when active index or sound toggle triggers
   useEffect(() => {
-    if (isPlayingSound && synthRef.current) {
-      synthRef.current.start(activeDest.soundType, volume);
-      if (activeDest.subOverlay) {
-        synthRef.current.triggerSubOverlays(activeDest.subOverlay);
-      }
-    } else {
+    if (!isPlayingSound) {
       synthRef.current?.stop();
+      return;
     }
-  }, [activeIndex, isPlayingSound]);
 
-  // Adjust volume
-  const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const synth = getSynth();
+    synth.start(activeDest.soundType, volume);
+    if (activeDest.subOverlay) {
+      synth.triggerSubOverlays(activeDest.subOverlay);
+    }
+  }, [activeIndex, activeDest.soundType, activeDest.subOverlay, getSynth, isPlayingSound]);
+
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        synthRef.current?.suspend();
+      } else if (isPlayingSound) {
+        synthRef.current?.resume();
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+  }, [isPlayingSound]);
+
+  const handleVolumeChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const vol = parseFloat(e.target.value);
     setVolume(vol);
     synthRef.current?.setVolume(vol);
-  };
+  }, []);
 
-  // Toggle sound
-  const toggleSound = () => {
-    setIsPlayingSound(!isPlayingSound);
-  };
+  const toggleSound = useCallback(() => {
+    setIsPlayingSound((playing) => !playing);
+  }, []);
 
   // Reset controls
   const handleResetFilters = () => {
@@ -489,80 +139,14 @@ export default function CinematicShowreel() {
 
   // Accent color variables for theme adaptive layouts
   const accentColor = activeDest.accentColor;
+  const visualizerBars = useMemo(
+    () => Array.from({ length: 18 }, (_, i) => ({ peak: 12 + ((i * 7) % 11), duration: 0.5 + i * 0.04 })),
+    []
+  );
 
   return (
     <section id="cinematic-showreel" className="relative py-16 lg:py-24 bg-slate-950 text-white overflow-hidden border-y border-slate-900">
-
-      {/* Dynamic CSS Styling Injector for unique modular keyframes */}
-      <style dangerouslySetInnerHTML={{__html: `
-        @keyframes dust-drift {
-          0% { transform: translate(0, 0) rotate(0deg); opacity: 0; }
-          10% { opacity: 0.35; }
-          90% { opacity: 0.35; }
-          100% { transform: translate(120px, -120px) rotate(180deg); opacity: 0; }
-        }
-        @keyframes scratch-flash-1 {
-          0%, 100% { opacity: 0; left: 20%; }
-          4% { opacity: 0.25; left: 24%; }
-          5% { opacity: 0; }
-          45% { opacity: 0; }
-          46% { opacity: 0.2; left: 74%; }
-          47% { opacity: 0; }
-        }
-        @keyframes scratch-flash-2 {
-          0%, 100% { opacity: 0; left: 45%; }
-          18% { opacity: 0.3; left: 42%; }
-          19% { opacity: 0; }
-          75% { opacity: 0; }
-          76% { opacity: 0.15; left: 18%; }
-          77% { opacity: 0; }
-        }
-        .dust-spec {
-          position: absolute;
-          width: 3px;
-          height: 3px;
-          background: rgba(255, 255, 255, 0.4);
-          border-radius: 50%;
-          pointer-events: none;
-          z-index: 15;
-          animation: dust-drift 6s linear infinite;
-        }
-        .scratch-line-1 {
-          position: absolute;
-          top: 0; bottom: 0; width: 1px;
-          background: rgba(255, 255, 255, 0.15);
-          pointer-events: none;
-          z-index: 15;
-          animation: scratch-flash-1 8s steps(1) infinite;
-        }
-        .scratch-line-2 {
-          position: absolute;
-          top: 0; bottom: 0; width: 1px;
-          background: rgba(255, 255, 255, 0.12);
-          pointer-events: none;
-          z-index: 15;
-          animation: scratch-flash-2 12s steps(1) infinite;
-        }
-        .vignette-shadow {
-          position: absolute;
-          inset: 0;
-          pointer-events: none;
-          z-index: 14;
-          mix-blend-mode: multiply;
-          transition: background 0.3s ease;
-        }
-        .film-noise-overlay {
-          position: absolute;
-          inset: 0;
-          pointer-events: none;
-          z-index: 13;
-          background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='noise'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/></svg>");
-          mix-blend-mode: overlay;
-          will-change: opacity;
-        }
-      `}} />
-
-      {/* Global Backdrop atmospheric gradient glows */}
+{/* Global Backdrop atmospheric gradient glows */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(13,148,136,0.1),transparent_70%)] pointer-events-none" />
       <div className="absolute top-1/4 left-1/4 w-[350px] h-[350px] bg-cyan-500/5 blur-[130px] rounded-full pointer-events-none" />
       <div className="absolute bottom-1/4 right-1/4 w-[350px] h-[350px] bg-amber-500/5 blur-[130px] rounded-full pointer-events-none" />
@@ -858,15 +442,15 @@ export default function CinematicShowreel() {
 
                 {/* Theme-adaptive bouncing audio visualizer */}
                 <div className="h-6 flex items-center gap-1.5 justify-center rounded-xl bg-slate-950/40 p-2 overflow-hidden">
-                  {Array.from({ length: 18 }).map((_, i) => (
+                  {visualizerBars.map((bar, i) => (
                     <motion.div
                       key={i}
                       animate={isPlayingSound ? {
-                        height: [4, 15 + Math.random() * 8, 4],
+                        height: [4, bar.peak, 4],
                       } : { height: 4 }}
                       transition={isPlayingSound ? {
                         repeat: Infinity,
-                        duration: 0.5 + i * 0.04,
+                        duration: bar.duration,
                         ease: 'easeInOut'
                       } : {}}
                       className="w-1 rounded-full"
