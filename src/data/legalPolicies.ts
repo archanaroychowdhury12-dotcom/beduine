@@ -47,170 +47,33 @@ export const LEGAL_POLICIES: LegalPolicy[] = [
       { label: 'Grievance Redressal', slug: 'grievance-redressal' }
     ],
     importantNotices: [
-      'We do not sell, rent, or trade your personal data to third parties for marketing purposes.',
-      'We collect sensitive government documents (only when legally required) with strict security, and we never store complete card details on our servers.',
-      'Account deletion does not remove information that we are legally required to retain for tax, accounting, or anti-fraud regulatory compliance.'
+      'At Beduine Tour & Travels, we value and respect your privacy. This Privacy Policy explains how we collect, use, store, and protect your personal information.'
     ],
     sections: [
       {
         num: 1,
-        title: 'Introduction and Scope',
-        content: `At ${LEGAL_CONTACTS.tradingName}, we respect your privacy and are committed to handling personal information responsibly, transparently, and securely. This Privacy Policy explains what information we collect, why we collect it, how it is used, when it may be shared, how long it may be retained, and the choices available to users. This policy applies to all users of our website, subscription memberships, travel bookings, and related services.`
+        title: 'Information We Collect',
+        content: `We may collect:\n• Full Name\n• Mobile Number\n• Email Address\n• Date of Birth\n• Address\n• Government ID Details (if required)\n• Payment Information\n• Travel Preferences\n• Device and Website Usage Information`
       },
       {
         num: 2,
-        title: 'Company and Data-Controller Details',
-        content: `The data controller responsible for your personal information is ${LEGAL_CONTACTS.legalCompanyName} (operating as "${LEGAL_CONTACTS.tradingName}"), located at registered address: ${LEGAL_CONTACTS.registeredOfficeAddress}. If you have questions about your data privacy or want to exercise your rights, contact us at ${LEGAL_CONTACTS.privacyEmail}.`
+        title: 'How We Use Your Information',
+        content: `We use your information to:\n• Process subscriptions and bookings\n• Verify customer identity\n• Conduct lucky draw participation\n• Send notifications, offers, and updates\n• Provide customer support\n• Improve our services and user experience`
       },
       {
         num: 3,
-        title: 'Information Provided Directly by Users',
-        content: `We collect information you provide directly to us when creating an account, buying a membership, making a booking, or contacting customer support. This may include: Full Name, mobile number, email address, date of birth, billing address, profile photograph, traveler profiles, and correspondence history.`
+        title: 'Data Protection',
+        content: `All customer information is securely stored and protected. We do not sell, rent, or share personal information with third parties except when required by law or for service fulfillment purposes.`
       },
       {
         num: 4,
-        title: 'Information Collected Automatically',
-        content: `When you visit our website, we automatically log certain usage and device details. This includes your IP address, browser type, device information, operating system, referrer URL, pages visited, click activity, and date/time stamps.`
+        title: 'Marketing Communication',
+        content: `By subscribing to Beduine Tour & Travels, you agree to receive promotional messages, emails, WhatsApp notifications, and travel-related offers.`
       },
       {
         num: 5,
-        title: 'Information Received from Third Parties',
-        content: `We may receive information about you from partners or third-party services, such as payment gateways, identity verification providers, airlines, hotels, or social media connections when you link accounts.`
-      },
-      {
-        num: 6,
-        title: 'Purposes for Processing Information',
-        content: `We process your data to deliver services, manage memberships, process transactions, facilitate travel bookings, provide customer support, verify identity, prevent fraud, comply with laws, and send updates or marketing communications with your consent.`
-      },
-      {
-        num: 7,
-        title: 'User Consent and Communication Preferences',
-        content: `We separate marketing consent from transactional or service communications. You can choose whether to receive marketing materials, and you can change your preferences or opt out at any time through your account settings or email links.`
-      },
-      {
-        num: 8,
-        title: 'Payment and Financial Information',
-        content: `Payments are handled by secure external payment gateways (such as ${LEGAL_CONTACTS.paymentGatewayNames}). We do not store complete card details on our servers. We only store transaction reference IDs, plans purchased, and billing metadata for accounting and compliance.`
-      },
-      {
-        num: 9,
-        title: 'Identity-Verification Information',
-        content: `For verification and regulatory compliance (KYC), we may collect government ID details (e.g. Passport, Aadhaar, PAN) only where legally required. These sensitive documents are securely stored and deleted once verification is complete, unless laws require retention.`
-      },
-      {
-        num: 10,
-        title: 'Travel Preferences and Booking Details',
-        content: `To process and complete bookings, we collect travel preferences, passenger and guest details, destination preferences, dietary requirements, and special accommodations requested.`
-      },
-      {
-        num: 11,
-        title: 'Device, Browser, IP Address, Cookies, and Usage Information',
-        content: `We use cookies and tracking tools to monitor system performance, remember user settings, analyze traffic, and personalize your experience. Details on managing these settings can be found in our Cookie Policy.`
-      },
-      {
-        num: 12,
-        title: 'Marketing Communications',
-        content: `With your explicit permission, we may send you offers and news about our travel products. These are optional, and you can withdraw marketing consent at any time.`
-      },
-      {
-        num: 13,
-        title: 'WhatsApp, SMS, Telephone, Push, and Email Notifications',
-        content: `We send updates through WhatsApp, SMS, phone calls, and email. Service notices (booking confirmations, security alerts, draw results) are sent automatically. Optional marketing alerts require your active consent.`
-      },
-      {
-        num: 14,
-        title: 'Service Providers and Third-Party Disclosures',
-        content: `We share data with trusted service providers who perform work for us (such as hosting, analytics, and messaging). These providers are contractually required to protect your information and cannot use it for other purposes.`
-      },
-      {
-        num: 15,
-        title: 'Payment Gateways',
-        content: `Transactions are processed via external gateways. Your financial information is collected directly by the gateway and is subject to their privacy policies.`
-      },
-      {
-        num: 16,
-        title: 'Hotels, Airlines, Transport Providers, and Tour Operators',
-        content: `When you request a travel booking, we share passenger details with the chosen hotels, airlines, and local tour operators to reserve your travel. Their handling of your data is governed by their respective policies.`
-      },
-      {
-        num: 17,
-        title: 'Legal and Regulatory Disclosures',
-        content: `We may disclose your personal data if required by law, court order, or government authority, or when we believe disclosure is necessary to protect our rights, safety, or prevent fraud.`
-      },
-      {
-        num: 18,
-        title: 'Business Restructuring or Transfer',
-        content: `If our business is involved in a merger, sale of assets, or restructuring, customer databases containing personal information may be transferred as part of the transaction.`
-      },
-      {
-        num: 19,
-        title: 'International or Cross-Border Processing',
-        content: `For international travel bookings, your data may be transferred to and processed in destinations outside your home country. By making a booking, you acknowledge this international transfer.`
-      },
-      {
-        num: 20,
-        title: 'Data Security Measures',
-        content: `We use industry-standard technical and organizational security measures to protect your data from unauthorized access, loss, alteration, or disclosure. This includes encryption, firewalls, and access control.`
-      },
-      {
-        num: 21,
-        title: 'Data Retention',
-        content: `We retain your personal data for as long as necessary to fulfill the services, or for a period of up to ${LEGAL_CONTACTS.dataRetentionPeriod} as required to comply with financial, tax, and legal record-keeping obligations.`
-      },
-      {
-        num: 22,
-        title: 'User Rights and Requests',
-        content: `You have the right to request access to your personal data, ask for corrections, object to processing, request deletion, or ask for a copy of your data. Requests can be submitted via our Privacy Request Form.`
-      },
-      {
-        num: 23,
-        title: 'Correction and Updating of Personal Information',
-        content: `You can update your account details directly through the dashboard or by contacting us. We will make reasonable efforts to keep your information accurate.`
-      },
-      {
-        num: 24,
-        title: 'Consent Withdrawal',
-        content: `You may withdraw your consent for optional data processing (such as marketing) at any time. This will not affect the lawfulness of processing based on consent before its withdrawal.`
-      },
-      {
-        num: 25,
-        title: 'Account Deletion',
-        content: `You can request account deletion at any time. When deleted, we remove all personal data that we are not legally required to retain for regulatory, tax, or fraud-prevention compliance.`
-      },
-      {
-        num: 26,
-        title: 'Marketing Opt-Out',
-        content: `To stop receiving marketing emails, click the "unsubscribe" link at the bottom of our emails. For SMS/WhatsApp, reply with "STOP" or update your account preferences.`
-      },
-      {
-        num: 27,
-        title: 'Children and Age Restrictions',
-        content: `Our subscription memberships and promotional programs are restricted to individuals aged 18 years and above. We do not knowingly collect personal data from minors without parent or guardian consent for travel bookings.`
-      },
-      {
-        num: 28,
-        title: 'Cookies and Tracking Technologies',
-        content: `We use cookies to enhance website performance, remember settings, and analyze traffic. You can configure cookie consents at any time using our Cookie Settings.`
-      },
-      {
-        num: 29,
-        title: 'External Links',
-        content: `Our website may contain links to external sites not operated by us. We are not responsible for the privacy practices of external websites.`
-      },
-      {
-        num: 30,
-        title: 'Data-Breach Response',
-        content: `In the event of a security breach involving your personal data, we will notify you and relevant regulators in accordance with applicable laws.`
-      },
-      {
-        num: 31,
-        title: 'Policy Changes',
-        content: `We may update this Privacy Policy from time to time. Material changes will be communicated via website notices or email, and the "Last Updated" date will reflect the revision.`
-      },
-      {
-        num: 32,
-        title: 'Grievance and Contact Information',
-        content: `If you have privacy concerns or complaints, contact our Grievance Officer at ${LEGAL_CONTACTS.grievanceOfficerEmail} or send mail to: ${LEGAL_CONTACTS.grievanceOfficerAddress}.`
+        title: 'Policy Updates',
+        content: `Beduine Tour & Travels reserves the right to update this Privacy Policy at any time.`
       }
     ]
   },
@@ -450,120 +313,33 @@ export const LEGAL_POLICIES: LegalPolicy[] = [
       { label: 'Cancellation Policy', slug: 'cancellation-policy' }
     ],
     importantNotices: [
-      `Approved refunds are generally processed within ${LEGAL_CONTACTS.refundProcessingPeriod} business days. Banks and payment providers may require additional time.`,
-      'Subscription fees are non-refundable after membership activation.',
-      'Unused Discount Credits or lucky draw benefits cannot be converted to cash.'
+      'This Refund Policy outlines the terms and conditions regarding refunds for subscriptions, bookings, duplicate payments, and company cancellations.'
     ],
     sections: [
       {
         num: 1,
-        title: 'Policy Scope',
-        content: `This policy outlines the guidelines and procedures for refund requests regarding subscription membership fees, booking deposits, and paid tour packages.`
+        title: 'Subscription Fees',
+        content: `All subscription fees are strictly non-refundable once the subscription has been activated.`
       },
       {
         num: 2,
-        title: 'Subscription-Fee Policy',
-        content: `Fees paid for subscription memberships (Silver, Gold, Platinum) are promotional purchase fees and are strictly non-refundable once membership is active.`
+        title: 'Membership Benefits',
+        content: `Unused Lucky Draw Credits, Discount Credits, or membership benefits cannot be converted into cash or refunded.`
       },
       {
         num: 3,
-        title: 'Activation Status',
-        content: `A membership is considered active as soon as credentials are sent and benefits are credited. No refunds are provided for active accounts.`
+        title: 'Tour Bookings',
+        content: `Refund eligibility for tour bookings will depend on the cancellation policy applicable to the specific tour package booked.`
       },
       {
         num: 4,
-        title: 'Non-Refundable Membership Fees',
-        content: `Subscribers acknowledge that membership benefits, including discount credits and draw entry rights, are immediately provisioned, making the purchase non-refundable.`
+        title: 'Duplicate Payments',
+        content: `In case of duplicate payment due to technical issues, verified excess amounts will be refunded within a reasonable period.`
       },
       {
         num: 5,
-        title: 'Cooling-Off or Statutory Rights',
-        content: `If cooling-off periods apply under local consumer regulations in ${LEGAL_CONTACTS.operatingJurisdiction}, refund requests will be reviewed according to those laws.`
-      },
-      {
-        num: 6,
-        title: 'Duplicate Payments',
-        content: `If a system error causes duplicate charges for a single membership, we will verify the transactions and refund the duplicate payment.`
-      },
-      {
-        num: 7,
-        title: 'Failed but Debited Transactions',
-        content: `If payment is debited but registration fails, the gateway usually reverses this automatically. If not, contact us with payment receipts.`
-      },
-      {
-        num: 8,
-        title: 'Unauthorized Transactions',
-        content: `In cases of unauthorized card use, contact your bank. We will assist authorities with transaction logs but do not directly issue card refunds.`
-      },
-      {
-        num: 9,
-        title: 'Paid Tour-Booking Refunds',
-        content: `Refunds for paid customized tours are governed by supplier cancellation policies (hotels, airlines). Final refund amounts depend on these third parties.`
-      },
-      {
-        num: 10,
-        title: 'Provider Cancellation Charges',
-        content: `Airlines and rail lines charge cancellation fees. These external deductions are subtracted from any traveler refund.`
-      },
-      {
-        num: 11,
-        title: 'Hotel and Transportation Deductions',
-        content: `Hotels and car operators charge no-show or late cancellation fees. These are passed on to the customer and deducted from refunds.`
-      },
-      {
-        num: 12,
-        title: 'Company-Cancelled Tours',
-        content: `If we cancel a tour due to operational, safety, or logistical reasons, we will offer alternative dates, travel credit, or a refund of the amount paid.`
-      },
-      {
-        num: 13,
-        title: 'Travel-Credit Alternatives',
-        content: `In lieu of a cash refund, travelers can opt for travel vouchers or credits valid for 12 months toward any future booking.`
-      },
-      {
-        num: 14,
-        title: 'Refund Method',
-        content: `Refunds are processed back to the original payment source (bank account, card, wallet) used during the transaction.`
-      },
-      {
-        num: 15,
-        title: 'Refund-Processing Period',
-        content: `Approved refunds are generally processed within ${LEGAL_CONTACTS.refundProcessingPeriod} business days. Banks and payment providers may require additional time.`
-      },
-      {
-        num: 16,
-        title: 'Bank and Payment-Gateway Delays',
-        content: `Once we release a refund, it may take 5 to 7 additional bank days to credit, depending on your bank's processing cycles.`
-      },
-      {
-        num: 17,
-        title: 'Currency-Conversion Charges',
-        content: `For international transactions, currency conversion fluctuations and card charges are absorbed by the buyer and not refunded.`
-      },
-      {
-        num: 18,
-        title: 'Non-Cashable Membership Benefits',
-        content: `Membership benefits, including RNG selection rewards, have no cash equivalent and cannot be exchanged for currency.`
-      },
-      {
-        num: 19,
-        title: 'Discount Credits',
-        content: `Unused discount credits cannot be converted to cash or refunded upon subscription expiry.`
-      },
-      {
-        num: 20,
-        title: 'Promotional Rewards',
-        content: `Selected promotional tour rewards are non-cashable and forfeit if the selected winner fails to travel.`
-      },
-      {
-        num: 21,
-        title: 'Disputes and Supporting Documents',
-        content: `To request a refund, submit a request via our Refund Request Form including transaction details and bank statement copies.`
-      },
-      {
-        num: 22,
-        title: 'Refund Contact Process',
-        content: `Send all inquiries about pending refunds to ${LEGAL_CONTACTS.supportEmail} or call us at ${LEGAL_CONTACTS.supportPhone}.`
+        title: 'Company Cancellation',
+        content: `If Beduine Tour & Travels cancels a paid tour due to operational reasons, customers may receive:\n• Alternative tour options\n• Travel credits\n• Refund as per company policy`
       }
     ]
   },
@@ -581,153 +357,28 @@ export const LEGAL_POLICIES: LegalPolicy[] = [
       { label: 'Terms & Conditions', slug: 'terms-and-conditions' }
     ],
     importantNotices: [
-      'Cancellation terms for specific tour packages vary; always check the package terms before payment.',
-      'Auto-renewing memberships (if activated) can be cancelled at any time to prevent the next cycle charge.'
+      'This Cancellation Policy governs the terms of membership cancellation, winner tour cancellation, and paid tour cancellation.'
     ],
     sections: [
       {
         num: 1,
         title: 'Subscription Cancellation',
-        content: `Members can cancel their membership. Because subscription fees are non-refundable, cancellation prevents renewal but does not result in a refund.`
+        content: `Subscribers may request cancellation of their membership at any time; however, subscription fees will not be refunded.`
       },
       {
         num: 2,
-        title: 'Effect of Membership Cancellation',
-        content: `Upon cancellation, your membership remains active until its 12-month expiry, allowing access to benefits until that date.`
+        title: 'Winner Tour Cancellation',
+        content: `• If a winner fails to confirm participation within the specified period, the winner benefit may be cancelled.\n• If a winner voluntarily cancels after confirmation, the winner benefit may be forfeited.`
       },
       {
         num: 3,
-        title: 'Access Until Validity Expiry',
-        content: `Your profile, active discount credits, and draw eligibility remain active for the remaining months of your term even after cancelling auto-renewal.`
+        title: 'Paid Tour Cancellation',
+        content: `Cancellation charges may apply depending on:\n• Destination\n• Hotel policy\n• Transportation provider policy\n• Time of cancellation`
       },
       {
         num: 4,
-        title: 'Auto-Renewal Cancellation',
-        content: `If your membership is set to auto-renew, you can toggle renewal off in account settings. This must be done 48 hours before the billing date.`
-      },
-      {
-        num: 5,
-        title: 'Promotional Reward Cancellation',
-        content: `If you are selected for a promotional tour benefit, you must confirm travel details within 15 days or request a name change if permitted.`
-      },
-      {
-        num: 6,
-        title: 'Winner Confirmation Period',
-        content: `If a selected member fails to confirm participation within 15 days of announcement, the reward is cancelled.`
-      },
-      {
-        num: 7,
-        title: 'Failure to Respond',
-        content: `Failure to respond to selection invitations results in cancellation of the draw reward, which will not be re-issued.`
-      },
-      {
-        num: 8,
-        title: 'Voluntary Cancellation After Confirmation',
-        content: `If you confirm a selected reward tour and subsequently cancel, the reward is forfeited and cannot be rescheduled or converted.`
-      },
-      {
-        num: 9,
-        title: 'Paid Tour Cancellation',
-        content: `Paid bookings are subject to cancellation charges. Cancellation terms depend on when the request is made relative to departure.`
-      },
-      {
-        num: 10,
-        title: 'Cancellation Slabs',
-        content: `Standard cancellation charges (unless booking terms state otherwise):
-• More than [X] days before departure: [CHARGE]
-• Between [X] and [Y] days: [CHARGE]
-• Fewer than [X] days: [CHARGE]
-• No-show: [CHARGE]`
-      },
-      {
-        num: 11,
-        title: 'Supplier Deductions',
-        content: `Airlines, cruise lines, and railways charge separate cancellation fees. These third-party deductions are added to our cancellation charges.`
-      },
-      {
-        num: 12,
-        title: 'Hotel Cancellation',
-        content: `Hotel bookings are subject to cancellation windows. Non-refundable rooms receive no refund in the event of cancellation.`
-      },
-      {
-        num: 13,
-        title: 'Airline or Transport Cancellation',
-        content: `Airlines cancel tickets based on fare rules. Promo fares are often completely non-refundable and non-changeable.`
-      },
-      {
-        num: 14,
-        title: 'No-Show Policy',
-        content: `If you do not show up for a flight, train, or hotel check-in, the booking is classified as a no-show and receives zero refund.`
-      },
-      {
-        num: 15,
-        title: 'Partial Cancellation',
-        content: `If one traveler in a group cancels, the booking will be updated. Additional room charges (single supplement) may apply to remaining travelers.`
-      },
-      {
-        num: 16,
-        title: 'Guest-Name Change',
-        content: `Name changes on bookings are subject to airline and hotel approvals. Gold and Platinum memberships allow certain family name changes.`
-      },
-      {
-        num: 17,
-        title: 'Rescheduling',
-        content: `Rescheduling requests are subject to price differences and supplier fees. Requests must be sent at least 7 days before travel.`
-      },
-      {
-        num: 18,
-        title: 'Company Cancellation',
-        content: `We reserve the right to cancel bookings if minimum passenger counts are not met, or if travel is deemed unsafe.`
-      },
-      {
-        num: 19,
-        title: 'Destination Substitution',
-        content: `In operational emergencies, we may offer a comparable destination. Travelers can accept the substitution or request rescheduling.`
-      },
-      {
-        num: 20,
         title: 'Force Majeure',
-        content: `We are not liable for cancellations caused by events beyond control, including natural disasters, weather, wars, or strikes.`
-      },
-      {
-        num: 21,
-        title: 'Government Restrictions',
-        content: `Cancellations forced by travel bans, closed borders, or government travel warnings are subject to supplier refund limits.`
-      },
-      {
-        num: 22,
-        title: 'Weather-Related Disruption',
-        content: `Flight or tour delays caused by weather (cyclones, heavy snow) will be rescheduled. We are not liable for additional meal or lodging costs.`
-      },
-      {
-        num: 23,
-        title: 'Natural Disasters',
-        content: `In cases of earthquakes, floods, or volcanic eruptions, safety comes first. We will cancel active tours and issue credits.`
-      },
-      {
-        num: 24,
-        title: 'Political Unrest',
-        content: `Tours in areas experiencing sudden riots or civil conflict will be suspended, and alternative itineraries will be provided.`
-      },
-      {
-        num: 25,
-        title: 'Pandemics and Health Emergencies',
-        content: `Cancellations due to pandemics or quarantine restrictions are processed in line with government mandates and supplier credits.`
-      },
-      {
-        num: 26,
-        title: 'Safety Concerns',
-        content: `We prioritize traveler safety. If our local operators flag safety risks, we reserve the right to cancel tours.`
-      },
-      {
-        num: 27,
-        title: 'Refund or Credit Process',
-        content: `Refunds resulting from cancellation are calculated after deductions and processed back to your payment account.`
-      },
-      {
-        num: 28,
-        title: 'Cancellation Request Procedure',
-        content: `To cancel a booking, log in to your dashboard and submit a request, or email ${LEGAL_CONTACTS.supportEmail} with booking IDs.`
+        content: `Beduine Tour & Travels shall not be responsible for cancellations caused by:\n• Natural disasters\n• Political unrest\n• Government restrictions\n• Pandemics\n• Weather conditions\n• Any unforeseen circumstances beyond company control`
       }
     ]
   },
@@ -925,119 +576,33 @@ export const LEGAL_POLICIES: LegalPolicy[] = [
       { label: 'Grievance Redressal', slug: 'grievance-redressal' }
     ],
     importantNotices: [
-      'We do not guarantee selection in any promotional reward draws.',
-      'Actual hotels and itineraries may vary from photographs due to updates or availability.'
+      'This Website Disclaimer clarifies limits of liability, reward program terms, and general disclaimers for using our site.'
     ],
     sections: [
       {
         num: 1,
-        title: 'General Information',
-        content: `The information on this website is provided for general guidance and informational purposes. While we try to keep information accurate, we make no representations of any kind about completeness.`
+        title: 'Program Purpose',
+        content: `Beduine Tour & Travels operates a travel membership and promotional reward program designed to provide travel-related benefits to subscribers.`
       },
       {
         num: 2,
-        title: 'Travel Membership Program',
-        content: `${LEGAL_CONTACTS.tradingName} operates a travel membership and promotional reward program. Membership provides access to discounts and draw eligibility.`
+        title: 'Availability of Benefits',
+        content: `All travel rewards, discounts, tour destinations, schedules, and benefits are subject to availability and company policies.`
       },
       {
         num: 3,
-        title: 'Promotional Reward Disclaimer',
-        content: `Promotional draws use a digital Random Number Generator (RNG). Draw schedules and counts are operational and can be modified.`
+        title: 'Modification Rights',
+        content: `The company reserves the right to modify, suspend, replace, or discontinue any benefit, destination, or promotional offer when required for operational, legal, safety, or business reasons.`
       },
       {
         num: 4,
-        title: 'No Guarantee of Selection',
-        content: `Purchasing a membership does NOT guarantee selection in any promotional draw. Selection is random.`
+        title: 'No Selection Guarantee',
+        content: `Participation in membership programs does not guarantee selection as a winner.`
       },
       {
         num: 5,
-        title: 'Destination Availability',
-        content: `Tours and destinations listed depend on local conditions, availability, and supplier operations, and may change.`
-      },
-      {
-        num: 6,
-        title: 'Price and Schedule Changes',
-        content: `Flight fares, train schedules, hotel rates, and tour packages vary. Quotes are estimates until booking confirmation.`
-      },
-      {
-        num: 7,
-        title: 'Third-Party Suppliers',
-        content: `We arrange travel services through independent hotels, airlines, and transport operators. These suppliers are not our agents.`
-      },
-      {
-        num: 8,
-        title: 'Hotel and Transport Standards',
-        content: `Hotel star ratings and vehicle conditions are based on local standards in the destination country, and may vary.`
-      },
-      {
-        num: 9,
-        title: 'Travel-Document Responsibility',
-        content: `Travelers are responsible for securing passports with at least 6 months validity, valid visas, and entry approvals.`
-      },
-      {
-        num: 10,
-        title: 'Visa and Immigration Responsibility',
-        content: `Visa approvals are decided by the respective embassy. We are not liable for visa rejections or immigration delays.`
-      },
-      {
-        num: 11,
-        title: 'Health and Vaccination Responsibility',
-        content: `Travelers must verify destination health protocols, vaccinations, and negative test requirements before departure.`
-      },
-      {
-        num: 12,
-        title: 'Travel Insurance Recommendation',
-        content: `We recommend all travelers purchase travel insurance covering cancellations, medical emergencies, and lost luggage.`
-      },
-      {
-        num: 13,
-        title: 'Weather and Safety Conditions',
-        content: `We monitor weather and local safety. We are not liable for delays, rerouting, or cancellations caused by safety advisories.`
-      },
-      {
-        num: 14,
-        title: 'Accuracy of Photographs',
-        content: `Destination images are illustrative. Actual hotels, rooms, vehicles, and scenery may differ from pictures.`
-      },
-      {
-        num: 15,
-        title: 'Website Availability',
-        content: `We try to ensure uninterrupted website access. We are not liable for temporary downtime due to maintenance or hosting issues.`
-      },
-      {
-        num: 16,
-        title: 'Technical Interruptions',
-        content: `We are not liable for transaction errors caused by internet disruptions, payment gateway issues, or bank outages.`
-      },
-      {
-        num: 17,
-        title: 'External Websites',
-        content: `Our website may link to external websites. We do not endorse or assume liability for the content of linked sites.`
-      },
-      {
-        num: 18,
-        title: 'User-Generated Information',
-        content: `Reviews, testimonials, and forum posts are written by users and do not represent our official views.`
-      },
-      {
-        num: 19,
-        title: 'Force Majeure',
-        content: `We are not liable for travel disruptions caused by strikes, civil unrest, war, floods, cyclones, epidemics, or government shutdowns.`
-      },
-      {
-        num: 20,
-        title: 'Limitation of Liability',
-        content: `Under no circumstances will we be liable for direct, indirect, or consequential damages arising from website use or travel bookings.`
-      },
-      {
-        num: 21,
-        title: 'Policy Acceptance',
-        content: `By using this website, you acknowledge that you have read and agreed to all disclaimers, terms, and policies.`
-      },
-      {
-        num: 22,
-        title: 'Contact Details',
-        content: `For clarification on these terms, contact us at ${LEGAL_CONTACTS.supportEmail} or write to our office address.`
+        title: 'Agreement to Policies',
+        content: `By using this website, purchasing a subscription, or booking any service, you agree to all applicable company policies, rules, and terms.`
       }
     ]
   },

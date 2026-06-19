@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Compass, PhoneCall, Calendar, Menu, X, ChevronRight, Sparkles } from 'lucide-react';
+import { PhoneCall, Calendar, Menu, X, ChevronRight, Sparkles } from 'lucide-react';
 import { BEDUINE_BRAND } from '../data/paidTourContent';
 
 interface NavbarProps {
@@ -53,8 +53,8 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, setCurrentView }) =
           onClick={() => handleNavClick('home')}
           className="flex items-center space-x-3 group text-left focus:outline-none cursor-pointer"
         >
-          <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-amber-500 to-orange-500 flex items-center justify-center text-white font-extrabold shadow-md group-hover:scale-105 transition-transform">
-            <Compass className="w-6 h-6 animate-pulse-soft" />
+          <div className="w-10 h-10 rounded-xl overflow-hidden border bg-white flex items-center justify-center p-1 shadow-md group-hover:scale-105 transition-transform shrink-0">
+            <img src="/images/bedune_logo_cropped.png" alt="BEDUINE Logo" className="w-full h-full object-contain" />
           </div>
           <div>
             <span className={`font-serif text-2xl font-black tracking-tight transition-colors ${

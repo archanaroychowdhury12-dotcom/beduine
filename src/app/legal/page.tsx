@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ShieldCheck, Compass } from 'lucide-react';
+import { ShieldCheck, Compass, ArrowLeft } from 'lucide-react';
 import { LEGAL_POLICIES } from '../../data/legalPolicies';
 import { PolicyCard } from '../../components/legal/PolicyCard';
 import { PolicySearch } from '../../components/legal/PolicySearch';
@@ -29,6 +29,15 @@ export default function LegalCenterPage({ onNavigate }: LegalCenterPageProps) {
       </div>
 
       <div className="max-w-6xl mx-auto relative z-10">
+        {/* Back Link */}
+        <button
+          onClick={() => onNavigate('landing')}
+          className="no-print inline-flex items-center gap-2 mb-6 text-xs font-bold font-mono text-cyan-deep hover:text-cyan transition-all cursor-pointer border-none bg-transparent focus:outline-none"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          <span>Back to Home</span>
+        </button>
+
         <div className="text-center mb-12">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-cyan/25 bg-cyan-deep/5 text-cyan-deep text-[11px] font-bold font-mono uppercase tracking-wider mb-4">
             <ShieldCheck className="w-3.5 h-3.5" />

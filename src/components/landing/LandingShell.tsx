@@ -5,6 +5,7 @@ import {
   BadgeCheck,
   Camera,
   Calendar,
+  Compass,
   Crown,
   HelpCircle,
   Lock,
@@ -119,8 +120,8 @@ export function Navbar({ view, setView, currentUser, setCurrentUser, setLoginIni
           <div className="pointer-events-none absolute -left-14 top-1/2 h-24 w-24 -translate-y-1/2 rounded-full bg-[#18D7F2]/10 blur-2xl" />
           <div className="pointer-events-none absolute -right-14 top-1/2 h-24 w-24 -translate-y-1/2 rounded-full bg-[#F7B500]/10 blur-2xl" />
 
-          <div className="relative flex items-center justify-between px-3 sm:px-4 lg:px-5 h-14 lg:h-16">
-            <div className="flex items-center gap-4 lg:gap-5 min-w-0">
+          <div className="relative flex items-center justify-between gap-2 xl:gap-4 px-3 sm:px-4 lg:px-5 h-14 lg:h-16">
+            <div className="flex items-center gap-2 xl:gap-5 min-w-0">
               <a 
                 href="#top" 
                 className="group flex items-center gap-3 rounded-2xl pr-2 no-underline" 
@@ -153,9 +154,9 @@ export function Navbar({ view, setView, currentUser, setCurrentUser, setLoginIni
                     key={n.id}
                     href={`#${n.id}`}
                     data-magnetic
-                    className="relative inline-flex items-center gap-1.5 text-sm font-bold whitespace-nowrap px-3.5 py-2 rounded-full transition-all duration-300 hover:scale-[1.03] text-[#1E3147] hover:text-[#138A8A] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#18D7F2]/45"
+                    className="relative inline-flex items-center gap-1 xl:gap-1.5 text-xs xl:text-sm font-bold whitespace-nowrap px-2.5 py-1.5 xl:px-3.5 xl:py-2 rounded-full transition-all duration-300 hover:scale-[1.03] text-[#1E3147] hover:text-[#138A8A] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#18D7F2]/45"
                   >
-                    <n.icon className="relative z-10 w-3.5 h-3.5" strokeWidth={2.3} />
+                    <n.icon className="relative z-10 w-3 h-3 xl:w-3.5 xl:h-3.5" strokeWidth={2.3} />
                     <span className="relative z-10">{n.label}</span>
                   </a>
                 )) : DESKTOP_NAV.map((n) => (
@@ -184,7 +185,7 @@ export function Navbar({ view, setView, currentUser, setCurrentUser, setLoginIni
                         if (el) el.scrollIntoView({ behavior: 'smooth' });
                       }
                     }}
-                    className="relative inline-flex items-center gap-1.5 text-sm font-bold whitespace-nowrap px-3.5 py-2 rounded-full transition-all duration-300 hover:scale-[1.03] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#18D7F2]/45"
+                    className="relative inline-flex items-center gap-1 xl:gap-1.5 text-xs xl:text-sm font-bold whitespace-nowrap px-2.5 py-1.5 xl:px-3.5 xl:py-2 rounded-full transition-all duration-300 hover:scale-[1.03] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#18D7F2]/45"
                     style={{ 
                       color: activeSection === n.id || hoveredId === n.id 
                         ? '#138A8A' 
@@ -206,7 +207,7 @@ export function Navbar({ view, setView, currentUser, setCurrentUser, setLoginIni
                 ))}
               </nav>
             </div>
-            <div className="hidden lg:flex items-center gap-2.5">
+            <div className="hidden lg:flex items-center gap-1.5 xl:gap-2.5">
               {currentUser ? (
                 <>
                   <button 
@@ -216,7 +217,7 @@ export function Navbar({ view, setView, currentUser, setCurrentUser, setLoginIni
                       window.scrollTo({ top: 0, behavior: 'smooth' });
                     }} 
                     data-magnetic 
-                    className="text-xs transition-colors font-bold px-3 py-2 whitespace-nowrap bg-white/45 border border-slate-200/70 rounded-full cursor-pointer text-slate-500 hover:text-red-500 hover:border-red-200"
+                    className="text-[11px] xl:text-xs font-bold px-2.5 py-1.5 xl:px-3 xl:py-2 whitespace-nowrap bg-[#FF6B6B]/10 border border-[#FF6B6B]/20 text-[#FF6B6B] hover:bg-[#FF6B6B]/20 hover:border-[#FF6B6B]/40 hover:scale-[1.02] active:scale-[0.98] transition-all rounded-full cursor-pointer"
                   >
                     Log Out
                   </button>
@@ -233,10 +234,21 @@ export function Navbar({ view, setView, currentUser, setCurrentUser, setLoginIni
                       }
                     }}
                   >
-                    <ParticleButton variant={isDashboard ? 'teal' : 'cyan'} className="px-4 py-2 rounded-full font-bold text-sm inline-flex items-center gap-1.5 text-white">
+                    <ParticleButton variant={isDashboard ? 'teal' : 'cyan'} className="px-2.5 xl:px-4 py-1.5 xl:py-2 rounded-full font-bold text-xs xl:text-sm inline-flex items-center gap-1 xl:gap-1.5 text-white">
                       Subscribe Now <ArrowRight className="w-3.5 h-3.5" />
                     </ParticleButton>
                   </a>
+                  <button 
+                    onClick={() => {
+                      setView('paid-tour');
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                    data-magnetic
+                    className="text-[10px] xl:text-xs transition-all font-extrabold px-3.5 py-1.5 xl:px-5 xl:py-2.5 rounded-full border whitespace-nowrap uppercase tracking-wider cursor-pointer shadow-lg hover:scale-105"
+                    style={{ background: 'linear-gradient(135deg, #FF6B4A, #E8590C)', color: '#fff', borderColor: 'transparent', boxShadow: '0 4px 15px rgba(232,89,12,0.25)' }}
+                  >
+                    <span className="inline-flex items-center gap-1 xl:gap-1.5"><Compass className="w-3 h-3 xl:w-3.5 xl:h-3.5" /> Customize Plan</span>
+                  </button>
                   <button 
                     onClick={() => {
                       setView('dashboard');
@@ -258,23 +270,24 @@ export function Navbar({ view, setView, currentUser, setCurrentUser, setLoginIni
                       window.scrollTo({ top: 0, behavior: 'smooth' });
                     }} 
                     data-magnetic 
-                    className="text-sm transition-colors font-bold px-4 py-2 whitespace-nowrap bg-white/45 border border-slate-200/70 rounded-full cursor-pointer"
+                    className="text-xs xl:text-sm transition-colors font-bold px-2.5 xl:px-4 py-1.5 xl:py-2 whitespace-nowrap bg-white/45 border border-slate-200/70 rounded-full cursor-pointer"
                     style={{ color: isDashboard ? '#1E3147' : '#7E919D' }}
                     onMouseEnter={(e) => e.currentTarget.style.color = '#138A8A'}
                     onMouseLeave={(e) => e.currentTarget.style.color = isDashboard ? '#1E3147' : '#7E919D'}
                   >
                     Log In
                   </button>
+ 
                   <button 
                     onClick={() => {
-                      setLoginInitialMode('register');
-                      setView('login');
+                      setView('paid-tour');
                       window.scrollTo({ top: 0, behavior: 'smooth' });
-                    }} 
-                    data-magnetic 
-                    className="text-xs transition-all font-extrabold px-5 py-2.5 rounded-full border whitespace-nowrap uppercase tracking-wider cursor-pointer premium-register-btn shadow-lg shadow-[#FF6B4A]/15"
+                    }}
+                    data-magnetic
+                    className="text-[10px] xl:text-xs transition-all font-extrabold px-3.5 py-1.5 xl:px-5 xl:py-2.5 rounded-full border whitespace-nowrap uppercase tracking-wider cursor-pointer shadow-lg hover:scale-105"
+                    style={{ background: 'linear-gradient(135deg, #FF6B4A, #E8590C)', color: '#fff', borderColor: 'transparent', boxShadow: '0 4px 15px rgba(232,89,12,0.25)' }}
                   >
-                    Create Account
+                    <span className="inline-flex items-center gap-1 xl:gap-1.5"><Compass className="w-3 h-3 xl:w-3.5 xl:h-3.5" /> Customize Plan</span>
                   </button>
                   <a 
                     href="#plans"
@@ -289,7 +302,7 @@ export function Navbar({ view, setView, currentUser, setCurrentUser, setLoginIni
                       }
                     }}
                   >
-                    <ParticleButton variant={isDashboard ? 'teal' : 'cyan'} className="px-4 py-2 rounded-full font-bold text-sm inline-flex items-center gap-1.5 text-white">
+                    <ParticleButton variant={isDashboard ? 'teal' : 'cyan'} className="px-2.5 xl:px-4 py-1.5 xl:py-2 rounded-full font-bold text-xs xl:text-sm inline-flex items-center gap-1 xl:gap-1.5 text-white">
                       Subscribe Now <ArrowRight className="w-3.5 h-3.5" />
                     </ParticleButton>
                   </a>
@@ -399,19 +412,20 @@ export function Navbar({ view, setView, currentUser, setCurrentUser, setLoginIni
                       >
                         Log In
                       </button>
-                      <button 
-                        onClick={() => {
-                          setOpen(false);
-                          setLoginInitialMode('register');
-                          setView('login');
-                          window.scrollTo({ top: 0, behavior: 'smooth' });
-                        }}
-                        className="mt-2 w-full text-center py-2.5 rounded-full text-xs font-extrabold transition-all premium-register-btn uppercase tracking-wider text-white border-none cursor-pointer"
-                      >
-                        Create Account
-                      </button>
+
                     </>
                   )}
+                  <button
+                    onClick={() => {
+                      setOpen(false);
+                      setView('paid-tour');
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                    className="mt-2 w-full text-center py-2.5 rounded-full text-xs font-extrabold transition-all uppercase tracking-wider text-white border-none cursor-pointer"
+                    style={{ background: 'linear-gradient(135deg, #FF6B4A, #E8590C)', boxShadow: '0 4px 15px rgba(232,89,12,0.25)' }}
+                  >
+                    <span className="inline-flex items-center gap-1.5"><Compass className="w-3.5 h-3.5" /> Customize Plan</span>
+                  </button>
                   <a 
                     href="#plans" 
                     onClick={(e) => {
@@ -615,7 +629,7 @@ export function Footer({ setView }: FooterProps) {
             © 2026 Beduine Tour & Travels. All rights reserved. 
             <br />
             <span className="text-[10px] text-amber-500/80 font-semibold">
-              ⚠️ Membership eligibility: 18 years and above. Membership does not guarantee promotional selection or travel rewards.
+              ⚠️ 18+ Membership Required. Beduine operates a travel membership & reward program. All benefits, discounts, and travel services are subject to company policies and terms.
             </span>
           </div>
           <div className="mt-3 flex flex-wrap justify-center gap-x-4 gap-y-1 text-[10px] text-[#AFC0CA]/35 font-mono">

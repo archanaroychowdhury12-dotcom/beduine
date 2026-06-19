@@ -7,12 +7,16 @@ export function CookieConsentBanner() {
   const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
+    // Disabled automatic display of cookie/privacy consent banner on landing page load.
+    // The banner/modal should only be shown when specifically requested by the user.
+    /*
     const consent = localStorage.getItem('beduine_cookie_consent_v1');
     if (!consent) {
       // Small delay for natural entrance animation
       const timer = setTimeout(() => setVisible(true), 1500);
       return () => clearTimeout(timer);
     }
+    */
   }, []);
 
   const handleAcceptAll = () => {

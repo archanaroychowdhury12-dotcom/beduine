@@ -11,13 +11,14 @@ interface DashboardPageProps {
   user: any;
   onLogout: () => void;
   onBookPaidTour?: () => void;
+  onBack?: () => void;
 }
 
 const DEFAULT_DASHBOARD_BG = '/images/chatgpt_dashboard_bg.png';
 const DASHBOARD_BG_STORAGE_KEY = 'beduine_dashboard_bg_v2';
 const LEGACY_DASHBOARD_BG_STORAGE_KEY = 'beduine_dashboard_bg';
 
-export default function DashboardPage({ user, onLogout, onBookPaidTour }: DashboardPageProps) {
+export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack }: DashboardPageProps) {
   const [activeTab, setActiveTab] = useState<'overview' | 'credits' | 'draws' | 'bookings' | 'edit-profile' | 'lucky-status'>('overview');
   const [isSimulatingDraw, setIsSimulatingDraw] = useState(false);
   const [simulationResult, setSimulationResult] = useState<string | null>(null);
@@ -154,7 +155,7 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour }: Dashbo
 
   return (
     <div 
-      className="min-h-screen pt-24 lg:pt-28 pb-10 relative overflow-x-hidden"
+      className="min-h-screen pt-2 lg:pt-3 pb-10 relative overflow-x-hidden"
       style={{ 
         backgroundImage: `url('${dashboardBg}')`,
         backgroundSize: 'cover',
@@ -166,37 +167,49 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour }: Dashbo
       {/* Semi-transparent soft overlay to ensure maximum readability */}
       <div className="absolute inset-0 bg-[#EAF7FB]/25 backdrop-blur-[3px] pointer-events-none z-0" />
 
-      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 relative z-10">
+      <div className="max-w-[1480px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
-        {/* SUB HEADER: User Info & Notification Icons (Under fixed Navbar) */}
+        {/* SUB HEADER: Back Button & User Info / Notifications */}
         <motion.div
           initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
-          className="flex items-center justify-end mb-5 px-4 gap-4"
+          className="flex items-center justify-between mb-3 px-4 gap-4"
         >
-          <div className="flex items-center gap-3 bg-white/60 backdrop-blur-md px-4 py-1.5 rounded-full border border-white/80 shadow-sm">
-            <span className="text-xs font-bold text-slate-800">{profileName}</span>
-            <div className="w-px h-3 bg-slate-300" />
-            <Bell className="w-3.5 h-3.5 cursor-pointer text-slate-500 hover:text-[#FF6B6B] transition-colors" />
-            <User className="w-3.5 h-3.5 cursor-pointer text-slate-500 hover:text-[#FF6B6B] transition-colors" />
+          {onBack ? (
+            <button
+              onClick={onBack}
+              className="flex items-center gap-2 bg-white/70 backdrop-blur-md px-5 py-2 rounded-full border border-white/80 shadow-sm text-sm font-bold text-slate-700 hover:text-[#FF6B6B] hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer border-none"
+            >
+              <ChevronLeft className="w-4 h-4 text-[#FF6B6B]" />
+              <span>Back to Home</span>
+            </button>
+          ) : (
+            <div />
+          )}
+
+          <div className="flex items-center gap-4 bg-white/70 backdrop-blur-md px-5 py-2 rounded-full border border-white/80 shadow-sm">
+            <span className="text-sm font-bold text-slate-800">{profileName}</span>
+            <div className="w-px h-3.5 bg-slate-350" />
+            <Bell className="w-4 h-4 cursor-pointer text-slate-650 hover:text-[#FF6B6B] transition-colors" />
+            <User className="w-4 h-4 cursor-pointer text-slate-655 hover:text-[#FF6B6B] transition-colors" />
           </div>
         </motion.div>
 
         {/* MAIN 3-COLUMN LAYOUT */}
-        <div className="grid lg:grid-cols-[230px_1fr_310px] gap-6 items-start">
+        <div className="grid md:grid-cols-[1fr_320px] lg:grid-cols-[280px_1fr_320px] xl:grid-cols-[300px_1fr_340px] gap-6 lg:gap-7 items-start">
 
           {/* ==================== LEFT COLUMN: SIDEBAR ==================== */}
           <motion.aside
             initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }}
-            className="hidden lg:flex flex-col gap-1 bg-white border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.03)] p-5 rounded-[28px] sticky top-28"
+            className="hidden lg:flex flex-col gap-2 bg-white border border-slate-100 shadow-[0_8px_30px_rgba(16,35,63,0.035)] p-8 rounded-[30px] sticky top-4"
           >
             {/* Logo */}
-            <div className="flex items-center gap-3 px-2.5 py-2.5 mb-4">
-              <div className="w-9 h-9 rounded-xl overflow-hidden border border-orange-100 bg-white flex items-center justify-center p-1.5 shadow-sm">
+            <div className="flex items-center gap-4 px-3 py-3 mb-8">
+              <div className="w-14 h-14 rounded-2xl overflow-hidden border border-orange-100 bg-white flex items-center justify-center p-2 shadow-sm shrink-0" style={{ width: '58px', height: '58px' }}>
                 <img src="/images/bedune_logo_transparent.png" alt="Logo" className="w-full h-full object-contain" />
               </div>
-              <div>
-                <span className="text-sm font-black tracking-tight block text-[#FF6B6B]">BEDUINE</span>
-                <span className="text-[8px] uppercase tracking-[0.2em] text-slate-400 font-bold font-mono">Tour & Travels</span>
+              <div className="flex flex-col justify-center">
+                <span className="text-2xl font-black tracking-wide block text-[#FF6B6B] leading-none">BEDUINE</span>
+                <span className="text-[11px] uppercase tracking-[0.22em] text-slate-400 font-bold font-mono leading-none mt-2">Tour & Travels</span>
               </div>
             </div>
 
@@ -208,20 +221,20 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour }: Dashbo
                 <button
                   key={item.id}
                   onClick={() => setActiveTab(item.id as any)}
-                  className={`w-full text-left px-4 py-3 rounded-xl flex items-center gap-3 cursor-pointer transition-all duration-250 border-none text-sm ${
+                  className={`w-full text-left px-4 py-3 rounded-xl flex items-center gap-3.5 cursor-pointer transition-all duration-250 border-none text-[15px] ${
                     isActive
                       ? 'font-bold bg-[#FF6B6B]/10 text-[#FF6B6B]'
-                      : 'font-medium text-slate-500 hover:bg-orange-50/50 bg-transparent'
+                      : 'font-medium text-slate-500 hover:bg-orange-50/50 bg-transparent hover:translate-x-0.5'
                   }`}
                 >
-                  <Icon className={`w-4 h-4 ${isActive ? 'text-[#FF6B6B]' : 'text-slate-450'}`} />
+                  <Icon className={`w-[18px] h-[18px] ${isActive ? 'text-[#FF6B6B]' : 'text-slate-400'}`} />
                   {item.label}
                 </button>
               );
             })}
 
             {/* Sub Menu */}
-            <div className="border-t border-slate-100 mt-4 pt-4 space-y-1">
+            <div className="border-t border-slate-100 mt-5 pt-5 space-y-1.5">
               {[
                 { id: 'edit-profile', icon: Edit, label: 'Edit Profile' },
                 { id: 'lucky-status', icon: Heart, label: 'Lucky Status' },
@@ -232,13 +245,13 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour }: Dashbo
                   <button
                     key={item.id}
                     onClick={() => setActiveTab(item.id as any)}
-                    className={`w-full text-left px-4 py-3 rounded-xl flex items-center gap-3 cursor-pointer transition-all text-sm border-none ${
+                    className={`w-full text-left px-4 py-3 rounded-xl flex items-center gap-3.5 cursor-pointer transition-all text-[15px] border-none ${
                       isActive
                         ? 'font-bold bg-[#FF6B6B]/10 text-[#FF6B6B]'
-                        : 'font-medium text-slate-500 hover:bg-orange-50/50 bg-transparent'
+                        : 'font-medium text-slate-500 hover:bg-orange-50/50 bg-transparent hover:translate-x-0.5'
                     }`}
                   >
-                    <Icon className={`w-4 h-4 ${isActive ? 'text-[#FF6B6B]' : 'text-slate-450'}`} /> {item.label}
+                    <Icon className={`w-[18px] h-[18px] ${isActive ? 'text-[#FF6B6B]' : 'text-slate-400'}`} /> {item.label}
                   </button>
                 );
               })}
@@ -247,26 +260,26 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour }: Dashbo
             {/* Logout */}
             <button
               onClick={onLogout}
-              className="w-full mt-6 px-4 py-3 rounded-xl flex items-center gap-3 cursor-pointer transition-all text-sm font-bold border-none bg-transparent hover:bg-red-50/50"
+              className="w-full mt-5 px-4 py-3 rounded-xl flex items-center gap-3.5 cursor-pointer transition-all text-[15px] font-bold border-none bg-transparent hover:bg-red-50/50 hover:translate-x-0.5"
               style={{ color: '#D66A5D' }}
             >
-              <LogOut className="w-4 h-4" /> Log Out
+              <LogOut className="w-[18px] h-[18px]" /> Log Out
             </button>
 
             {/* Sidebar Dubai Banner */}
-            <div className="mt-6 p-0.5">
-              <div className="rounded-2xl overflow-hidden relative group cursor-pointer border border-slate-100/80 h-[115px] shadow-sm">
+            <div className="mt-5 p-0.5">
+              <div className="rounded-2xl overflow-hidden relative group cursor-pointer border border-slate-100/80 h-[120px] shadow-sm">
                 <img
                   src="/images/dubai_sidebar_banner.png"
                   alt="Dubai Marina"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-700 ease-out"
                 />
-                <div className="absolute inset-0 flex flex-col justify-end p-3" style={{ background: 'linear-gradient(to top, rgba(30,49,71,0.85) 0%, rgba(30,49,71,0.1) 100%)' }}>
-                  <span className="text-[7.5px] text-[#F7B500] uppercase tracking-widest font-black font-mono">Next Big Adventure</span>
+                <div className="absolute inset-0 flex flex-col justify-end p-3.5" style={{ background: 'linear-gradient(to top, rgba(30,49,71,0.85) 0%, rgba(30,49,71,0.1) 100%)' }}>
+                  <span className="text-[8px] text-[#F7B500] uppercase tracking-widest font-black font-mono">Next Big Adventure</span>
                   <div className="flex items-center justify-between mt-0.5">
-                    <span className="text-white text-xs font-bold leading-tight">Dubai Marina Sands</span>
-                    <div className="w-5 h-5 rounded-full bg-white flex items-center justify-center text-slate-800">
-                      <ArrowRight className="w-3 h-3" />
+                    <span className="text-white text-sm font-bold leading-tight">Dubai Marina Sands</span>
+                    <div className="w-6 h-6 rounded-full bg-white flex items-center justify-center text-slate-800">
+                      <ArrowRight className="w-3.5 h-3.5" />
                     </div>
                   </div>
                 </div>
@@ -275,7 +288,7 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour }: Dashbo
           </motion.aside>
 
           {/* Mobile Menu Options */}
-          <div className="lg:hidden flex gap-2 overflow-x-auto pb-3 mb-2 px-1">
+          <div className="lg:hidden flex gap-2 overflow-x-auto pb-3 mb-4 px-1">
             {[
               ...sidebarItems,
               { id: 'edit-profile', label: 'Edit Profile', icon: Edit },
@@ -288,7 +301,7 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour }: Dashbo
                   key={item.id}
                   onClick={() => setActiveTab(item.id as any)}
                   className={`whitespace-nowrap px-4 py-2.5 rounded-xl flex items-center gap-2 cursor-pointer transition-all text-xs font-bold border-none ${
-                    isActive ? 'text-white shadow-sm bg-[#FF6B6B]' : 'text-slate-500 bg-white shadow-sm border border-slate-100'
+                    isActive ? 'text-white shadow-sm bg-[#FF6B6B]' : 'text-slate-500 bg-white shadow-sm border border-slate-100 hover:bg-slate-50'
                   }`}
                 >
                   <Icon className="w-3.5 h-3.5" /> {item.label}
@@ -303,9 +316,9 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour }: Dashbo
             initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}
           >
             {/* PROFILE MEMBER SUMMARY CARD */}
-            <div className="bg-white border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.03)] rounded-[32px] overflow-hidden relative p-8">
+            <div className="bg-white border border-slate-100 shadow-[0_10px_35px_rgba(16,35,63,0.04)] rounded-[32px] overflow-hidden relative p-6 sm:p-8">
               {/* Header Curve SVG Watermark */}
-              <div className="absolute top-0 right-0 w-[260px] h-full pointer-events-none select-none opacity-25">
+              <div className="absolute top-0 right-0 w-[300px] h-full pointer-events-none select-none opacity-25">
                 <svg className="w-full h-full text-[#00D4F5]" fill="none" viewBox="0 0 100 100" preserveAspectRatio="none">
                   <path d="M0,0 Q60,30 100,0 L100,100 L0,100 Z" fill="currentColor" opacity="0.08" />
                   <path d="M0,0 Q60,50 100,10" stroke="currentColor" strokeWidth="1" strokeDasharray="3 3" />
@@ -313,16 +326,16 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour }: Dashbo
               </div>
 
               {/* Title Header */}
-              <div className="text-center w-full pb-4">
-                <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 font-mono block">Profile Overview</span>
-                <h2 className="text-slate-800 font-black text-lg tracking-wide mt-1 uppercase">Member Summary</h2>
+              <div className="text-center w-full pb-5">
+                <span className="text-[11px] font-black uppercase tracking-widest text-slate-400 font-mono block">Profile Overview</span>
+                <h2 className="text-slate-800 font-black text-xl tracking-wide mt-1 uppercase">Member Summary</h2>
               </div>
 
               {/* Centered Profile Avatar */}
-              <div className="flex flex-col items-center mt-3 text-center w-full">
+              <div className="flex flex-col items-center mt-4 text-center w-full">
                 {/* Crown & Avatar circle */}
-                <div className="relative mb-3 flex items-center justify-center">
-                  <div className="w-[84px] h-[84px] rounded-full p-[3px] bg-white shadow-md border border-slate-100 flex items-center justify-center relative">
+                <div className="relative mb-4 flex items-center justify-center">
+                  <div className="w-[90px] h-[90px] rounded-full p-[4px] bg-white shadow-md border border-slate-100 flex items-center justify-center relative">
                     <div className="w-full h-full rounded-full bg-[#0A1D37] flex flex-col items-center justify-center relative overflow-hidden">
                       {profileAvatar ? (
                         <img 
@@ -332,68 +345,76 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour }: Dashbo
                         />
                       ) : (
                         <div className="flex flex-col items-center justify-center w-full h-full relative">
-                          <Crown className="w-4 h-4 text-[#F7B500] absolute top-2.5" />
-                          <span className="text-2xl font-black text-white mt-4 uppercase">
+                          <Crown className="w-5 h-5 text-[#F7B500] absolute top-2.5" />
+                          <span className="text-2xl font-black text-white mt-4.5 uppercase">
                             {profileName?.charAt(0) || 'R'}
                           </span>
                         </div>
                       )}
                     </div>
                   </div>
-                  <div className="absolute bottom-0.5 right-0.5 w-6 h-6 rounded-full flex items-center justify-center shadow-md border-2 border-white bg-emerald-500">
+                  <div className="absolute bottom-1 right-1 w-6 h-6 rounded-full flex items-center justify-center shadow-md border-2 border-white bg-emerald-500">
                     <Check className="w-3.5 h-3.5 text-white" strokeWidth={3} />
                   </div>
                 </div>
 
                 {/* Profile Name */}
-                <h3 className="text-lg font-bold text-slate-800 mb-0.5">{profileName}</h3>
-                <span className="bg-[#FF6B6B] text-white px-3.5 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider mb-5 inline-block">
+                <h3 className="text-lg font-bold text-slate-800 mb-1">{profileName}</h3>
+                <span className="bg-[#FF6B6B] text-white px-4 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider mb-6 inline-block">
                   {displayPlan}
                 </span>
 
-                {/* Stats Cards (Mockup styling) */}
-                <div className="grid grid-cols-3 gap-4 w-full mt-2 mb-4">
+                {/* Stats Cards */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full mt-3 mb-6">
                   {/* Credits Box (Cyan-Blue Gradient) */}
                   <div 
                     onClick={() => setActiveTab('credits')}
-                    className="rounded-2xl bg-gradient-to-r from-[#00D4F5] to-[#3B82F6] text-white p-4 text-center cursor-pointer shadow-sm hover:opacity-95 transition-all"
+                    className="rounded-2xl bg-gradient-to-r from-[#00D4F5] to-[#3B82F6] text-white p-4.5 text-center cursor-pointer shadow-sm hover:shadow-md hover:scale-[1.02] hover:opacity-95 border border-transparent transition-all duration-300 flex flex-col justify-between min-h-[120px]"
                   >
-                    <CreditCard className="w-4 h-4 mx-auto mb-1 text-white/90" />
-                    <span className="text-[8px] uppercase tracking-wider block text-white/80 font-bold font-mono">Credits</span>
-                    <span className="text-base font-black block mt-0.5">{voucherCount}DC</span>
-                    <span className="text-[7.5px] block text-white/70 font-medium">One Unit of Credit</span>
+                    <div>
+                      <CreditCard className="w-5 h-5 mx-auto mb-2 text-white/90" />
+                      <span className="text-[9px] uppercase tracking-wider block text-white/80 font-bold font-mono">Credits</span>
+                      <span className="text-lg font-black block mt-1 leading-tight">{voucherCount}DC</span>
+                    </div>
+                    <span className="text-[8.5px] block text-white/70 font-medium mt-1">Discount Credits</span>
                   </div>
 
-                  {/* Invite Status */}
+                  {/* Draw Token */}
                   <div 
                     onClick={() => setActiveTab('draws')}
-                    className="rounded-2xl bg-white border border-slate-100 p-4 text-center cursor-pointer shadow-sm hover:bg-slate-50 transition-colors"
+                    className="rounded-2xl bg-white border border-slate-100 hover:border-cyan-200/60 p-4.5 text-center cursor-pointer shadow-sm hover:shadow-md hover:scale-[1.02] hover:bg-slate-50/80 transition-all duration-300 flex flex-col justify-between min-h-[120px]"
                   >
-                    <Gift className="w-4 h-4 mx-auto mb-1 text-slate-400" />
-                    <span className="text-[8px] uppercase tracking-wider block text-slate-400 font-bold font-mono">Invite Status</span>
-                    <span className="text-base font-black block mt-0.5 text-slate-800">N/A</span>
+                    <div>
+                      <Sparkles className="w-5 h-5 mx-auto mb-2 text-[#00D4F5]" />
+                      <span className="text-[9px] uppercase tracking-wider block text-slate-400 font-bold font-mono">Draw Token</span>
+                      <span className="text-lg font-black block mt-1 text-slate-800 leading-tight">1 LDC</span>
+                    </div>
+                    <span className="text-[8.5px] block text-slate-400 font-medium mt-1">Lucky Draw Credit</span>
                   </div>
 
-                  {/* Referrals */}
+                  {/* Member Status */}
                   <div 
                     onClick={() => setActiveTab('lucky-status')}
-                    className="rounded-2xl bg-white border border-slate-100 p-4 text-center cursor-pointer shadow-sm hover:bg-slate-50 transition-colors"
+                    className="rounded-2xl bg-white border border-slate-100 hover:border-emerald-200/60 p-4.5 text-center cursor-pointer shadow-sm hover:shadow-md hover:scale-[1.02] hover:bg-slate-50/80 transition-all duration-300 flex flex-col justify-between min-h-[120px]"
                   >
-                    <Compass className="w-4 h-4 mx-auto mb-1 text-slate-400" />
-                    <span className="text-[8px] uppercase tracking-wider block text-slate-400 font-bold font-mono">Referrals</span>
-                    <span className="text-base font-black block mt-0.5 text-slate-800">N/A</span>
+                    <div>
+                      <Shield className="w-5 h-5 mx-auto mb-2 text-emerald-500" />
+                      <span className="text-[9px] uppercase tracking-wider block text-slate-400 font-bold font-mono">Status</span>
+                      <span className="text-lg font-black block mt-1 text-slate-800 leading-tight">Verified</span>
+                    </div>
+                    <span className="text-[8.5px] block text-slate-400 font-medium mt-1">Active Account</span>
                   </div>
                 </div>
 
                 {/* Action button & footer info */}
-                <div className="w-full pt-4 mt-2 border-t border-slate-100 flex flex-col gap-2.5">
+                <div className="w-full pt-5 mt-2 border-t border-slate-100 flex flex-col gap-3">
                   <button 
                     onClick={() => setActiveTab('draws')}
-                    className="w-full py-3 rounded-full text-xs font-bold text-white bg-gradient-to-r from-[#FF6B6B] to-[#FF8E53] shadow-md shadow-orange-500/10 cursor-pointer hover:opacity-95 transition-opacity border-none"
+                    className="w-full py-3 rounded-full text-xs font-bold text-white bg-gradient-to-r from-[#FF6B6B] to-[#FF8E53] shadow-md shadow-orange-500/15 cursor-pointer hover:opacity-95 hover:scale-[1.01] active:scale-[0.99] transition-all duration-200 border-none"
                   >
                     Open Weekly Selection Preview
                   </button>
-                  <p className="text-[9px] text-slate-400 font-bold font-mono">
+                  <p className="text-[10px] text-slate-400 font-bold font-mono">
                     {profileEmail}{profileMobile ? ` • ${profileMobile}` : ''} &nbsp;•&nbsp; Member ID: 809-1864-230A
                   </p>
                 </div>
@@ -412,9 +433,9 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour }: Dashbo
                 
                 {/* OVERVIEW PANEL */}
                 {activeTab === 'overview' && (
-                  <div className="space-y-6">
+                  <div className="space-y-5">
                     {/* Upcoming Trips Stat */}
-                    <div className="bg-white border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.03)] rounded-[32px] p-6 sm:p-7 text-left">
+                    <div className="bg-white border border-slate-100 shadow-[0_8px_30px_rgba(16,35,63,0.03)] rounded-[28px] p-5 sm:p-7 text-left">
                       <div className="flex items-center justify-between mb-4">
                         <h3 className="text-sm font-black text-slate-800 flex items-center gap-2 uppercase tracking-wide">
                           <Plane className="w-4 h-4 text-[#00D4F5]" /> Upcoming Trips
@@ -423,7 +444,7 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour }: Dashbo
                       </div>
                       
                       <div className="flex items-baseline gap-1 mb-2">
-                        <span className="text-3xl font-black text-slate-800">{isSubscribed ? 1 : 0}</span>
+                        <span className="text-2xl font-black text-slate-800">{isSubscribed ? 1 : 0}</span>
                         <span className="text-xs text-slate-400 font-bold">/ 4 quarterly trips</span>
                       </div>
                       
@@ -450,7 +471,7 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour }: Dashbo
                           const Icon = btn.icon;
                           return (
                             <a key={i} href="https://wa.me/918768903565" target="_blank" rel="noreferrer"
-                              className="p-3 rounded-xl border border-slate-200/80 hover:border-[#00D4F5]/35 hover:bg-[#EAF7FB]/30 transition-all flex items-center justify-center gap-2 text-[10px] font-bold uppercase text-slate-500 hover:text-[#00D4F5] cursor-pointer no-underline"
+                              className="p-3 rounded-xl border border-slate-200/80 hover:border-[#00D4F5]/35 hover:bg-[#EAF7FB]/30 hover:shadow-sm hover:scale-[1.01] transition-all flex items-center justify-center gap-2 text-[10px] font-bold uppercase text-slate-500 hover:text-[#00D4F5] cursor-pointer no-underline"
                             >
                               <Icon className="w-3.5 h-3.5" />
                               <span className="hidden sm:inline">{btn.label}</span>
@@ -464,11 +485,12 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour }: Dashbo
                         <span className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Weekly Entry Activity Trend</span>
                         
                         <div className="relative h-28 w-full mt-2">
-                          {/* Background vertical bar grid */}
-                          <div className="absolute inset-0 flex justify-between px-3 pointer-events-none">
-                            {Array.from({ length: 5 }).map((_, idx) => (
-                              <div key={idx} className="w-[1px] h-full bg-slate-100/70" />
-                            ))}
+                          {/* Background horizontal grid lines */}
+                          <div className="absolute inset-0 flex flex-col justify-between pointer-events-none">
+                            <div className="w-full h-[1px] bg-slate-100/50" />
+                            <div className="w-full h-[1px] bg-slate-100/50" />
+                            <div className="w-full h-[1px] bg-slate-100/50" />
+                            <div className="w-full h-[1px] bg-slate-100/50" />
                           </div>
 
                           {/* SVG Wavy Line (Sky Blue color) */}
@@ -525,7 +547,7 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour }: Dashbo
                       ].map((item, i) => {
                         const Icon = item.icon;
                         return (
-                          <div key={i} className="bg-white border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.03)] rounded-[24px] p-5 relative overflow-hidden text-left">
+                          <div key={i} className="bg-white border border-slate-100 shadow-[0_8px_30px_rgba(16,35,63,0.03)] rounded-[22px] p-4 relative overflow-hidden text-left hover:-translate-y-1 hover:shadow-md transition-all duration-300">
                             <div className="flex justify-between items-start mb-3">
                               <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest font-mono">{item.label}</span>
                               <div className={`w-8 h-8 rounded-full ${item.bgCircle} flex items-center justify-center`}>
@@ -540,7 +562,7 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour }: Dashbo
                     </div>
 
                     {/* Quick Actions & Vouchers (White Card 2x2 Grid) */}
-                    <div className="bg-white border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.03)] rounded-[32px] p-6 sm:p-7 text-left">
+                    <div className="bg-white border border-slate-100 shadow-[0_8px_30px_rgba(16,35,63,0.03)] rounded-[28px] p-5 sm:p-7 text-left">
                       <h3 className="text-sm font-black text-slate-800 mb-5 flex items-center gap-2 uppercase tracking-wide">
                         <Sparkles className="w-4 h-4 text-[#FF8E53]" /> Quick Actions & Vouchers
                       </h3>
@@ -554,8 +576,8 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour }: Dashbo
                         ].map((item, i) => {
                           const Icon = item.icon;
                           return (
-                            <div key={i} className="flex items-start gap-4 p-3 rounded-2xl border border-slate-100 bg-white/50 hover:bg-slate-50 transition-colors">
-                              <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${item.bg}`}>
+                            <div key={i} className="flex items-start gap-4 p-3.5 rounded-2xl border border-slate-100/80 bg-white hover:bg-slate-50 hover:border-slate-200/50 hover:shadow-sm transition-all duration-300">
+                              <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 ${item.bg}`}>
                                 <Icon className="w-4 h-4" style={{ color: item.color }} />
                               </div>
                               <div>
@@ -591,13 +613,13 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour }: Dashbo
 
                 {/* DISCOUNT CREDITS PANEL */}
                 {activeTab === 'credits' && (
-                  <div className="bg-white border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.03)] rounded-[32px] p-6 text-left">
+                  <div className="bg-white border border-slate-100 shadow-[0_8px_30px_rgba(16,35,63,0.03)] rounded-[28px] p-5 sm:p-7 text-left">
                     <h2 className="text-base font-black flex items-center gap-2 mb-1 text-slate-800 uppercase tracking-wide">
                       <CreditCard className="w-5 h-5 text-[#FF6B6B]" /> My Discount Credits
                     </h2>
                     <p className="text-xs text-slate-400 mb-5">Non-cash credit value protection for paid tours</p>
 
-                    <div className="bg-gradient-to-r from-[#00D4F5] to-[#3B82F6] rounded-2xl p-6 text-center mb-6 relative overflow-hidden text-white shadow-md">
+                    <div className="bg-gradient-to-r from-[#00D4F5] to-[#3B82F6] rounded-2xl p-6 text-center mb-6 relative overflow-hidden text-white shadow-md hover:shadow-lg transition-all duration-300">
                       <span className="text-[10px] uppercase tracking-wider font-mono block text-white/80 font-bold">TOTAL WALLET BALANCE</span>
                       <span className="text-4xl font-black block mt-1 text-white">{voucherCount} DC</span>
                       <span className="text-xs text-white/95 mt-1.5 block font-semibold">500-value each, available for paid bookings</span>
@@ -606,7 +628,7 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour }: Dashbo
                     <div className="grid sm:grid-cols-2 gap-4">
                       {Array.from({ length: voucherCount }).map((_, idx) => (
                         <motion.div key={idx} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.1 }}
-                          className={`rounded-[24px] border border-slate-100 p-5 relative overflow-hidden bg-white shadow-sm`}
+                          className="rounded-[24px] border border-slate-150 p-5 sm:p-6 relative overflow-hidden bg-white shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300"
                         >
                           <div className="absolute -left-2 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-slate-50 border-r border-slate-100" />
                           <div className="absolute -right-2 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-slate-50 border-l border-slate-100" />
@@ -634,14 +656,14 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour }: Dashbo
 
                 {/* MEMBER SELECTION STATUS PANEL */}
                 {activeTab === 'draws' && (
-                  <div className="bg-white border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.03)] rounded-[32px] p-6 text-left">
+                  <div className="bg-white border border-slate-100 shadow-[0_8px_30px_rgba(16,35,63,0.03)] rounded-[28px] p-5 sm:p-7 text-left">
                     <h2 className="text-base font-black flex items-center gap-2 mb-1 text-slate-800 uppercase tracking-wide">
                       <Ticket className="w-5 h-5 text-[#FF6B6B]" /> Member Selection Status
                     </h2>
                     <p className="text-xs text-slate-400 mb-5">Weekly member selection records and entry preview</p>
 
-                    <div className="grid md:grid-cols-2 gap-5">
-                      <div className="rounded-[24px] border border-slate-100 p-5 bg-white shadow-sm flex flex-col justify-between">
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div className="rounded-[24px] border border-slate-150 p-5 bg-white shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow duration-300">
                         <div>
                           <span className="text-[10px] text-slate-400 uppercase font-mono tracking-wider block font-bold">ACTIVE ENTRY TOKEN</span>
                           <span className="text-3xl font-black tracking-widest font-mono mt-1.5 block text-[#00D4F5]">{user?.drawToken || 'N/A'}</span>
@@ -654,7 +676,7 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour }: Dashbo
                         </div>
                       </div>
 
-                      <div className="rounded-[24px] border border-slate-100 p-5 bg-white shadow-sm flex flex-col justify-between">
+                      <div className="rounded-[24px] border border-slate-150 p-5 bg-white shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow duration-300">
                         <div>
                           <h3 className="text-sm font-bold text-slate-800 flex items-center gap-1">
                             <Sparkles className="w-4 h-4 text-emerald-500" /> RNG Test Simulator
@@ -699,7 +721,7 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour }: Dashbo
 
                 {/* BOOK TRAVEL PANEL */}
                 {activeTab === 'bookings' && (
-                  <div className="bg-white border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.03)] rounded-[32px] p-6 text-left">
+                  <div className="bg-white border border-slate-100 shadow-[0_8px_30px_rgba(16,35,63,0.03)] rounded-[28px] p-5 sm:p-7 text-left">
                     <h2 className="text-base font-black flex items-center gap-2 mb-1 text-slate-800 uppercase tracking-wide">
                       <Plane className="w-5 h-5 text-[#FF6B6B]" /> Book Your Travel
                     </h2>
@@ -714,7 +736,7 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour }: Dashbo
                       <button
                         type="button"
                         onClick={onBookPaidTour}
-                        className="p-5 rounded-2xl border hover:shadow-md transition-all flex flex-col items-center text-center group no-underline bg-[#FF6B6B]/5 border-slate-200 gap-3 cursor-pointer"
+                        className="p-6 rounded-2xl border hover:shadow-lg hover:scale-[1.01] hover:bg-[#FF6B6B]/8 hover:border-[#FF6B6B]/30 transition-all duration-300 flex flex-col items-center text-center group no-underline bg-[#FF6B6B]/5 border-slate-200/80 gap-3.5 cursor-pointer"
                       >
                         <div className="w-20 h-20 rounded-2xl overflow-hidden">
                           <img src="/images/book_paid_tour_icon.png" alt="Book Paid Tour" className="w-full h-full object-contain" />
@@ -729,7 +751,7 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour }: Dashbo
                       </button>
 
                       <a href="https://wa.me/918768903565" target="_blank" rel="noreferrer"
-                        className="p-5 rounded-2xl border hover:shadow-md transition-all flex flex-col items-center text-center group no-underline bg-[#3B82F6]/5 border-slate-200 gap-3"
+                        className="p-6 rounded-2xl border hover:shadow-lg hover:scale-[1.01] hover:bg-[#3B82F6]/8 hover:border-[#3B82F6]/30 transition-all duration-300 flex flex-col items-center text-center group no-underline bg-[#3B82F6]/5 border-slate-200/80 gap-3.5"
                       >
                         <div className="w-20 h-20 rounded-2xl overflow-hidden">
                           <img src="/images/selection_support_icon.png" alt="Selection Support" className="w-full h-full object-contain" />
@@ -754,7 +776,7 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour }: Dashbo
 
                 {/* EDIT PROFILE PANEL */}
                 {activeTab === 'edit-profile' && (
-                  <div className="bg-white border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.03)] rounded-[32px] p-6 text-left">
+                  <div className="bg-white border border-slate-100 shadow-[0_8px_30px_rgba(16,35,63,0.03)] rounded-[28px] p-5 sm:p-7 text-left">
                     <h2 className="text-base font-black flex items-center gap-2 mb-1 text-slate-800 uppercase tracking-wide">
                       <Edit className="w-5 h-5 text-[#FF6B6B]" /> Edit Profile Details
                     </h2>
@@ -806,8 +828,8 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour }: Dashbo
                               setEditName(e.target.value);
                               if (errors.name) setErrors(prev => ({ ...prev, name: undefined }));
                             }}
-                            className={`w-full px-3 py-2.5 rounded-xl border outline-none text-xs text-slate-700 bg-white ${
-                              errors.name ? 'border-red-405' : 'border-slate-200'
+                            className={`w-full px-4 py-3 rounded-xl border outline-none text-xs text-slate-700 bg-white transition-all focus:border-[#FF6B6B] focus:ring-1 focus:ring-[#FF6B6B] ${
+                              errors.name ? 'border-red-405 ring-red-450' : 'border-slate-200'
                             }`}
                           />
                         </div>
@@ -820,7 +842,7 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour }: Dashbo
                               setEditEmail(e.target.value);
                               if (errors.email) setErrors(prev => ({ ...prev, email: undefined }));
                             }}
-                            className="w-full px-3 py-2.5 rounded-xl border border-slate-200 outline-none text-xs text-slate-700 bg-white"
+                            className="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none text-xs text-slate-700 bg-white transition-all focus:border-[#FF6B6B] focus:ring-1 focus:ring-[#FF6B6B]"
                           />
                         </div>
                         <div>
@@ -832,7 +854,7 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour }: Dashbo
                               setEditMobile(e.target.value);
                               if (errors.mobile) setErrors(prev => ({ ...prev, mobile: undefined }));
                             }}
-                            className="w-full px-3 py-2.5 rounded-xl border border-slate-200 outline-none text-xs text-slate-700 bg-white"
+                            className="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none text-xs text-slate-700 bg-white transition-all focus:border-[#FF6B6B] focus:ring-1 focus:ring-[#FF6B6B]"
                           />
                         </div>
                         <div>
@@ -841,7 +863,7 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour }: Dashbo
                             rows={2}
                             value={editAddress}
                             onChange={(e) => setEditAddress(e.target.value)}
-                            className="w-full px-3 py-2.5 rounded-xl border border-slate-200 outline-none text-xs text-slate-700 bg-white resize-none"
+                            className="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none text-xs text-slate-700 bg-white resize-none transition-all focus:border-[#FF6B6B] focus:ring-1 focus:ring-[#FF6B6B]"
                           />
                         </div>
                         <button onClick={handleSaveProfile} className="px-5 py-2.5 rounded-xl text-xs font-bold cursor-pointer text-white bg-[#FF6B6B] border-none shadow-sm hover:opacity-95">Save Changes</button>
@@ -852,7 +874,7 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour }: Dashbo
 
                 {/* LUCKY STATUS PANEL */}
                 {activeTab === 'lucky-status' && (
-                  <div className="bg-white border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.03)] rounded-[32px] p-6 text-left">
+                  <div className="bg-white border border-slate-100 shadow-[0_8px_30px_rgba(16,35,63,0.03)] rounded-[28px] p-5 sm:p-7 text-left">
                     <h2 className="text-base font-black flex items-center gap-2 mb-1 text-slate-800 uppercase tracking-wide">
                       <Heart className="w-5 h-5 text-[#FF6B6B]" /> Lucky Status & History
                     </h2>
@@ -864,7 +886,7 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour }: Dashbo
                         { label: 'Total Weekly Entries', value: '3 Entries', desc: 'Active weeks count', bg: 'bg-sky-50/50' },
                         { label: 'Entry Ticket Status', value: 'Verified Active', desc: 'Ready for next Sunday', bg: 'bg-emerald-50/50' }
                       ].map((item, i) => (
-                        <div key={i} className={`p-4 rounded-[20px] border border-slate-100 bg-white shadow-sm`}>
+                        <div key={i} className="p-4 rounded-[20px] border border-slate-100 bg-white shadow-sm hover:shadow-md transition-all duration-300">
                           <span className="text-[9px] font-black text-[#FF6B6B] uppercase tracking-widest block font-mono">{item.label}</span>
                           <span className="text-sm font-black text-slate-850 block mt-1">{item.value}</span>
                           <span className="text-[9.5px] text-slate-400 mt-0.5 block font-semibold">{item.desc}</span>
@@ -929,105 +951,101 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour }: Dashbo
             className="flex flex-col gap-6"
           >
             {/* Featured Hotspot widget */}
-            <div className="bg-white border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.03)] rounded-[28px] overflow-hidden text-left">
-              <div className="flex items-center justify-between px-5 pt-4.5 pb-1.5">
-                <h4 className="text-xs font-black uppercase tracking-wider text-slate-700 flex items-center gap-1.5 font-sans">
-                  <Star className="w-4 h-4 text-[#FF8E53]" /> Featured Hotspot
+            <div className="bg-white border border-slate-100 shadow-[0_10px_35px_rgba(16,35,63,0.04)] rounded-[28px] p-5 sm:p-6 text-left hover:shadow-md transition-shadow duration-300 flex flex-col gap-4.5">
+              <div className="flex items-center justify-between">
+                <h4 className="text-sm font-black uppercase tracking-wider text-slate-700 flex items-center gap-2 font-sans">
+                  <Star className="w-4.5 h-4.5 text-[#FF8E53]" /> Featured Hotspot
                 </h4>
-                <span className="text-[8.5px] bg-[#EAF7FB] text-[#00D4F5] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">Handpicked</span>
+                <span className="text-[9.5px] bg-[#EAF7FB] text-[#00D4F5] px-3 py-1 rounded-full font-bold uppercase tracking-wider">Handpicked</span>
               </div>
               
-              <div className="p-3">
-                <div className="rounded-xl overflow-hidden h-[180px] relative bg-slate-900 group cursor-pointer shadow-inner">
-                  <img 
-                    src="/images/barcelona_hotspot.png" 
-                    alt="Barcelona" 
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent pointer-events-none" />
-                  
-                  {/* Bottom title info */}
-                  <div className="absolute bottom-3 left-3 right-3 text-white">
-                    <div className="text-xs font-black uppercase tracking-wider">Barcelona</div>
-                    <div className="text-[10px] font-bold opacity-80 mt-0.5">The Mediterranean Jewel</div>
-                  </div>
+              <div className="rounded-2xl overflow-hidden h-[180px] relative bg-slate-900 group cursor-pointer shadow-inner">
+                <img 
+                  src="/images/barcelona_hotspot.png" 
+                  alt="Barcelona" 
+                  className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-1000 ease-out"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent pointer-events-none" />
+                
+                {/* Bottom title info */}
+                <div className="absolute bottom-4 left-4 right-4 text-white">
+                  <div className="text-sm font-black uppercase tracking-wider">Barcelona</div>
+                  <div className="text-[11px] font-bold opacity-85 mt-0.5">The Mediterranean Jewel</div>
                 </div>
               </div>
 
               {/* Action Button */}
-              <div className="px-3 pb-3 pt-0.5">
-                <a href="https://wa.me/918768903565?text=Hello%20BEDUINE%2C%20I%20want%20to%20book%20a%20tour%20package%20to%20Barcelona." target="_blank" rel="noreferrer"
-                  className="w-full py-2.5 rounded-xl text-xs font-bold text-slate-800 bg-white hover:bg-slate-50 border border-slate-200/80 shadow-sm flex items-center justify-center gap-2 transition-all hover:scale-[1.01] cursor-pointer no-underline"
-                >
-                  Book This Tour <ArrowRight className="w-3.5 h-3.5" />
-                </a>
-              </div>
+              <a href="https://wa.me/918768903565?text=Hello%20BEDUINE%2C%20I%20want%20to%20book%20a%20tour%20package%20to%20Barcelona." target="_blank" rel="noreferrer"
+                className="w-full py-3 rounded-2xl text-xs font-bold text-slate-800 bg-white hover:bg-slate-50 border border-slate-200/80 shadow-sm flex items-center justify-center gap-2 transition-all duration-300 hover:scale-[1.01] hover:border-slate-300 active:scale-[0.99] cursor-pointer no-underline"
+              >
+                Book This Tour <ArrowRight className="w-4 h-4" />
+              </a>
             </div>
 
             {/* Membership card widget (Cyan-Blue gradient) */}
-            <div className="bg-gradient-to-r from-[#00D4F5] to-[#3B82F6] rounded-[24px] p-5 text-center relative overflow-hidden text-white shadow-md">
-              <div className="absolute -top-10 -left-10 w-24 h-24 bg-white/10 rounded-full blur-xl pointer-events-none" />
-              <div className="absolute -bottom-10 -right-10 w-24 h-24 bg-white/15 rounded-full blur-xl pointer-events-none" />
-              <Crown className="w-5 h-5 text-[#F7B500] mx-auto mb-2 relative z-10 animate-bounce" />
-              <h4 className="text-xs font-black uppercase tracking-wider text-white mb-1.5 relative z-10">Selected • Beduine Elite Member</h4>
-              <p className="text-[9.5px] text-white/85 leading-relaxed relative z-10 font-medium">Exclusive access, curated stays, and elevated travel privileges.</p>
-              <div className="mt-3.5 pt-2 border-t border-white/20">
-                <a href="https://wa.me/918768903565" target="_blank" rel="noreferrer" className="text-[9px] font-bold text-white uppercase tracking-wider underline hover:opacity-90">
+            <div className="bg-gradient-to-r from-[#00D4F5] to-[#3B82F6] rounded-[24px] p-5 sm:p-6 text-center relative overflow-hidden text-white shadow-md hover:shadow-lg transition-all duration-350 hover:-translate-y-0.5">
+              <div className="absolute -top-10 -left-10 w-28 h-28 bg-white/10 rounded-full blur-xl pointer-events-none" />
+              <div className="absolute -bottom-10 -right-10 w-28 h-28 bg-white/15 rounded-full blur-xl pointer-events-none" />
+              <Crown className="w-6 h-6 text-[#F7B500] mx-auto mb-2.5 relative z-10 animate-bounce" />
+              <h4 className="text-sm font-black uppercase tracking-wider text-white mb-2 relative z-10">Selected • Beduine Elite Member</h4>
+              <p className="text-[10.5px] text-white/85 leading-relaxed relative z-10 font-medium">Exclusive access, curated stays, and elevated travel privileges.</p>
+              <div className="mt-4 pt-2.5 border-t border-white/20">
+                <a href="https://wa.me/918768903565" target="_blank" rel="noreferrer" className="text-[10px] font-bold text-white uppercase tracking-wider underline hover:opacity-90">
                   Discount Credits: Always Active
                 </a>
               </div>
             </div>
 
             {/* Explore Subscribed Destinations widget (Moved to right column) */}
-            <div className="bg-white border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.03)] rounded-[28px] p-5 text-left">
-              <div className="flex justify-between items-center mb-3.5">
-                <span className="text-xs font-black text-slate-700 flex items-center gap-1.5 uppercase tracking-wider">
-                  <Compass className="w-4 h-4 text-[#FF8E53]" /> Explore Subscribed Destinations
+            <div className="bg-white border border-slate-100 shadow-[0_10px_35px_rgba(16,35,63,0.04)] rounded-[28px] p-5 sm:p-6 text-left hover:shadow-md transition-shadow duration-300">
+              <div className="flex justify-between items-center mb-4">
+                <span className="text-sm font-black text-slate-700 flex items-center gap-2 uppercase tracking-wider">
+                  <Compass className="w-4.5 h-4.5 text-[#FF8E53]" /> Explore Destinations
                 </span>
                 <button 
                   onClick={() => setActiveTab('bookings')}
-                  className="text-[10px] font-bold text-[#3B82F6] hover:underline bg-transparent border-none cursor-pointer uppercase tracking-wider"
+                  className="text-[10.5px] font-bold text-[#3B82F6] hover:underline bg-transparent border-none cursor-pointer uppercase tracking-wider"
                 >
                   View All
                 </button>
               </div>
 
               {/* Subtitle */}
-              <p className="text-[9.5px] text-slate-400 font-semibold leading-relaxed mb-4">
+              <p className="text-[10.5px] text-slate-400 font-semibold leading-relaxed mb-4.5">
                 Subscribe-favorite travel highlights included in your weekly eligible entries
               </p>
 
               {/* Vertical destinations list */}
               <div className="flex flex-col gap-2.5">
                 {DESTINATIONS.map((dest, i) => (
-                  <div key={i} className="rounded-xl overflow-hidden border border-slate-200/50 relative group cursor-pointer h-[75px] shadow-sm">
+                  <div key={i} className="rounded-2xl overflow-hidden border border-slate-200/50 relative group cursor-pointer h-[75px] shadow-sm">
                     <img
                       src={dest.img}
                       alt={dest.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-1000 ease-out"
                     />
                     <div className="absolute inset-0 bg-gradient-to-r from-slate-950/80 via-slate-950/20 to-transparent pointer-events-none" />
-                    <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white z-10 text-left">
-                      <span className="block text-[11px] font-bold leading-tight">{dest.name}</span>
-                      <span className="block text-[8px] text-slate-350 leading-tight mt-0.5">{dest.desc}</span>
+                    <div className="absolute left-4 top-1/2 -translate-y-1/2 text-white z-10 text-left">
+                      <span className="block text-[12px] font-bold leading-tight">{dest.name}</span>
+                      <span className="block text-[9px] text-slate-300 leading-tight mt-0.5">{dest.desc}</span>
                     </div>
                   </div>
                 ))}
               </div>
 
               {/* Pagination controls widget */}
-              <div className="flex items-center justify-between mt-4.5 pt-3 border-t border-slate-100">
-                <div className="flex gap-1.5">
-                  <button className="w-5 h-5 rounded-full border border-slate-200 flex items-center justify-center text-slate-400 hover:text-slate-650 hover:bg-slate-50 cursor-pointer">
-                    <ChevronLeft className="w-3 h-3" />
+              <div className="flex items-center justify-between mt-5 pt-3.5 border-t border-slate-100">
+                <div className="flex gap-2">
+                  <button className="w-5.5 h-5.5 rounded-full border border-slate-200 flex items-center justify-center text-slate-400 hover:text-slate-650 hover:bg-slate-50 cursor-pointer">
+                    <ChevronLeft className="w-3.5 h-3.5" />
                   </button>
-                  <button className="w-5 h-5 rounded-full border border-slate-200 flex items-center justify-center text-slate-400 hover:text-slate-650 hover:bg-slate-50 cursor-pointer">
-                    <ChevronRight className="w-3 h-3" />
+                  <button className="w-5.5 h-5.5 rounded-full border border-slate-200 flex items-center justify-center text-slate-400 hover:text-slate-650 hover:bg-slate-50 cursor-pointer">
+                    <ChevronRight className="w-3.5 h-3.5" />
                   </button>
                 </div>
                 <div className="flex gap-1">
                   {Array.from({ length: 4 }).map((_, idx) => (
-                    <div key={idx} className={`w-1 h-1 rounded-full ${idx === 0 ? 'bg-[#FF6B6B] w-2.5' : 'bg-slate-250'}`} />
+                    <div key={idx} className={`w-1 h-1 rounded-full ${idx === 0 ? 'bg-[#FF6B6B] w-3' : 'bg-slate-250'}`} />
                   ))}
                 </div>
               </div>

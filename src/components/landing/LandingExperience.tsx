@@ -8,7 +8,8 @@ import {
   Download, Lock, Eye, TrendingUp, Crown,
   Send, FileText,
   BadgeCheck, Zap, Bot, Fingerprint, Scan,
-  Heart, Globe, Wallet, Shield, HeartHandshake
+  Heart, Globe, Wallet, Shield, HeartHandshake,
+  Trophy, Tag, Gem, Route, Camera
 } from 'lucide-react';
 import ScatteredShowcase from '../../ScatteredShowcase';
 import {
@@ -834,7 +835,7 @@ function TrustStrip() {
   const items = [
     { icon: Calendar, t: '12 Month Validity' },
     { icon: Sparkles, t: 'Weekly Promotional Draw' },
-    { icon: Wallet, t: 'â‚¹500 Discount Credit' },
+    { icon: Wallet, t: '₹500 Discount Credit' },
     { icon: Shield, t: '18+ Membership Only' },
     { icon: Gift, t: 'Non-Cash Benefits' },
   ];
@@ -860,180 +861,339 @@ function TrustStrip() {
 /* ---------- About Us / Mission / Vision ---------- */
 function AboutUs() {
   const officeMapsUrl = 'https://maps.app.goo.gl/JEqUWXKofJTKfFNY6';
+  
   const officeHighlights = [
-    { label: 'Office Area', value: 'Fulia, Nadia' },
-    { label: 'PIN Code', value: '741402' },
-    { label: 'Route', value: 'Google Maps' },
+    { label: 'Branch Office', value: 'Fulia, Nadia', icon: MapPin },
+    { label: 'Contact Number', value: '+91 79290 85086', icon: Phone },
+    { label: 'Working Hours', value: '10 AM – 7 PM', icon: Calendar },
   ];
+
   const pillars = [
     {
-      icon: Heart,
-      title: 'Our Mission',
-      accent: 'cyan',
-      image: '/images/about_mission.png',
-      text: 'At Beduine Tour & Travels, our mission is to transform travel into an accessible, reliable, and rewarding experience for everyone.',
-      points: [
-        'Offer carefully crafted tours that balance culture, comfort and adventure.',
-        'Provide a unique subscription-based model where members enjoy weekly lucky draws and guaranteed discounts.',
-        'Deliver luxury tours for winners while ensuring that non-winners never feel left behind, thanks to fair and transparent benefits.',
-        'Build a community of happy travelers who see Beduine not just as a company, but as a trusted partner in creating memories.'
-      ],
-      quote: "We believe travel is not just about visiting destinations â€” it's about building stories, emotions, and connections that last a lifetime."
+      num: '01',
+      icon: Route,
+      title: 'Curated Itineraries',
+      text: 'Every plan is crafted thoughtfully by travel experts to balance culture, comfort, and discovery.',
     },
     {
-      icon: Globe,
-      title: 'Our Vision',
-      accent: 'gold',
-      image: '/images/about_vision.png',
-      text: 'The vision of Beduine Tour & Travels is to revolutionize the travel industry with a sustainable, inclusive, and transparent model that benefits every traveler.',
-      points: [
-        'Expand our presence across India with a franchise and agent-driven network, reaching even the remotest travelers.',
-        'Integrate cutting-edge technology to ensure seamless subscriptions, lucky draw transparency, and hassle-free tour management.',
-        'Position Beduine as a global name in innovative travel solutions, starting from domestic roots and branching out to international experiences.',
-        'Build a community of loyal subscribers who see travel not as an expense but as a lifetime investment in memories.'
-      ],
-      quote: 'Our ultimate vision is simple: "Safar jo yad rahe" â€” journeys that live forever in the hearts of our travelers.'
-    }
+      num: '02',
+      icon: Tag,
+      title: 'Transparent Benefits',
+      text: 'Every plan tells the truth—no hidden costs, no messy add-ons, just genuine value.',
+    },
+    {
+      num: '03',
+      icon: Trophy,
+      title: 'Winner Experiences',
+      text: 'Handpicked destinations, quality stays, unique activities, and premium experiences designed to feel special.',
+    },
+    {
+      num: '04',
+      icon: ShieldCheck,
+      title: 'Guaranteed Credits',
+      text: 'If we miss our promise, credits are yours— no excuses, applicable on future trips. Simple, fair, and travel-friendly.',
+    },
   ];
+
   return (
-    <section id="about" className="relative py-14 lg:py-20 overflow-hidden">
-
-      <div className="max-w-7xl mx-auto px-5 lg:px-8 relative z-10">
-        {/* Header */}
-        <Reveal>
-          <div className="text-center mb-16 max-w-3xl mx-auto">
-            <div className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.3em] neon-gold font-semibold mb-4"><div className="w-8 h-px bg-neon-gold" /> About BEDUINE <div className="w-8 h-px bg-neon-gold" /></div>
-            <h2 className="font-display text-4xl lg:text-6xl font-bold text-ink leading-tight">
-              <KineticText text="Safar jo" />
-              <br /><span className="gold-shimmer"><KineticText text="yaad rahe." delay={0.3} /></span>
-            </h2>
-            <p className="mt-6 text-ink/70 text-lg leading-relaxed max-w-2xl mx-auto">BEDUINE Tour & Travels is a customer-first travel company dedicated to crafting memorable journeys across India and beyond. We combine curated itineraries, transparent pricing, and a unique subscription model that rewards every member.</p>
-          </div>
-        </Reveal>
-
-        {/* Pillar Cards */}
-        <div className="grid md:grid-cols-2 gap-8 lg:gap-10">
-          {pillars.map((p, i) => (
-            <Reveal key={p.title} delay={i * 0.15}>
-              <TiltCard className="h-full" intensity={5}>
-                <div className={`glass rounded-3xl overflow-hidden border border-slate-line ${p.accent === 'cyan' ? 'hover:neon-border-cyan' : 'hover:neon-border-gold'} transition-all h-full tilt-inner flex flex-col group`}>
-                  <div className="relative h-52 overflow-hidden">
-                    <img src={p.image} alt={p.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#0d1b22] via-[#0d1b22]/40 to-transparent" />
-                    <div className="absolute top-4 left-4">
-                      <FloatingIcon delay={i * 0.5}>
-                        <div className={`w-12 h-12 rounded-xl flex items-center justify-center shadow-lg ${p.accent === 'cyan' ? 'bg-gradient-to-br from-cyan to-cyan-deep shadow-cyan/30' : 'bg-gradient-to-br from-neon-gold to-gold-deep shadow-neon-gold/30'}`}>
-                          <p.icon className="w-6 h-6 text-cosmos" strokeWidth={2.2} />
-                        </div>
-                      </FloatingIcon>
-                    </div>
-                  </div>
-                  <div className="p-8 pt-6 flex-1 flex flex-col justify-between">
-                    <div>
-                      <h3 className="font-display text-2xl font-black text-[#0B1F2E] mb-4">{p.title}</h3>
-                      <p className="text-sm text-slate-800 leading-relaxed mb-6 font-semibold">{p.text}</p>
-                      <ul className="space-y-3.5 mb-6">
-                        {p.points.map((pt) => (
-                          <li key={pt} className="flex items-start gap-3 text-sm text-slate-900 font-bold">
-                            <GoldCheck size={16} variant={p.accent as any} className="mt-0.5 shrink-0" />
-                            <span className="text-slate-800">{pt}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                    <div className={`p-4 rounded-2xl border ${p.accent === 'cyan' ? 'bg-cyan/8 border-cyan/20 text-[#008EAA] font-serif italic' : 'bg-neon-gold/8 border-neon-gold/20 text-gold-deep font-bold'} text-xs leading-relaxed text-center mt-auto shadow-sm`}>
-                      {p.quote}
-                    </div>
-                  </div>
-                </div>
-              </TiltCard>
-            </Reveal>
-          ))}
+    <section id="about" className="relative bg-transparent overflow-hidden">
+      
+      {/* ── Intro Band with Misty Forest Background ── */}
+      <div className="relative py-20 lg:py-28 border-b border-white/5">
+        
+        {/* Background image overlay container */}
+        <div className="absolute inset-0 z-0 select-none pointer-events-none">
+          <img
+            src="/images/about_forest_bg.png"
+            alt="Misty Forest"
+            className="w-full h-full object-cover opacity-35 mix-blend-overlay"
+          />
+          <div className="absolute inset-0 bg-[#030C16]/85 backdrop-blur-[1px]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#030C16]/40 to-transparent" />
         </div>
 
-        {/* Address & Website strip with Office Setup Image */}
-        <Reveal>
-          <div className="mt-14 glass-gold rounded-3xl overflow-hidden border border-neon-gold/40 neon-border-gold shadow-2xl">
-            <div className="grid lg:grid-cols-2 gap-8 items-stretch">
-              <div className="p-6 lg:p-10 flex flex-col justify-between">
-                <div>
-                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-gold text-neon-gold text-[10px] font-bold uppercase tracking-widest mb-4">
-                    <MapPin className="w-3.5 h-3.5" /> Registered Office
-                  </div>
-                  <h3 className="font-display text-2xl lg:text-4xl font-bold text-white leading-tight mb-4">
-                    Fulia, Nadia,<br />West Bengal - 741402
-                  </h3>
-                  <p className="text-sm text-white/78 leading-relaxed mb-6 max-w-xl">
-                    Step inside BEDUINE Tour & Travels. Visit our head office in Fulia for customized tour planning, group holiday bookings, or to grab a hot cup of tea while we design your next memory.
-                  </p>
-                  
-                  {/* Highlights Grid */}
-                  <div className="grid sm:grid-cols-3 gap-3 mb-6">
-                    {officeHighlights.map((item) => (
-                      <div key={item.label} className="rounded-2xl border border-white/10 bg-white/10 px-4 py-3 backdrop-blur-md">
-                        <span className="block text-[10px] font-bold text-white/50 uppercase tracking-wider">{item.label}</span>
-                        <span className="block text-xs font-bold text-white mt-0.5">{item.value}</span>
-                      </div>
-                    ))}
-                  </div>
+        <div className="max-w-7xl mx-auto px-5 lg:px-8 relative z-10">
+          {/* Label */}
+          <Reveal>
+            <div className="flex items-center gap-4 mb-8">
+              <span className="text-[10px] uppercase tracking-[0.35em] text-[#18D7F2] font-extrabold">About Beduine</span>
+              <div className="w-12 h-px bg-[#18D7F2]/35" />
+            </div>
+          </Reveal>
 
-                  {/* Google Maps Route link */}
+          {/* Big headline + body two-col */}
+          <Reveal>
+            <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-12 lg:gap-20 items-start mb-16 relative">
+              
+              {/* Vertical floating timeline separator dot */}
+              <div className="hidden lg:block absolute left-[53%] top-1/2 -translate-y-1/2 w-8 h-px bg-[#18D7F2]/20">
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-[#18D7F2] ring-4 ring-[#18D7F2]/20" />
+              </div>
+
+              <div>
+                <h2 className="font-serif text-5xl sm:text-6xl lg:text-7xl font-extrabold text-white leading-[1.05] tracking-tight">
+                  Safar jo<br />
+                  <span className="font-serif italic text-gold-accent bg-clip-text bg-gradient-to-r from-gold-accent via-[#C89C53] to-[#B97800]">yaad rahe.</span>
+                </h2>
+                <div className="text-sm italic font-semibold text-[#18D7F2] mt-6 max-w-sm">
+                  Journeys that stay in the heart long after the destination is surpassed.
+                </div>
+              </div>
+
+              <div className="space-y-6 text-slate-300">
+                <p className="text-lg font-bold leading-relaxed text-white">
+                  BEDUINE Tour &amp; Travels is a customer-first travel company dedicated to crafting journeys that truly matter.
+                </p>
+                <p className="text-sm leading-relaxed font-semibold text-slate-400">
+                  We believe travel is a feeling—planning, a seamless escape, or an unforgettable memory. Our mission is simple: to make every trip curated, transparent, and exceptionally memorable.
+                </p>
+                <p className="text-sm leading-relaxed font-semibold text-slate-400">
+                  Our subscription model blends exclusive early-bird access, transparent benefits, and seamless planning so every journey feels personal, rewarding, and stress-free.
+                </p>
+              </div>
+            </div>
+          </Reveal>
+
+          {/* Horizontal glass indicators */}
+          <Reveal>
+            <div className="max-w-4xl mx-auto rounded-3xl border border-white/10 bg-slate-950/40 backdrop-blur-md px-8 py-6 flex flex-wrap md:flex-nowrap justify-around items-center gap-6 shadow-xl shadow-black/20 my-16 divide-y md:divide-y-0 md:divide-x divide-white/10">
+              {[
+                { icon: Gem, title: 'Subscription + Travel', desc: 'More value. More journeys.' },
+                { icon: Calendar, title: 'Weekly / Monthly', desc: 'Flexible plans for every explorer.' },
+                { icon: Globe, title: 'India & Beyond', desc: 'Explore limitless destinations.' },
+              ].map((s) => (
+                <div key={s.title} className="flex items-center gap-4 text-left w-full md:w-auto md:px-6 first:pl-0 last:pr-0 pt-4 first:pt-0 md:pt-0">
+                  <div className="w-12 h-12 rounded-full bg-[#18D7F2]/5 border border-[#18D7F2]/15 flex items-center justify-center text-[#18D7F2] shrink-0">
+                    <s.icon className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <div className="text-sm font-black text-white">{s.title}</div>
+                    <div className="text-[11px] text-slate-400 font-bold">{s.desc}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Reveal>
+        </div>
+      </div>
+
+      {/* ── What We Stand For (4 grid white cards) ── */}
+      <div className="max-w-7xl mx-auto px-5 lg:px-8 py-20">
+        <Reveal>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+            {pillars.map((p, i) => (
+              <Reveal key={p.num} delay={i * 0.1}>
+                <div className="relative group h-full">
+                  {/* Floating capsule above card */}
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-12 h-1.5 bg-[#18D7F2] rounded-full opacity-0 group-hover:opacity-100 shadow-[0_0_8px_rgba(24,215,242,0.5)] transition-opacity duration-300" />
+                  
+                  <div className="bg-slate-950/40 backdrop-blur-md rounded-[2.5rem] p-8 border border-white/10 flex flex-col items-center text-center h-full relative overflow-hidden group-hover:scale-[1.03] group-hover:border-[#18D7F2]/40 group-hover:shadow-[0_0_30px_rgba(24,215,242,0.12)] transition-all duration-300">
+                    {/* Index number at top left */}
+                    <span className="absolute top-6 left-6 font-mono text-xs font-bold text-[#18D7F2]/40 tracking-wider">{p.num}</span>
+                    
+                    {/* Glowing circular container for the icon */}
+                    <div className="w-16 h-16 rounded-full bg-[#18D7F2]/5 border border-[#18D7F2]/15 flex items-center justify-center text-[#18D7F2] mb-6 mt-2 group-hover:scale-110 group-hover:bg-[#18D7F2]/10 group-hover:border-[#18D7F2]/30 transition-all duration-300 shadow-[inset_0_1px_1px_rgba(255,255,255,0.06)]">
+                      <p.icon className="w-7 h-7 filter drop-shadow-[0_0_3px_rgba(24,215,242,0.3)]" strokeWidth={2} />
+                    </div>
+                    
+                    <h4 className="font-display text-lg font-black text-white mb-3 group-hover:text-[#18D7F2] transition-colors duration-300">{p.title}</h4>
+                    <p className="text-xs text-slate-300 leading-relaxed font-medium mb-6 max-w-[220px]">{p.text}</p>
+                    
+                    {/* Centered glowing accent bar */}
+                    <div className="w-10 h-1 bg-[#18D7F2]/70 group-hover:bg-[#18D7F2] rounded-full mt-auto group-hover:shadow-[0_0_8px_#18D7F2] transition-all duration-300" />
+                  </div>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </Reveal>
+      </div>
+
+      {/* ── Mission / Promise ── */}
+      <div className="py-20 lg:py-24 bg-transparent border-t border-white/5">
+        <div className="max-w-7xl mx-auto px-5 lg:px-8">
+          <Reveal>
+            <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+              {/* Left Column: Image */}
+              <div className="relative overflow-hidden rounded-[2.5rem] shadow-xl border border-white/5">
+                <img src="/images/about_mission.png" alt="Our Mission" className="w-full aspect-[4/3] object-cover" loading="lazy" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+                <div className="absolute bottom-6 left-6 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-black/60 border border-white/15 backdrop-blur-md text-[10px] font-black uppercase tracking-widest text-white shadow-lg">
+                  <Heart className="w-3.5 h-3.5 text-rose-500 fill-rose-500" /> Memories that last forever
+                </div>
+              </div>
+
+              {/* Right Column: Text content */}
+              <div>
+                <div className="flex items-center gap-3 mb-4">
+                  <span className="text-[10px] uppercase tracking-[0.35em] text-[#18D7F2] font-extrabold">Our Promise</span>
+                  <div className="w-8 h-px bg-[#18D7F2]/20" />
+                </div>
+                <h3 className="font-serif text-3xl lg:text-4xl font-extrabold text-white leading-tight mb-6">
+                  Travel as accessible, reliable and rewarding — for <span className="text-[#18D7F2]">everyone.</span>
+                </h3>
+                <div className="space-y-4 text-sm text-slate-300 leading-relaxed font-semibold mb-8">
+                  <p>From weekend getaways to international escapes, we design experiences that fit your needs and exceed your expectations.</p>
+                  <p>Clear information, honest pricing, and seamless support — because travel should be exciting, not complicated.</p>
+                </div>
+                <blockquote className="pl-5 border-l-[3px] border-[#18D7F2] text-sm text-[#18D7F2] font-semibold italic leading-relaxed pt-1">
+                  “ We make travel easy, memorable, and meaningful — so you can focus on what truly matters. ”
+                </blockquote>
+              </div>
+            </div>
+          </Reveal>
+        </div>
+      </div>
+
+      {/* ── Vision / Belief ── */}
+      <div className="py-20 lg:py-24 bg-transparent border-t border-white/5">
+        <div className="max-w-7xl mx-auto px-5 lg:px-8">
+          <Reveal>
+            <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+              {/* Left Column: Text */}
+              <div className="order-2 lg:order-1">
+                <div className="flex items-center gap-3 mb-4">
+                  <span className="text-[10px] uppercase tracking-[0.35em] text-[#18D7F2] font-extrabold">Our Belief</span>
+                  <div className="w-8 h-px bg-[#18D7F2]/20" />
+                </div>
+                <h3 className="font-serif text-3xl lg:text-4xl font-extrabold text-white leading-tight mb-6">
+                  Revolutionizing travel with a model that is <span className="text-[#18D7F2]">sustainable, inclusive,</span> and <span className="text-[#18D7F2]">radically transparent.</span>
+                </h3>
+                <div className="space-y-4 text-sm text-slate-300 leading-relaxed font-semibold mb-8">
+                  <p>We support local communities, partner with responsible vendors, and promote experiences that respect people and the planet.</p>
+                  <p>Our inclusive approach ensures every traveler feels welcome, valued, and heard.</p>
+                  <p>Our culture is grounded in fairness, communication, and trust — because good travel builds a better world.</p>
+                </div>
+                <div className="flex items-center gap-3 text-[#18D7F2] font-bold text-sm bg-[#18D7F2]/5 border border-[#18D7F2]/10 rounded-2xl px-5 py-3.5">
+                  <div className="w-8 h-8 rounded-full bg-[#18D7F2]/10 flex items-center justify-center text-[#18D7F2] shrink-0">
+                    <Sparkles className="w-4 h-4" />
+                  </div>
+                  <span>Travel for good today—journeys that build a better tomorrow.</span>
+                </div>
+              </div>
+
+              {/* Right Column: Image */}
+              <div className="relative overflow-hidden rounded-[2.5rem] shadow-xl border border-white/5 order-1 lg:order-2">
+                <img src="/images/about_vision.png" alt="Our Vision" className="w-full aspect-[4/3] object-cover" loading="lazy" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+                <div className="absolute bottom-6 left-6 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-black/60 border border-white/15 backdrop-blur-md text-[10px] font-black uppercase tracking-widest text-white shadow-lg">
+                  <Globe className="w-3.5 h-3.5 text-gold-accent" /> Connected. Responsible. Rewarding.
+                </div>
+              </div>
+            </div>
+          </Reveal>
+        </div>
+      </div>
+
+      {/* ── Registered Office Strip ── */}
+      <div className="bg-[#0b130f] py-20 lg:py-24 relative z-10 border-t border-white/10">
+        <div className="max-w-7xl mx-auto px-5 lg:px-8">
+          <Reveal>
+            <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-12 lg:gap-16 items-center">
+              <div>
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gold-accent/10 border border-gold-accent/20 text-[#C89C53] text-[10px] font-bold uppercase tracking-widest mb-6 font-mono">
+                  <MapPin className="w-3.5 h-3.5" /> Visit Our Office
+                </div>
+                <h3 className="font-serif text-3xl lg:text-5xl font-black text-white leading-tight mb-5">
+                  Fulia, Nadia,<br /><span className="text-white/50">West Bengal — 741402</span>
+                </h3>
+                <p className="text-sm text-white/70 leading-relaxed mb-8 max-w-md">
+                  Plan your next great escape from our home base. We're here to help you dream, plan, and travel better — every step of the way.
+                </p>
+
+                {/* Highlights List */}
+                <div className="space-y-4 mb-8">
+                  {officeHighlights.map((item) => (
+                    <div key={item.label} className="flex items-center gap-4 text-white/90">
+                      <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gold-accent">
+                        <item.icon className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <div className="text-[10px] text-white/40 uppercase tracking-wider font-mono">{item.label}</div>
+                        <div className="text-sm font-bold mt-0.5">{item.value}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* 2-line visual action buttons */}
+                <div className="flex flex-wrap gap-4 pt-6 border-t border-white/10">
                   <a
                     href={officeMapsUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="group inline-flex w-full sm:w-auto items-center justify-between gap-4 rounded-2xl border border-cyan/30 bg-cyan/10 px-4 py-3 text-left no-underline transition-all hover:bg-cyan/15 hover:border-cyan/55"
+                    className="inline-flex items-center gap-3 px-5 py-2.5 rounded-xl bg-[#138A8A] text-white text-sm hover:scale-[1.02] transition-all no-underline text-left group border border-[#138A8A]/20 cursor-pointer shadow-lg shadow-[#138A8A]/10"
                   >
-                    <span className="flex items-center gap-3">
-                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#138A8A] to-[#00A676] text-white shadow-lg shadow-teal-500/25">
-                        <MapPin className="w-5 h-5" />
-                      </span>
-                      <span>
-                        <span className="block text-sm font-black text-white">Open Fulia office route</span>
-                        <span className="block text-[11px] text-cyan font-semibold">Google Maps location link</span>
-                      </span>
-                    </span>
-                    <ArrowRight className="w-4 h-4 text-cyan transition-transform group-hover:translate-x-1" />
+                    <MapPin className="w-5 h-5 text-white shrink-0 group-hover:animate-bounce" />
+                    <div>
+                      <div className="text-xs font-black uppercase tracking-wider leading-none">Open Office Location</div>
+                      <div className="text-[9px] text-white/75 mt-0.5 font-medium">In Google Maps</div>
+                    </div>
                   </a>
-                </div>
-
-                <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3 pt-6 mt-6 border-t border-white/10">
-                  <a href="https://www.beduine.in" target="_blank" rel="noreferrer" data-magnetic className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full border border-cyan/50 text-cyan text-sm font-semibold hover:bg-cyan/10 transition-all"><Globe className="w-4 h-4" />www.beduine.in</a>
-                  <a href="tel:+918768903565" data-magnetic className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full border border-neon-gold/50 text-neon-gold text-sm font-semibold hover:bg-neon-gold/10 transition-all"><Phone className="w-4 h-4" />+91 87689 03565</a>
+                  
+                  <a
+                    href="https://www.beduine.in"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-3 px-5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm hover:bg-white/10 transition-all no-underline text-left cursor-pointer"
+                  >
+                    <Camera className="w-5 h-5 text-gold-accent shrink-0" />
+                    <div>
+                      <div className="text-xs font-bold uppercase tracking-wider leading-none text-white/90">View Gallery</div>
+                      <div className="text-[9px] text-white/50 mt-0.5 font-medium">Office &amp; Experiences</div>
+                    </div>
+                  </a>
+                  
+                  <a
+                    href="tel:+917929085086"
+                    className="inline-flex items-center gap-3 px-5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm hover:bg-white/10 transition-all no-underline text-left cursor-pointer"
+                  >
+                    <Phone className="w-5 h-5 text-gold-accent shrink-0" />
+                    <div>
+                      <div className="text-xs font-bold uppercase tracking-wider leading-none text-white/90">+91 79290 85086</div>
+                      <div className="text-[9px] text-white/50 mt-0.5 font-medium">Call or Whatsapp</div>
+                    </div>
+                  </a>
                 </div>
               </div>
-              <div className="relative min-h-[420px] lg:min-h-full overflow-hidden group bg-slate-950">
-                <img src="/images/office_setup.png" alt="BEDUINE Fulia office reception" className="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700" />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-slate-950/10 to-transparent" />
-                
-                {/* Badge Left */}
-                <div className="absolute left-5 top-5 z-10 inline-flex items-center gap-2 rounded-full border border-white/15 bg-slate-950/55 px-3 py-1.5 text-[10px] font-black uppercase tracking-widest text-white backdrop-blur-md">
-                  <ShieldCheck className="w-3.5 h-3.5 text-neon-gold" /> Fulia Head Office
-                </div>
-                
-                {/* Logo Wall Close-up Overlay Right */}
-                <div className="absolute right-5 top-5 z-10 hidden sm:block w-36 overflow-hidden rounded-3xl border border-white/15 bg-slate-950/50 p-1.5 shadow-2xl backdrop-blur-md text-left">
-                  <img src="/images/office_logo.png" alt="BEDUINE office logo wall" className="h-32 w-full rounded-2xl object-cover object-center" loading="lazy" />
-                  <div className="px-2 py-2 text-[10px] font-bold text-white/85">Logo wall close-up</div>
-                </div>
 
-                {/* Bottom Overlay with Subscribe Now button */}
-                <div className="absolute bottom-5 left-5 right-5 z-10 p-4 bg-slate-950/80 border border-white/10 rounded-2xl backdrop-blur-md flex items-center justify-between gap-4 flex-wrap sm:flex-nowrap">
-                  <div className="text-left">
-                    <div className="text-xs text-neon-gold font-mono">// Fulia HQ Setup</div>
-                    <div className="font-display font-semibold text-white text-sm mt-0.5">Welcome to BEDUINE Tour & Travels</div>
+              {/* Stacked Map and Office Photo */}
+              <div className="flex flex-col gap-6 w-full">
+                {/* Card 1: Interactive Live Map */}
+                <a
+                  href={officeMapsUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="relative overflow-hidden rounded-[2.5rem] shadow-2xl group border border-white/10 h-[260px] md:h-[280px] w-full block cursor-pointer glass"
+                >
+                  <iframe
+                    src="https://maps.google.com/maps?q=Beduine%20Tour%20And%20Travels%20Pvt.%20Ltd,%20Fulia&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0, pointerEvents: 'none' }}
+                    allowFullScreen={true}
+                    loading="lazy"
+                    title="Beduine Tour And Travels Location Map"
+                    className="w-full h-full opacity-70 group-hover:opacity-95 group-hover:scale-[1.03] transition-all duration-700 ease-out"
+                  />
+                  <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors duration-300" />
+                  <div className="absolute bottom-6 left-6 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-black/75 border border-white/10 backdrop-blur-md text-[10px] font-black uppercase tracking-widest text-white shadow-lg z-10">
+                    <MapPin className="w-3.5 h-3.5 text-rose-500 fill-rose-500 animate-pulse" /> Live Location (Click to Navigate)
                   </div>
-                  <a href="#plans" className="shrink-0 w-full sm:w-auto">
-                    <button className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-gradient-to-r from-yellow-400 via-amber-400 to-yellow-500 hover:from-yellow-500 hover:via-amber-500 hover:to-yellow-600 text-slate-950 text-xs font-black uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-lg shadow-yellow-500/20 hover:scale-[1.03] transition-all duration-300 cursor-pointer border-none">
-                      <Crown className="w-4 h-4 fill-current" />
-                      Subscribe Now
-                    </button>
-                  </a>
+                </a>
+
+                {/* Card 2: Office Photo */}
+                <div className="relative overflow-hidden rounded-[2.5rem] shadow-2xl group border border-white/10 h-[260px] md:h-[280px] w-full glass">
+                  <img src="/images/office_setup.png" alt="BEDUINE office setup" className="w-full h-full object-cover opacity-70 group-hover:opacity-95 group-hover:scale-[1.03] transition-all duration-700 ease-out" loading="lazy" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                  <div className="absolute bottom-6 left-6 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-black/75 border border-white/10 backdrop-blur-md text-[10px] font-black uppercase tracking-widest text-white shadow-lg z-10">
+                    <ShieldCheck className="w-3.5 h-3.5 text-gold-accent" /> Your journey begins here.
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </Reveal>
+          </Reveal>
+        </div>
       </div>
     </section>
   );
@@ -1044,8 +1204,8 @@ function HowItWorks() {
   const steps = [
     { n: '01', icon: CreditCard, title: 'Choose Your Plan', desc: 'Select from our Silver, Gold, or Platinum tiers (domestic & international plans).', details: ['12-month validity', 'Clear credit options', '18+ membership only'], img: '/images/beduin_travel_hero_1779521651766.png' },
     { n: '02', icon: FileCheck2, title: 'Complete Verification', desc: 'Securely submit your inquiry and confirm age requirements to activate benefits.', details: ['WhatsApp Activation', '18+ age verification', 'Secure processing'], img: '/images/office_setup.png' },
-    { n: '03', icon: Wallet, title: 'Get Your Credits', desc: 'Get your Lucky Draw Credit (LDC) token and Discount Credits (DCs) loaded.', details: ['1 LDC token received', 'â‚¹500 discount credits', 'Value floor guaranteed'], img: '/images/lucky_draw_ticket_1779521667122.png' },
-    { n: '04', icon: Gift, title: 'Travel & Save', desc: 'Enjoy weekly promotional winner benefits or apply discount credits on paid bookings.', details: ['Weekly winner draws', 'â‚¹500 off per booking', 'Non-cash travel benefits'], img: '/images/happy_family_travelers.png' },
+    { n: '03', icon: Wallet, title: 'Get Your Credits', desc: 'Get your Lucky Draw Credit (LDC) token and Discount Credits (DCs) loaded.', details: ['1 LDC token received', '₹500 discount credits', 'Value floor guaranteed'], img: '/images/lucky_draw_ticket_1779521667122.png' },
+    { n: '04', icon: Gift, title: 'Travel & Save', desc: 'Enjoy weekly promotional winner benefits or apply discount credits on paid bookings.', details: ['Weekly winner draws', '₹500 off per booking', 'Non-cash travel benefits'], img: '/images/happy_family_travelers.png' },
   ];
   return (
     <section id="how" className="relative py-14 lg:py-20 overflow-hidden">
@@ -1152,22 +1312,22 @@ function PlanCard({ plan, index, onSelectPlan }: { plan: typeof PLANS[number]; i
             {plan.name === 'Silver' ? (
               <div className="relative overflow-visible">
                 <div className="flex items-baseline gap-1 relative z-10">
-                  <span className="text-neon-gold text-lg font-bold">â‚¹</span>
+                  <span className="text-neon-gold text-lg font-bold">₹</span>
                   <span className="font-display text-5xl font-black text-white tracking-tight tabular">{plan.price}</span>
                   <span className="text-slate-400 font-extrabold text-sm">/ 12 mo</span>
                 </div>
               </div>
             ) : (
               <div className="flex items-baseline gap-1">
-                <span className="text-neon-gold text-lg font-bold">â‚¹</span>
+                <span className="text-neon-gold text-lg font-bold">₹</span>
                 <span className="font-display text-5xl font-black text-white tracking-tight tabular">{plan.price}</span>
                 <span className="text-slate-400 font-extrabold text-sm">/ 12 mo</span>
               </div>
             )}
-            <div className="mt-2 text-sm text-slate-300 font-bold">Winner tour value up to <span className="font-extrabold text-white">â‚¹{plan.tourValue.toLocaleString('en-IN')}</span> - {plan.duration}</div>
+            <div className="mt-2 text-sm text-slate-300 font-bold">Winner tour value up to <span className="font-extrabold text-white">₹{plan.tourValue.toLocaleString('en-IN')}</span> - {plan.duration}</div>
             <div className="mt-4 flex items-start gap-2 rounded-xl border border-emerald-400/25 bg-emerald-400/10 p-3 text-sm font-black leading-snug text-emerald-100">
               <Wallet className="mt-0.5 h-4 w-4 shrink-0 text-emerald-300" />
-              <span>Pay â‚¹{plan.price.toLocaleString('en-IN')}. If not selected, use â‚¹{creditValue} as travel credit.</span>
+              <span>Pay ₹{plan.price.toLocaleString('en-IN')}. If not selected, use ₹{creditValue} as travel credit.</span>
             </div>
           </div>
 
@@ -1180,7 +1340,7 @@ function PlanCard({ plan, index, onSelectPlan }: { plan: typeof PLANS[number]; i
 
           <div className="px-7 pb-5">
             <div className="grid grid-cols-3 gap-2">
-              {[{ l: 'Discount Credits', v: `â‚¹ ${plan.discountValue.toLocaleString('en-IN')}` }, { l: 'Paid Tour Off', v: `Up to ${plan.paidDiscount}` }, { l: 'Name Change', v: plan.nameChange }].map((c) => (
+              {[{ l: 'Discount Credits', v: `₹ ${plan.discountValue.toLocaleString('en-IN')}` }, { l: 'Paid Tour Off', v: `Up to ${plan.paidDiscount}` }, { l: 'Name Change', v: plan.nameChange }].map((c) => (
                 <div key={c.l} className="bg-slate-900/60 border border-slate-800/50 rounded-lg p-2.5">
                   <div className="text-[9px] uppercase tracking-widest text-slate-400 font-bold">{c.l}</div>
                   <div className="text-xs font-black text-slate-100 mt-0.5">{c.v}</div>
@@ -1418,10 +1578,10 @@ function IntlPlanCard({ plan, index }: { plan: typeof INTL_PLANS[number]; index:
               <span className="font-display text-5xl font-black text-white tracking-tight tabular">{plan.price.toLocaleString('en-IN')}</span>
               <span className="text-slate-400 font-extrabold text-sm">/ 12 mo</span>
             </div>
-            <div className="mt-2 text-sm text-slate-300 font-bold">Winner tour value up to <span className="font-extrabold text-white">â‚¹{plan.tourValue.toLocaleString('en-IN')}</span> - {plan.duration}</div>
+            <div className="mt-2 text-sm text-slate-300 font-bold">Winner tour value up to <span className="font-extrabold text-white">₹{plan.tourValue.toLocaleString('en-IN')}</span> - {plan.duration}</div>
             <div className="mt-4 flex items-start gap-2 rounded-xl border border-cyan/25 bg-cyan/10 p-3 text-sm font-black leading-snug text-cyan-bright">
               <Wallet className="mt-0.5 h-4 w-4 shrink-0" />
-              <span>Pay â‚¹{plan.price.toLocaleString('en-IN')}. If not selected, use â‚¹{creditValue} as travel credit.</span>
+              <span>Pay ₹{plan.price.toLocaleString('en-IN')}. If not selected, use ₹{creditValue} as travel credit.</span>
             </div>
           </div>
 
@@ -1434,7 +1594,7 @@ function IntlPlanCard({ plan, index }: { plan: typeof INTL_PLANS[number]; index:
 
           <div className="px-7 pb-5">
             <div className="grid grid-cols-3 gap-2">
-              {[{ l: 'Discount Credits', v: `â‚¹ ${plan.discountValue.toLocaleString('en-IN')}` }, { l: 'Tour Discount', v: plan.paidDiscount.startsWith('Up to') ? plan.paidDiscount : `Up to ${plan.paidDiscount}` }, { l: 'Name Change', v: plan.nameChange }].map((c) => (
+              {[{ l: 'Discount Credits', v: `₹ ${plan.discountValue.toLocaleString('en-IN')}` }, { l: 'Tour Discount', v: plan.paidDiscount.startsWith('Up to') ? plan.paidDiscount : `Up to ${plan.paidDiscount}` }, { l: 'Name Change', v: plan.nameChange }].map((c) => (
                 <div key={c.l} className="bg-slate-900/60 border border-slate-800/50 rounded-lg p-2.5">
                   <div className="text-[9px] uppercase tracking-widest text-slate-400 font-bold">{c.l}</div>
                   <div className="text-xs font-black text-slate-100 mt-0.5">{c.v}</div>
@@ -1898,21 +2058,21 @@ function CreditArchitecture(_props: { activePlan: string | null; ldcTokens: numb
       rule: '1 Credit = 1 Entry in the weekly Lucky Draw',
       details: ['Automatically added upon payment verification', 'Used every Sunday to activate draw entry', 'Ticket ID confirmed and locked for that week', 'No extra credits can be purchased - fair chance for all'] },
     { type: 'DC', name: 'Discount Credits', icon: CreditCard, accent: 'teal',
-      desc: 'These act as the protective floor for non-winners. If a user does not win, these credits allow them to claim a flat â‚¹500 off per tour booking.',
+      desc: 'These act as the protective floor for non-winners. If a user does not win, these credits allow them to claim a flat ₹500 off per tour booking.',
       rule: '1 Tour Booking = 1 Discount Credit applied',
-      details: ['Domestic: â‚¹500 discount per credit (Up to â‚¹2,000 safety floor)', 'International: â‚¹500 discount per credit (Up to â‚¹20,000 safety floor)', 'Credits never expire and stack across bookings', 'Credits visible on your digital dashboard'] },
+      details: ['Domestic: ₹500 discount per credit (Up to ₹2,000 safety floor)', 'International: ₹500 discount per credit (Up to ₹20,000 safety floor)', 'Credits never expire and stack across bookings', 'Credits visible on your digital dashboard'] },
   ];
 
   const domesticCredits = [
-    { plan: 'Silver', price: 'â‚¹499', ldc: '1', dc: 'â‚¹500', total: 'â‚¹500', color: 'from-slate-500 to-slate-700', image: '/images/sundarbans_mangrove_1779521789593.png' },
-    { plan: 'Gold', price: 'â‚¹799', ldc: '1', dc: 'â‚¹1,000', total: 'â‚¹1,000', color: 'from-teal-400 to-emerald-600', image: '/images/darjeeling_tea_1779521805614.png' },
-    { plan: 'Platinum', price: 'â‚¹1,499', ldc: '1', dc: 'â‚¹2,000', total: 'â‚¹2,000', color: 'from-neon-gold to-gold-deep', image: '/images/kashmir_dal_lake_1779521728036.png' },
+    { plan: 'Silver', price: '₹499', ldc: '1', dc: '₹500', total: '₹500', color: 'from-slate-500 to-slate-700', image: '/images/sundarbans_mangrove_1779521789593.png' },
+    { plan: 'Gold', price: '₹799', ldc: '1', dc: '₹1,000', total: '₹1,000', color: 'from-teal-400 to-emerald-600', image: '/images/darjeeling_tea_1779521805614.png' },
+    { plan: 'Platinum', price: '₹1,499', ldc: '1', dc: '₹2,000', total: '₹2,000', color: 'from-neon-gold to-gold-deep', image: '/images/kashmir_dal_lake_1779521728036.png' },
   ];
 
   const intlCredits = [
-    { plan: 'Silver', price: 'â‚¹4,999', ldc: '1 (Monthly)', dc: 'â‚¹5,000', total: 'â‚¹5,000', color: 'from-sky-400 to-blue-600', image: '/images/nepal.png' },
-    { plan: 'Gold', price: 'â‚¹7,999', ldc: '1 (Monthly)', dc: 'â‚¹10,000', total: 'â‚¹10,000', color: 'from-emerald-400 to-teal-600', image: '/images/thailand.png' },
-    { plan: 'Platinum', price: 'â‚¹14,999', ldc: '1 (Monthly)', dc: 'â‚¹20,000', total: 'â‚¹20,000', color: 'from-cyan via-cyan-bright to-cyan-deep', image: '/images/vietnam.png' },
+    { plan: 'Silver', price: '₹4,999', ldc: '1 (Monthly)', dc: '₹5,000', total: '₹5,000', color: 'from-sky-400 to-blue-600', image: '/images/nepal.png' },
+    { plan: 'Gold', price: '₹7,999', ldc: '1 (Monthly)', dc: '₹10,000', total: '₹10,000', color: 'from-emerald-400 to-teal-600', image: '/images/thailand.png' },
+    { plan: 'Platinum', price: '₹14,999', ldc: '1 (Monthly)', dc: '₹20,000', total: '₹20,000', color: 'from-cyan via-cyan-bright to-cyan-deep', image: '/images/vietnam.png' },
   ];
 
   const currentCredits = activeTab === 'domestic' ? domesticCredits : intlCredits;
@@ -2020,7 +2180,7 @@ function CreditArchitecture(_props: { activePlan: string | null; ldcTokens: numb
                         <div className="text-left">
                           <div className="text-[9px] uppercase tracking-widest text-slate-400 font-mono">Value</div>
                           <div className="text-3xl font-display font-black text-[#F7B500] tracking-tight leading-none drop-shadow-[0_0_8px_rgba(247,181,0,0.35)]">
-                            â‚¹500
+                            ₹500
                           </div>
                         </div>
                         <div className="h-10 w-px border-l border-dashed border-slate-700/40" />
@@ -2237,7 +2397,7 @@ function NonWinnerGuarantee() {
       example: {
         name: 'Riya Das',
         avatar: '/images/winner_priya_sen.png',
-        story: 'Riya subscribed to Silver for â‚¹499. She didn\'t win the draw, but used her 1 Discount Credit to get â‚¹500 off her Sundarban trip. She saved â‚¹1 more than she paid!'
+        story: 'Riya subscribed to Silver for ₹499. She didn\'t win the draw, but used her 1 Discount Credit to get ₹500 off her Sundarban trip. She saved ₹1 more than she paid!'
       },
     },
     {
@@ -2248,7 +2408,7 @@ function NonWinnerGuarantee() {
       example: {
         name: 'Arjun Roy',
         avatar: '/images/winner_arjun_roy.png',
-        story: 'Arjun paid â‚¹799 for Gold. He didn\'t win, but used his 2 DCs on two separate tours - â‚¹500 off each. Total savings: â‚¹1,000 on a â‚¹799 investment!'
+        story: 'Arjun paid ₹799 for Gold. He didn\'t win, but used his 2 DCs on two separate tours - ₹500 off each. Total savings: ₹1,000 on a ₹799 subscription!'
       },
     },
     {
@@ -2259,7 +2419,7 @@ function NonWinnerGuarantee() {
       example: {
         name: 'Priya Sen',
         avatar: '/images/winner_ananya_das.png',
-        story: 'Priya invested â‚¹1,499 in Platinum. She didn\'t win, but received 4 DCs - â‚¹500 off on 4 different tours = â‚¹2,000 total savings. That\'s 133% return!'
+        story: 'Priya subscribed to Platinum for ₹1,499. She didn\'t win, but received 4 DCs - ₹500 off on 4 different tours = ₹2,000 total savings. That\'s 133% value recovery!'
       },
     },
   ];
@@ -2269,7 +2429,7 @@ function NonWinnerGuarantee() {
     { q: 'How long is the subscription valid?', a: '12 months from activation.' },
     { q: 'Is the subscription refundable?', a: 'No, subscription fees are non-refundable and non-transferable.' },
     { q: 'Can I exchange winner benefits for cash?', a: 'No, winner tour benefits cannot be exchanged for cash or other packages.' },
-    { q: 'What is 1 Discount Credit?', a: '1 Discount Credit equals â‚¹500 discount for 1 person on an eligible paid tour booking.' },
+    { q: 'What is 1 Discount Credit?', a: '1 Discount Credit equals ₹500 discount for 1 person on an eligible paid tour booking.' },
     { q: 'Can domestic credits be used for international tours?', a: 'No, domestic and international credits cannot be interchanged.' },
     { q: 'How are winners selected?', a: 'Winners are selected through RNG or an approved automated digital system from active valid participants.' }
   ];
@@ -2287,11 +2447,11 @@ function NonWinnerGuarantee() {
               <KineticText text="Didn't win?" />
               <br /><span className="gold-shimmer"><KineticText text="You still win." delay={0.3} /></span>
             </h2>
-            <p className="mt-6 text-ink/70 text-lg leading-relaxed">Every subscriber gets guaranteed value back through Discount Credits (DC). Each DC = â‚¹500 flat discount on any domestic tour. Your subscription cost is always fully recovered - and then some.</p>
+            <p className="mt-6 text-ink/70 text-lg leading-relaxed">Every subscriber gets guaranteed value back through Discount Credits (DC). Each DC = ₹500 flat discount on any domestic tour. Your subscription cost is always fully recovered - and then some.</p>
           </div>
         </Reveal>
 
-        {/* â‚¹499 = â‚¹500 Guarantee Badge */}
+        {/* ₹499 = ₹500 Guarantee Badge */}
         <Reveal>
           <div className="glass rounded-3xl p-8 lg:p-12 border border-amber-500/30 mb-16 shadow-[0_0_50px_-10px_rgba(245,158,11,0.22),inset_0_1px_0_rgba(255,255,255,0.06)] text-center relative overflow-hidden">
             <div className="absolute -top-20 -left-20 w-60 h-60 rounded-full bg-amber-500/10 blur-3xl" />
@@ -2303,11 +2463,11 @@ function NonWinnerGuarantee() {
                 </div>
               </FloatingIcon>
               <div className="font-display text-4xl lg:text-6xl font-bold mb-4 flex items-center justify-center gap-3 select-none">
-                <span className="text-white">â‚¹499</span>
+                <span className="text-white">₹499</span>
                 <span className="text-amber-400 animate-pulse font-mono font-medium">=</span>
-                <span className="bg-gradient-to-r from-[#FFF6C3] via-[#FDE047] to-[#F59E0B] bg-clip-text text-transparent">â‚¹500</span>
+                <span className="bg-gradient-to-r from-[#FFF6C3] via-[#FDE047] to-[#F59E0B] bg-clip-text text-transparent">₹500</span>
               </div>
-              <p className="text-lg text-ink/75 max-w-xl mx-auto leading-relaxed">Every â‚¹499 in your subscription maps directly to â‚¹500 of real tour discount value. <span className="text-[#00F5D4] font-black">Zero loss. Guaranteed.</span></p>
+              <p className="text-lg text-ink/75 max-w-xl mx-auto leading-relaxed">Every ₹499 in your subscription maps directly to ₹500 of real tour discount value. <span className="text-[#00F5D4] font-black">Zero loss. Guaranteed.</span></p>
               <div className="mt-6 inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-black/45 border border-emerald-500/30 shadow-lg backdrop-blur-md">
                 <CheckCircle2 className="w-4 h-4 text-emerald-400" />
                 <span className="text-sm text-emerald-400 font-semibold">100%+ Value Recovery on Every Plan</span>
@@ -2338,7 +2498,7 @@ function NonWinnerGuarantee() {
                       </div>
                       <div>
                         <div className="font-display text-lg font-bold text-ink drop-shadow-sm">{card.plan}</div>
-                        <div className="text-[10px] text-ink/60 font-mono">â‚¹{card.price} / 12 months</div>
+                        <div className="text-[10px] text-ink/60 font-mono">₹{card.price} / 12 months</div>
                       </div>
                     </div>
                   </div>
@@ -2349,12 +2509,12 @@ function NonWinnerGuarantee() {
                       <div className="flex items-center justify-between mb-3">
                         <div className="text-center">
                           <div className="text-[9px] uppercase tracking-widest text-ink/40 mb-1">You Pay</div>
-                          <div className="font-display text-lg font-bold text-ink">â‚¹{card.price}</div>
+                          <div className="font-display text-lg font-bold text-ink">₹{card.price}</div>
                         </div>
                         <ArrowRight className="w-5 h-5 text-neon-gold" />
                         <div className="text-center">
                           <div className="text-[9px] uppercase tracking-widest text-ink/40 mb-1">You Get Back</div>
-                          <div className="font-display text-lg font-bold text-emerald-400">â‚¹{card.dcValue.toLocaleString()}</div>
+                          <div className="font-display text-lg font-bold text-emerald-400">₹{card.dcValue.toLocaleString()}</div>
                         </div>
                       </div>
                       {/* ROI Progress Bar */}
@@ -2369,7 +2529,7 @@ function NonWinnerGuarantee() {
                       </div>
                       <div className="flex justify-between mt-2">
                         <span className="text-[9px] text-ink/40 font-mono">0%</span>
-                        <span className="text-xs font-bold text-emerald-400 font-mono">{card.roi}% ROI</span>
+                        <span className="text-xs font-bold text-emerald-400 font-mono">{card.roi}% Recovery</span>
                       </div>
                     </div>
 
@@ -2380,7 +2540,7 @@ function NonWinnerGuarantee() {
                         <span className="text-sm font-bold text-neon-gold">{card.dc} Discount Credit{card.dc > 1 ? 's' : ''}</span>
                       </div>
                       <div className="text-xs text-ink/60 leading-relaxed">
-                        = {card.dc} x â‚¹500 = <span className="text-emerald-400 font-bold">â‚¹{card.dcValue.toLocaleString()} off</span> on {card.dc} domestic tour{card.dc > 1 ? 's' : ''}
+                        = {card.dc} x ₹500 = <span className="text-emerald-400 font-bold">₹{card.dcValue.toLocaleString()} off</span> on {card.dc} domestic tour{card.dc > 1 ? 's' : ''}
                       </div>
                     </div>
 
@@ -2430,7 +2590,7 @@ function NonWinnerGuarantee() {
                 </div>
                 <div className="rounded-xl p-3 bg-emerald-500/10 border border-emerald-500/20 flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                  <span className="text-xs text-emerald-400 font-semibold">Net ROI: {card.roi}% - Paid â‚¹{card.price}, got â‚¹{card.dcValue.toLocaleString()} value</span>
+                  <span className="text-xs text-emerald-400 font-semibold">Value Back: {card.roi}% - Paid ₹{card.price}, got ₹{card.dcValue.toLocaleString()} value</span>
                 </div>
               </div>
             </Reveal>

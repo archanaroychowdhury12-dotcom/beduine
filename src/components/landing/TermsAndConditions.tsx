@@ -61,7 +61,7 @@ export function TermsAndConditions() {
       id: 'E',
       title: 'E. Discount Credit (DC) Policy',
       content: `General Rules:
-30. 1 Discount Credit (DC) = 1 Person = â‚¹500 Discount.
+30. 1 Discount Credit (DC) = 1 Person = ₹500 Discount.
 31. A maximum of one (1) Discount Credit can be used per person per tour booking.
 32. Multiple Discount Credits cannot be combined for a single person's tour cost.
 33. Discount Credits are applicable only on Beduin Tour & Travels Paid Tour Packages.
@@ -70,7 +70,7 @@ export function TermsAndConditions() {
 36. Unused Discount Credits automatically expire upon subscription expiry.
 
 Silver Plan (1 DC):
-37. 1 DC = 1 Tour Booking (Subscriber Only). The subscriber may use the credit for one paid tour booking and receive a flat â‚¹500 discount.
+37. 1 DC = 1 Tour Booking (Subscriber Only). The subscriber may use the credit for one paid tour booking and receive a flat ₹500 discount.
 
 Gold Plan (2 DC):
 38. Option A â€“ Two Separate Tours:

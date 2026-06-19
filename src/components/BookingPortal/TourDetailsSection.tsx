@@ -6,11 +6,23 @@ interface TourDetailsSectionProps {
   tour: TourPackage;
   isPrivateTour: boolean;
   setIsPrivateTour: (isPrivate: boolean) => void;
+  isInsuranceSelected: boolean;
+  setIsInsuranceSelected: (selected: boolean) => void;
+  planDetails?: any;
+  isInternationalTour: boolean;
 }
 
 const formatINR = (value: number) => `INR ${value.toLocaleString('en-IN')}`;
 
-export const TourDetailsSection: React.FC<TourDetailsSectionProps> = ({ tour, isPrivateTour, setIsPrivateTour }) => {
+export const TourDetailsSection: React.FC<TourDetailsSectionProps> = ({
+  tour,
+  isPrivateTour,
+  setIsPrivateTour,
+  isInsuranceSelected,
+  setIsInsuranceSelected,
+  planDetails,
+  isInternationalTour
+}) => {
   const [activeTab, setActiveTab] = useState<'itinerary' | 'places' | 'inclusions' | 'guide'>('itinerary');
   const [expandedDays, setExpandedDays] = useState<number[]>([1, 2]);
 
@@ -120,6 +132,89 @@ export const TourDetailsSection: React.FC<TourDetailsSectionProps> = ({ tour, is
           </div>
         </div>
       </div>
+
+      {/* Travel Insurance and Medical Cover Upgrade Box (Only for International Tours) */}
+      {isInternationalTour && (
+        <div className="bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900 text-white p-8 rounded-3xl mb-12 shadow-2xl border border-slate-800 text-left relative overflow-hidden group">
+          {/* Soft glowing ambient backgrounds */}
+          <div className="absolute -top-24 -right-24 w-48 h-48 rounded-full bg-emerald-500/10 blur-[60px] group-hover:bg-emerald-500/15 transition-all duration-700"></div>
+          <div className="absolute -bottom-24 -left-24 w-48 h-48 rounded-full bg-teal-500/10 blur-[60px] group-hover:bg-teal-500/15 transition-all duration-700"></div>
+
+          <div className="absolute top-0 right-0 p-8 opacity-10 pointer-events-none group-hover:scale-105 transition-transform duration-700">
+            <ShieldAlert className="w-48 h-48 text-emerald-400" />
+          </div>
+
+          <div className="relative z-10 max-w-3xl space-y-5">
+            <div className="flex items-center justify-between flex-wrap gap-3">
+              <div className="inline-flex items-center space-x-2 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-3.5 py-1.5 rounded-full text-[11px] font-black uppercase tracking-wider">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-450 animate-pulse" />
+                <span>Travel Protection & Medical Cover</span>
+              </div>
+            </div>
+            
+            <div className="space-y-2">
+              <h3 className="font-serif-premium text-2xl sm:text-3xl font-bold tracking-tight text-white group-hover:text-emerald-300 transition-colors duration-300">
+                Secure Your Expedition Peace of Mind
+              </h3>
+              <p className="text-slate-300 text-sm leading-relaxed max-w-2xl">
+                Get emergency medical assistance, trip cancellation coverage, and lost baggage reimbursement. Dynamic rates are automatically calculated based on your subscription tier.
+              </p>
+            </div>
+
+            {/* Bullet specifications */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-1 text-xs text-slate-350 font-bold">
+              <div className="flex items-center space-x-2.5 bg-white/5 border border-white/5 px-4 py-3 rounded-2xl">
+                <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                <span>₹5 Lakh Emergency Medical</span>
+              </div>
+              <div className="flex items-center space-x-2.5 bg-white/5 border border-white/5 px-4 py-3 rounded-2xl">
+                <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                <span>Trip Interruption Cover</span>
+              </div>
+              <div className="flex items-center space-x-2.5 bg-white/5 border border-white/5 px-4 py-3 rounded-2xl">
+                <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                <span>24/7 SOS Support</span>
+              </div>
+            </div>
+            
+            <div className="pt-4 flex flex-col sm:flex-row items-center gap-4">
+              <button
+                type="button"
+                onClick={() => setIsInsuranceSelected(false)}
+                className={`w-full sm:w-auto px-7 py-4 rounded-2xl font-extrabold text-sm transition-all duration-300 flex items-center justify-center space-x-2.5 cursor-pointer ${
+                  !isInsuranceSelected
+                    ? 'bg-amber-500 text-slate-950 shadow-lg shadow-amber-500/20 scale-102 hover:scale-105'
+                    : 'bg-slate-800/80 hover:bg-slate-800 text-slate-400 border border-slate-700 hover:text-slate-200'
+                }`}
+              >
+                <CheckCircle2 className={`w-4 h-4 ${!isInsuranceSelected ? 'text-slate-950' : 'text-slate-500'}`} />
+                <span>Decline Insurance Cover</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setIsInsuranceSelected(true)}
+                className={`w-full sm:w-auto px-7 py-4 rounded-2xl font-extrabold text-sm transition-all duration-300 flex items-center justify-center space-x-2.5 cursor-pointer ${
+                  isInsuranceSelected
+                    ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 shadow-xl shadow-emerald-500/20 scale-102 hover:scale-105'
+                    : 'bg-slate-800/80 hover:bg-slate-800 text-slate-350 border border-slate-700 hover:border-slate-600'
+                }`}
+              >
+                <ShieldAlert className={`w-4 h-4 ${isInsuranceSelected ? 'text-slate-950 animate-pulse' : 'text-emerald-400'}`} />
+                <span>
+                  {planDetails?.name === 'Platinum' ? (
+                    "Platinum VIP Insurance (Included Free!)"
+                  ) : planDetails?.name === 'Gold' ? (
+                    "Add Insurance (₹199/person - 50% Member Off)"
+                  ) : (
+                    "Add Insurance (₹399/person)"
+                  )}
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Main Details Navigation Tabs */}
       <div className="flex border-b border-slate-200 mb-8 overflow-x-auto text-left">

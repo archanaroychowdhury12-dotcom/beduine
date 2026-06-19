@@ -71,7 +71,7 @@ export default function App() {
   }, [currentUser, handleSetView]);
 
   useEffect(() => {
-    const handleLocationChange = () => {
+    const handleLocationChange = (isInitial = false) => {
       const path = window.location.pathname.replace(/^\/|\/$/g, '');
       const validViews = [
         'landing', 'login', 'register', 'terms', 'dashboard', 'paid-tour', 'error',
@@ -79,7 +79,18 @@ export default function App() {
         'cancellation-policy', 'membership-rules', 'website-disclaimer',
         'cookie-policy', 'affiliate-agent-policy', 'grievance-redressal'
       ];
-      if (!path) {
+      const isPolicyPath = [
+        'terms', 'legal', 'privacy-policy', 'terms-and-conditions', 'refund-policy',
+        'cancellation-policy', 'membership-rules', 'website-disclaimer',
+        'cookie-policy', 'affiliate-agent-policy', 'grievance-redressal'
+      ].includes(path);
+
+      if (isInitial && isPolicyPath) {
+        setView('landing');
+        if (window.location.pathname !== '/') {
+          window.history.replaceState(null, '', '/');
+        }
+      } else if (!path) {
         setView('landing');
       } else if (validViews.includes(path)) {
         setView(path as any);
@@ -88,9 +99,10 @@ export default function App() {
       }
     };
 
-    handleLocationChange();
-    window.addEventListener('popstate', handleLocationChange);
-    return () => window.removeEventListener('popstate', handleLocationChange);
+    handleLocationChange(true);
+    const onPopState = () => handleLocationChange(false);
+    window.addEventListener('popstate', onPopState);
+    return () => window.removeEventListener('popstate', onPopState);
   }, []);
 
 
@@ -115,7 +127,7 @@ export default function App() {
       {/* Main page content container - invisible during intro to prevent menu leak, then fades in beautifully */}
       <div className={`transition-opacity duration-700 ${introComplete ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
         {view !== 'paid-tour' && <div className="noise fixed inset-0 pointer-events-none z-30" />}
-        {view !== 'paid-tour' && (
+        {['landing', 'terms', 'legal', 'privacy-policy', 'terms-and-conditions', 'refund-policy', 'cancellation-policy', 'membership-rules', 'website-disclaimer', 'cookie-policy', 'affiliate-agent-policy', 'grievance-redressal'].includes(view) && (
           <Navbar 
             view={view} 
             setView={setView} 
@@ -187,9 +199,13 @@ export default function App() {
                 handleSetView('landing');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
+              onBack={() => {
+                handleSetView('landing');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
             />
           ) : view === 'paid-tour' ? (
-            <PaidTourPage />
+            <PaidTourPage currentUser={currentUser} setCurrentUser={setCurrentUser} />
           ) : view === 'terms' ? (
             <div className="pt-24 lg:pt-32 pb-16 min-h-[70vh] flex flex-col items-center">
               <div className="max-w-4xl w-full px-5">

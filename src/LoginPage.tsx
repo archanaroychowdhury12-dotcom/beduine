@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  ArrowLeft, ShieldCheck, Mail, Phone, Lock, User, Eye, EyeOff, Sparkles, Globe, Plane, Heart, ArrowRight
+  ArrowLeft, ShieldCheck, Mail, Phone, Lock, User, Sparkles, Globe, Plane, Heart, ArrowRight
 } from 'lucide-react';
 import { WelcomeScreen } from '@/components/ui/onboarding-welcome-screen';
 
@@ -13,12 +13,13 @@ interface LoginPageProps {
 }
 
 export default function LoginPage({ onBack, onLoginSuccess, initialMode = 'login' }: LoginPageProps) {
-  const [viewMode, setViewMode] = useState<'login' | 'register' | 'signup-auth'>(initialMode);
+  const [viewMode, setViewMode] = useState<'welcome-login' | 'login' | 'register' | 'signup-auth'>(
+    initialMode === 'login' ? 'welcome-login' : 'register'
+  );
   const [showGoogleModal, setShowGoogleModal] = useState(false);
   const [customEmail, setCustomEmail] = useState('');
   const [customName, setCustomName] = useState('');
   const [customStep, setCustomStep] = useState(1); // 1: Email, 2: Name/Details
-  const [showPassword, setShowPassword] = useState(false);
 
   // Phone OTP states
   const [authMethod, setAuthMethod] = useState<'email' | 'phone'>('email');
@@ -31,18 +32,66 @@ export default function LoginPage({ onBack, onLoginSuccess, initialMode = 'login
   if (otpSent) { /* dummy read to avoid TS6133 */ }
 
   const handleSelectAccount = (name: string, email: string, mobile?: string) => {
+    let dob = '';
+    let preferredLanguage = 'English';
+    let dietaryPreferences = 'None';
+    let accessibilityRequirements = 'None';
+    let savedTravelers: any[] = [];
+    let savedPickups: any[] = [];
+
+    if (name === 'Arunasish Roychowdhury') {
+      dob = '1989-05-12';
+      preferredLanguage = 'Bengali';
+      dietaryPreferences = 'Non-Vegetarian';
+      accessibilityRequirements = 'None';
+      savedTravelers = [
+        { id: 't-aru-1', firstName: 'Ankita', lastName: 'Roychowdhury', email: 'ankita.roy@gmail.com', phone: '+91 94330 54321', ageGroup: 'Adult', relationship: 'Spouse' },
+        { id: 't-aru-2', firstName: 'Dilip', lastName: 'Roychowdhury', email: 'dilip.roy@gmail.com', phone: '+91 94330 98765', ageGroup: 'Senior', relationship: 'Father' }
+      ];
+      savedPickups = [
+        { id: 'p-aru-1', type: 'hotel', hotelName: 'ITC Royal Bengal, Kolkata', customAddress: '', label: 'ITC Royal Bengal (Saved)' },
+        { id: 'p-aru-2', type: 'hotel', hotelName: 'Kolkata Airport Arrival Gate', customAddress: '', label: 'Kolkata Airport (Saved)' }
+      ];
+    } else if (name === 'Rahul Sen') {
+      dob = '1994-08-15';
+      preferredLanguage = 'Bengali';
+      dietaryPreferences = 'Vegetarian';
+      accessibilityRequirements = 'Wheelchair assistance at pick-up';
+      savedTravelers = [
+        { id: 't-rah-1', firstName: 'Priya', lastName: 'Sen', email: 'priya.sen@gmail.com', phone: '+91 98765 11111', ageGroup: 'Adult', relationship: 'Spouse' },
+        { id: 't-rah-2', firstName: 'Rakesh', lastName: 'Sen', email: 'rakesh.sen@gmail.com', phone: '+91 98765 22222', ageGroup: 'Child', relationship: 'Son' }
+      ];
+      savedPickups = [
+        { id: 'p-rah-1', type: 'manual', hotelName: '', customAddress: 'Salt Lake Sector V, Block EP & GP, Kolkata', label: 'Salt Lake Office (Saved)' },
+        { id: 'p-rah-2', type: 'hotel', hotelName: 'Srinagar Airport Gate 2', customAddress: '', label: 'Srinagar Airport (Saved)' }
+      ];
+    } else if (name === 'Guest Traveler') {
+      dob = '2000-01-01';
+      preferredLanguage = 'English';
+      dietaryPreferences = 'None';
+      accessibilityRequirements = 'None';
+      savedTravelers = [];
+      savedPickups = [];
+    }
+
     const mockUser = {
       fullName: name,
       email: email,
-      mobile: mobile || '',
+      mobile: mobile || (name === 'Arunasish Roychowdhury' ? '+91 94330 12345' : name === 'Rahul Sen' ? '+91 98765 43210' : name === 'Guest Traveler' ? '+91 99999 88888' : ''),
       city: '',
       memberId: `BDN-${Math.floor(1000 + Math.random() * 9000)}-2026`,
-      planName: '', // Unsubscribed initially unless updated
-      planPrice: '',
-      planType: '',
-      color: 'from-slate-400 via-slate-500 to-slate-700',
-      glow: 'rgba(148, 163, 184, 0.4)',
-      drawToken: `LDC-${Math.floor(100000 + Math.random() * 900000)}`
+      planName: name === 'Arunasish Roychowdhury' ? 'Platinum' : name === 'Rahul Sen' ? 'Gold' : '',
+      planPrice: name === 'Arunasish Roychowdhury' ? '₹9,999/yr' : name === 'Rahul Sen' ? '₹4,999/yr' : '',
+      planType: name === 'Arunasish Roychowdhury' ? 'platinum' : name === 'Rahul Sen' ? 'gold' : '',
+      color: name === 'Arunasish Roychowdhury' ? 'from-amber-600 via-amber-500 to-amber-700' : name === 'Rahul Sen' ? 'from-amber-400 via-amber-500 to-amber-600' : 'from-slate-400 via-slate-500 to-slate-700',
+      glow: name === 'Arunasish Roychowdhury' ? 'rgba(245, 158, 11, 0.4)' : name === 'Rahul Sen' ? 'rgba(251, 191, 36, 0.4)' : 'rgba(148, 163, 184, 0.4)',
+      drawToken: `LDC-${Math.floor(100000 + Math.random() * 900000)}`,
+      dob,
+      preferredLanguage,
+      dietaryPreferences,
+      accessibilityRequirements,
+      savedTravelers,
+      savedPickups
     };
     onLoginSuccess(mockUser);
   };
@@ -115,17 +164,17 @@ export default function LoginPage({ onBack, onLoginSuccess, initialMode = 'login
       <div className="absolute inset-0 bg-white/5 pointer-events-none" />
 
       {/* Back button - absolute positioned */}
-      <div className="absolute top-24 left-4 sm:top-28 sm:left-6 lg:left-8 z-20">
+      <div className="absolute top-8 left-4 sm:top-10 sm:left-6 lg:left-8 z-20">
         <button
           onClick={onBack}
-          className="inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-widest text-slate-500 hover:text-[#FF6B6B] transition-colors bg-white/60 backdrop-blur-sm px-4 py-2 rounded-full border border-slate-200/50 hover:border-slate-300 cursor-pointer"
+          className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-slate-500 hover:text-[#FF6B6B] transition-colors bg-white/60 backdrop-blur-sm px-5 py-2.5 rounded-full border border-slate-200/50 hover:border-slate-300 cursor-pointer shadow-sm"
         >
-          <ArrowLeft className="w-3 h-3" /> Back
+          <ArrowLeft className="w-4 h-4" /> Back
         </button>
       </div>
 
       {/* ==================== MAIN CONTENT ==================== */}
-      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-screen flex flex-col lg:flex-row pt-36 lg:pt-40 pb-12 items-center justify-between">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-screen flex flex-col lg:flex-row pt-20 lg:pt-24 pb-8 items-center justify-between">
         
         {/* Left Column (Copy & Illustration) */}
         <div className="w-full lg:w-[55%] flex flex-col justify-center relative pb-12 lg:pb-0 overflow-hidden pr-6">
@@ -221,12 +270,12 @@ export default function LoginPage({ onBack, onLoginSuccess, initialMode = 'login
 
         {/* Right Column (Frosted Glass Auth Card) */}
         <div className="w-full lg:w-[45%] flex items-center justify-center z-10 relative">
-          <div className="w-full max-w-[480px] rounded-[38px] border border-white/60 bg-white/40 backdrop-blur-xl shadow-[0_24px_60px_rgba(196,149,106,0.12)] p-9 relative overflow-hidden">
+          <div className="w-full max-w-[510px] rounded-[38px] border border-white/60 bg-white/40 backdrop-blur-xl shadow-[0_24px_60px_rgba(196,149,106,0.12)] p-9 relative overflow-hidden">
             
             <AnimatePresence mode="wait">
               {viewMode === 'register' ? (
                 <motion.div
-                  key="welcome"
+                  key="welcome-register"
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.95 }}
@@ -244,6 +293,28 @@ export default function LoginPage({ onBack, onLoginSuccess, initialMode = 'login
                     onButtonClick={() => setViewMode('signup-auth')}
                     secondaryActionText="Already have an account? Login Here"
                     onSecondaryActionClick={() => setViewMode('login')}
+                  />
+                </motion.div>
+              ) : viewMode === 'welcome-login' ? (
+                <motion.div
+                  key="welcome-login"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <WelcomeScreen
+                    imageUrl="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=compress&cs=tinysrgb&w=800&q=80"
+                    title={
+                      <>
+                        Welcome to <span className="text-[#FF6B6B] font-black">Beduine</span>
+                      </>
+                    }
+                    description="Access your member dashboard to check weekly selection statuses, redeem travel credits, and book custom tour packages."
+                    buttonText="Log In to Your Account"
+                    onButtonClick={() => setViewMode('login')}
+                    secondaryActionText="New to Beduine? Create Account"
+                    onSecondaryActionClick={() => setViewMode('register')}
                   />
                 </motion.div>
               ) : (
@@ -321,40 +392,7 @@ export default function LoginPage({ onBack, onLoginSuccess, initialMode = 'login
                             </div>
                           </div>
 
-                          {viewMode === 'login' && (
-                            <div>
-                              <label className="block text-xs font-bold text-slate-600 mb-1.5" htmlFor="loginPassword">Password</label>
-                              <div className="relative">
-                                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                                <input
-                                  type={showPassword ? 'text' : 'password'}
-                                  id="loginPassword"
-                                  placeholder="••••••••••"
-                                  defaultValue="password123"
-                                  className="w-full pl-11 pr-11 py-4 rounded-xl bg-white border border-slate-200/80 text-slate-800 text-sm outline-none focus:border-[#FF6B6B] transition-all focus:ring-2 focus:ring-[#FF6B6B]/10 placeholder:text-slate-400"
-                                />
-                                <button
-                                  type="button"
-                                  onClick={() => setShowPassword(!showPassword)}
-                                  className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer bg-transparent border-none"
-                                >
-                                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                                </button>
-                              </div>
-                            </div>
-                          )}
 
-                          {viewMode === 'login' && (
-                            <div className="flex items-center justify-between text-[11px] pt-1">
-                              <label className="flex items-center gap-2 text-slate-500 cursor-pointer font-semibold">
-                                <input type="checkbox" className="w-3.5 h-3.5 rounded border-slate-300 accent-[#FF6B6B] cursor-pointer" />
-                                <span>Remember me</span>
-                              </label>
-                              <button type="button" className="text-slate-450 hover:text-[#FF6B6B] font-bold cursor-pointer bg-transparent border-none transition-colors">
-                                Forgot your password?
-                              </button>
-                            </div>
-                          )}
                         </div>
                       ) : (
                         <div className="text-left">

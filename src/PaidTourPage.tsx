@@ -8,7 +8,7 @@ import { PackagesPage } from './components/PackagesPage';
 
 type TourView = 'home' | 'about' | 'packages' | 'booking';
 
-export default function PaidTourPage() {
+export default function PaidTourPage({ currentUser, setCurrentUser }: { currentUser?: any; setCurrentUser?: any }) {
   const [currentView, setCurrentView] = useState<TourView>('home');
   const [targetTourId, setTargetTourId] = useState<string | null>(null);
 
@@ -70,6 +70,8 @@ export default function PaidTourPage() {
           <BookingPortalContainer
             initialTourId={targetTourId}
             onReturnHome={handleReturnHome}
+            currentUser={currentUser}
+            setCurrentUser={setCurrentUser}
           />
         )}
       </main>

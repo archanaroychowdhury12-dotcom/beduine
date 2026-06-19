@@ -42,8 +42,16 @@ export interface Traveler {
   email: string;
   phone: string;
   isLead: boolean;
-  ageGroup: 'Adult' | 'Child' | 'Senior';
+  ageGroup: 'Adult' | 'Child' | 'Senior' | 'Infant';
   passportNumber?: string;
+  dob?: string;
+  preferredLanguage?: string;
+  dietaryPreferences?: string;
+  accessibilityRequirements?: string;
+  gender?: string;
+  emergencyContactName?: string;
+  emergencyContactPhone?: string;
+  saveToProfile?: boolean;
 }
 
 export interface Voucher {
@@ -56,9 +64,12 @@ export interface Voucher {
 }
 
 export interface PickupInfo {
-  type: 'hotel' | 'manual' | 'none';
+  type: 'hotel' | 'manual' | 'none' | 'assistance';
   hotelName?: string;
   customAddress?: string;
+  landmark?: string;
+  city?: string;
+  pincode?: string;
   dropoffDifferent: boolean;
   dropoffType?: 'hotel' | 'manual' | 'same';
   dropoffLocation?: string;
@@ -71,9 +82,19 @@ export interface PriceCalculation {
   subtotalBase: number;
   isPrivateTour: boolean;
   privateSurchargeTotal: number;
+  isInsuranceSelected?: boolean;
+  insuranceTotal?: number;
+  memberDiscountPercent?: number;
+  memberDiscountTotal?: number;
+  appliedDiscountCredits?: number;
+  discountCreditsTotal?: number;
   subtotalBeforeVoucher: number;
   appliedVoucher?: Voucher;
   voucherDiscountAmount: number;
+  addOnsSelected?: string[];
+  addOnsTotal?: number;
+  voucherPackSelected?: string;
+  voucherPackDiscount?: number;
   serviceFeeOrTax: number;
   totalPayable: number;
 }

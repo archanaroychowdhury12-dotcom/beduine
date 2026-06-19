@@ -41,29 +41,28 @@ export const PLANS = [
     name: 'Silver', price: 499, tagline: 'Smart Starter', icon: Star,
     color: 'from-slate-500 to-slate-700', glow: 'slate',
     tourValue: 3000, duration: '2N / 3D', discountCredits: 1, discountValue: 500,
-    paidDiscount: 'Member rate', insurance: 'Payable', nameChange: 'Not available',
+    paidDiscount: 'Up to 5% off', nameChange: 'No Option',
     image: '/images/sundarbans_mangrove_1779521789593.png',
     imageLabel: 'Sundarbans - Boat Safari',
     destinations: ['Sundarban', 'Digha', 'Mousuni Island', 'Purulia'],
-    benefits: ['1 Weekly Promotional Draw entry', 'Eligible for promotional winner benefits', 'â‚¹500 discount credit if not selected', 'Member-only rates on paid tours', '12-month subscription validity', '18+ Membership Only'],
+    benefits: ['1 Weekly Promotional Draw entry', 'Eligible for promotional winner benefits', '500 discount credit if not selected', 'Up to 5% off on paid domestic tours', '12-month subscription validity', '18+ Membership Only'],
   },
   {
     name: 'Gold', price: 799, tagline: 'Balanced Choice', icon: Award,
     color: 'from-teal-400 to-emerald-600', glow: 'teal',
     tourValue: 5000, duration: '2N / 3D', discountCredits: 2, discountValue: 1000,
-    paidDiscount: 'Member rate', insurance: '50% off', nameChange: 'One time',
+    paidDiscount: 'Up to 7% off', nameChange: 'One time',
     image: '/images/darjeeling_tea_1779521805614.png',
     imageLabel: 'Darjeeling - Tea Gardens',
     destinations: ['Darjeeling', 'Dooars', 'Puri', 'Daring Bari'],
-    benefits: ['1 Weekly Promotional Draw entry', 'Eligible for promotional winner benefits', 'â‚¹1,000 discount credits if not selected', 'Member-only rates on paid tours', 'One-time family name change allowed', '18+ Membership Only'],
+    benefits: ['1 Weekly Promotional Draw entry', 'Eligible for promotional winner benefits', '1,000 discount credits if not selected', 'Up to 7% off on paid domestic tours', 'One-time family name change allowed', '18+ Membership Only'],
   },
   {
     name: 'Platinum', price: 1499, tagline: 'Premium Experience', icon: Crown,
     color: 'from-neon-gold via-gold to-gold-deep', glow: 'gold',
     featured: true, tourValue: 10000, duration: '3N / 4D',
     discountCredits: 4, discountValue: 2000,
-    paidDiscount: 'Member rate',
-    insurance: 'Included free',
+    paidDiscount: 'Up to 10% off',
     nameChange: 'Two times',
     image: '/images/kashmir_dal_lake_1779521728036.png',
     imageLabel: 'Kashmir - Dal Lake',
@@ -71,8 +70,8 @@ export const PLANS = [
     benefits: [
       '1 Weekly Promotional Draw entry',
       'Eligible for promotional winner benefits',
-      'â‚¹2,000 discount credits if not selected',
-      'Member-only rates on paid tours',
+      '2,000 discount credits if not selected',
+      'Up to 10% off on paid domestic tours',
       'Two family name changes allowed',
       '18+ Membership Only'
     ],
@@ -88,7 +87,7 @@ export const INTL_PLANS = [
     image: '/images/nepal.png',
     imageLabel: 'Nepal - Valley & Peaks',
     destinations: ['Nepal', 'Bhutan'],
-    benefits: ['1 Monthly Promotional Draw entry', 'Winner tour value up to â‚¹25,000 (3N/4D)', 'â‚¹5,000 discount credits if not selected', 'Up to 5% off on paid international tours', 'One-time family name change allowed', '18+ Membership Only'],
+    benefits: ['1 Monthly Promotional Draw entry', 'Winner tour value up to ₹25,000 (3N/4D)', '5,000 discount credits if not selected', 'Up to 5% off on paid international tours', 'One-time family name change allowed', '18+ Membership Only'],
   },
   {
     name: 'Gold', price: 7999, tagline: 'Premium Explorer', icon: Plane,
@@ -98,7 +97,7 @@ export const INTL_PLANS = [
     image: '/images/thailand.png',
     imageLabel: 'Thailand - Temples & Beaches',
     destinations: ['Thailand', 'Bali (Indonesia)'],
-    benefits: ['1 Monthly Promotional Draw entry', 'Winner tour value up to â‚¹50,000 (4N/5D)', 'â‚¹10,000 discount credits if not selected', 'Up to 7% off on paid international tours', 'Two family name changes allowed', '18+ Membership Only'],
+    benefits: ['1 Monthly Promotional Draw entry', 'Winner tour value up to ₹50,000 (4N/5D)', '10,000 discount credits if not selected', 'Up to 7% off on paid international tours', 'Two family name changes allowed', '18+ Membership Only'],
   },
   {
     name: 'Platinum', price: 14999, tagline: 'Ultimate World Pass', icon: Rocket,
@@ -108,7 +107,7 @@ export const INTL_PLANS = [
     image: '/images/vietnam.png',
     imageLabel: 'Vietnam - Bays & Cities',
     destinations: ['Dubai', 'Vietnam'],
-    benefits: ['1 Monthly Promotional Draw entry', 'Winner tour value up to â‚¹1,00,000 (5N/6D)', 'â‚¹20,000 discount credits if not selected', 'Up to 10% off on paid international tours', 'Unlimited name changes allowed', '18+ Membership Only'],
+    benefits: ['1 Monthly Promotional Draw entry', 'Winner tour value up to ₹1,00,000 (5N/6D)', '20,000 discount credits if not selected', 'Up to 10% off on paid international tours', 'Unlimited name changes allowed', '18+ Membership Only'],
   },
 ];
 
@@ -140,8 +139,8 @@ export const DESTINATIONS = [
   { name: 'Vizag & Araku', tag: 'Araku Coffee Gardens & Borra Caves', duration: '3N/4D', rating: 4.7, season: 'Oct - Mar', img: '/images/vizag_araku.png', category: 'trails', planBadge: 'Gold+' },
   { name: 'Rajasthan Royal', tag: 'Jaipur - Udaipur - Desert Dunes', duration: '5N/6D', rating: 4.8, season: 'Oct - Mar', img: '/images/rajasthan_palace_1779521744228.png', category: 'royal', planBadge: 'Gold+' },
   { name: 'Kerala Backwaters', tag: 'Houseboats - Munnar Hills', duration: '4N/5D', rating: 4.9, season: 'Sep - Mar', img: '/images/kerala_houseboat_1779521772928.png', category: 'royal', planBadge: 'Gold+' },
-  { name: 'Puri & Konark', tag: 'Sun Temple - Golden Beach', duration: '3N/4D', rating: 4.7, season: 'Oct - Mar', img: '/images/puri_konark.png', category: 'royal', planBadge: 'Silver+' },
-  { name: 'Goa', tag: 'Sun-kissed Beaches - Heritage & Nightlife', duration: '3N/4D', rating: 4.8, season: 'Oct - May', img: '/images/goa_beaches.png', category: 'royal', planBadge: 'Gold+' },
+  { name: 'Puri & Konark', tag: 'Sun Temple - Golden Beach', duration: '3N/4D', rating: 4.7, season: 'Oct - Mar', img: '/images/puri_konark.png', category: 'royal', planBadge: 'Gold+' },
+  { name: 'Goa', tag: 'Sun-kissed Beaches - Heritage & Nightlife', duration: '3N/4D', rating: 4.8, season: 'Oct - May', img: '/images/goa_beaches.png', category: 'royal', planBadge: 'Platinum+' },
   { name: 'Dubai', tag: 'Burj Khalifa - Desert Safaris', duration: '4N/5D', rating: 4.9, season: 'Nov - Mar', img: '/images/dubai_skyline_1779539448313.png', category: 'intl', planBadge: 'Platinum+' },
   { name: 'Singapore', tag: 'Sentosa - Gardens by the Bay', duration: '4N/5D', rating: 4.8, season: 'Year-round', img: '/images/singapore_skyline_1779539502293.png', category: 'intl', planBadge: 'Platinum+' },
   { name: 'Maldives', tag: 'Overwater Bungalows - Reefs', duration: '4N/5D', rating: 4.9, season: 'Nov - Apr', img: '/images/maldives_overwater_1779539482305.png', category: 'intl', planBadge: 'Platinum+' },
@@ -239,3 +238,35 @@ export const JOURNEY_FLOATS = [
   { x: [0, -9, 6, -8, 0], y: [0, -8, 10, -7, 0], rotate: [0, -1.8, 1.5, -1, 0], scale: [1, 1, 1], duration: 10 },
   { x: [0, 5, -7, 6, 0], y: [0, 10, -10, 5, 0], rotate: [0, 2.2, -2.2, 1.2, 0], scale: [1, 1.015, 0.985, 1.01, 1], duration: 13.5 }
 ];
+
+export function getPlanDetails(planName: string) {
+  if (!planName) return null;
+  const name = planName.toLowerCase().trim();
+  
+  // Search in domestic plans
+  const domestic = PLANS.find(p => p.name.toLowerCase() === name);
+  if (domestic) return { ...domestic, isInternational: false };
+  
+  // Search in international plans
+  const intl = INTL_PLANS.find(p => p.name.toLowerCase() === name);
+  if (intl) return { ...intl, isInternational: true };
+  
+  // Fallback/Partial matches
+  if (name.includes('silver')) {
+    return name.includes('international')
+      ? { ...INTL_PLANS[0], isInternational: true }
+      : { ...PLANS[0], isInternational: false };
+  }
+  if (name.includes('gold')) {
+    return name.includes('international')
+      ? { ...INTL_PLANS[1], isInternational: true }
+      : { ...PLANS[1], isInternational: false };
+  }
+  if (name.includes('platinum')) {
+    return name.includes('international')
+      ? { ...INTL_PLANS[2], isInternational: true }
+      : { ...PLANS[2], isInternational: false };
+  }
+  return null;
+}
+

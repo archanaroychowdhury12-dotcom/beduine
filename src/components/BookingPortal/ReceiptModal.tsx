@@ -191,6 +191,33 @@ export const ReceiptModal: React.FC<ReceiptModalProps> = ({ confirmation, onClos
                     </tr>
                   )}
 
+                  {pricing.memberDiscountTotal !== undefined && pricing.memberDiscountTotal > 0 && (
+                    <tr className="bg-emerald-50/70 text-emerald-900 font-bold">
+                      <td className="py-3.5 px-4">Member Tour Discount ({pricing.memberDiscountPercent}%)</td>
+                      <td className="py-3.5 px-4 text-right font-mono">-</td>
+                      <td className="py-3.5 px-4 text-right">-</td>
+                      <td className="py-3.5 px-4 text-right font-mono">-{formatINR(pricing.memberDiscountTotal)}</td>
+                    </tr>
+                  )}
+
+                  {pricing.discountCreditsTotal !== undefined && pricing.discountCreditsTotal > 0 && (
+                    <tr className="bg-emerald-50/70 text-emerald-900 font-bold">
+                      <td className="py-3.5 px-4">Plan Credits Discount ({pricing.appliedDiscountCredits} applied)</td>
+                      <td className="py-3.5 px-4 text-right font-mono">-</td>
+                      <td className="py-3.5 px-4 text-right">-</td>
+                      <td className="py-3.5 px-4 text-right font-mono">-{formatINR(pricing.discountCreditsTotal)}</td>
+                    </tr>
+                  )}
+
+                  {pricing.insuranceTotal !== undefined && pricing.insuranceTotal > 0 && (
+                    <tr className="bg-slate-100/60 text-slate-800 font-bold">
+                      <td className="py-3.5 px-4">Comprehensive Travel Insurance</td>
+                      <td className="py-3.5 px-4 text-right font-mono">-</td>
+                      <td className="py-3.5 px-4 text-right">-</td>
+                      <td className="py-3.5 px-4 text-right font-mono">+{formatINR(pricing.insuranceTotal)}</td>
+                    </tr>
+                  )}
+
                   {pricing.appliedVoucher && (
                     <tr className="bg-emerald-50 text-emerald-900 font-bold">
                       <td className="py-3.5 px-4">Promotional Voucher Redemption ({pricing.appliedVoucher.code})</td>
