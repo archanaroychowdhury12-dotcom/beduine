@@ -8,6 +8,7 @@ import {
 } from '../../types';
 import { validateCustomTourForm, ValidationErrors } from '../../utils/customTourValidation';
 import { CustomTourEstimator } from './CustomTourEstimator';
+import { TOUR_PACKAGES } from '../../data/tours';
 import {
   Compass, MapPin, Plus, Minus, Check, Phone, Mail
 } from 'lucide-react';
@@ -23,22 +24,29 @@ export const CustomTourForm: React.FC<CustomTourFormProps> = ({
   onSubmit,
   isSubmitting = false
 }) => {
+  const initialPackage = TOUR_PACKAGES[0];
+
   // Shared form states
-  const [tripType, setTripType] = useState<TripType>('Domestic');
-  const [destination, setDestination] = useState('');
+  const [selectedPackageId, setSelectedPackageId] = useState(initialPackage?.id || '');
+  const [tripType, setTripType] = useState<TripType>(
+    (initialPackage?.id === 'dubai-city-desert' || initialPackage?.id === 'thailand-bangkok-pattaya')
+      ? 'International'
+      : 'Domestic'
+  );
+  const [destination, setDestination] = useState(initialPackage?.destination || '');
   const [departureCity, setDepartureCity] = useState('');
   const [flexibleDates, setFlexibleDates] = useState(true);
   const [travelStartDate, setTravelStartDate] = useState('');
   const [travelEndDate, setTravelEndDate] = useState('');
   const [flexibleMonth, setFlexibleMonth] = useState('2026-09');
-  const [durationNights, setDurationNights] = useState(4);
+  const [durationNights, setDurationNights] = useState(initialPackage?.durationNights || 2);
   const [adults, setAdults] = useState(2);
   const [children, setChildren] = useState(0);
   const [rooms, setRooms] = useState(1);
   const [hotelCategory, setHotelCategory] = useState<HotelCategory>('Deluxe (3 Star)');
   const [transportPreference, setTransportPreference] = useState<TransportPreference>('Sedan');
   const [mealPreference, setMealPreference] = useState<MealPreference>('Half Board (MAP)');
-  const [budget, setBudget] = useState<number>(30000);
+  const [budget, setBudget] = useState<number>(initialPackage ? initialPackage.basePrice * 2 : 30000);
   const [activities, setActivities] = useState<TourActivity[]>(['Sightseeing']);
   const [specialRequirements, setSpecialRequirements] = useState('');
   
@@ -47,6 +55,18 @@ export const CustomTourForm: React.FC<CustomTourFormProps> = ({
   const [email, setEmail] = useState(currentUser?.email || '');
 
   const [errors, setErrors] = useState<ValidationErrors>({});
+
+  const handlePackageChange = (packageId: string) => {
+    setSelectedPackageId(packageId);
+    const pkg = TOUR_PACKAGES.find(p => p.id === packageId);
+    if (pkg) {
+      setDestination(pkg.destination);
+      setDurationNights(pkg.durationNights);
+      const isInternational = pkg.id === 'dubai-city-desert' || pkg.id === 'thailand-bangkok-pattaya';
+      setTripType(isInternational ? 'International' : 'Domestic');
+      setBudget(pkg.basePrice * (adults + children));
+    }
+  };
 
   const availableActivities: TourActivity[] = [
     'Sightseeing', 'Adventure', 'Wildlife Safari', 'Trekking',
@@ -65,6 +85,7 @@ export const CustomTourForm: React.FC<CustomTourFormProps> = ({
     e.preventDefault();
 
     const formData = {
+      packageId: selectedPackageId,
       tripType,
       destination,
       departureCity,
@@ -118,6 +139,22 @@ export const CustomTourForm: React.FC<CustomTourFormProps> = ({
             </div>
           </div>
 
+          {/* Base Package Selector */}
+          <div className="space-y-2 pb-4 border-b border-slate-100">
+            <label className="block text-[10px] font-black text-slate-450 uppercase tracking-wide">Base Tour Package</label>
+            <select
+              value={selectedPackageId}
+              onChange={(e) => handlePackageChange(e.target.value)}
+              className="w-full px-4 py-3 rounded-2xl border border-slate-200 outline-none text-xs text-slate-700 bg-slate-50/50 focus:bg-white focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 font-bold"
+            >
+              {TOUR_PACKAGES.map((pkg) => (
+                <option key={pkg.id} value={pkg.id}>
+                  {pkg.name} ({pkg.durationNights}N/{pkg.durationDays}D) - From ₹{pkg.basePrice.toLocaleString('en-IN')}
+                </option>
+              ))}
+            </select>
+          </div>
+
           {/* Section 1: Trip Type & Destination */}
           <div className="space-y-4">
             <h3 className="text-xs font-black text-slate-400 uppercase tracking-wider">1. Destination Details</h3>
@@ -130,15 +167,11 @@ export const CustomTourForm: React.FC<CustomTourFormProps> = ({
                   <button
                     type="button"
                     key={type}
-                    onClick={() => {
-                      setTripType(type as TripType);
-                      // Update default budget for realism
-                      setBudget(type === 'International' ? 120000 : 35000);
-                    }}
-                    className={`py-3 rounded-2xl font-bold text-xs border transition-all cursor-pointer ${
+                    disabled
+                    className={`py-3 rounded-2xl font-bold text-xs border transition-all cursor-not-allowed ${
                       tripType === type
                         ? 'border-amber-500 bg-amber-500/5 text-amber-700 shadow-sm'
-                        : 'border-slate-200 hover:border-slate-300 text-slate-500 bg-white'
+                        : 'border-slate-250 text-slate-400 bg-slate-50'
                     }`}
                   >
                     {type} Tour
@@ -150,24 +183,16 @@ export const CustomTourForm: React.FC<CustomTourFormProps> = ({
             <div className="grid sm:grid-cols-2 gap-4">
               {/* Destination */}
               <div>
-                <label className="block text-[10px] font-black text-slate-450 uppercase mb-1.5">Where do you want to go?</label>
+                <label className="block text-[10px] font-black text-slate-450 uppercase mb-1.5">Destination (Based on Package)</label>
                 <div className="relative">
                   <MapPin className="absolute left-3.5 top-3.5 w-4.5 h-4.5 text-slate-400" />
                   <input
                     type="text"
                     value={destination}
-                    onChange={(e) => setDestination(e.target.value)}
-                    placeholder="e.g. Kashmir, Rajasthan, Thailand"
-                    className={`w-full pl-11 pr-4 py-3 rounded-2xl border outline-none text-xs text-slate-700 bg-slate-50/50 transition-all focus:bg-white focus:ring-2 focus:ring-amber-500/10 ${
-                      errors.destination ? 'border-rose-400 focus:border-rose-500' : 'border-slate-200 focus:border-amber-500'
-                    }`}
+                    disabled
+                    className="w-full pl-11 pr-4 py-3 rounded-2xl border border-slate-200 outline-none text-xs text-slate-500 bg-slate-100 cursor-not-allowed font-medium"
                   />
                 </div>
-                {errors.destination && (
-                  <span id="err-destination" className="text-[10px] font-bold text-rose-500 mt-1 block">
-                    {errors.destination}
-                  </span>
-                )}
               </div>
 
               {/* Departure City */}
@@ -257,7 +282,11 @@ export const CustomTourForm: React.FC<CustomTourFormProps> = ({
                 <div className="flex items-center justify-between border border-slate-200 rounded-2xl p-1 bg-slate-50/50">
                   <button
                     type="button"
-                    onClick={() => setDurationNights(Math.max(1, durationNights - 1))}
+                    onClick={() => {
+                      const selectedPackage = TOUR_PACKAGES.find(p => p.id === selectedPackageId) || TOUR_PACKAGES[0];
+                      const minNights = selectedPackage ? selectedPackage.durationNights : 1;
+                      setDurationNights(Math.max(minNights, durationNights - 1));
+                    }}
                     className="w-9 py-2 rounded-xl hover:bg-slate-200/60 flex items-center justify-center text-slate-650 cursor-pointer"
                   >
                     <Minus className="w-3.5 h-3.5" />
@@ -565,6 +594,7 @@ export const CustomTourForm: React.FC<CustomTourFormProps> = ({
         <div className="lg:col-span-1">
           <div className="sticky top-24">
             <CustomTourEstimator
+              packageId={selectedPackageId}
               tripType={tripType}
               durationNights={durationNights}
               adults={adults}

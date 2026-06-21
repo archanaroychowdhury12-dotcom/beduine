@@ -10,6 +10,7 @@ import { calculateEstimatedPriceRange, getBudgetMessage } from '../../utils/cust
 import { Sparkles, Info } from 'lucide-react';
 
 interface CustomTourEstimatorProps {
+  packageId?: string;
   tripType: TripType;
   durationNights: number;
   adults: number;
@@ -23,6 +24,7 @@ interface CustomTourEstimatorProps {
 }
 
 export const CustomTourEstimator: React.FC<CustomTourEstimatorProps> = ({
+  packageId,
   tripType,
   durationNights,
   adults,
@@ -35,6 +37,7 @@ export const CustomTourEstimator: React.FC<CustomTourEstimatorProps> = ({
   budget
 }) => {
   const estimate = calculateEstimatedPriceRange({
+    packageId,
     tripType,
     durationNights,
     adults,
@@ -80,6 +83,7 @@ export const CustomTourEstimator: React.FC<CustomTourEstimatorProps> = ({
           </div>
         </div>
 
+        {/* Selected Config Info */}
         <div className="border-t border-slate-800/80 pt-4 space-y-3">
           <div className="flex justify-between text-xs text-slate-400">
             <span>Duration:</span>
@@ -100,7 +104,56 @@ export const CustomTourEstimator: React.FC<CustomTourEstimatorProps> = ({
             <span>Transport:</span>
             <span className="font-semibold text-slate-200">{transportPreference}</span>
           </div>
+          <div className="flex justify-between text-xs text-slate-400">
+            <span>Meals:</span>
+            <span className="font-semibold text-slate-200">{mealPreference}</span>
+          </div>
         </div>
+
+        {/* Itemized Price Breakdown Surcharges */}
+        {estimate.breakdown && (
+          <div className="border-t border-slate-800/80 pt-4 space-y-2">
+            <span className="text-[10px] font-black text-amber-400 uppercase tracking-wider block">Price Breakdown</span>
+            <div className="flex justify-between text-xs text-slate-400">
+              <span>Base Package Cost:</span>
+              <span className="font-semibold text-slate-200">{formatPrice(estimate.breakdown.basePrice)}</span>
+            </div>
+            {estimate.breakdown.hotelSurcharge > 0 && (
+              <div className="flex justify-between text-xs text-slate-400">
+                <span>Hotel Surcharge:</span>
+                <span className="font-semibold text-slate-200">+{formatPrice(estimate.breakdown.hotelSurcharge)}</span>
+              </div>
+            )}
+            {estimate.breakdown.transportSurcharge > 0 && (
+              <div className="flex justify-between text-xs text-slate-400">
+                <span>Transport Upgrade:</span>
+                <span className="font-semibold text-slate-200">+{formatPrice(estimate.breakdown.transportSurcharge)}</span>
+              </div>
+            )}
+            {estimate.breakdown.mealSurcharge > 0 && (
+              <div className="flex justify-between text-xs text-slate-400">
+                <span>Meal Surcharge:</span>
+                <span className="font-semibold text-slate-200">+{formatPrice(estimate.breakdown.mealSurcharge)}</span>
+              </div>
+            )}
+            {estimate.breakdown.extraNightsSurcharge > 0 && (
+              <div className="flex justify-between text-xs text-slate-400">
+                <span>Extra Nights Surcharge:</span>
+                <span className="font-semibold text-slate-200">+{formatPrice(estimate.breakdown.extraNightsSurcharge)}</span>
+              </div>
+            )}
+            {estimate.breakdown.activitySurcharge > 0 && (
+              <div className="flex justify-between text-xs text-slate-400">
+                <span>Activity Add-ons:</span>
+                <span className="font-semibold text-slate-200">+{formatPrice(estimate.breakdown.activitySurcharge)}</span>
+              </div>
+            )}
+            <div className="flex justify-between text-xs font-black text-white border-t border-slate-800/50 pt-2">
+              <span>Calculated Total:</span>
+              <span>{formatPrice(estimate.breakdown.total)}</span>
+            </div>
+          </div>
+        )}
 
         {budget > 0 && (
           <div className="border-t border-slate-800/80 pt-4">

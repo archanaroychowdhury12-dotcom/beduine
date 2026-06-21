@@ -51,24 +51,29 @@ export default function PaidTourPage({
   };
 
   const handleReturnHome = () => {
-    setCurrentView('home');
+    if (onNavigate) {
+      onNavigate('landing');
+    } else {
+      setCurrentView('home');
+    }
     setTargetTourId(null);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleNavigate = (view: string) => {
+    if (view === 'home' && onNavigate) {
+      onNavigate('landing');
+      return;
+    }
+
     if (view === 'customize') {
       window.location.hash = 'customize';
+      setCurrentView('customize');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
       window.location.hash = view === 'home' ? '' : view;
-    }
-    setCurrentView(view as TourView);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const handleGoToDashboard = () => {
-    if (onNavigate) {
-      onNavigate('dashboard');
+      setCurrentView(view as TourView);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
@@ -81,18 +86,18 @@ export default function PaidTourPage({
       />
 
       <main className="flex-grow">
-        {currentView === 'home' && <HomeView onStartBooking={handleStartBooking} />}
+        {currentView === 'home' && (
+          <HomeView
+            onStartBooking={handleStartBooking}
+            currentUser={currentUser}
+            onNavigate={handleNavigate}
+          />
+        )}
         {currentView === 'about' && (
           <AboutPage onStartBooking={() => handleStartBooking()} onNavigate={handleNavigate} />
         )}
         {currentView === 'packages' && (
           <PackagesPage onStartBooking={handleStartBooking} onNavigate={handleNavigate} />
-        )}
-        {currentView === 'customize' && (
-          <CustomizeTourPage
-            currentUser={currentUser}
-            onNavigateToDashboard={handleGoToDashboard}
-          />
         )}
         {currentView === 'booking' && (
           <BookingPortalContainer
@@ -100,6 +105,12 @@ export default function PaidTourPage({
             onReturnHome={handleReturnHome}
             currentUser={currentUser}
             setCurrentUser={setCurrentUser}
+          />
+        )}
+        {currentView === 'customize' && (
+          <CustomizeTourPage
+            currentUser={currentUser}
+            onNavigateToDashboard={() => onNavigate?.('dashboard')}
           />
         )}
       </main>

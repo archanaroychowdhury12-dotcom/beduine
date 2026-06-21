@@ -72,64 +72,40 @@ export const CustomTourSuccess: React.FC<CustomTourSuccessProps> = ({
       </div>
 
       {/* Timeline flow */}
-      <div className="text-left space-y-4 pt-2 border-t border-slate-100">
-        <span className="text-[10px] font-black text-slate-450 uppercase tracking-widest block text-center">Request Progression Status</span>
+      <div className="text-left space-y-3 pt-2">
+        <span className="text-[10px] font-black text-slate-450 uppercase tracking-widest block text-center">Next Steps</span>
         
         <div className="relative pl-6 space-y-4">
-          <div className="absolute left-2.5 top-1.5 bottom-1.5 w-[2px] bg-slate-200" />
+          <div className="absolute left-2 top-1.5 bottom-1.5 w-[2px] bg-slate-200" />
           
           <div className="relative">
-            <div className="absolute -left-[19px] w-3 h-3 rounded-full bg-emerald-500 ring-4 ring-emerald-100" />
-            <span className="text-xs font-black text-slate-800 block">Submitted &amp; Logged</span>
+            <div className="absolute -left-5 w-2 h-2 rounded-full bg-emerald-500 ring-4 ring-emerald-100" />
+            <span className="text-xs font-black text-slate-700 block">1. Agent Evaluation</span>
             <p className="text-[10px] text-slate-450 mt-0.5 leading-relaxed">
-              Your customized request was successfully written to local memory.
+              We check hotel vacancies, transport packages, and local permits for your destination.
             </p>
           </div>
 
           <div className="relative">
-            <div className="absolute -left-[19px] w-3 h-3 rounded-full bg-amber-500 ring-4 ring-amber-100" />
-            <span className="text-xs font-black text-slate-700 block animate-pulse">Admin Review (In Progress)</span>
+            <div className="absolute -left-5 w-2 h-2 rounded-full bg-slate-350" />
+            <span className="text-xs font-bold text-slate-500 block">2. Quotation Release</span>
             <p className="text-[10px] text-slate-450 mt-0.5 leading-relaxed">
-              We check transport capacity, hotel availability, and local permits for {request.destination}.
+              We build a curated itinerary and quote. You approve or suggest revisions.
             </p>
           </div>
 
           <div className="relative">
-            <div className="absolute -left-[19px] w-3 h-3 rounded-full bg-slate-350" />
-            <span className="text-xs font-bold text-slate-500 block">Quotation Issued</span>
+            <div className="absolute -left-5 w-2 h-2 rounded-full bg-slate-350" />
+            <span className="text-xs font-bold text-slate-500 block">3. Confirm &amp; Finalize</span>
             <p className="text-[10px] text-slate-450 mt-0.5 leading-relaxed">
-              A curated budget list, hotel details, and private vehicle details will be compiled.
-            </p>
-          </div>
-
-          <div className="relative">
-            <div className="absolute -left-[19px] w-3 h-3 rounded-full bg-slate-350" />
-            <span className="text-xs font-bold text-slate-500 block">Accept or Revision request</span>
-            <p className="text-[10px] text-slate-450 mt-0.5 leading-relaxed">
-              Verify the terms. You can request changes or proceed directly to checkout.
-            </p>
-          </div>
-
-          <div className="relative">
-            <div className="absolute -left-[19px] w-3 h-3 rounded-full bg-slate-350" />
-            <span className="text-xs font-bold text-slate-500 block">Simulated Payment Checkout</span>
-            <p className="text-[10px] text-slate-450 mt-0.5 leading-relaxed">
-              Pay via mock payment gateway to verify integration hooks.
-            </p>
-          </div>
-
-          <div className="relative">
-            <div className="absolute -left-[19px] w-3 h-3 rounded-full bg-slate-350" />
-            <span className="text-xs font-bold text-slate-500 block">Confirmed Travel Booking</span>
-            <p className="text-[10px] text-slate-450 mt-0.5 leading-relaxed">
-              Retrieve your active travel voucher with verification QR code.
+              You complete payment and download the voucher with QR code verification.
             </p>
           </div>
         </div>
       </div>
 
       {/* CTAs */}
-      <div className="pt-4 flex flex-col gap-2.5">
+      <div className="pt-4 flex flex-col gap-2">
         {isLoggedIn && onGoToDashboard ? (
           <button
             type="button"
@@ -139,34 +115,13 @@ export const CustomTourSuccess: React.FC<CustomTourSuccessProps> = ({
             Track in My Dashboard <ArrowRight className="w-3.5 h-3.5" />
           </button>
         ) : (
-          <>
-            <button
-              type="button"
-              onClick={() => {
-                window.location.pathname = '/register';
-              }}
-              className="w-full py-3 bg-[#0096C7] hover:bg-[#0086B3] text-white rounded-2xl text-xs font-black uppercase tracking-wider transition-colors flex items-center justify-center gap-1.5 cursor-pointer shadow-md"
-            >
-              Create Account to Track This Request <ArrowRight className="w-3.5 h-3.5" />
-            </button>
-            
-            <a
-              href={`https://wa.me/918768903565?text=${encodeURIComponent(`Hi Beduine Travels! I have submitted a customized tour request for ${request.destination} (Reference: ${request.displayCode}). Please review.`)}`}
-              target="_blank"
-              rel="noreferrer"
-              className="w-full py-3 bg-emerald-500 hover:bg-emerald-600 text-white rounded-2xl text-xs font-black uppercase tracking-wider transition-colors flex items-center justify-center gap-1.5 cursor-pointer shadow-md no-underline"
-            >
-              Continue with WhatsApp
-            </a>
-
-            <button
-              type="button"
-              onClick={onReset}
-              className="w-full py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-2xl text-xs font-bold transition-colors cursor-pointer"
-            >
-              Create Another Request
-            </button>
-          </>
+          <button
+            type="button"
+            onClick={onReset}
+            className="w-full py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-2xl text-xs font-bold transition-colors cursor-pointer"
+          >
+            Create Another Request
+          </button>
         )}
       </div>
     </div>

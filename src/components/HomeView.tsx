@@ -18,7 +18,11 @@ import {
 } from '../data/paidTourContent';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 
-interface HomeViewProps { onStartBooking: (tourId?: string) => void; }
+interface HomeViewProps {
+  onStartBooking: (tourId?: string) => void;
+  currentUser?: any;
+  onNavigate?: (view: string) => void;
+}
 
 /* Animated counter */
 function Counter({ end, suffix = '' }: { end: number; suffix?: string }) {
@@ -45,7 +49,11 @@ function Counter({ end, suffix = '' }: { end: number; suffix?: string }) {
   return <span ref={ref}>{val.toLocaleString()}{suffix}</span>;
 }
 
-export const HomeView: React.FC<HomeViewProps> = ({ onStartBooking }) => {
+export const HomeView: React.FC<HomeViewProps> = ({
+  onStartBooking,
+  currentUser,
+  onNavigate
+}) => {
   const [showFloat, setShowFloat] = useState(false);
   const [searchDest, setSearchDest] = useState('');
   const [reviewIdx, setReviewIdx] = useState(0);
@@ -512,6 +520,7 @@ export const HomeView: React.FC<HomeViewProps> = ({ onStartBooking }) => {
           </div>
         </div>
       </section>
+
 
       {/* ===================== FOOTER ===================== */}
       <footer className="hidden bg-slate-950 text-white pt-20 pb-10 px-4 sm:px-6 lg:px-8">

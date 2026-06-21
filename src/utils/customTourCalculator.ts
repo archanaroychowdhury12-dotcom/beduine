@@ -6,10 +6,12 @@ import {
   TourActivity,
   EstimatedPriceRange
 } from '../types';
+import { TOUR_PACKAGES } from '../data/tours';
 
 export function calculateEstimatedPriceRange(inputs: {
-  tripType: TripType;
-  durationNights: number;
+  packageId?: string;
+  tripType?: TripType;
+  durationNights?: number;
   adults: number;
   children: number;
   rooms: number;
@@ -19,8 +21,8 @@ export function calculateEstimatedPriceRange(inputs: {
   activities: TourActivity[];
 }): EstimatedPriceRange {
   const {
-    tripType,
-    durationNights = 1,
+    packageId,
+    durationNights,
     adults = 1,
     children = 0,
     rooms = 1,
@@ -30,117 +32,101 @@ export function calculateEstimatedPriceRange(inputs: {
     activities = []
   } = inputs;
 
-  const nights = Math.max(1, durationNights);
-  const totalPeople = adults + children;
-  const effectivePeople = adults + children * 0.6;
+  const travelerCount = adults + children;
 
-  // 1. Base cost per person depending on destination type
-  const baseCostPerPerson = tripType === 'International' ? 22000 : 4500;
-  const basePeopleCost = effectivePeople * baseCostPerPerson;
+  // Find the selected package from TOUR_PACKAGES by ID. If not found, fall back to a default cost.
+  const pkg = TOUR_PACKAGES.find(p => p.id === packageId) || TOUR_PACKAGES[0];
 
-  // 2. Accommodation cost per room per night
-  let hotelCostPerRoomPerNight = 2000; // Not Sure / Default
-  switch (hotelCategory) {
-    case 'Standard (2 Star)':
-      hotelCostPerRoomPerNight = 1200;
-      break;
-    case 'Deluxe (3 Star)':
-      hotelCostPerRoomPerNight = 2500;
-      break;
-    case 'Luxury Resort (5 Star)':
-      hotelCostPerRoomPerNight = 6500;
-      break;
-    case 'Heritage/Homestay':
-      hotelCostPerRoomPerNight = 1800;
-      break;
+  // Base Price = package.basePrice * travelerCount (travelers = adults + children)
+  const basePricePerPerson = pkg ? pkg.basePrice : (inputs.tripType === 'International' ? 22000 : 4500);
+  const basePrice = basePricePerPerson * travelerCount;
+
+  // Actual nights
+  const actualNights = durationNights !== undefined ? durationNights : (pkg ? pkg.durationNights : 4);
+  const nights = Math.max(1, actualNights);
+
+  // Hotel Surcharge: Room upgrades per night (Standard/Heritage: 0, Deluxe: 1000/room/night, Luxury: 4000/room/night)
+  let hotelSurchargePerRoomPerNight = 0;
+  if (hotelCategory === 'Deluxe (3 Star)') {
+    hotelSurchargePerRoomPerNight = 1000;
+  } else if (hotelCategory === 'Luxury Resort (5 Star)') {
+    hotelSurchargePerRoomPerNight = 4000;
   }
-  const totalAccommodationCost = rooms * hotelCostPerRoomPerNight * nights;
+  const hotelSurcharge = rooms * hotelSurchargePerRoomPerNight * nights;
 
-  // 3. Transport Add-on costs
-  let transportCost = 0;
-  switch (transportPreference) {
-    case 'Sedan':
-      transportCost = 2500 * nights;
-      break;
-    case 'Premium SUV':
-      transportCost = 4200 * nights;
-      break;
-    case 'Luxury Traveler':
-      transportCost = 6500 * nights;
-      break;
-    case 'Flight Included':
-      transportCost = (tripType === 'International' ? 35000 : 8000) * totalPeople;
-      break;
-    case 'Train Included':
-      transportCost = 1800 * totalPeople;
-      break;
+  // Transport Surcharge: Transport upgrades (SUV: 1500/night, Luxury Traveler: 3000/night, Flight: 6000/person, Train/Sedan/None/Not Sure: 0)
+  let transportSurcharge = 0;
+  if (transportPreference === 'Premium SUV') {
+    transportSurcharge = 1500 * nights;
+  } else if (transportPreference === 'Luxury Traveler') {
+    transportSurcharge = 3000 * nights;
+  } else if (transportPreference === 'Flight Included') {
+    transportSurcharge = 6000 * travelerCount;
   }
 
-  // 4. Meal Add-on costs per person per night
-  let mealCostPerPersonPerNight = 0;
-  switch (mealPreference) {
-    case 'Breakfast Only':
-      mealCostPerPersonPerNight = 200;
-      break;
-    case 'Half Board (MAP)':
-      mealCostPerPersonPerNight = 650;
-      break;
-    case 'Full Board (AP)':
-      mealCostPerPersonPerNight = 1200;
-      break;
-    case 'Veg Only':
-      mealCostPerPersonPerNight = 500;
-      break;
+  // Meal Surcharge: Meal upgrades per person per night (Breakfast/None/Not Sure: 0, MAP: 400/person/night, AP: 900/person/night, Veg: 250/person/night)
+  let mealSurchargePerPersonPerNight = 0;
+  if (mealPreference === 'Half Board (MAP)') {
+    mealSurchargePerPersonPerNight = 400;
+  } else if (mealPreference === 'Full Board (AP)') {
+    mealSurchargePerPersonPerNight = 900;
+  } else if (mealPreference === 'Veg Only') {
+    mealSurchargePerPersonPerNight = 250;
   }
-  const totalMealCost = mealCostPerPersonPerNight * totalPeople * nights;
+  const mealSurcharge = mealSurchargePerPersonPerNight * travelerCount * nights;
 
-  // 5. Activity Add-on costs
-  let activityCostSum = 0;
+  // Extra Nights Surcharge: If durationNights > package.durationNights, each extra night adds 2500 * travelerCount
+  let extraNightsSurcharge = 0;
+  const baseNights = pkg ? pkg.durationNights : 4;
+  if (nights > baseNights) {
+    extraNightsSurcharge = (nights - baseNights) * 2500 * travelerCount;
+  }
+
+  // Activity Surcharge: Surcharge per person per activity (Sightseeing/Shopping: 0, Adventure: 1500, Wildlife: 2000, Trekking: 1200, Food Tour: 800, Spa & Wellness: 2500)
+  let activitySurchargePerPerson = 0;
   activities.forEach((act) => {
     switch (act) {
-      case 'Sightseeing':
-        activityCostSum += 400;
-        break;
       case 'Adventure':
-        activityCostSum += 1500;
+        activitySurchargePerPerson += 1500;
         break;
       case 'Wildlife Safari':
-        activityCostSum += 2000;
+        activitySurchargePerPerson += 2000;
         break;
       case 'Trekking':
-        activityCostSum += 1200;
+        activitySurchargePerPerson += 1200;
         break;
       case 'Food Tour':
-        activityCostSum += 800;
+        activitySurchargePerPerson += 800;
         break;
       case 'Spa & Wellness':
-        activityCostSum += 2500;
+        activitySurchargePerPerson += 2500;
         break;
-      case 'Shopping':
-        activityCostSum += 100;
-        break;
+      // Sightseeing / Shopping -> 0
     }
   });
-  const totalActivityCost = activityCostSum * totalPeople;
+  const activitySurcharge = activitySurchargePerPerson * travelerCount;
 
-  // Sum everything to get the midpoint
-  let estimatedMidpoint = basePeopleCost + totalAccommodationCost + transportCost + totalMealCost + totalActivityCost;
+  // Total estimated price
+  const total = basePrice + hotelSurcharge + transportSurcharge + mealSurcharge + extraNightsSurcharge + activitySurcharge;
 
-  // Apply sensible floor caps
-  const minFloor = tripType === 'International' ? 30000 : 5000;
-  if (estimatedMidpoint < minFloor) {
-    estimatedMidpoint = minFloor;
-  }
-
-  // Define min and max bounds
-  const min = Math.round((estimatedMidpoint * 0.85) / 100) * 100;
-  const max = Math.round((estimatedMidpoint * 1.25) / 100) * 100;
+  // Calculate min/max bounds (min = total * 0.9, max = total * 1.15)
+  const min = Math.round((total * 0.9) / 100) * 100;
+  const max = Math.round((total * 1.15) / 100) * 100;
 
   return {
     min,
     max,
     currency: 'INR',
-    note: 'Estimated price range based on current selection. Real cost depends on availability and dates.'
+    note: 'Estimated price range based on current selection. Real cost depends on availability and dates.',
+    breakdown: {
+      basePrice,
+      hotelSurcharge,
+      transportSurcharge,
+      mealSurcharge,
+      extraNightsSurcharge,
+      activitySurcharge,
+      total
+    }
   };
 }
 

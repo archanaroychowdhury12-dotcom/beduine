@@ -13,17 +13,16 @@ import {
   Menu,
   MessageCircle,
   Phone,
-  Plane,
   Send,
   Share2,
   ShieldCheck,
-  Sparkles,
   Tag,
   Tv,
   Users,
   Video,
   X,
 } from 'lucide-react';
+import { NAV } from '../../data/siteData';
 import { ParticleButton, StarField } from './LandingExperience';
 import { openCookiePreferenceModal } from '../legal/CookieConsentBanner';
 
@@ -102,52 +101,6 @@ export function Navbar({ view, setView, currentUser, setCurrentUser: _setCurrent
     { id: 'step-11', label: 'Support', icon: HelpCircle },
   ];
 
-  const customNavItems = [
-    { id: 'home', label: 'Home', type: 'scroll', target: 'top' },
-    { id: 'packages', label: 'Packages', type: 'route', target: 'paid-tour', hash: 'packages' },
-    { id: 'customize', label: 'Customize Tour', type: 'route', target: 'paid-tour', hash: 'customize' },
-    { id: 'plans', label: 'Subscription', type: 'scroll', target: 'plans' },
-    { id: 'how', label: 'How It Works', type: 'scroll', target: 'how' },
-    currentUser 
-      ? { id: 'dashboard', label: 'Dashboard', type: 'view', target: 'dashboard' }
-      : { id: 'login', label: 'Login / Register', type: 'view', target: 'login' }
-  ];
-
-  const isActive = (item: any) => {
-    if (item.type === 'scroll') return activeSection === item.target;
-    if (item.type === 'route') return view === item.target && window.location.hash.replace('#', '') === item.hash;
-    if (item.type === 'view') return view === item.target;
-    return false;
-  };
-
-  const handleNavItemClick = (e: React.MouseEvent, item: any) => {
-    e.preventDefault();
-    setOpen(false);
-    
-    if (item.type === 'scroll') {
-      if (view !== 'landing') {
-        setView('landing');
-        setTimeout(() => {
-          const el = document.getElementById(item.target);
-          if (el) el.scrollIntoView({ behavior: 'smooth' });
-        }, 100);
-      } else {
-        const el = document.getElementById(item.target);
-        if (el) el.scrollIntoView({ behavior: 'smooth' });
-      }
-    } else if (item.type === 'route') {
-      setView(item.target);
-      window.location.hash = item.hash;
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else if (item.type === 'view') {
-      if (item.target === 'login') {
-        setLoginInitialMode('login');
-      }
-      setView(item.target);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  };
-
   return (
     <header className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${scrolled ? 'py-2' : 'py-4'}`}>
       <div className="max-w-6xl mx-auto px-3 sm:px-5 lg:px-8">
@@ -207,22 +160,42 @@ export function Navbar({ view, setView, currentUser, setCurrentUser: _setCurrent
                     <n.icon className="relative z-10 w-3 h-3 xl:w-3.5 xl:h-3.5" strokeWidth={2.3} />
                     <span className="relative z-10">{n.label}</span>
                   </a>
-                )) : customNavItems.map((n) => (
+                )) : NAV.map((n) => (
                   <a 
                     key={n.id} 
                     href={`#${n.id}`} 
                     data-magnetic 
-                    onClick={(e) => handleNavItemClick(e, n)}
+                    onClick={(e) => {
+                      if (n.id === 'terms') {
+                        e.preventDefault();
+                        setView('terms');
+                        setTimeout(() => {
+                          window.scrollTo({ top: 0, behavior: 'smooth' });
+                        }, 100);
+                        return;
+                      }
+                      e.preventDefault();
+                      if (view !== 'landing') {
+                        setView('landing');
+                        setTimeout(() => {
+                          const el = document.getElementById(n.id);
+                          if (el) el.scrollIntoView({ behavior: 'smooth' });
+                        }, 100);
+                      } else {
+                        const el = document.getElementById(n.id);
+                        if (el) el.scrollIntoView({ behavior: 'smooth' });
+                      }
+                    }}
                     className="relative inline-flex items-center gap-1 text-[10px] xl:text-[11px] font-bold whitespace-nowrap px-[6px] py-[4px] xl:px-2.5 xl:py-1.5 rounded-full transition-all duration-300 hover:scale-[1.03] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#18D7F2]/45"
                     style={{ 
-                      color: isActive(n) || hoveredId === n.id 
+                      color: activeSection === n.id || hoveredId === n.id 
                         ? '#138A8A' 
                         : isDashboard ? '#1E3147' : '#7E919D' 
                     }}
                     onMouseEnter={() => setHoveredId(n.id)}
                     onMouseLeave={() => setHoveredId(null)}
                   >
-                    {isActive(n) && (
+                    {activeSection === n.id && (
                       <motion.div 
                         layoutId="activeNavBackground" 
                         className="absolute inset-0 bg-gradient-to-r from-[#EAF7FB] to-white border border-[#138A8A]/20 rounded-full shadow-sm" 
@@ -346,22 +319,37 @@ export function Navbar({ view, setView, currentUser, setCurrentUser: _setCurrent
               <motion.div id="mobile-menu" initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="lg:hidden overflow-hidden border-t" style={{ borderColor: 'rgba(231,220,207,0.9)' }}>
                 <div className="px-4 py-4" style={{ background: 'linear-gradient(180deg, rgba(255,255,255,0.96), rgba(250,242,230,0.96))' }}>
                   <div className="grid grid-cols-2 gap-2">
-                    {customNavItems.map((n) => (
+                    {NAV.map((n) => (
                       <a 
                         key={n.id} 
                         href={`#${n.id}`} 
-                        onClick={(e) => handleNavItemClick(e, n)} 
+                        onClick={(e) => {
+                          setOpen(false);
+                          if (n.id === 'terms') {
+                            e.preventDefault();
+                            setView('terms');
+                            setTimeout(() => {
+                              window.scrollTo({ top: 0, behavior: 'smooth' });
+                            }, 100);
+                            return;
+                          }
+                          if (view !== 'landing') {
+                            e.preventDefault();
+                            setView('landing');
+                            setTimeout(() => {
+                              const el = document.getElementById(n.id);
+                              if (el) el.scrollIntoView({ behavior: 'smooth' });
+                            }, 100);
+                          } else {
+                            const el = document.getElementById(n.id);
+                            if (el) el.scrollIntoView({ behavior: 'smooth' });
+                          }
+                        }} 
                         className="group flex items-center gap-2.5 rounded-2xl border border-slate-200/70 bg-white/70 px-3 py-3 text-sm font-bold no-underline shadow-sm transition-all hover:border-[#138A8A]/30 hover:bg-[#EAF7FB]"
                         style={{ color: '#1E3147' }}
                       >
                         <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#EAF7FB] text-[#138A8A] transition-colors group-hover:bg-[#138A8A] group-hover:text-white">
-                          {n.id === 'home' && <Compass className="w-4 h-4" strokeWidth={2.3} />}
-                          {n.id === 'packages' && <Plane className="w-4 h-4" strokeWidth={2.3} />}
-                          {n.id === 'customize' && <Compass className="w-4 h-4" strokeWidth={2.3} />}
-                          {n.id === 'plans' && <Crown className="w-4 h-4" strokeWidth={2.3} />}
-                          {n.id === 'how' && <Sparkles className="w-4 h-4" strokeWidth={2.3} />}
-                          {n.id === 'dashboard' && <ShieldCheck className="w-4 h-4" strokeWidth={2.3} />}
-                          {n.id === 'login' && <Lock className="w-4 h-4" strokeWidth={2.3} />}
+                          <n.icon className="w-4 h-4" strokeWidth={2.3} />
                         </span>
                         <span className="leading-tight">{n.label}</span>
                       </a>

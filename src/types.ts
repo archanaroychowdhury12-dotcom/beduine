@@ -201,6 +201,15 @@ export interface EstimatedPriceRange {
   max: number;
   currency: 'INR';
   note: string;
+  breakdown?: {
+    basePrice: number;
+    hotelSurcharge: number;
+    transportSurcharge: number;
+    mealSurcharge: number;
+    extraNightsSurcharge: number;
+    activitySurcharge: number;
+    total: number;
+  };
 }
 
 export interface CustomTourQuotation {

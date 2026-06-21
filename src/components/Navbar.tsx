@@ -170,21 +170,6 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, setCurrentView }) =
               </a>
             </>
           )}
-
-          {/* Unmissable Navigation Link to "Book Paid Tour" */}
-          <button
-            onClick={() => handleNavClick('booking')}
-            className={`text-sm font-black tracking-wide transition-all cursor-pointer flex items-center gap-1.5 px-3 py-1.5 rounded-xl ${
-              currentView === 'booking'
-                ? 'bg-amber-500 text-slate-950 shadow-md'
-                : (isScrolled || currentView !== 'home')
-                ? 'bg-amber-100/80 text-amber-900 hover:bg-amber-500 hover:text-slate-950'
-                : 'bg-white/20 text-white hover:bg-amber-500 hover:text-slate-950 backdrop-blur-sm'
-            }`}
-          >
-            <Calendar className="w-4 h-4" />
-            <span>Book Paid Tour</span>
-          </button>
         </nav>
 
         {/* Primary Action CTA Button */}

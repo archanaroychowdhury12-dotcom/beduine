@@ -9,7 +9,7 @@ import {
   Send, FileText,
   BadgeCheck, Zap, Bot, Fingerprint, Scan,
   Heart, Globe, Wallet, Shield, HeartHandshake,
-  Trophy, Tag, Gem, Route, Camera, Compass
+  Trophy, Tag, Gem, Route, Camera
 } from 'lucide-react';
 import ScatteredShowcase from '../../ScatteredShowcase';
 import {
@@ -671,34 +671,29 @@ function Hero({ setView }: { setView: (v: any) => void }) {
 
               {/* Action Buttons */}
               <div className="flex flex-wrap gap-3 items-center mb-8">
+                <a href="#plans" className="cursor-pointer">
+                  <button className="px-6 py-3 bg-gradient-to-r from-[#00A2FF] to-[#00D9FF] hover:from-[#0088D1] hover:to-[#00C2E6] text-white font-bold rounded-full shadow-lg shadow-cyan-500/20 hover:-translate-y-0.5 transition-all text-xs uppercase tracking-wider border-none cursor-pointer flex items-center gap-1.5">
+                    View Plans <ArrowRight className="w-3.5 h-3.5" />
+                  </button>
+                </a>
                 <button 
                   onClick={() => {
-                    setView('paid-tour');
-                    window.location.hash = 'customize';
+                    setView('terms');
                     window.scrollTo({ top: 0, behavior: 'smooth' });
-                  }}
-                  className="px-6 py-3 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-bold rounded-full shadow-lg shadow-orange-500/20 hover:-translate-y-0.5 transition-all text-xs uppercase tracking-wider border-none cursor-pointer flex items-center gap-1.5"
-                >
-                  <Compass className="w-3.5 h-3.5" /> Customize Your Tour
-                </button>
-                <button 
-                  onClick={() => {
-                    const el = document.getElementById('plans');
-                    if (el) el.scrollIntoView({ behavior: 'smooth' });
                   }}
                   className="px-6 py-3 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-full shadow-lg hover:-translate-y-0.5 transition-all text-xs uppercase tracking-wider border-none cursor-pointer flex items-center gap-1.5"
                 >
-                  <Crown className="w-3.5 h-3.5" /> View Subscription Plans
+                  Read Terms
                 </button>
                 <button 
-                  onClick={() => {
-                    setView('paid-tour');
-                    window.location.hash = 'packages';
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const el = document.getElementById('contact');
+                    if (el) el.scrollIntoView({ behavior: 'smooth' });
                   }}
                   className="px-6 py-3 bg-white hover:bg-slate-100 text-slate-900 border border-slate-300 font-bold rounded-full shadow-lg hover:-translate-y-0.5 transition-all text-xs uppercase tracking-wider cursor-pointer flex items-center gap-1.5"
                 >
-                  <Plane className="w-3.5 h-3.5" /> Explore Packages
+                  Contact Us
                 </button>
               </div>
 
@@ -2665,7 +2660,7 @@ function NonWinnerGuarantee() {
 }
 
 /* ---------- Destinations Showcase ---------- */
-function Destinations({ setView }: { setView: (v: any) => void }) {
+function Destinations() {
   return (
     <section id="destinations" className="relative py-14 lg:py-20 bg-cosmos">
       {/* Cosmic background glows (isolated overflow container) */}
@@ -2705,19 +2700,7 @@ function Destinations({ setView }: { setView: (v: any) => void }) {
       </div>
 
       {/* 3D Scattered Scroll Showcase */}
-      <ScatteredShowcase 
-        destinations={DESTINATIONS} 
-        onViewPackage={() => {
-          setView('paid-tour');
-          window.location.hash = 'packages';
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }}
-        onPlanTrip={() => {
-          setView('paid-tour');
-          window.location.hash = 'customize';
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }}
-      />
+      <ScatteredShowcase destinations={DESTINATIONS} />
     </section>
   );
 }
@@ -3095,7 +3078,7 @@ export function LandingContent({ onSelectPlan, setView }: { onSelectPlan: (planN
           <ScrollRoundedSection><TravelRewardSystem /></ScrollRoundedSection>
           <ScrollRoundedSection><CreditArchitecture activePlan={null} ldcTokens={0} discountCredits={0} /></ScrollRoundedSection>
           <ScrollRoundedSection><NonWinnerGuarantee /></ScrollRoundedSection>
-          <Destinations setView={setView} />
+          <Destinations />
           <ScrollRoundedSection><Winners /></ScrollRoundedSection>
           <ScrollRoundedSection><Services /></ScrollRoundedSection>
           <ScrollRoundedSection><Transparency /></ScrollRoundedSection>

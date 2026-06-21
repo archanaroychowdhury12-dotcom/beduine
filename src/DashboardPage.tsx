@@ -3,11 +3,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   Compass, Sparkles, Gift, CreditCard, Plane, ArrowRight,
   Crown, LogOut, Ticket, Calendar, Check,
-  Star, Zap,
+  Star, Zap, Shield,
   ChevronRight, User, Bell, ChevronLeft,
   LayoutDashboard, ShieldCheck, Tag, Route, Share2, Phone,
-  MessageCircle, Trash2, Copy, FileText, CheckCircle2,
-  AlertTriangle, Lock, Unlock, RefreshCw, UserPlus, Download, ShieldAlert
+  MessageCircle, Trash2, Copy, FileText, CheckCircle2, Clock,
+  AlertTriangle, Lock, Unlock, RefreshCw, UserPlus, Download
 } from 'lucide-react';
 import { customTourService } from './services/customTourService';
 import { CustomTourForm } from './components/custom-tour/CustomTourForm';
@@ -16,7 +16,6 @@ import { CustomTourRequest } from './types';
 
 interface DashboardPageProps {
   user: any;
-  setCurrentUser?: (u: any) => void;
   onLogout: () => void;
   onBookPaidTour?: () => void;
   onBack?: () => void;
@@ -286,7 +285,7 @@ const generateRandomToken = () => {
   return token;
 };
 
-export default function DashboardPage({ user, setCurrentUser, onLogout, onBookPaidTour, onBack }: DashboardPageProps) {
+export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack }: DashboardPageProps) {
   // Navigation states - supports 11 tabs as requested
   const [activeTab, setActiveTab] = useState<
     'overview' | 'subscription' | 'weekly-participation' | 'credits' |
@@ -362,11 +361,6 @@ export default function DashboardPage({ user, setCurrentUser, onLogout, onBookPa
 
   // Track the pending booking status so we can trigger cancellation/reinstatement
   const [bookingStatus, setBookingStatus] = useState<'Pending Confirmation' | 'Cancelled'>('Pending Confirmation');
-
-  // Subscription upgrade states
-  const [upgradeTargetPlan, setUpgradeTargetPlan] = useState<any | null>(null);
-  const [isUpgrading, setIsUpgrading] = useState(false);
-  const [upgradePaymentMethod, setUpgradePaymentMethod] = useState<'upi' | 'card' | 'netbanking'>('upi');
 
   // Selection cycle simulator state
   const [cycleState, setCycleState] = useState<'Draft' | 'Entry Open' | 'Entry Closed' | 'List Frozen' | 'Result Pending' | 'Result Published' | 'Cancelled'>('Entry Open');
@@ -1018,42 +1012,6 @@ export default function DashboardPage({ user, setCurrentUser, onLogout, onBookPa
     }
   };
 
-  const handleUpgradeSubscription = (targetPlan: any) => {
-    setIsUpgrading(true);
-    setTimeout(() => {
-      // 1. Update user
-      const updatedUser = {
-        ...user,
-        planName: targetPlan.name,
-        planType: targetPlan.type,
-      };
-      if (setCurrentUser) setCurrentUser(updatedUser);
-
-      // 2. Add to ledger using helper
-      logCreditTransaction(
-        'issued',
-        'discount',
-        targetPlan.vouchers,
-        `Subscription upgrade reward - Upgraded to ${targetPlan.name}`
-      );
-
-      // 3. Add a notification
-      const newNotif = {
-        id: Date.now(),
-        type: 'billing',
-        title: 'Subscription Upgraded',
-        message: `Successfully upgraded to ${targetPlan.name}. ${targetPlan.vouchers} Discount Vouchers have been credited to your wallet.`,
-        time: 'Just now',
-        read: false
-      };
-      setNotifications([newNotif, ...notifications]);
-
-      setIsUpgrading(false);
-      setUpgradeTargetPlan(null);
-      alert(`Success! Your account has been upgraded to ${targetPlan.name} (Frontend Demo Mode).`);
-    }, 1200);
-  };
-
   const handleAddCoupon = (e: React.FormEvent) => {
     e.preventDefault();
     setCouponError(null);
@@ -1153,7 +1111,7 @@ export default function DashboardPage({ user, setCurrentUser, onLogout, onBookPa
           <h1 className="text-slate-800 font-serif text-3xl font-black mt-1 leading-tight">Welcome back, {profileName}!</h1>
         </div>
 
-        {/* 7 overview grid status cards */}
+        {/* 9 overview grid status cards as requested */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           
           {/* Card 1: Active Plan */}
@@ -1165,7 +1123,7 @@ export default function DashboardPage({ user, setCurrentUser, onLogout, onBookPa
               </div>
             </div>
             <div className="text-xl font-black text-slate-800 leading-tight uppercase">{planName}</div>
-            <div className="text-[10px] text-emerald-600 font-bold uppercase mt-1 tracking-wider">Verified Active</div>
+            <div className="text-[10px] text-slate-400 font-bold uppercase mt-1 tracking-wider">{planType} Membership</div>
           </div>
 
           {/* Card 2: Subscription Validity */}
@@ -1177,56 +1135,30 @@ export default function DashboardPage({ user, setCurrentUser, onLogout, onBookPa
               </div>
             </div>
             <div className="text-[11px] font-bold text-slate-700 leading-normal">
-              <div>Start: <strong className="text-slate-900 font-bold">June 20, 2026</strong></div>
-              <div className="mt-0.5">Expiry: <strong className="text-[#FF6B6B] font-bold">June 20, 2027</strong></div>
+              <div>Start: <strong className="text-slate-900">June 20, 2026</strong></div>
+              <div className="mt-0.5">Expiry: <strong className="text-[#FF6B6B]">June 20, 2027</strong></div>
             </div>
-            <div className="text-[9px] text-slate-400 font-mono mt-1">ID: {memberId}</div>
+            <div className="text-[9px] text-emerald-600 font-bold uppercase mt-1 tracking-wider">Annual Renewal</div>
           </div>
 
-          {/* Card 3: Discount Balance */}
+          {/* Card 3: Membership Status */}
           <div className="bg-white border border-slate-100 shadow-sm rounded-2xl p-5 text-left relative overflow-hidden group hover:shadow-md transition-shadow">
             <div className="flex justify-between items-start mb-3">
-              <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest font-mono">Discount Balance</span>
-              <div className="w-8 h-8 rounded-full bg-indigo-50 flex items-center justify-center">
-                <CreditCard className="w-4.5 h-4.5 text-indigo-500" />
-              </div>
-            </div>
-            <div className="text-xl font-black text-slate-800 leading-tight">₹{discountCreditBalance}</div>
-            <div className="text-[9.5px] text-indigo-500 font-bold mt-1 uppercase tracking-wider font-mono">
-              {availableDiscountCredits} x ₹500 Vouchers available
-            </div>
-          </div>
-
-          {/* Card 4: Custom Tour Requests Count */}
-          <div className="bg-white border border-slate-100 shadow-sm rounded-2xl p-5 text-left relative overflow-hidden group hover:shadow-md transition-shadow cursor-pointer" onClick={() => setActiveTab('custom-tours')}>
-            <div className="flex justify-between items-start mb-3">
-              <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest font-mono">Custom Requests</span>
+              <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest font-mono">Membership Status</span>
               <div className="w-8 h-8 rounded-full bg-sky-50 flex items-center justify-center">
-                <Route className="w-4.5 h-4.5 text-sky-500" />
+                <Shield className="w-4.5 h-4.5 text-[#00D4F5]" />
               </div>
             </div>
-            <div className="text-2xl font-black text-slate-800 leading-tight">{customRequestsList.length}</div>
-            <div className="text-[9px] text-[#00D4F5] font-bold uppercase mt-1 tracking-wider hover:underline">Manage Custom Tours</div>
+            <div className="text-lg font-black text-slate-800 flex items-center gap-1.5 mt-1">
+              <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" /> Verified Active
+            </div>
+            <div className="text-[9px] text-slate-400 font-bold uppercase tracking-wider mt-1.5 font-mono">ID: {memberId}</div>
           </div>
 
-          {/* Card 5: Total Bookings Count */}
-          <div className="bg-white border border-slate-100 shadow-sm rounded-2xl p-5 text-left relative overflow-hidden group hover:shadow-md transition-shadow cursor-pointer" onClick={() => setActiveTab('bookings')}>
-            <div className="flex justify-between items-start mb-3">
-              <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest font-mono">Total Bookings</span>
-              <div className="w-8 h-8 rounded-full bg-teal-50 flex items-center justify-center">
-                <Plane className="w-4.5 h-4.5 text-teal-500" />
-              </div>
-            </div>
-            <div className="text-2xl font-black text-slate-800 leading-tight">
-              {(bookingStatus !== 'Cancelled' ? 1 : 0) + customRequestsList.filter(r => r.status === 'Confirmed Booking').length}
-            </div>
-            <div className="text-[9px] text-teal-600 font-bold uppercase mt-1 tracking-wider hover:underline">View Active Tours</div>
-          </div>
-
-          {/* Card 6: Lucky Draw Status */}
+          {/* Card 4: Weekly Participation Status */}
           <div className="bg-white border border-slate-100 shadow-sm rounded-2xl p-5 text-left relative overflow-hidden group hover:shadow-md transition-shadow">
             <div className="flex justify-between items-start mb-3">
-              <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest font-mono">Lucky Draw Status</span>
+              <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest font-mono">Travel Reward Status</span>
               <div className="w-8 h-8 rounded-full bg-purple-50 flex items-center justify-center">
                 <Sparkles className="w-4.5 h-4.5 text-purple-500" />
               </div>
@@ -1240,7 +1172,7 @@ export default function DashboardPage({ user, setCurrentUser, onLogout, onBookPa
               </>
             ) : (
               <>
-                <div className="text-sm font-bold text-slate-750 leading-tight">Pending Activation</div>
+                <div className="text-sm font-bold text-slate-700 leading-tight">Pending Activation</div>
                 <button
                   onClick={() => {
                     setActiveTab('weekly-participation');
@@ -1257,7 +1189,70 @@ export default function DashboardPage({ user, setCurrentUser, onLogout, onBookPa
             )}
           </div>
 
-          {/* Card 7: Recent Notifications preview */}
+          {/* Card 5: Discount-Credit Balance */}
+          <div className="bg-white border border-slate-100 shadow-sm rounded-2xl p-5 text-left relative overflow-hidden group hover:shadow-md transition-shadow">
+            <div className="flex justify-between items-start mb-3">
+              <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest font-mono">Discount Balance</span>
+              <div className="w-8 h-8 rounded-full bg-indigo-50 flex items-center justify-center">
+                <CreditCard className="w-4.5 h-4.5 text-indigo-500" />
+              </div>
+            </div>
+            <div className="text-xl font-black text-slate-800 leading-tight">₹{discountCreditBalance}</div>
+            <div className="text-[9.5px] text-indigo-500 font-bold mt-1 uppercase tracking-wider font-mono">
+              {availableDiscountCredits} x ₹500 Vouchers available
+            </div>
+          </div>
+
+          {/* Card 6: Pending Bookings */}
+          <div className="bg-white border border-slate-100 shadow-sm rounded-2xl p-5 text-left relative overflow-hidden group hover:shadow-md transition-shadow">
+            <div className="flex justify-between items-start mb-3">
+              <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest font-mono">Pending Bookings</span>
+              <div className="w-8 h-8 rounded-full bg-yellow-50 flex items-center justify-center">
+                <Plane className="w-4.5 h-4.5 text-amber-500" />
+              </div>
+            </div>
+            {bookingStatus === 'Pending Confirmation' ? (
+              <>
+                <div className="text-base font-bold text-slate-800">Puri Beach Escape</div>
+                <div className="inline-flex items-center gap-1 mt-1 text-[8.5px] font-bold uppercase px-2 py-0.5 rounded-full bg-amber-50 border border-amber-100 text-amber-600 font-mono">
+                  <Clock className="w-2.5 h-2.5" /> Under Review
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="text-base font-black text-slate-400 mt-1">No Pending Bookings</div>
+                <div className="text-[9px] text-slate-400 font-bold uppercase mt-1 tracking-wider">All Clear</div>
+              </>
+            )}
+          </div>
+
+          {/* Card 7: Coupon Status */}
+          <div className="bg-white border border-slate-100 shadow-sm rounded-2xl p-5 text-left relative overflow-hidden group hover:shadow-md transition-shadow">
+            <div className="flex justify-between items-start mb-3">
+              <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest font-mono">Coupon Status</span>
+              <div className="w-8 h-8 rounded-full bg-pink-50 flex items-center justify-center">
+                <Tag className="w-4.5 h-4.5 text-pink-500" />
+              </div>
+            </div>
+            <div className="text-base font-black text-slate-800">2 Coupons Available</div>
+            <div className="text-[9px] text-[#FF6B6B] font-bold uppercase mt-1 tracking-wider">WELCOME10 Active</div>
+          </div>
+
+          {/* Card 8: Next Scheduled Activity */}
+          <div className="bg-white border border-slate-100 shadow-sm rounded-2xl p-5 text-left relative overflow-hidden group hover:shadow-md transition-shadow">
+            <div className="flex justify-between items-start mb-3">
+              <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest font-mono">Next Activity</span>
+              <div className="w-8 h-8 rounded-full bg-cyan-50 flex items-center justify-center">
+                <Compass className="w-4.5 h-4.5 text-cyan-500" />
+              </div>
+            </div>
+            <div className="text-[11px] font-bold text-slate-700 leading-normal">
+              <div>Selection Draw: <strong className="text-slate-900 font-bold">Sunday 8:00 PM</strong></div>
+              <div className="mt-0.5">Pre-travel Call: <strong className="text-slate-900 font-bold">July 02, 2026</strong></div>
+            </div>
+          </div>
+
+          {/* Card 9: Recent Notifications feed preview */}
           <div className="bg-white border border-slate-100 shadow-sm rounded-2xl p-5 text-left relative overflow-hidden group hover:shadow-md transition-shadow">
             <div className="flex justify-between items-start mb-2.5">
               <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest font-mono">Recent Alerts</span>
@@ -1271,11 +1266,10 @@ export default function DashboardPage({ user, setCurrentUser, onLogout, onBookPa
                 </div>
               ))}
             </div>
-            <button onClick={() => setActiveTab('notifications')} className="text-[9px] text-[#00D4F5] hover:underline font-bold uppercase mt-2.5 tracking-wider block border-none bg-transparent cursor-pointer">
+            <button onClick={() => setActiveTab('notifications')} className="text-[9px] text-[#00D4F5] hover:underline font-bold uppercase mt-2.5 tracking-wider block border-none bg-transparent">
               View All Alerts
             </button>
           </div>
-
         </div>
 
         {/* Quick Help Strip */}
@@ -1395,158 +1389,6 @@ export default function DashboardPage({ user, setCurrentUser, onLogout, onBookPa
           </div>
         </div>
 
-        {/* Upgrade / Compare Tiers Section */}
-        <div className="pt-6 border-t border-slate-100 space-y-4">
-          <h3 className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-2">
-            <Zap className="w-4 h-4 text-amber-500" /> Upgrade Membership Tier
-          </h3>
-          <p className="text-xs text-slate-450">Instantly upgrade to unlock higher selection rewards, discount credits, and international visa assistance.</p>
-          
-          {upgradeTargetPlan ? (
-            /* Secure Checkout Overlay Card */
-            <div className="bg-slate-50 border-2 border-[#0096C7] rounded-3xl p-5 space-y-4 max-w-md mx-auto text-left relative">
-              <div className="flex justify-between items-center pb-2 border-b border-slate-200">
-                <span className="text-xs font-black text-slate-800 uppercase tracking-wide flex items-center gap-1.5">
-                  <CreditCard className="w-4.5 h-4.5 text-[#0096C7]" /> Secure Upgrade Checkout
-                </span>
-                <button
-                  onClick={() => setUpgradeTargetPlan(null)}
-                  className="text-xs text-slate-450 hover:text-slate-750 font-bold border border-slate-200 px-2 py-0.5 rounded-lg bg-white cursor-pointer"
-                >
-                  Cancel
-                </button>
-              </div>
-
-              {/* Demo Mode Badge */}
-              <div className="p-3 bg-amber-50 border border-amber-200 rounded-2xl flex items-start gap-2 text-[10px] text-amber-850 font-bold">
-                <ShieldAlert className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
-                <div>
-                  <span>Frontend Demo Mode</span>
-                  <p className="font-normal text-slate-500 mt-0.5">This checkout is simulated. No real currency is processed.</p>
-                </div>
-              </div>
-
-              <div className="space-y-3.5 text-xs">
-                <div className="flex justify-between">
-                  <span className="text-slate-450">Upgrading to:</span>
-                  <span className="font-bold text-slate-800 uppercase">{upgradeTargetPlan.name}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-slate-450">New Tier Benefits:</span>
-                  <span className="font-bold text-indigo-650">{upgradeTargetPlan.vouchers} Discount Vouchers</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-slate-450">Upgrade Amount:</span>
-                  <span className="font-mono font-bold text-slate-800">{upgradeTargetPlan.price}</span>
-                </div>
-
-                {/* Payment method selector */}
-                <div className="space-y-2 pt-2 border-t border-slate-200">
-                  <span className="text-[9.5px] text-slate-450 uppercase block font-black">Select Payment Mode</span>
-                  <div className="grid grid-cols-3 gap-2 text-xs">
-                    {['upi', 'card', 'netbanking'].map((method) => (
-                      <button
-                        type="button"
-                        key={method}
-                        onClick={() => setUpgradePaymentMethod(method as any)}
-                        className={`py-2 rounded-xl text-[10px] font-extrabold capitalize cursor-pointer border transition-all ${
-                          upgradePaymentMethod === method
-                            ? 'border-[#0096C7] bg-[#0096C7]/5 text-[#0086B3]'
-                            : 'border-slate-200 text-slate-500 bg-white hover:bg-slate-50'
-                        }`}
-                      >
-                        {method === 'upi' ? 'UPI / GPay' : method === 'card' ? 'Debit/Credit Card' : 'Net Banking'}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                <button
-                  type="button"
-                  disabled={isUpgrading}
-                  onClick={() => handleUpgradeSubscription(upgradeTargetPlan)}
-                  className="w-full py-3 bg-[#0096C7] hover:bg-[#0086B3] text-white rounded-2xl text-xs font-black uppercase tracking-wider transition-all shadow-md shadow-cyan-100 cursor-pointer disabled:opacity-50"
-                >
-                  {isUpgrading ? 'Upgrading Account...' : `Demo Pay ${upgradeTargetPlan.price}`}
-                </button>
-              </div>
-            </div>
-          ) : (
-            /* Comparison Grid */
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {[
-                { id: 'Silver', name: 'Silver Plan', price: '₹499', vouchers: 1, type: 'domestic', desc: 'Domestic Standard Membership' },
-                { id: 'Gold', name: 'Gold Plan', price: '₹799', vouchers: 2, type: 'domestic', desc: 'Domestic Gold Membership' },
-                { id: 'Platinum', name: 'Platinum Plan', price: '₹1,499', vouchers: 4, type: 'domestic', desc: 'Domestic Platinum Membership' },
-                { id: 'Silver_Int', name: 'Silver International', price: '₹4,999', vouchers: 10, type: 'international', desc: 'Global Silver Membership' },
-                { id: 'Gold_Int', name: 'Gold International', price: '₹7,999', vouchers: 20, type: 'international', desc: 'Global Gold Membership' },
-                { id: 'Platinum_Int', name: 'Platinum International', price: '₹14,999', vouchers: 40, type: 'international', desc: 'Global Platinum Membership' }
-              ].map((p) => {
-                const isActive = planName === p.name;
-                return (
-                  <div
-                    key={p.id}
-                    className={`border rounded-2xl p-4 flex flex-col justify-between transition-all ${
-                      isActive
-                        ? 'border-emerald-500 bg-emerald-50/20 shadow-sm'
-                        : 'border-slate-250 bg-white hover:border-slate-350 hover:shadow-sm'
-                    }`}
-                  >
-                    <div>
-                      <div className="flex justify-between items-start">
-                        <span className="text-[9px] uppercase font-bold text-slate-400 font-mono leading-none">{p.desc}</span>
-                        {isActive && (
-                          <span className="bg-emerald-100 text-emerald-800 text-[8px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full border border-emerald-250 leading-none">
-                            Active
-                          </span>
-                        )}
-                      </div>
-                      <h4 className="text-sm font-black text-slate-800 uppercase mt-1.5 leading-tight">{p.name}</h4>
-                      <div className="text-base font-mono font-black text-slate-900 mt-2">{p.price} <span className="text-[10px] text-slate-400 font-normal">/ Year</span></div>
-                      
-                      <ul className="text-[10.5px] text-slate-500 space-y-1.5 mt-3 list-none p-0 text-left">
-                        <li className="flex items-center gap-1.5">
-                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
-                          <span>{p.vouchers} x ₹500 Vouchers</span>
-                        </li>
-                        <li className="flex items-center gap-1.5">
-                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
-                          <span>Weekly lucky draw eligible</span>
-                        </li>
-                        {p.type === 'international' && (
-                          <li className="flex items-center gap-1.5">
-                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
-                            <span>Global visa assistance</span>
-                          </li>
-                        )}
-                      </ul>
-                    </div>
-
-                    <div className="mt-4">
-                      {isActive ? (
-                        <button
-                          disabled
-                          className="w-full py-2 bg-slate-100 text-slate-400 rounded-xl text-xs font-bold uppercase tracking-wider border-none"
-                        >
-                          Current Plan
-                        </button>
-                      ) : (
-                        <button
-                          type="button"
-                          onClick={() => setUpgradeTargetPlan(p)}
-                          className="w-full py-2 bg-[#FF6B6B] hover:bg-[#ff5252] text-white rounded-xl text-xs font-black uppercase tracking-wider transition-colors cursor-pointer border-none shadow-sm"
-                        >
-                          Upgrade Now
-                        </button>
-                      )}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          )}
-        </div>
-
         {/* Billing Invoice history log */}
         <div className="pt-6 border-t border-slate-100 space-y-4">
           <h3 className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-2">
@@ -1585,31 +1427,6 @@ export default function DashboardPage({ user, setCurrentUser, onLogout, onBookPa
 
   // 3. WEEKLY PARTICIPATION TAB
   const renderWeeklyParticipation = () => {
-    if (!user || !user.planName || user.planName === 'None') {
-      return (
-        <div className="bg-white border border-slate-100 shadow-[0_8px_30px_rgba(16,35,63,0.03)] rounded-[28px] p-5 sm:p-7 text-left space-y-6">
-          <h2 className="text-base font-black flex items-center gap-2 mb-1 text-slate-800 uppercase tracking-wide">
-            <Ticket className="w-5 h-5 text-[#FF6B6B]" /> Weekly Member Selection &amp; Participation
-          </h2>
-          <div className="text-center py-12 space-y-4">
-            <div className="w-16 h-16 rounded-full bg-rose-50 flex items-center justify-center mx-auto text-[#FF6B6B]">
-              <Lock className="w-7 h-7" />
-            </div>
-            <h3 className="text-sm font-black text-slate-850 uppercase">Subscription Required</h3>
-            <p className="text-xs text-slate-450 max-w-sm mx-auto leading-relaxed">
-              You must have an active subscription (Silver, Gold, or Platinum) to participate in our weekly travel reward draws. Upgrade or purchase a subscription tier to activate.
-            </p>
-            <button
-              onClick={() => setActiveTab('subscription')}
-              className="px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider text-white bg-[#FF6B6B] hover:opacity-90 border-none cursor-pointer shadow-md shadow-orange-500/10"
-            >
-              Subscribe / Upgrade Plan
-            </button>
-          </div>
-        </div>
-      );
-    }
-
     return (
       <div className="bg-white border border-slate-100 shadow-[0_8px_30px_rgba(16,35,63,0.03)] rounded-[28px] p-5 sm:p-7 text-left space-y-6">
         <h2 className="text-base font-black flex items-center gap-2 mb-1 text-slate-800 uppercase tracking-wide">
@@ -2630,10 +2447,6 @@ export default function DashboardPage({ user, setCurrentUser, onLogout, onBookPa
           request={selectedCustomRequest}
           onClose={() => setSelectedCustomRequest(null)}
           onRefresh={loadCustomRequests}
-          onContactSupport={() => {
-            setActiveTab('support');
-            setSelectedCustomRequest(null);
-          }}
         />
       );
     }

@@ -11,14 +11,12 @@ interface CustomTourDetailPanelProps {
   request: CustomTourRequest;
   onClose: () => void;
   onRefresh: () => void;
-  onContactSupport?: () => void;
 }
 
 export const CustomTourDetailPanel: React.FC<CustomTourDetailPanelProps> = ({
   request: initialRequest,
   onClose,
-  onRefresh,
-  onContactSupport
+  onRefresh
 }) => {
   const [request, setRequest] = useState<CustomTourRequest>(initialRequest);
   const [showRevisionForm, setShowRevisionForm] = useState(false);
@@ -65,17 +63,15 @@ export const CustomTourDetailPanel: React.FC<CustomTourDetailPanelProps> = ({
 
   const handleProcessPayment = async () => {
     setIsSubmitting(true);
-    setTimeout(async () => {
-      try {
-        const updated = await customTourService.confirmMockPayment(request.id);
-        setRequest(updated);
-        onRefresh();
-      } catch (err: any) {
-        alert(err.message);
-      } finally {
-        setIsSubmitting(false);
-      }
-    }, 1200);
+    try {
+      const updated = await customTourService.confirmMockPayment(request.id);
+      setRequest(updated);
+      onRefresh();
+    } catch (err: any) {
+      alert(err.message);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   // Find active quotation
@@ -456,33 +452,24 @@ export const CustomTourDetailPanel: React.FC<CustomTourDetailPanelProps> = ({
 
           {/* Booking Confirmation / Travel Voucher */}
           {request.status === 'Confirmed Booking' && activeQuotation && (
-            <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-lg space-y-4 relative overflow-hidden">
+            <div className="bg-white rounded-3xl p-5 border border-slate-250 shadow-md space-y-4 relative overflow-hidden">
               <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/5 rounded-full blur-xl pointer-events-none" />
               
-              {/* Demo Mode Badge */}
-              <div className="p-3 bg-amber-50 border border-amber-200 rounded-2xl flex items-start gap-2 text-[10px] text-amber-850 font-bold">
-                <ShieldAlert className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
-                <div>
-                  <span>Frontend Demo Mode</span>
-                  <p className="font-normal text-slate-500 mt-0.5">This travel voucher is simulated. Booking data is saved in your local browser session storage.</p>
-                </div>
-              </div>
-
               <div className="pb-3 border-b border-dashed border-slate-200 text-left flex justify-between items-center">
                 <div>
                   <span className="text-xs font-black text-emerald-600 uppercase tracking-wider block">
-                    Confirmed Travel Voucher
+                    Confirmed travel voucher
                   </span>
                   <span className="font-mono text-xs font-black text-slate-800 block mt-0.5">
                     {request.bookingId}
                   </span>
                 </div>
                 <span className="bg-emerald-50 text-emerald-800 text-[8.5px] font-black border border-emerald-200 px-2 py-0.5 rounded-full uppercase">
-                  Confirmed
+                  Voucher Active
                 </span>
               </div>
 
-              <div className="space-y-4 text-xs">
+              <div className="space-y-3.5 text-xs">
                 <div className="grid grid-cols-2 gap-3 leading-relaxed">
                   <div>
                     <span className="text-[9.5px] text-slate-400 uppercase block">Destination</span>
@@ -493,82 +480,36 @@ export const CustomTourDetailPanel: React.FC<CustomTourDetailPanelProps> = ({
                     <span className="font-bold text-slate-750">{request.userName || 'Rahul Sen'}</span>
                   </div>
                   <div>
-                    <span className="text-[9.5px] text-slate-400 uppercase block font-medium">Travel Dates</span>
-                    <span className="font-bold text-slate-750">
-                      {request.flexibleDates ? `Flexible: ${request.flexibleMonth}` : `${request.travelStartDate} to ${request.travelEndDate}`}
-                    </span>
+                    <span className="text-[9.5px] text-slate-400 uppercase block">Travel Length</span>
+                    <span className="font-bold text-slate-750">{request.durationNights} Nights</span>
                   </div>
                   <div>
-                    <span className="text-[9.5px] text-slate-400 uppercase block font-medium">Travellers</span>
-                    <span className="font-bold text-slate-750">
-                      {request.adults} Adults{request.children > 0 ? `, ${request.children} Children` : ''}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="text-[9.5px] text-slate-400 uppercase block font-medium">Voucher Code</span>
+                    <span className="text-[9.5px] text-slate-400 uppercase block">Voucher Code</span>
                     <span className="font-mono font-bold text-slate-650">{request.voucherCode}</span>
-                  </div>
-                  <div>
-                    <span className="text-[9.5px] text-slate-400 uppercase block font-medium">Meals Preference</span>
-                    <span className="font-semibold text-slate-750">
-                      {activeQuotation.mealsIncluded || request.mealPreference}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="text-[9.5px] text-slate-400 uppercase block font-medium">Booking Status</span>
-                    <span className="font-bold text-emerald-600">Confirmed</span>
-                  </div>
-                  <div>
-                    <span className="text-[9.5px] text-slate-400 uppercase block font-medium">Payment Status</span>
-                    <span className="font-bold text-emerald-600">Successful (Paid)</span>
                   </div>
                 </div>
 
-                <div className="bg-slate-50 rounded-xl p-3.5 border border-slate-100 space-y-2 text-[11px]">
+                <div className="bg-slate-50 rounded-xl p-3 border border-slate-100 space-y-2 text-[11px]">
                   <div>
                     <span className="text-[9px] text-slate-400 uppercase block">Hotel Resort</span>
                     <span className="font-bold text-slate-750">{activeQuotation.hotelName}</span>
                   </div>
                   <div>
                     <span className="text-[9px] text-slate-400 uppercase block">Assigned Transport</span>
-                    <span className="font-semibold text-slate-750">{activeQuotation.vehicleAssigned}</span>
-                  </div>
-                  <div className="pt-2 border-t border-slate-200/60 flex justify-between items-center">
-                    <span className="text-[9px] text-slate-450 font-bold uppercase">Total Price</span>
-                    <span className="font-black text-[#0096C7] font-mono text-sm">{formatPrice(activeQuotation.totalPrice)}</span>
+                    <span className="font-semibold text-slate-700">{activeQuotation.vehicleAssigned}</span>
                   </div>
                 </div>
 
                 {/* QR Code Payload (Google Charts QR Generator API) */}
                 <div className="pt-3 border-t border-dashed border-slate-200 flex flex-col items-center gap-2">
                   <img
-                    src={`https://chart.googleapis.com/chart?chs=120x120&cht=qr&chl=DEMO-VERIFY%3A${request.bookingId}`}
+                    src={`https://chart.googleapis.com/chart?chs=120x120&cht=qr&chl=https%3A%2F%2Fbeduin.in%2Fverify-booking%2F${request.bookingId}`}
                     alt="Voucher Verification QR"
                     className="w-28 h-28 object-contain border border-slate-100 rounded-xl p-1 bg-white"
                   />
                   <span className="text-[8px] text-slate-400 uppercase tracking-widest font-bold">
                     Scan to Verify Voucher
                   </span>
-                </div>
-
-                {/* Action buttons */}
-                <div className="pt-3 flex gap-2.5">
-                  <button
-                    type="button"
-                    onClick={() => window.print()}
-                    className="flex-1 py-2.5 bg-slate-800 hover:bg-slate-900 text-white rounded-xl text-[11px] font-black uppercase tracking-wider transition-colors cursor-pointer"
-                  >
-                    Print Voucher
-                  </button>
-                  {onContactSupport && (
-                    <button
-                      type="button"
-                      onClick={onContactSupport}
-                      className="flex-1 py-2.5 border border-slate-200 hover:border-slate-350 hover:bg-slate-50 text-slate-650 rounded-xl text-[11px] font-bold uppercase transition-all cursor-pointer"
-                    >
-                      Contact Support
-                    </button>
-                  )}
                 </div>
               </div>
             </div>

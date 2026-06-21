@@ -17,8 +17,6 @@ interface Destination {
 interface ScatteredShowcaseProps {
   destinations: Destination[];
   activeTab?: string;
-  onViewPackage?: () => void;
-  onPlanTrip?: () => void;
 }
 
 /* ===================== Scatter Positions ===================== */
@@ -149,7 +147,7 @@ function ProgressDots({ total, active, names, activeColor, onJump }: {
 }
 
 /* ===================== Detail Modal ===================== */
-function DetailModal({ d, accent, onClose, onViewPackage, onPlanTrip }: { d: Destination; accent: typeof CATEGORY_ACCENTS.escapes; onClose: () => void; onViewPackage?: () => void; onPlanTrip?: () => void }) {
+function DetailModal({ d, accent, onClose }: { d: Destination; accent: typeof CATEGORY_ACCENTS.escapes; onClose: () => void }) {
   useEffect(() => { document.body.style.overflow = 'hidden'; return () => { document.body.style.overflow = ''; }; }, []);
   const wa = encodeURIComponent(`Hi BEDUINE! I'm interested in the ${d.name} package (${d.duration}). Please share details!`);
   const feats = d.tag.split(' - ').map(f => f.trim());
@@ -195,23 +193,10 @@ function DetailModal({ d, accent, onClose, onViewPackage, onPlanTrip }: { d: Des
             </div>
           </div>
           <div className="flex flex-col sm:flex-row gap-3 pt-2">
-            <button 
-              onClick={() => {
-                onClose();
-                if (onViewPackage) onViewPackage();
-              }}
-              className="flex-1 flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl font-bold text-sm cursor-pointer transition-all" 
-              style={{ background: `linear-gradient(135deg,${accent.text},${accent.text}cc)`, color: '#030712', boxShadow: `0 0 30px ${accent.glow}` }}
-            >
+            <button className="flex-1 flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl font-bold text-sm cursor-pointer transition-all" style={{ background: `linear-gradient(135deg,${accent.text},${accent.text}cc)`, color: '#030712', boxShadow: `0 0 30px ${accent.glow}` }}>
               <Eye className="w-4 h-4" /> View Package
             </button>
-            <button 
-              onClick={() => {
-                onClose();
-                if (onPlanTrip) onPlanTrip();
-              }}
-              className="flex-1 flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl bg-white/5 border border-white/10 text-white font-bold text-sm hover:bg-white/10 transition-all cursor-pointer"
-            >
+            <button className="flex-1 flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl bg-white/5 border border-white/10 text-white font-bold text-sm hover:bg-white/10 transition-all cursor-pointer">
               <Plane className="w-4 h-4" /> Plan This Trip
             </button>
             <a href={`https://wa.me/918768903565?text=${wa}`} target="_blank" rel="noreferrer"
@@ -566,7 +551,7 @@ function MobileCardItem({ d, i, feats, accent, onSelect }: {
 }
 
 /* ===================== MAIN COMPONENT ===================== */
-export default function ScatteredShowcase({ destinations, onViewPackage, onPlanTrip }: ScatteredShowcaseProps) {
+export default function ScatteredShowcase({ destinations }: ScatteredShowcaseProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
@@ -737,17 +722,7 @@ export default function ScatteredShowcase({ destinations, onViewPackage, onPlanT
       </div>
 
       {/* Detail modal */}
-      <AnimatePresence>
-        {selectedCard && (
-          <DetailModal 
-            d={selectedCard} 
-            accent={modalAccent} 
-            onClose={() => setSelectedCard(null)} 
-            onViewPackage={onViewPackage}
-            onPlanTrip={onPlanTrip}
-          />
-        )}
-      </AnimatePresence>
+      <AnimatePresence>{selectedCard && <DetailModal d={selectedCard} accent={modalAccent} onClose={() => setSelectedCard(null)} />}</AnimatePresence>
     </>
   );
 }
