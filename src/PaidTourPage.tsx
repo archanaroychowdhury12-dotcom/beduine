@@ -5,10 +5,19 @@ import { Footer as TourFooter } from './components/Footer';
 import { HomeView } from './components/HomeView';
 import { Navbar as TourNavbar } from './components/Navbar';
 import { PackagesPage } from './components/PackagesPage';
+import { CustomizeTourPage } from './pages/CustomizeTourPage';
 
-type TourView = 'home' | 'about' | 'packages' | 'booking';
+type TourView = 'home' | 'about' | 'packages' | 'booking' | 'customize';
 
-export default function PaidTourPage({ currentUser, setCurrentUser }: { currentUser?: any; setCurrentUser?: any }) {
+export default function PaidTourPage({
+  currentUser,
+  setCurrentUser,
+  onNavigate
+}: {
+  currentUser?: any;
+  setCurrentUser?: any;
+  onNavigate?: (view: string) => void;
+}) {
   const [currentView, setCurrentView] = useState<TourView>('home');
   const [targetTourId, setTargetTourId] = useState<string | null>(null);
 
@@ -22,6 +31,8 @@ export default function PaidTourPage({ currentUser, setCurrentUser }: { currentU
         setCurrentView('about');
       } else if (hash === 'packages') {
         setCurrentView('packages');
+      } else if (hash === 'customize') {
+        setCurrentView('customize');
       }
     };
 
@@ -46,8 +57,19 @@ export default function PaidTourPage({ currentUser, setCurrentUser }: { currentU
   };
 
   const handleNavigate = (view: string) => {
+    if (view === 'customize') {
+      window.location.hash = 'customize';
+    } else {
+      window.location.hash = view === 'home' ? '' : view;
+    }
     setCurrentView(view as TourView);
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleGoToDashboard = () => {
+    if (onNavigate) {
+      onNavigate('dashboard');
+    }
   };
 
   return (
@@ -66,6 +88,12 @@ export default function PaidTourPage({ currentUser, setCurrentUser }: { currentU
         {currentView === 'packages' && (
           <PackagesPage onStartBooking={handleStartBooking} onNavigate={handleNavigate} />
         )}
+        {currentView === 'customize' && (
+          <CustomizeTourPage
+            currentUser={currentUser}
+            onNavigateToDashboard={handleGoToDashboard}
+          />
+        )}
         {currentView === 'booking' && (
           <BookingPortalContainer
             initialTourId={targetTourId}
@@ -80,3 +108,4 @@ export default function PaidTourPage({ currentUser, setCurrentUser }: { currentU
     </div>
   );
 }
+

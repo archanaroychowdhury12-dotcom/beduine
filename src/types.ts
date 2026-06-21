@@ -148,3 +148,125 @@ export interface Testimonial {
   rating: number;
   date: string;
 }
+
+// Custom Tour Request Types
+export type TripType = 'Domestic' | 'International';
+
+export type HotelCategory =
+  | 'Standard (2 Star)'
+  | 'Deluxe (3 Star)'
+  | 'Luxury Resort (5 Star)'
+  | 'Heritage/Homestay'
+  | 'Not Sure';
+
+export type TransportPreference =
+  | 'Sedan'
+  | 'Premium SUV'
+  | 'Luxury Traveler'
+  | 'Flight Included'
+  | 'Train Included'
+  | 'None'
+  | 'Not Sure';
+
+export type MealPreference =
+  | 'Breakfast Only'
+  | 'Half Board (MAP)'
+  | 'Full Board (AP)'
+  | 'Veg Only'
+  | 'None'
+  | 'Not Sure';
+
+export type TourActivity =
+  | 'Sightseeing'
+  | 'Adventure'
+  | 'Wildlife Safari'
+  | 'Trekking'
+  | 'Shopping'
+  | 'Food Tour'
+  | 'Spa & Wellness';
+
+export type CustomTourStatus =
+  | 'Under Review'
+  | 'Quotation Sent'
+  | 'Revision Requested'
+  | 'Quotation Accepted'
+  | 'Payment Pending'
+  | 'Payment Failed'
+  | 'Confirmed Booking'
+  | 'Cancelled'
+  | 'Expired';
+
+export interface EstimatedPriceRange {
+  min: number;
+  max: number;
+  currency: 'INR';
+  note: string;
+}
+
+export interface CustomTourQuotation {
+  id: string;
+  requestId: string;
+  version: number;
+  totalPrice: number;
+  currency: 'INR';
+  hotelName: string;
+  hotelCategory: HotelCategory;
+  vehicleAssigned: string;
+  mealsIncluded: string;
+  itineraryDetails: string;
+  inclusions: string[];
+  exclusions: string[];
+  paymentTerms: string;
+  cancellationPolicy: string;
+  validUntil: string;
+  createdAt: string;
+  status: 'Draft' | 'Sent' | 'Accepted' | 'Revision Requested' | 'Expired';
+}
+
+export interface CustomTourRevision {
+  id: string;
+  requestId: string;
+  quotationId?: string;
+  message: string;
+  createdAt: string;
+  status: 'Open' | 'Resolved';
+}
+
+export interface CustomTourRequest {
+  id: string;
+  displayCode: string;
+  userId?: string;
+  userName?: string;
+  tripType: TripType;
+  destination: string;
+  departureCity: string;
+  flexibleDates: boolean;
+  travelStartDate?: string;
+  travelEndDate?: string;
+  flexibleMonth?: string;
+  durationNights: number;
+  adults: number;
+  children: number;
+  childAges?: number[];
+  rooms: number;
+  hotelCategory: HotelCategory;
+  transportPreference: TransportPreference;
+  mealPreference: MealPreference;
+  budget: number;
+  currency: 'INR';
+  activities: TourActivity[];
+  specialRequirements?: string;
+  phone: string;
+  email: string;
+  status: CustomTourStatus;
+  submissionDate: string;
+  updatedAt: string;
+  estimatedPriceRange: EstimatedPriceRange;
+  quotations: CustomTourQuotation[];
+  currentQuotationId?: string;
+  revisions: CustomTourRevision[];
+  paymentStatus?: 'Not Started' | 'Pending' | 'Paid' | 'Failed' | 'Refunded';
+  bookingId?: string;
+  voucherCode?: string;
+}
+

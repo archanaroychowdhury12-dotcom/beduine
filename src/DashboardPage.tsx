@@ -3,15 +3,20 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   Compass, Sparkles, Gift, CreditCard, Plane, ArrowRight,
   Crown, LogOut, Ticket, Calendar, Check,
-  Star, Zap, Shield,
+  Star, Zap,
   ChevronRight, User, Bell, ChevronLeft,
   LayoutDashboard, ShieldCheck, Tag, Route, Share2, Phone,
-  MessageCircle, Trash2, Copy, FileText, CheckCircle2, Clock,
-  AlertTriangle, Lock, Unlock, RefreshCw, UserPlus, Download
+  MessageCircle, Trash2, Copy, FileText, CheckCircle2,
+  AlertTriangle, Lock, Unlock, RefreshCw, UserPlus, Download, ShieldAlert
 } from 'lucide-react';
+import { customTourService } from './services/customTourService';
+import { CustomTourForm } from './components/custom-tour/CustomTourForm';
+import { CustomTourDetailPanel } from './components/custom-tour/CustomTourDetailPanel';
+import { CustomTourRequest } from './types';
 
 interface DashboardPageProps {
   user: any;
+  setCurrentUser?: (u: any) => void;
   onLogout: () => void;
   onBookPaidTour?: () => void;
   onBack?: () => void;
@@ -281,7 +286,7 @@ const generateRandomToken = () => {
   return token;
 };
 
-export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack }: DashboardPageProps) {
+export default function DashboardPage({ user, setCurrentUser, onLogout, onBookPaidTour, onBack }: DashboardPageProps) {
   // Navigation states - supports 11 tabs as requested
   const [activeTab, setActiveTab] = useState<
     'overview' | 'subscription' | 'weekly-participation' | 'credits' |
@@ -357,6 +362,11 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack }
 
   // Track the pending booking status so we can trigger cancellation/reinstatement
   const [bookingStatus, setBookingStatus] = useState<'Pending Confirmation' | 'Cancelled'>('Pending Confirmation');
+
+  // Subscription upgrade states
+  const [upgradeTargetPlan, setUpgradeTargetPlan] = useState<any | null>(null);
+  const [isUpgrading, setIsUpgrading] = useState(false);
+  const [upgradePaymentMethod, setUpgradePaymentMethod] = useState<'upi' | 'card' | 'netbanking'>('upi');
 
   // Selection cycle simulator state
   const [cycleState, setCycleState] = useState<'Draft' | 'Entry Open' | 'Entry Closed' | 'List Frozen' | 'Result Pending' | 'Result Published' | 'Cancelled'>('Entry Open');
@@ -449,21 +459,30 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack }
     { code: 'WK-BONUS', discount: '₹300 Off', desc: 'Weekly participation consolation', status: 'Expired', expiry: 'May 30, 2026' }
   ]);
 
-  // Custom tour request form states
-  const [customRequest, setCustomRequest] = useState({
-    destination: '',
-    date: '',
-    duration: '',
-    travelers: 2,
-    vehicle: 'Standard AC Car',
-    hotelClass: 'Deluxe (3 Star)',
-    notes: ''
-  });
+  // Custom tour request form states (New interactive model)
+  const [customRequestsList, setCustomRequestsList] = useState<CustomTourRequest[]>([]);
+  const [selectedCustomRequest, setSelectedCustomRequest] = useState<CustomTourRequest | null>(null);
+  const [showNewRequestForm, setShowNewRequestForm] = useState(false);
   const [customRequestSuccess, setCustomRequestSuccess] = useState(false);
-  const [customRequestsHistory, setCustomRequestsHistory] = useState<any[]>([
-    { id: 'CTR-7821', destination: 'Kashmir Valley', date: 'Sept 2026', travelers: 4, status: 'Quotation Sent', submissionDate: 'June 18, 2026' },
-    { id: 'CTR-4512', destination: 'Sundarbans Forest', date: 'Oct 2026', travelers: 2, status: 'Under Review', submissionDate: 'June 20, 2026' }
-  ]);
+  const [customRequestSuccessData, setCustomRequestSuccessData] = useState<CustomTourRequest | null>(null);
+
+  const loadCustomRequests = async () => {
+    try {
+      const list = await customTourService.listRequests(user?.id);
+      setCustomRequestsList(list);
+      // Synchronize active modal request if open
+      if (selectedCustomRequest) {
+        const fresh = list.find(r => r.id === selectedCustomRequest.id);
+        if (fresh) setSelectedCustomRequest(fresh);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  useEffect(() => {
+    loadCustomRequests();
+  }, [user]);
 
   // Support form state
   const [supportQuery, setSupportQuery] = useState({
@@ -999,6 +1018,42 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack }
     }
   };
 
+  const handleUpgradeSubscription = (targetPlan: any) => {
+    setIsUpgrading(true);
+    setTimeout(() => {
+      // 1. Update user
+      const updatedUser = {
+        ...user,
+        planName: targetPlan.name,
+        planType: targetPlan.type,
+      };
+      if (setCurrentUser) setCurrentUser(updatedUser);
+
+      // 2. Add to ledger using helper
+      logCreditTransaction(
+        'issued',
+        'discount',
+        targetPlan.vouchers,
+        `Subscription upgrade reward - Upgraded to ${targetPlan.name}`
+      );
+
+      // 3. Add a notification
+      const newNotif = {
+        id: Date.now(),
+        type: 'billing',
+        title: 'Subscription Upgraded',
+        message: `Successfully upgraded to ${targetPlan.name}. ${targetPlan.vouchers} Discount Vouchers have been credited to your wallet.`,
+        time: 'Just now',
+        read: false
+      };
+      setNotifications([newNotif, ...notifications]);
+
+      setIsUpgrading(false);
+      setUpgradeTargetPlan(null);
+      alert(`Success! Your account has been upgraded to ${targetPlan.name} (Frontend Demo Mode).`);
+    }, 1200);
+  };
+
   const handleAddCoupon = (e: React.FormEvent) => {
     e.preventDefault();
     setCouponError(null);
@@ -1025,33 +1080,22 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack }
     setNewCouponCode('');
   };
 
-  const handleCustomRequestSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setCustomRequestSuccess(false);
-    if (!customRequest.destination) {
-      alert('Please fill out the destination.');
-      return;
+  const handleDashboardCustomRequestSubmit = async (formData: any) => {
+    try {
+      const requestData = {
+        ...formData,
+        userId: user?.id || 'p-rah-1',
+        userName: user?.fullName || 'Rahul Sen'
+      };
+      const created = await customTourService.createRequest(requestData);
+      setCustomRequestSuccessData(created);
+      setCustomRequestSuccess(true);
+      setShowNewRequestForm(false);
+      loadCustomRequests();
+      setTimeout(() => setCustomRequestSuccess(false), 5000);
+    } catch (err: any) {
+      alert(err.message || 'Failed to submit custom request.');
     }
-    const newRequest = {
-      id: `CTR-${Math.floor(1000 + Math.random() * 9000)}`,
-      destination: customRequest.destination,
-      date: customRequest.date || 'Flexible',
-      travelers: customRequest.travelers,
-      status: 'Under Review',
-      submissionDate: new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' })
-    };
-    setCustomRequestsHistory([newRequest, ...customRequestsHistory]);
-    setCustomRequestSuccess(true);
-    setCustomRequest({
-      destination: '',
-      date: '',
-      duration: '',
-      travelers: 2,
-      vehicle: 'Standard AC Car',
-      hotelClass: 'Deluxe (3 Star)',
-      notes: ''
-    });
-    setTimeout(() => setCustomRequestSuccess(false), 5000);
   };
 
   const handleSupportSubmit = (e: React.FormEvent) => {
@@ -1109,7 +1153,7 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack }
           <h1 className="text-slate-800 font-serif text-3xl font-black mt-1 leading-tight">Welcome back, {profileName}!</h1>
         </div>
 
-        {/* 9 overview grid status cards as requested */}
+        {/* 7 overview grid status cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           
           {/* Card 1: Active Plan */}
@@ -1121,7 +1165,7 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack }
               </div>
             </div>
             <div className="text-xl font-black text-slate-800 leading-tight uppercase">{planName}</div>
-            <div className="text-[10px] text-slate-400 font-bold uppercase mt-1 tracking-wider">{planType} Membership</div>
+            <div className="text-[10px] text-emerald-600 font-bold uppercase mt-1 tracking-wider">Verified Active</div>
           </div>
 
           {/* Card 2: Subscription Validity */}
@@ -1133,30 +1177,56 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack }
               </div>
             </div>
             <div className="text-[11px] font-bold text-slate-700 leading-normal">
-              <div>Start: <strong className="text-slate-900">June 20, 2026</strong></div>
-              <div className="mt-0.5">Expiry: <strong className="text-[#FF6B6B]">June 20, 2027</strong></div>
+              <div>Start: <strong className="text-slate-900 font-bold">June 20, 2026</strong></div>
+              <div className="mt-0.5">Expiry: <strong className="text-[#FF6B6B] font-bold">June 20, 2027</strong></div>
             </div>
-            <div className="text-[9px] text-emerald-600 font-bold uppercase mt-1 tracking-wider">Annual Renewal</div>
+            <div className="text-[9px] text-slate-400 font-mono mt-1">ID: {memberId}</div>
           </div>
 
-          {/* Card 3: Membership Status */}
+          {/* Card 3: Discount Balance */}
           <div className="bg-white border border-slate-100 shadow-sm rounded-2xl p-5 text-left relative overflow-hidden group hover:shadow-md transition-shadow">
             <div className="flex justify-between items-start mb-3">
-              <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest font-mono">Membership Status</span>
-              <div className="w-8 h-8 rounded-full bg-sky-50 flex items-center justify-center">
-                <Shield className="w-4.5 h-4.5 text-[#00D4F5]" />
+              <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest font-mono">Discount Balance</span>
+              <div className="w-8 h-8 rounded-full bg-indigo-50 flex items-center justify-center">
+                <CreditCard className="w-4.5 h-4.5 text-indigo-500" />
               </div>
             </div>
-            <div className="text-lg font-black text-slate-800 flex items-center gap-1.5 mt-1">
-              <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" /> Verified Active
+            <div className="text-xl font-black text-slate-800 leading-tight">₹{discountCreditBalance}</div>
+            <div className="text-[9.5px] text-indigo-500 font-bold mt-1 uppercase tracking-wider font-mono">
+              {availableDiscountCredits} x ₹500 Vouchers available
             </div>
-            <div className="text-[9px] text-slate-400 font-bold uppercase tracking-wider mt-1.5 font-mono">ID: {memberId}</div>
           </div>
 
-          {/* Card 4: Weekly Participation Status */}
+          {/* Card 4: Custom Tour Requests Count */}
+          <div className="bg-white border border-slate-100 shadow-sm rounded-2xl p-5 text-left relative overflow-hidden group hover:shadow-md transition-shadow cursor-pointer" onClick={() => setActiveTab('custom-tours')}>
+            <div className="flex justify-between items-start mb-3">
+              <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest font-mono">Custom Requests</span>
+              <div className="w-8 h-8 rounded-full bg-sky-50 flex items-center justify-center">
+                <Route className="w-4.5 h-4.5 text-sky-500" />
+              </div>
+            </div>
+            <div className="text-2xl font-black text-slate-800 leading-tight">{customRequestsList.length}</div>
+            <div className="text-[9px] text-[#00D4F5] font-bold uppercase mt-1 tracking-wider hover:underline">Manage Custom Tours</div>
+          </div>
+
+          {/* Card 5: Total Bookings Count */}
+          <div className="bg-white border border-slate-100 shadow-sm rounded-2xl p-5 text-left relative overflow-hidden group hover:shadow-md transition-shadow cursor-pointer" onClick={() => setActiveTab('bookings')}>
+            <div className="flex justify-between items-start mb-3">
+              <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest font-mono">Total Bookings</span>
+              <div className="w-8 h-8 rounded-full bg-teal-50 flex items-center justify-center">
+                <Plane className="w-4.5 h-4.5 text-teal-500" />
+              </div>
+            </div>
+            <div className="text-2xl font-black text-slate-800 leading-tight">
+              {(bookingStatus !== 'Cancelled' ? 1 : 0) + customRequestsList.filter(r => r.status === 'Confirmed Booking').length}
+            </div>
+            <div className="text-[9px] text-teal-600 font-bold uppercase mt-1 tracking-wider hover:underline">View Active Tours</div>
+          </div>
+
+          {/* Card 6: Lucky Draw Status */}
           <div className="bg-white border border-slate-100 shadow-sm rounded-2xl p-5 text-left relative overflow-hidden group hover:shadow-md transition-shadow">
             <div className="flex justify-between items-start mb-3">
-              <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest font-mono">Travel Reward Status</span>
+              <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest font-mono">Lucky Draw Status</span>
               <div className="w-8 h-8 rounded-full bg-purple-50 flex items-center justify-center">
                 <Sparkles className="w-4.5 h-4.5 text-purple-500" />
               </div>
@@ -1170,7 +1240,7 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack }
               </>
             ) : (
               <>
-                <div className="text-sm font-bold text-slate-700 leading-tight">Pending Activation</div>
+                <div className="text-sm font-bold text-slate-750 leading-tight">Pending Activation</div>
                 <button
                   onClick={() => {
                     setActiveTab('weekly-participation');
@@ -1187,70 +1257,7 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack }
             )}
           </div>
 
-          {/* Card 5: Discount-Credit Balance */}
-          <div className="bg-white border border-slate-100 shadow-sm rounded-2xl p-5 text-left relative overflow-hidden group hover:shadow-md transition-shadow">
-            <div className="flex justify-between items-start mb-3">
-              <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest font-mono">Discount Balance</span>
-              <div className="w-8 h-8 rounded-full bg-indigo-50 flex items-center justify-center">
-                <CreditCard className="w-4.5 h-4.5 text-indigo-500" />
-              </div>
-            </div>
-            <div className="text-xl font-black text-slate-800 leading-tight">₹{discountCreditBalance}</div>
-            <div className="text-[9.5px] text-indigo-500 font-bold mt-1 uppercase tracking-wider font-mono">
-              {availableDiscountCredits} x ₹500 Vouchers available
-            </div>
-          </div>
-
-          {/* Card 6: Pending Bookings */}
-          <div className="bg-white border border-slate-100 shadow-sm rounded-2xl p-5 text-left relative overflow-hidden group hover:shadow-md transition-shadow">
-            <div className="flex justify-between items-start mb-3">
-              <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest font-mono">Pending Bookings</span>
-              <div className="w-8 h-8 rounded-full bg-yellow-50 flex items-center justify-center">
-                <Plane className="w-4.5 h-4.5 text-amber-500" />
-              </div>
-            </div>
-            {bookingStatus === 'Pending Confirmation' ? (
-              <>
-                <div className="text-base font-bold text-slate-800">Puri Beach Escape</div>
-                <div className="inline-flex items-center gap-1 mt-1 text-[8.5px] font-bold uppercase px-2 py-0.5 rounded-full bg-amber-50 border border-amber-100 text-amber-600 font-mono">
-                  <Clock className="w-2.5 h-2.5" /> Under Review
-                </div>
-              </>
-            ) : (
-              <>
-                <div className="text-base font-black text-slate-400 mt-1">No Pending Bookings</div>
-                <div className="text-[9px] text-slate-400 font-bold uppercase mt-1 tracking-wider">All Clear</div>
-              </>
-            )}
-          </div>
-
-          {/* Card 7: Coupon Status */}
-          <div className="bg-white border border-slate-100 shadow-sm rounded-2xl p-5 text-left relative overflow-hidden group hover:shadow-md transition-shadow">
-            <div className="flex justify-between items-start mb-3">
-              <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest font-mono">Coupon Status</span>
-              <div className="w-8 h-8 rounded-full bg-pink-50 flex items-center justify-center">
-                <Tag className="w-4.5 h-4.5 text-pink-500" />
-              </div>
-            </div>
-            <div className="text-base font-black text-slate-800">2 Coupons Available</div>
-            <div className="text-[9px] text-[#FF6B6B] font-bold uppercase mt-1 tracking-wider">WELCOME10 Active</div>
-          </div>
-
-          {/* Card 8: Next Scheduled Activity */}
-          <div className="bg-white border border-slate-100 shadow-sm rounded-2xl p-5 text-left relative overflow-hidden group hover:shadow-md transition-shadow">
-            <div className="flex justify-between items-start mb-3">
-              <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest font-mono">Next Activity</span>
-              <div className="w-8 h-8 rounded-full bg-cyan-50 flex items-center justify-center">
-                <Compass className="w-4.5 h-4.5 text-cyan-500" />
-              </div>
-            </div>
-            <div className="text-[11px] font-bold text-slate-700 leading-normal">
-              <div>Selection Draw: <strong className="text-slate-900 font-bold">Sunday 8:00 PM</strong></div>
-              <div className="mt-0.5">Pre-travel Call: <strong className="text-slate-900 font-bold">July 02, 2026</strong></div>
-            </div>
-          </div>
-
-          {/* Card 9: Recent Notifications feed preview */}
+          {/* Card 7: Recent Notifications preview */}
           <div className="bg-white border border-slate-100 shadow-sm rounded-2xl p-5 text-left relative overflow-hidden group hover:shadow-md transition-shadow">
             <div className="flex justify-between items-start mb-2.5">
               <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest font-mono">Recent Alerts</span>
@@ -1264,10 +1271,11 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack }
                 </div>
               ))}
             </div>
-            <button onClick={() => setActiveTab('notifications')} className="text-[9px] text-[#00D4F5] hover:underline font-bold uppercase mt-2.5 tracking-wider block border-none bg-transparent">
+            <button onClick={() => setActiveTab('notifications')} className="text-[9px] text-[#00D4F5] hover:underline font-bold uppercase mt-2.5 tracking-wider block border-none bg-transparent cursor-pointer">
               View All Alerts
             </button>
           </div>
+
         </div>
 
         {/* Quick Help Strip */}
@@ -1387,6 +1395,158 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack }
           </div>
         </div>
 
+        {/* Upgrade / Compare Tiers Section */}
+        <div className="pt-6 border-t border-slate-100 space-y-4">
+          <h3 className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-2">
+            <Zap className="w-4 h-4 text-amber-500" /> Upgrade Membership Tier
+          </h3>
+          <p className="text-xs text-slate-450">Instantly upgrade to unlock higher selection rewards, discount credits, and international visa assistance.</p>
+          
+          {upgradeTargetPlan ? (
+            /* Secure Checkout Overlay Card */
+            <div className="bg-slate-50 border-2 border-[#0096C7] rounded-3xl p-5 space-y-4 max-w-md mx-auto text-left relative">
+              <div className="flex justify-between items-center pb-2 border-b border-slate-200">
+                <span className="text-xs font-black text-slate-800 uppercase tracking-wide flex items-center gap-1.5">
+                  <CreditCard className="w-4.5 h-4.5 text-[#0096C7]" /> Secure Upgrade Checkout
+                </span>
+                <button
+                  onClick={() => setUpgradeTargetPlan(null)}
+                  className="text-xs text-slate-450 hover:text-slate-750 font-bold border border-slate-200 px-2 py-0.5 rounded-lg bg-white cursor-pointer"
+                >
+                  Cancel
+                </button>
+              </div>
+
+              {/* Demo Mode Badge */}
+              <div className="p-3 bg-amber-50 border border-amber-200 rounded-2xl flex items-start gap-2 text-[10px] text-amber-850 font-bold">
+                <ShieldAlert className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
+                <div>
+                  <span>Frontend Demo Mode</span>
+                  <p className="font-normal text-slate-500 mt-0.5">This checkout is simulated. No real currency is processed.</p>
+                </div>
+              </div>
+
+              <div className="space-y-3.5 text-xs">
+                <div className="flex justify-between">
+                  <span className="text-slate-450">Upgrading to:</span>
+                  <span className="font-bold text-slate-800 uppercase">{upgradeTargetPlan.name}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-slate-450">New Tier Benefits:</span>
+                  <span className="font-bold text-indigo-650">{upgradeTargetPlan.vouchers} Discount Vouchers</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-slate-450">Upgrade Amount:</span>
+                  <span className="font-mono font-bold text-slate-800">{upgradeTargetPlan.price}</span>
+                </div>
+
+                {/* Payment method selector */}
+                <div className="space-y-2 pt-2 border-t border-slate-200">
+                  <span className="text-[9.5px] text-slate-450 uppercase block font-black">Select Payment Mode</span>
+                  <div className="grid grid-cols-3 gap-2 text-xs">
+                    {['upi', 'card', 'netbanking'].map((method) => (
+                      <button
+                        type="button"
+                        key={method}
+                        onClick={() => setUpgradePaymentMethod(method as any)}
+                        className={`py-2 rounded-xl text-[10px] font-extrabold capitalize cursor-pointer border transition-all ${
+                          upgradePaymentMethod === method
+                            ? 'border-[#0096C7] bg-[#0096C7]/5 text-[#0086B3]'
+                            : 'border-slate-200 text-slate-500 bg-white hover:bg-slate-50'
+                        }`}
+                      >
+                        {method === 'upi' ? 'UPI / GPay' : method === 'card' ? 'Debit/Credit Card' : 'Net Banking'}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  disabled={isUpgrading}
+                  onClick={() => handleUpgradeSubscription(upgradeTargetPlan)}
+                  className="w-full py-3 bg-[#0096C7] hover:bg-[#0086B3] text-white rounded-2xl text-xs font-black uppercase tracking-wider transition-all shadow-md shadow-cyan-100 cursor-pointer disabled:opacity-50"
+                >
+                  {isUpgrading ? 'Upgrading Account...' : `Demo Pay ${upgradeTargetPlan.price}`}
+                </button>
+              </div>
+            </div>
+          ) : (
+            /* Comparison Grid */
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {[
+                { id: 'Silver', name: 'Silver Plan', price: '₹499', vouchers: 1, type: 'domestic', desc: 'Domestic Standard Membership' },
+                { id: 'Gold', name: 'Gold Plan', price: '₹799', vouchers: 2, type: 'domestic', desc: 'Domestic Gold Membership' },
+                { id: 'Platinum', name: 'Platinum Plan', price: '₹1,499', vouchers: 4, type: 'domestic', desc: 'Domestic Platinum Membership' },
+                { id: 'Silver_Int', name: 'Silver International', price: '₹4,999', vouchers: 10, type: 'international', desc: 'Global Silver Membership' },
+                { id: 'Gold_Int', name: 'Gold International', price: '₹7,999', vouchers: 20, type: 'international', desc: 'Global Gold Membership' },
+                { id: 'Platinum_Int', name: 'Platinum International', price: '₹14,999', vouchers: 40, type: 'international', desc: 'Global Platinum Membership' }
+              ].map((p) => {
+                const isActive = planName === p.name;
+                return (
+                  <div
+                    key={p.id}
+                    className={`border rounded-2xl p-4 flex flex-col justify-between transition-all ${
+                      isActive
+                        ? 'border-emerald-500 bg-emerald-50/20 shadow-sm'
+                        : 'border-slate-250 bg-white hover:border-slate-350 hover:shadow-sm'
+                    }`}
+                  >
+                    <div>
+                      <div className="flex justify-between items-start">
+                        <span className="text-[9px] uppercase font-bold text-slate-400 font-mono leading-none">{p.desc}</span>
+                        {isActive && (
+                          <span className="bg-emerald-100 text-emerald-800 text-[8px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full border border-emerald-250 leading-none">
+                            Active
+                          </span>
+                        )}
+                      </div>
+                      <h4 className="text-sm font-black text-slate-800 uppercase mt-1.5 leading-tight">{p.name}</h4>
+                      <div className="text-base font-mono font-black text-slate-900 mt-2">{p.price} <span className="text-[10px] text-slate-400 font-normal">/ Year</span></div>
+                      
+                      <ul className="text-[10.5px] text-slate-500 space-y-1.5 mt-3 list-none p-0 text-left">
+                        <li className="flex items-center gap-1.5">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
+                          <span>{p.vouchers} x ₹500 Vouchers</span>
+                        </li>
+                        <li className="flex items-center gap-1.5">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
+                          <span>Weekly lucky draw eligible</span>
+                        </li>
+                        {p.type === 'international' && (
+                          <li className="flex items-center gap-1.5">
+                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
+                            <span>Global visa assistance</span>
+                          </li>
+                        )}
+                      </ul>
+                    </div>
+
+                    <div className="mt-4">
+                      {isActive ? (
+                        <button
+                          disabled
+                          className="w-full py-2 bg-slate-100 text-slate-400 rounded-xl text-xs font-bold uppercase tracking-wider border-none"
+                        >
+                          Current Plan
+                        </button>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={() => setUpgradeTargetPlan(p)}
+                          className="w-full py-2 bg-[#FF6B6B] hover:bg-[#ff5252] text-white rounded-xl text-xs font-black uppercase tracking-wider transition-colors cursor-pointer border-none shadow-sm"
+                        >
+                          Upgrade Now
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+
         {/* Billing Invoice history log */}
         <div className="pt-6 border-t border-slate-100 space-y-4">
           <h3 className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-2">
@@ -1425,6 +1585,31 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack }
 
   // 3. WEEKLY PARTICIPATION TAB
   const renderWeeklyParticipation = () => {
+    if (!user || !user.planName || user.planName === 'None') {
+      return (
+        <div className="bg-white border border-slate-100 shadow-[0_8px_30px_rgba(16,35,63,0.03)] rounded-[28px] p-5 sm:p-7 text-left space-y-6">
+          <h2 className="text-base font-black flex items-center gap-2 mb-1 text-slate-800 uppercase tracking-wide">
+            <Ticket className="w-5 h-5 text-[#FF6B6B]" /> Weekly Member Selection &amp; Participation
+          </h2>
+          <div className="text-center py-12 space-y-4">
+            <div className="w-16 h-16 rounded-full bg-rose-50 flex items-center justify-center mx-auto text-[#FF6B6B]">
+              <Lock className="w-7 h-7" />
+            </div>
+            <h3 className="text-sm font-black text-slate-850 uppercase">Subscription Required</h3>
+            <p className="text-xs text-slate-450 max-w-sm mx-auto leading-relaxed">
+              You must have an active subscription (Silver, Gold, or Platinum) to participate in our weekly travel reward draws. Upgrade or purchase a subscription tier to activate.
+            </p>
+            <button
+              onClick={() => setActiveTab('subscription')}
+              className="px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider text-white bg-[#FF6B6B] hover:opacity-90 border-none cursor-pointer shadow-md shadow-orange-500/10"
+            >
+              Subscribe / Upgrade Plan
+            </button>
+          </div>
+        </div>
+      );
+    }
+
     return (
       <div className="bg-white border border-slate-100 shadow-[0_8px_30px_rgba(16,35,63,0.03)] rounded-[28px] p-5 sm:p-7 text-left space-y-6">
         <h2 className="text-base font-black flex items-center gap-2 mb-1 text-slate-800 uppercase tracking-wide">
@@ -2439,141 +2624,127 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack }
 
   // 7. CUSTOM TOUR REQUESTS TAB
   const renderCustomTourRequests = () => {
+    if (selectedCustomRequest) {
+      return (
+        <CustomTourDetailPanel
+          request={selectedCustomRequest}
+          onClose={() => setSelectedCustomRequest(null)}
+          onRefresh={loadCustomRequests}
+          onContactSupport={() => {
+            setActiveTab('support');
+            setSelectedCustomRequest(null);
+          }}
+        />
+      );
+    }
+
+    if (showNewRequestForm) {
+      return (
+        <div className="bg-white border border-slate-100 shadow-[0_8px_30px_rgba(16,35,63,0.03)] rounded-[28px] p-5 sm:p-7 text-left space-y-6">
+          <div className="flex justify-between items-center pb-2 border-b border-slate-100">
+            <h2 className="text-base font-black flex items-center gap-2 text-slate-800 uppercase tracking-wide">
+              <Route className="w-5 h-5 text-[#FF6B6B]" /> Customize Your Tour
+            </h2>
+            <button
+              onClick={() => setShowNewRequestForm(false)}
+              className="px-4 py-2 rounded-xl text-xs font-bold text-slate-650 hover:bg-slate-100 cursor-pointer"
+            >
+              Back to Request List
+            </button>
+          </div>
+          <CustomTourForm
+            currentUser={user}
+            onSubmit={handleDashboardCustomRequestSubmit}
+          />
+        </div>
+      );
+    }
+
     return (
       <div className="bg-white border border-slate-100 shadow-[0_8px_30px_rgba(16,35,63,0.03)] rounded-[28px] p-5 sm:p-7 text-left space-y-6">
-        <h2 className="text-base font-black flex items-center gap-2 mb-1 text-slate-800 uppercase tracking-wide">
-          <Route className="w-5 h-5 text-[#FF6B6B]" /> Custom Tour Requests
-        </h2>
-        <p className="text-xs text-slate-400">Request custom itineraries, private vehicles, and special guides</p>
-
-        {/* Custom request submission form */}
-        <form onSubmit={handleCustomRequestSubmit} className="space-y-4 pt-2">
-          {customRequestSuccess && (
-            <div className="p-4 bg-emerald-50 border border-emerald-100 rounded-xl text-xs font-bold text-emerald-700 flex items-center gap-2 animate-bounce">
-              <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-              Your custom tour request has been submitted. Our manager will call you within 24 hours.
-            </div>
-          )}
-
-          <div className="grid sm:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Destination Name</label>
-              <input
-                type="text"
-                placeholder="e.g. Kashmir, Thailand, Kerala"
-                value={customRequest.destination}
-                onChange={(e) => setCustomRequest({ ...customRequest, destination: e.target.value })}
-                className="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none text-xs text-slate-700 bg-white transition-all focus:border-[#FF6B6B] focus:ring-1 focus:ring-[#FF6B6B]"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Target Travel Month / Date</label>
-              <input
-                type="text"
-                placeholder="e.g. September 2026"
-                value={customRequest.date}
-                onChange={(e) => setCustomRequest({ ...customRequest, date: e.target.value })}
-                className="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none text-xs text-slate-700 bg-white transition-all focus:border-[#FF6B6B] focus:ring-1 focus:ring-[#FF6B6B]"
-              />
-            </div>
-          </div>
-
-          <div className="grid sm:grid-cols-3 gap-4">
-            <div>
-              <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Duration (Days)</label>
-              <input
-                type="text"
-                placeholder="e.g. 5 Days"
-                value={customRequest.duration}
-                onChange={(e) => setCustomRequest({ ...customRequest, duration: e.target.value })}
-                className="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none text-xs text-slate-700 bg-white transition-all focus:border-[#FF6B6B] focus:ring-1 focus:ring-[#FF6B6B]"
-              />
-            </div>
-            <div>
-              <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Number of Travelers</label>
-              <input
-                type="number"
-                min={1}
-                value={customRequest.travelers}
-                onChange={(e) => setCustomRequest({ ...customRequest, travelers: parseInt(e.target.value) || 2 })}
-                className="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none text-xs text-slate-700 bg-white transition-all focus:border-[#FF6B6B] focus:ring-1 focus:ring-[#FF6B6B]"
-              />
-            </div>
-            <div>
-              <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Vehicle Preference</label>
-              <select
-                value={customRequest.vehicle}
-                onChange={(e) => setCustomRequest({ ...customRequest, vehicle: e.target.value })}
-                className="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none text-xs text-slate-700 bg-white transition-all focus:border-[#FF6B6B] focus:ring-1 focus:ring-[#FF6B6B]"
-              >
-                <option>Standard AC Car</option>
-                <option>Premium SUV / Innova</option>
-                <option>Luxury Traveler</option>
-                <option>None (Self-drive / Transport)</option>
-              </select>
-            </div>
-          </div>
-
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Accommodation Tier</label>
-            <div className="grid grid-cols-3 gap-2.5">
-              {['Standard (2 Star)', 'Deluxe (3 Star)', 'Luxury Resort (5 Star)'].map((tier) => (
-                <button
-                  type="button"
-                  key={tier}
-                  onClick={() => setCustomRequest({ ...customRequest, hotelClass: tier })}
-                  className={`py-3 rounded-xl text-center text-xs font-bold cursor-pointer transition-all border ${
-                    customRequest.hotelClass === tier
-                      ? 'border-[#FF6B6B] bg-[#FF6B6B]/5 text-[#FF6B6B]'
-                      : 'border-slate-200 hover:border-slate-350 hover:bg-slate-50 text-slate-500 bg-white'
-                  }`}
-                >
-                  {tier}
-                </button>
-              ))}
-            </div>
+            <h2 className="text-base font-black flex items-center gap-2 mb-1 text-slate-800 uppercase tracking-wide">
+              <Route className="w-5 h-5 text-[#FF6B6B]" /> Custom Tour Requests
+            </h2>
+            <p className="text-xs text-slate-400">Request custom itineraries, private vehicles, and special guides</p>
           </div>
-
-          <div>
-            <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Special Requirements &amp; Custom Notes</label>
-            <textarea
-              rows={2}
-              placeholder="e.g. wheelchair assistance required, vegetarian food options needed..."
-              value={customRequest.notes}
-              onChange={(e) => setCustomRequest({ ...customRequest, notes: e.target.value })}
-              className="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none text-xs text-slate-700 bg-white resize-none transition-all focus:border-[#FF6B6B] focus:ring-1 focus:ring-[#FF6B6B]"
-            />
-          </div>
-
-          <button type="submit" className="px-6 py-3 rounded-xl text-xs font-bold cursor-pointer text-white bg-slate-800 hover:bg-slate-900 border-none transition-colors">
-            Submit Custom Request
+          <button
+            onClick={() => setShowNewRequestForm(true)}
+            className="px-5 py-3 bg-gradient-to-r from-amber-500 to-orange-500 hover:scale-[1.02] active:scale-[0.98] transition-all text-white rounded-2xl text-xs font-black uppercase tracking-wider shadow-md shadow-orange-100 cursor-pointer text-center"
+          >
+            Configure New Trip
           </button>
-        </form>
+        </div>
+
+        {customRequestSuccess && customRequestSuccessData && (
+          <div className="p-4 bg-emerald-50 border border-emerald-100 rounded-2xl text-xs font-bold text-emerald-700 flex items-center gap-2">
+            <CheckCircle2 className="w-4.5 h-4.5 text-emerald-500" />
+            <span>Request {customRequestSuccessData.displayCode} submitted successfully! Our desk is reviewing it.</span>
+          </div>
+        )}
 
         {/* Requests history */}
-        <div className="pt-6 border-t border-slate-100">
-          <h3 className="text-xs font-bold text-slate-700 uppercase tracking-wider mb-4">Custom Request History Log</h3>
-          <div className="space-y-3">
-            {customRequestsHistory.map((item) => (
-              <div key={item.id} className="p-4 rounded-xl border border-slate-150 bg-slate-50/50 flex justify-between items-center text-xs font-medium">
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="font-bold text-slate-800">{item.destination}</span>
-                    <span className="font-mono text-slate-400 text-[10px] font-bold">({item.id})</span>
+        <div className="pt-2">
+          <h3 className="text-xs font-bold text-slate-450 uppercase tracking-wider mb-4">Request Log History</h3>
+          
+          {customRequestsList.length === 0 ? (
+            <div className="text-center py-12 border-2 border-dashed border-slate-200 rounded-[24px] space-y-3">
+              <Route className="w-10 h-10 text-slate-300 mx-auto" />
+              <p className="text-xs font-semibold text-slate-450">No custom tour requests found.</p>
+              <button
+                onClick={() => setShowNewRequestForm(true)}
+                className="text-xs text-amber-600 hover:text-amber-700 font-bold"
+              >
+                Create your first customized tour request &rarr;
+              </button>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {customRequestsList.map((item) => {
+                const isUnderReview = item.status === 'Under Review' || item.status === 'Revision Requested';
+                const isQuote = item.status === 'Quotation Sent';
+                const isAccepted = item.status === 'Quotation Accepted' || item.status === 'Payment Pending';
+                const isConfirmed = item.status === 'Confirmed Booking';
+                
+                return (
+                  <div
+                    key={item.id}
+                    onClick={() => setSelectedCustomRequest(item)}
+                    className="p-4 rounded-[22px] border border-slate-200 bg-slate-50/50 hover:bg-slate-100/50 hover:border-slate-300/80 transition-all flex justify-between items-center text-xs font-medium cursor-pointer shadow-sm"
+                  >
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="font-extrabold text-slate-800">{item.destination}</span>
+                        <span className="font-mono text-slate-400 text-[10px] font-bold">({item.displayCode})</span>
+                      </div>
+                      <span className="text-[10px] text-slate-400 block mt-1">
+                        Submitted: {item.submissionDate} • {item.adults + item.children} Travelers • Budget: ₹{item.budget.toLocaleString('en-IN')}
+                      </span>
+                    </div>
+                    <div className="text-right flex flex-col items-end gap-1.5">
+                      <span className={`px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase border ${
+                        isUnderReview 
+                          ? 'bg-amber-50 text-amber-700 border-amber-100' 
+                          : isQuote 
+                            ? 'bg-sky-50 text-[#0096C7] border-sky-100 animate-pulse'
+                            : isAccepted
+                              ? 'bg-indigo-50 text-indigo-700 border-indigo-100'
+                              : isConfirmed
+                                ? 'bg-emerald-50 text-emerald-700 border-emerald-100'
+                                : 'bg-slate-50 text-slate-505 border-slate-100'
+                      }`}>
+                        {item.status}
+                      </span>
+                      <span className="text-[9px] text-slate-400 font-bold block">
+                        Last Update: {item.updatedAt}
+                      </span>
+                    </div>
                   </div>
-                  <span className="text-[10px] text-slate-400 block mt-1">Submitted: {item.submissionDate} • {item.travelers} Travelers • Month: {item.date}</span>
-                </div>
-                <div className="text-right">
-                  <span className={`px-2.5 py-0.5 rounded-full text-[9px] font-bold ${
-                    item.status === 'Quotation Sent' ? 'bg-sky-50 text-[#00D4F5] border border-sky-100' : 'bg-amber-50 text-amber-600 border border-amber-100'
-                  }`}>
-                    {item.status}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
+                );
+              })}
+            </div>
+          )}
         </div>
       </div>
     );

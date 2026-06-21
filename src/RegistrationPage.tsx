@@ -797,11 +797,11 @@ _I confirm my registration and age eligibility (18+). Please guide me on payment
                           className="w-full px-4 py-3.5 rounded-xl bg-slate-50/70 border border-slate-200 text-slate-800 text-sm outline-none focus:border-[#FF6B6B] focus:ring-2 focus:ring-[#FF6B6B]/15 transition-colors font-semibold"
                         >
                           <option value="Silver">Silver Plan (Domestic) - ₹499</option>
-                          <option value="Gold" disabled>Gold Plan (Domestic) - ₹799 (Coming Soon)</option>
-                          <option value="Platinum" disabled>Platinum Plan (Domestic) - ₹1,499 (Coming Soon)</option>
-                          <option value="Silver_Int" disabled>Silver Plan (International) - ₹4,999 (Coming Soon)</option>
-                          <option value="Gold_Int" disabled>Gold Plan (International) - ₹7,999 (Coming Soon)</option>
-                          <option value="Platinum_Int" disabled>Platinum Plan (International) - ₹14,999 (Coming Soon)</option>
+                          <option value="Gold">Gold Plan (Domestic) - ₹799</option>
+                          <option value="Platinum">Platinum Plan (Domestic) - ₹1,499</option>
+                          <option value="Silver_Int">Silver Plan (International) - ₹4,999</option>
+                          <option value="Gold_Int">Gold Plan (International) - ₹7,999</option>
+                          <option value="Platinum_Int">Platinum Plan (International) - ₹14,999</option>
                         </select>
                       </div>
 

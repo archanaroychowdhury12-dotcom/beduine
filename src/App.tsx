@@ -307,6 +307,7 @@ export default function App() {
           ) : view === 'dashboard' ? (
             <DashboardPage 
               user={currentUser} 
+              setCurrentUser={setCurrentUser}
               onBookPaidTour={() => {
                 handleSetView('paid-tour');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -322,7 +323,11 @@ export default function App() {
               }}
             />
           ) : view === 'paid-tour' ? (
-            <PaidTourPage currentUser={currentUser} setCurrentUser={setCurrentUser} />
+            <PaidTourPage
+              currentUser={currentUser}
+              setCurrentUser={setCurrentUser}
+              onNavigate={(v) => handleSetView(v as any)}
+            />
           ) : view === 'terms' ? (
             <div className="pt-24 lg:pt-32 pb-16 min-h-[70vh] flex flex-col items-center">
               <div className="max-w-4xl w-full px-5">

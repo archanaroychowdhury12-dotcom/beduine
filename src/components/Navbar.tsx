@@ -105,6 +105,16 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, setCurrentView }) =
               >
                 About Us
               </button>
+              <button
+                onClick={() => handleNavClick('customize')}
+                className={`text-sm font-semibold tracking-wide transition-colors cursor-pointer ${
+                  currentView === 'customize'
+                    ? (isScrolled ? 'text-amber-600 border-b-2 border-amber-500 pb-1' : 'text-amber-400 border-b-2 border-amber-400 pb-1')
+                    : (isScrolled || currentView !== 'home' ? 'text-slate-700 hover:text-amber-600' : 'text-slate-100 hover:text-amber-300')
+                }`}
+              >
+                Customize Tour
+              </button>
               {currentView === 'home' && (
                 <>
                   <button
@@ -240,6 +250,12 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, setCurrentView }) =
                   className={`text-left text-base font-semibold py-2.5 px-4 rounded-xl ${currentView === 'about' ? 'bg-amber-50 text-amber-600' : 'text-slate-700 hover:bg-slate-100'}`}
                 >
                   About Us
+                </button>
+                <button
+                  onClick={() => handleNavClick('customize')}
+                  className={`text-left text-base font-semibold py-2.5 px-4 rounded-xl ${currentView === 'customize' ? 'bg-amber-50 text-amber-600' : 'text-slate-700 hover:bg-slate-100'}`}
+                >
+                  Customize Tour
                 </button>
               </>
             )}
