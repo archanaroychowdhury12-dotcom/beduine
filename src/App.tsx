@@ -16,6 +16,7 @@ const RegistrationPage = lazy(() => import('./RegistrationPage'));
 const DashboardPage = lazy(() => import('./DashboardPage'));
 const ErrorPage = lazy(() => import('./ErrorPage'));
 const PaidTourPage = lazy(() => import('./PaidTourPage'));
+const VerifyCouponPage = lazy(() => import('./components/VerifyCouponPage'));
 
 const LegalCenterPage = lazy(() => import('./app/legal/page'));
 const PrivacyPolicyPage = lazy(() => import('./app/privacy-policy/page'));
@@ -29,6 +30,78 @@ const AffiliateAgentPolicyPage = lazy(() => import('./app/affiliate-agent-policy
 const GrievanceRedressalPage = lazy(() => import('./app/grievance-redressal/page'));
 
 import { CookieConsentBanner, CookieModalTrigger } from './components/legal/CookieConsentBanner';
+import { supabase } from './utils/supabaseClient';
+
+const mapSupabaseUser = (supabaseUser: any) => {
+  const fullName = supabaseUser.user_metadata?.full_name || 
+                   supabaseUser.user_metadata?.name || 
+                   supabaseUser.email?.split('@')[0] || 
+                   'Traveler User';
+  const email = supabaseUser.email || '';
+  const mobile = supabaseUser.phone || supabaseUser.user_metadata?.phone || '';
+  
+  let dob = supabaseUser.user_metadata?.dob || '';
+  let preferredLanguage = supabaseUser.user_metadata?.preferredLanguage || 'English';
+  let dietaryPreferences = supabaseUser.user_metadata?.dietaryPreferences || 'None';
+  let accessibilityRequirements = supabaseUser.user_metadata?.accessibilityRequirements || 'None';
+  let savedTravelers = supabaseUser.user_metadata?.savedTravelers || [];
+  let savedPickups = supabaseUser.user_metadata?.savedPickups || [];
+  
+  if (email.includes('arunasish')) {
+    dob = dob || '1989-05-12';
+    preferredLanguage = preferredLanguage || 'Bengali';
+    dietaryPreferences = dietaryPreferences || 'Non-Vegetarian';
+    if (savedTravelers.length === 0) {
+      savedTravelers = [
+        { id: 't-aru-1', firstName: 'Ankita', lastName: 'Roychowdhury', email: 'ankita.roy@gmail.com', phone: '+91 94330 54321', ageGroup: 'Adult', relationship: 'Spouse' },
+        { id: 't-aru-2', firstName: 'Dilip', lastName: 'Roychowdhury', email: 'dilip.roy@gmail.com', phone: '+91 94330 98765', ageGroup: 'Senior', relationship: 'Father' }
+      ];
+    }
+    if (savedPickups.length === 0) {
+      savedPickups = [
+        { id: 'p-aru-1', type: 'hotel', hotelName: 'ITC Royal Bengal, Kolkata', customAddress: '', label: 'ITC Royal Bengal (Saved)' },
+        { id: 'p-aru-2', type: 'hotel', hotelName: 'Kolkata Airport Arrival Gate', customAddress: '', label: 'Kolkata Airport (Saved)' }
+      ];
+    }
+  } else if (email.includes('rahul.sen')) {
+    dob = dob || '1994-08-15';
+    preferredLanguage = preferredLanguage || 'Bengali';
+    dietaryPreferences = dietaryPreferences || 'Vegetarian';
+    if (savedTravelers.length === 0) {
+      savedTravelers = [
+        { id: 't-rah-1', firstName: 'Priya', lastName: 'Sen', email: 'priya.sen@gmail.com', phone: '+91 98765 11111', ageGroup: 'Adult', relationship: 'Spouse' },
+        { id: 't-rah-2', firstName: 'Rakesh', lastName: 'Sen', email: 'rakesh.sen@gmail.com', phone: '+91 98765 22222', ageGroup: 'Child', relationship: 'Son' }
+      ];
+    }
+    if (savedPickups.length === 0) {
+      savedPickups = [
+        { id: 'p-rah-1', type: 'manual', hotelName: '', customAddress: 'Salt Lake Sector V, Block EP & GP, Kolkata', label: 'Salt Lake Office (Saved)' },
+        { id: 'p-rah-2', type: 'hotel', hotelName: 'Srinagar Airport Gate 2', customAddress: '', label: 'Srinagar Airport (Saved)' }
+      ];
+    }
+  }
+
+  return {
+    fullName,
+    email,
+    mobile,
+    city: supabaseUser.user_metadata?.city || '',
+    memberId: `BDN-${supabaseUser.id.slice(0, 4).toUpperCase()}-2026`,
+    planName: supabaseUser.user_metadata?.planName || 'Gold',
+    planPrice: supabaseUser.user_metadata?.planPrice || '₹4,999/yr',
+    planType: supabaseUser.user_metadata?.planType || 'gold',
+    color: 'from-teal-400 via-emerald-500 to-emerald-600',
+    glow: 'rgba(16, 185, 129, 0.4)',
+    drawToken: `LDC-${Math.floor(100000 + Math.random() * 900000)}`,
+    dob,
+    preferredLanguage,
+    dietaryPreferences,
+    accessibilityRequirements,
+    savedTravelers,
+    savedPickups,
+    supabaseUser
+  };
+};
 
 /* ---------- App ---------- */
 
@@ -40,7 +113,7 @@ export default function App() {
     'landing' | 'login' | 'register' | 'terms' | 'dashboard' | 'paid-tour' | 'error' |
     'legal' | 'privacy-policy' | 'terms-and-conditions' | 'refund-policy' |
     'cancellation-policy' | 'membership-rules' | 'website-disclaimer' |
-    'cookie-policy' | 'affiliate-agent-policy' | 'grievance-redressal'
+    'cookie-policy' | 'affiliate-agent-policy' | 'grievance-redressal' | 'verify-coupon'
   >('landing');
   const [currentUser, setCurrentUser] = useState<any | null>(null);
   const [selectedPlanName, setSelectedPlanName] = useState<string>('Silver');
@@ -57,6 +130,46 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
 
+  // Supabase Auth listener
+  useEffect(() => {
+    const checkPendingPlanAndRedirect = () => {
+      const storedPending = sessionStorage.getItem('pendingPlanName');
+      if (storedPending) {
+        setSelectedPlanName(storedPending);
+        handleSetView('register');
+        sessionStorage.removeItem('pendingPlanName');
+      } else {
+        handleSetView('dashboard');
+      }
+    };
+
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session?.user) {
+        const mapped = mapSupabaseUser(session.user);
+        setCurrentUser(mapped);
+        if (window.location.pathname === '/login' || window.location.pathname === '/') {
+          checkPendingPlanAndRedirect();
+        }
+      }
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (session?.user) {
+        const mapped = mapSupabaseUser(session.user);
+        setCurrentUser(mapped);
+        if (event === 'SIGNED_IN') {
+          checkPendingPlanAndRedirect();
+        }
+      } else {
+        setCurrentUser(null);
+      }
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [handleSetView]);
+
   const handleSelectPlan = useCallback((planName: string) => {
     setSelectedPlanName(planName);
     setPrefilledData(null);
@@ -64,6 +177,7 @@ export default function App() {
       handleSetView('register');
     } else {
       setPendingPlan(planName);
+      sessionStorage.setItem('pendingPlanName', planName);
       setLoginInitialMode('login');
       handleSetView('login');
     }
@@ -77,7 +191,7 @@ export default function App() {
         'landing', 'login', 'register', 'terms', 'dashboard', 'paid-tour', 'error',
         'legal', 'privacy-policy', 'terms-and-conditions', 'refund-policy',
         'cancellation-policy', 'membership-rules', 'website-disclaimer',
-        'cookie-policy', 'affiliate-agent-policy', 'grievance-redressal'
+        'cookie-policy', 'affiliate-agent-policy', 'grievance-redressal', 'verify-coupon'
       ];
       const isPolicyPath = [
         'terms', 'legal', 'privacy-policy', 'terms-and-conditions', 'refund-policy',
@@ -141,7 +255,7 @@ export default function App() {
         <main className="relative z-10 flex flex-col gap-0">
           <Suspense fallback={<RouteFallback />}>
           {view === 'landing' ? (
-            <LandingContent onSelectPlan={handleSelectPlan} />
+            <LandingContent onSelectPlan={handleSelectPlan} setView={handleSetView} />
           ) : view === 'login' ? (
             <LoginPage 
               initialMode={loginInitialMode}
@@ -154,12 +268,15 @@ export default function App() {
                 handleSetView('landing');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
-              onLoginSuccess={(user) => {
-                setCurrentUser(user);
-                if (pendingPlan) {
-                  setSelectedPlanName(pendingPlan);
+              onLoginSuccess={(rawUser) => {
+                const mapped = mapSupabaseUser(rawUser);
+                setCurrentUser(mapped);
+                const storedPending = sessionStorage.getItem('pendingPlanName') || pendingPlan;
+                if (storedPending) {
+                  setSelectedPlanName(storedPending);
                   handleSetView('register');
                   setPendingPlan(null);
+                  sessionStorage.removeItem('pendingPlanName');
                 } else {
                   handleSetView('dashboard');
                 }
@@ -256,6 +373,8 @@ export default function App() {
             <AffiliateAgentPolicyPage onNavigate={handleSetView} />
           ) : view === 'grievance-redressal' ? (
             <GrievanceRedressalPage onNavigate={handleSetView} />
+          ) : view === 'verify-coupon' ? (
+            <VerifyCouponPage />
           ) : (
             <ErrorPage
               onGoHome={() => {

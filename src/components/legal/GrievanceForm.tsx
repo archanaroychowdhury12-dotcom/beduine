@@ -69,26 +69,26 @@ export function GrievanceForm() {
   };
 
   return (
-    <div className="w-full mt-10 p-6 sm:p-8 rounded-3xl border border-slate-line bg-white/70 shadow-xl relative overflow-hidden">
+    <div className="w-full mt-10 p-6 sm:p-8 rounded-3xl border border-white/10 bg-white/5 backdrop-blur-md shadow-xl relative overflow-hidden text-white">
       <div className="flex items-center gap-3 mb-6">
-        <div className="w-10 h-10 rounded-xl bg-cyan-deep/10 flex items-center justify-center text-cyan-deep">
+        <div className="w-10 h-10 rounded-xl bg-cyan/10 flex items-center justify-center text-cyan">
           <HelpCircle className="w-5 h-5" />
         </div>
         <div>
-          <h3 className="font-display font-bold text-lg text-[#10233F]">Submit Formal Grievance</h3>
-          <p className="text-xs text-[#728091] font-mono">Lodge an official complaint with the Grievance Officer</p>
+          <h3 className="font-display font-bold text-lg text-white">Submit Formal Grievance</h3>
+          <p className="text-xs text-slate-400 font-mono">Lodge an official complaint with the Grievance Officer</p>
         </div>
       </div>
 
       {status === 'success' ? (
-        <div className="p-6 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-800 text-center animate-fadeIn">
+        <div className="p-6 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 text-center animate-fadeIn">
           <h4 className="font-bold font-display text-base mb-2">Grievance Registered</h4>
           <p className="text-xs font-mono leading-relaxed">
             Your grievance has been successfully submitted to the Grievance Officer. A ticket ID has been generated, and we will contact you within 48 hours.
           </p>
           <button
             onClick={() => setStatus('idle')}
-            className="mt-4 px-5 py-2 text-xs font-bold text-white bg-emerald-600 rounded-full hover:bg-emerald-500 transition-all cursor-pointer border-none"
+            className="mt-4 px-5 py-2 text-xs font-bold text-slate-950 bg-emerald-400 rounded-full hover:bg-emerald-300 transition-all cursor-pointer border-none"
           >
             Submit Another Complaint
           </button>
@@ -96,7 +96,7 @@ export function GrievanceForm() {
       ) : (
         <form onSubmit={handleSubmit} className="space-y-4">
           {status === 'error' && (
-            <div className="p-3.5 rounded-xl bg-red-500/10 border border-red-500/20 text-red-600 text-xs flex items-center gap-2 font-mono">
+            <div className="p-3.5 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-xs flex items-center gap-2 font-mono">
               <AlertCircle className="w-4 h-4 shrink-0" />
               <span>{errorMessage}</span>
             </div>
@@ -104,38 +104,38 @@ export function GrievanceForm() {
 
           <div className="grid sm:grid-cols-3 gap-4">
             <div>
-              <label className="block text-xs font-bold text-[#10233F] mb-1.5 font-display">Full Name *</label>
+              <label className="block text-xs font-bold text-slate-200 mb-1.5 font-display">Full Name *</label>
               <input
                 type="text"
                 name="fullName"
                 value={form.fullName}
                 onChange={handleChange}
                 disabled={status === 'loading'}
-                className="w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-white/80 text-sm focus:outline-none focus:border-cyan text-ink"
+                className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-slate-900/90 text-sm focus:outline-none focus:border-cyan text-white placeholder-slate-500"
                 placeholder="Applicant name"
               />
             </div>
             <div>
-              <label className="block text-xs font-bold text-[#10233F] mb-1.5 font-display">Registered Email *</label>
+              <label className="block text-xs font-bold text-slate-200 mb-1.5 font-display">Registered Email *</label>
               <input
                 type="email"
                 name="email"
                 value={form.email}
                 onChange={handleChange}
                 disabled={status === 'loading'}
-                className="w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-white/80 text-sm focus:outline-none focus:border-cyan text-ink"
+                className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-slate-900/90 text-sm focus:outline-none focus:border-cyan text-white placeholder-slate-500"
                 placeholder="Email address"
               />
             </div>
             <div>
-              <label className="block text-xs font-bold text-[#10233F] mb-1.5 font-display">Mobile Number *</label>
+              <label className="block text-xs font-bold text-slate-200 mb-1.5 font-display">Mobile Number *</label>
               <input
                 type="text"
                 name="mobile"
                 value={form.mobile}
                 onChange={handleChange}
                 disabled={status === 'loading'}
-                className="w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-white/80 text-sm focus:outline-none focus:border-cyan text-ink"
+                className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-slate-900/90 text-sm focus:outline-none focus:border-cyan text-white placeholder-slate-500"
                 placeholder="10-digit number"
               />
             </div>
@@ -143,37 +143,37 @@ export function GrievanceForm() {
 
           <div className="grid sm:grid-cols-3 gap-4">
             <div>
-              <label className="block text-xs font-bold text-[#10233F] mb-1.5 font-display">Membership ID</label>
+              <label className="block text-xs font-bold text-slate-200 mb-1.5 font-display">Membership ID</label>
               <input
                 type="text"
                 name="membershipId"
                 value={form.membershipId}
                 onChange={handleChange}
                 disabled={status === 'loading'}
-                className="w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-white/80 text-sm focus:outline-none focus:border-cyan text-ink"
+                className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-slate-900/90 text-sm focus:outline-none focus:border-cyan text-white placeholder-slate-500"
                 placeholder="e.g. MEM-8821"
               />
             </div>
             <div>
-              <label className="block text-xs font-bold text-[#10233F] mb-1.5 font-display">Booking ID</label>
+              <label className="block text-xs font-bold text-slate-200 mb-1.5 font-display">Booking ID</label>
               <input
                 type="text"
                 name="bookingId"
                 value={form.bookingId}
                 onChange={handleChange}
                 disabled={status === 'loading'}
-                className="w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-white/80 text-sm focus:outline-none focus:border-cyan text-ink"
+                className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-slate-900/90 text-sm focus:outline-none focus:border-cyan text-white placeholder-slate-500"
                 placeholder="e.g. BK-2093"
               />
             </div>
             <div>
-              <label className="block text-xs font-bold text-[#10233F] mb-1.5 font-display">Grievance Category *</label>
+              <label className="block text-xs font-bold text-slate-200 mb-1.5 font-display">Grievance Category *</label>
               <select
                 name="category"
                 value={form.category}
                 onChange={handleChange}
                 disabled={status === 'loading'}
-                className="w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-white/80 text-sm focus:outline-none focus:border-cyan text-ink"
+                className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-slate-900/90 text-sm focus:outline-none focus:border-cyan text-white [&>option]:bg-slate-900 [&>option]:text-white"
               >
                 <option value="payment">Payment Discrepancies</option>
                 <option value="membership">Membership Benefits Abuse / Issues</option>
@@ -187,13 +187,13 @@ export function GrievanceForm() {
 
           <div className="grid sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-bold text-[#10233F] mb-1.5 font-display">Preferred Response Channel</label>
+              <label className="block text-xs font-bold text-slate-200 mb-1.5 font-display">Preferred Response Channel</label>
               <select
                 name="responseChannel"
                 value={form.responseChannel}
                 onChange={handleChange}
                 disabled={status === 'loading'}
-                className="w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-white/80 text-sm focus:outline-none focus:border-cyan text-ink"
+                className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-slate-900/90 text-sm focus:outline-none focus:border-cyan text-white [&>option]:bg-slate-900 [&>option]:text-white"
               >
                 <option value="email">Email Notice</option>
                 <option value="phone">Direct Callback</option>
@@ -201,28 +201,28 @@ export function GrievanceForm() {
               </select>
             </div>
             <div>
-              <label className="block text-xs font-bold text-[#10233F] mb-1.5 font-display">Supporting Document reference</label>
+              <label className="block text-xs font-bold text-slate-200 mb-1.5 font-display">Supporting Document reference</label>
               <input
                 type="text"
                 name="documentDetails"
                 value={form.documentDetails}
                 onChange={handleChange}
                 disabled={status === 'loading'}
-                className="w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-white/80 text-sm focus:outline-none focus:border-cyan text-ink"
+                className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-slate-900/90 text-sm focus:outline-none focus:border-cyan text-white placeholder-slate-500"
                 placeholder="e.g. Receipt voucher details, email chain description"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-[#10233F] mb-1.5 font-display">Detailed Complaint Description *</label>
+            <label className="block text-xs font-bold text-slate-200 mb-1.5 font-display">Detailed Complaint Description *</label>
             <textarea
               name="description"
               rows={4}
               value={form.description}
               onChange={handleChange}
               disabled={status === 'loading'}
-              className="w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-white/80 text-sm focus:outline-none focus:border-cyan text-ink resize-none"
+              className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-slate-900/90 text-sm focus:outline-none focus:border-cyan text-white placeholder-slate-500 resize-none"
               placeholder="State the facts clearly, including names, dates, times, and booking reference details."
             />
           </div>
@@ -234,9 +234,9 @@ export function GrievanceForm() {
               checked={form.consent}
               onChange={handleCheckbox}
               disabled={status === 'loading'}
-              className="mt-0.5 rounded text-cyan border-slate-300 focus:ring-cyan"
+              className="mt-0.5 rounded text-cyan border-white/20 bg-slate-900 focus:ring-cyan"
             />
-            <span className="text-[11px] leading-relaxed text-[#728091] font-mono">
+            <span className="text-[11px] leading-relaxed text-slate-400 font-mono">
               I consent to the Grievance Officer and authorized compliance staff reviewing my account database logs, ticket details, and contact history to investigate this complaint.
             </span>
           </label>
@@ -244,7 +244,7 @@ export function GrievanceForm() {
           <button
             type="submit"
             disabled={status === 'loading'}
-            className="w-full py-3 rounded-xl bg-cyan-deep text-white font-bold font-display text-sm hover:bg-[#007A94] transition-all flex items-center justify-center gap-2 cursor-pointer border-none shadow-lg shadow-cyan-950/10"
+            className="w-full py-3 rounded-xl bg-cyan text-slate-950 font-bold font-display text-sm hover:bg-cyan/90 transition-all flex items-center justify-center gap-2 cursor-pointer border-none shadow-lg shadow-cyan-950/10"
           >
             {status === 'loading' ? (
               <>

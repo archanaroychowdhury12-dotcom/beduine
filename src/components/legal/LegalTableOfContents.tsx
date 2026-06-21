@@ -26,24 +26,24 @@ export function LegalTableOfContents({ sections }: LegalTableOfContentsProps) {
     <div className="lg:hidden mb-6 no-print">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex items-center justify-between p-4 rounded-2xl border border-slate-line bg-white/80 shadow-sm text-sm font-bold text-[#10233F] cursor-pointer focus:outline-none"
+        className="w-full flex items-center justify-between p-4 rounded-2xl border border-white/10 bg-white/5 shadow-sm text-sm font-bold text-white cursor-pointer focus:outline-none"
       >
         <span className="flex items-center gap-2">
-          <List className="w-4 h-4 text-cyan-deep" />
+          <List className="w-4 h-4 text-cyan" />
           <span>Quick Navigation</span>
         </span>
         <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
       </button>
 
       {isOpen && (
-        <div className="mt-2 rounded-2xl border border-slate-line bg-white shadow-xl max-h-[50vh] overflow-y-auto p-2 space-y-1 z-30 animate-fadeIn">
+        <div className="mt-2 rounded-2xl border border-white/10 bg-slate-900 shadow-2xl max-h-[50vh] overflow-y-auto p-2 space-y-1 z-30 animate-fadeIn backdrop-blur-md">
           {sections.map(sec => (
             <button
               key={sec.num}
               onClick={() => handleSelect(sec.num)}
-              className="w-full flex items-start gap-2.5 p-3 text-left text-xs font-mono text-ink hover:bg-slate-50 rounded-xl transition-all cursor-pointer border-none bg-transparent"
+              className="w-full flex items-start gap-2.5 p-3 text-left text-xs font-mono text-slate-300 hover:bg-white/10 hover:text-white rounded-xl transition-all cursor-pointer border-none bg-transparent"
             >
-              <span className="text-cyan-deep font-bold">{sec.num}.</span>
+              <span className="text-cyan font-bold">{sec.num}.</span>
               <span className="leading-normal">{sec.title}</span>
             </button>
           ))}

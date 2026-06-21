@@ -58,7 +58,7 @@ export const LEGAL_POLICIES: LegalPolicy[] = [
       {
         num: 2,
         title: 'How We Use Your Information',
-        content: `We use your information to:\n• Process subscriptions and bookings\n• Verify customer identity\n• Conduct lucky draw participation\n• Send notifications, offers, and updates\n• Provide customer support\n• Improve our services and user experience`
+        content: `We use your information to:\n• Process subscriptions and bookings\n• Verify customer identity\n• Conduct travel reward selection\n• Send notifications, offers, and updates\n• Provide customer support\n• Improve our services and user experience`
       },
       {
         num: 3,
@@ -92,6 +92,7 @@ export const LEGAL_POLICIES: LegalPolicy[] = [
       { label: 'Website Disclaimer', slug: 'website-disclaimer' }
     ],
     importantNotices: [
+      'Selection-based promotional module will remain disabled until the client provides approved rules, eligibility criteria, privacy terms and written legal authorization.',
       'Purchasing a subscription membership does not guarantee selection, rewards, or travel.',
       'Subscription memberships are promotional in nature, are not investments, and do not yield financial returns.',
       'Discount Credits have no independent cash value and cannot be redeemed for cash or transferred.'
@@ -174,13 +175,13 @@ export const LEGAL_POLICIES: LegalPolicy[] = [
       },
       {
         num: 16,
-        title: 'Lucky-Draw Participation Disclaimer',
+        title: 'Travel-Reward Participation Disclaimer',
         content: `The promotional draw is an optional membership incentive. The draw uses a digital Random Number Generator (RNG) for fair selection.`
       },
       {
         num: 17,
         title: 'No Guaranteed Selection or Benefit',
-        content: `Purchasing a membership does NOT guarantee selection in any promotional reward or lucky-draw. Membership is not an investment for profit.`
+        content: `Purchasing a membership does NOT guarantee selection in any promotional reward or travel-reward. Membership is not an investment for profit.`
       },
       {
         num: 18,
@@ -324,7 +325,7 @@ export const LEGAL_POLICIES: LegalPolicy[] = [
       {
         num: 2,
         title: 'Membership Benefits',
-        content: `Unused Lucky Draw Credits, Discount Credits, or membership benefits cannot be converted into cash or refunded.`
+        content: `Unused Travel Reward Credits, Discount Credits, or membership benefits cannot be converted into cash or refunded.`
       },
       {
         num: 3,
@@ -396,7 +397,7 @@ export const LEGAL_POLICIES: LegalPolicy[] = [
       { label: 'Refund Policy', slug: 'refund-policy' }
     ],
     importantNotices: [
-      'Purchasing or renewing a membership does not guarantee selection in any promotional reward or lucky-draw process.',
+      'Purchasing or renewing a membership does not guarantee selection in any promotional reward or travel-reward process.',
       'Members are limited to one active subscription account. Duplicate profiles are subject to suspension.'
     ],
     sections: [
@@ -457,7 +458,7 @@ export const LEGAL_POLICIES: LegalPolicy[] = [
       },
       {
         num: 12,
-        title: 'Lucky-Draw Participation Requirements',
+        title: 'Travel-Reward Participation Requirements',
         content: `Only members with active accounts during the draw date are eligible for random selection.`
       },
       {
@@ -737,7 +738,7 @@ export const LEGAL_POLICIES: LegalPolicy[] = [
     importantNotices: [
       'Affiliates and Agents are independent contractors; they are not employees and have no authority to bind the company.',
       'Affiliates must display our mandatory disclosure statement clearly on all marketing material.',
-      'Making guaranteed income claims or promising lucky draw wins is strictly prohibited and results in immediate termination.'
+      'Making guaranteed income claims or promising travel reward wins is strictly prohibited and results in immediate termination.'
     ],
     sections: [
       {
@@ -793,7 +794,7 @@ export const LEGAL_POLICIES: LegalPolicy[] = [
       {
         num: 11,
         title: 'Prohibited Claims',
-        content: `Partners must not claim that membership guarantees lucky draw wins, or promise specific financial returns.`
+        content: `Partners must not claim that membership guarantees travel reward wins, or promise specific financial returns.`
       },
       {
         num: 12,

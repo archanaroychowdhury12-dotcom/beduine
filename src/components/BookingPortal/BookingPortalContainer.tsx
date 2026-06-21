@@ -3,6 +3,7 @@ import { TourPackage, Traveler, PickupInfo, Voucher, PaymentDetails, BookingConf
 import { TOUR_PACKAGES } from '../../data/tours';
 import { getPlanDetails } from '../../data/siteData';
 import { ChevronRight, Check, Clock, X, User, ShieldCheck } from 'lucide-react';
+import { supabase } from '../../utils/supabaseClient';
 
 const formatINR = (value: number) => `₹${value.toLocaleString('en-IN')}`;
 
@@ -357,7 +358,7 @@ export const BookingPortalContainer: React.FC<BookingPortalContainerProps> = ({
     }
   };
 
-  const handleProceedWithPayment = (saveToProfile: boolean) => {
+  const handleProceedWithPayment = async (saveToProfile: boolean) => {
     setShowSaveProfileModal(false);
 
     if (saveToProfile && currentUser && setCurrentUser) {
@@ -368,9 +369,25 @@ export const BookingPortalContainer: React.FC<BookingPortalContainerProps> = ({
           fullName: `${lead.firstName} ${lead.lastName}`.trim(),
           email: lead.email,
           mobile: lead.phone,
-          dob: lead.dob || ''
+          dob: lead.dob || '',
+          preferredLanguage: lead.preferredLanguage || 'English',
+          dietaryPreferences: lead.dietaryPreferences || 'None',
+          accessibilityRequirements: lead.accessibilityRequirements || 'None',
+          savedTravelers: currentUser.savedTravelers || []
         };
         setCurrentUser(updatedUser);
+
+        // Sync updates directly to the Supabase cloud session
+        await supabase.auth.updateUser({
+          data: {
+            full_name: updatedUser.fullName,
+            dob: updatedUser.dob,
+            preferredLanguage: updatedUser.preferredLanguage,
+            dietaryPreferences: updatedUser.dietaryPreferences,
+            accessibilityRequirements: updatedUser.accessibilityRequirements,
+            savedTravelers: updatedUser.savedTravelers
+          }
+        });
       }
     }
     runPaymentSteps();

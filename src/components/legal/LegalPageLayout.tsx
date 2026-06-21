@@ -22,7 +22,7 @@ export function LegalPageLayout({ policy, onNavigate, children }: LegalPageLayou
   const tocSections = policy.sections.map(s => ({ num: s.num, title: s.title }));
 
   return (
-    <div className="relative min-h-screen bg-[#F5FAFD] pt-24 lg:pt-32 pb-16 px-4 sm:px-6 lg:px-8">
+    <div className="relative min-h-screen bg-[#030C15] pt-24 lg:pt-32 pb-16 px-4 sm:px-6 lg:px-8 text-white">
       {/* Background Graphic elements matching Beduine dashboard styles */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none no-print">
         <div className="absolute top-10 left-1/4 w-[40rem] h-[40rem] rounded-full bg-gradient-to-br from-cyan/10 via-cyan/5 to-transparent blur-[80px]" />
@@ -33,14 +33,14 @@ export function LegalPageLayout({ policy, onNavigate, children }: LegalPageLayou
         {/* Back Link */}
         <button
           onClick={() => onNavigate('legal')}
-          className="no-print inline-flex items-center gap-2 mb-6 text-xs font-bold font-mono text-cyan-deep hover:text-cyan transition-all cursor-pointer border-none bg-transparent focus:outline-none"
+          className="no-print inline-flex items-center gap-2 mb-6 text-xs font-bold font-mono text-cyan hover:text-cyan-bright transition-all cursor-pointer border-none bg-transparent focus:outline-none"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Back to Legal Policy Center</span>
         </button>
 
         {/* Master Frosted Layout container */}
-        <div className="rounded-[24px] border border-slate-line/80 bg-white/94 shadow-xl p-6 sm:p-8 lg:p-10 relative overflow-hidden backdrop-blur-md">
+        <div className="rounded-[24px] border border-white/10 bg-slate-950/40 shadow-2xl p-6 sm:p-8 lg:p-10 relative overflow-hidden backdrop-blur-xl">
           {/* Subtle top/bottom design gradients */}
           <div className="absolute top-0 right-0 w-72 h-72 bg-gradient-to-br from-cyan/10 to-transparent rounded-full blur-3xl pointer-events-none no-print" />
           

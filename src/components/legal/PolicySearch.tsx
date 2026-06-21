@@ -16,13 +16,13 @@ export function PolicySearch({ query, onChange }: PolicySearchProps) {
         type="text"
         value={query}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full pl-10 pr-10 py-3 rounded-full border border-slate-line/80 bg-white/70 backdrop-blur-sm text-sm font-sans focus:outline-none focus:border-cyan text-[#10233F] placeholder-[#728091] shadow-inner"
+        className="w-full pl-10 pr-10 py-3 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm text-sm font-sans focus:outline-none focus:border-cyan text-white placeholder-slate-400 shadow-inner"
         placeholder="Search policies (e.g. refund, rules, cookies)..."
       />
       {query && (
         <button
           onClick={() => onChange('')}
-          className="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-slate-600 cursor-pointer border-none bg-transparent"
+          className="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-white cursor-pointer border-none bg-transparent"
           aria-label="Clear search"
         >
           <X className="w-4 h-4" />

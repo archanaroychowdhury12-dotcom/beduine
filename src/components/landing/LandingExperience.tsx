@@ -593,7 +593,7 @@ export function CinematicIntro({ onComplete }: { onComplete: () => void }) {
 
 
 
-function Hero() {
+function Hero({ setView }: { setView: (v: any) => void }) {
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
 
   useEffect(() => {
@@ -676,16 +676,25 @@ function Hero() {
                     View Plans <ArrowRight className="w-3.5 h-3.5" />
                   </button>
                 </a>
-                <a href="#terms" className="cursor-pointer">
-                  <button className="px-6 py-3 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-full shadow-lg hover:-translate-y-0.5 transition-all text-xs uppercase tracking-wider border-none cursor-pointer flex items-center gap-1.5">
-                    Read Terms
-                  </button>
-                </a>
-                <a href="#contact" className="cursor-pointer">
-                  <button className="px-6 py-3 bg-white hover:bg-slate-100 text-slate-900 border border-slate-300 font-bold rounded-full shadow-lg hover:-translate-y-0.5 transition-all text-xs uppercase tracking-wider cursor-pointer flex items-center gap-1.5">
-                    Contact Us
-                  </button>
-                </a>
+                <button 
+                  onClick={() => {
+                    setView('terms');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                  className="px-6 py-3 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-full shadow-lg hover:-translate-y-0.5 transition-all text-xs uppercase tracking-wider border-none cursor-pointer flex items-center gap-1.5"
+                >
+                  Read Terms
+                </button>
+                <button 
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const el = document.getElementById('contact');
+                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                  className="px-6 py-3 bg-white hover:bg-slate-100 text-slate-900 border border-slate-300 font-bold rounded-full shadow-lg hover:-translate-y-0.5 transition-all text-xs uppercase tracking-wider cursor-pointer flex items-center gap-1.5"
+                >
+                  Contact Us
+                </button>
               </div>
 
               {/* Polaroid-Style Photo Prints Overlay in Bottom Left */}
@@ -1086,7 +1095,7 @@ function AboutUs() {
       </div>
 
       {/* ── Registered Office Strip ── */}
-      <div className="bg-[#0b130f] py-20 lg:py-24 relative z-10 border-t border-white/10">
+      <div className="bg-black/30 backdrop-blur-md py-20 lg:py-24 relative z-10 border-t border-white/10">
         <div className="max-w-7xl mx-auto px-5 lg:px-8">
           <Reveal>
             <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-12 lg:gap-16 items-center">
@@ -1204,7 +1213,7 @@ function HowItWorks() {
   const steps = [
     { n: '01', icon: CreditCard, title: 'Choose Your Plan', desc: 'Select from our Silver, Gold, or Platinum tiers (domestic & international plans).', details: ['12-month validity', 'Clear credit options', '18+ membership only'], img: '/images/beduin_travel_hero_1779521651766.png' },
     { n: '02', icon: FileCheck2, title: 'Complete Verification', desc: 'Securely submit your inquiry and confirm age requirements to activate benefits.', details: ['WhatsApp Activation', '18+ age verification', 'Secure processing'], img: '/images/office_setup.png' },
-    { n: '03', icon: Wallet, title: 'Get Your Credits', desc: 'Get your Lucky Draw Credit (LDC) token and Discount Credits (DCs) loaded.', details: ['1 LDC token received', '₹500 discount credits', 'Value floor guaranteed'], img: '/images/lucky_draw_ticket_1779521667122.png' },
+    { n: '03', icon: Wallet, title: 'Get Your Credits', desc: 'Get your Travel Reward Credit (TRC) token and Discount Credits (DCs) loaded.', details: ['1 TRC token received', '₹500 discount credits', 'Value floor guaranteed'], img: '/images/lucky_draw_ticket_1779521667122.png' },
     { n: '04', icon: Gift, title: 'Travel & Save', desc: 'Enjoy weekly promotional winner benefits or apply discount credits on paid bookings.', details: ['Weekly winner draws', '₹500 off per booking', 'Non-cash travel benefits'], img: '/images/happy_family_travelers.png' },
   ];
   return (
@@ -1574,7 +1583,7 @@ function IntlPlanCard({ plan, index }: { plan: typeof INTL_PLANS[number]; index:
 
           <div className="p-7 border-b border-slate-800/80">
             <div className="flex items-baseline gap-1">
-              <span className="text-cyan text-lg font-bold">?</span>
+              <span className="text-cyan text-lg font-bold">₹</span>
               <span className="font-display text-5xl font-black text-white tracking-tight tabular">{plan.price.toLocaleString('en-IN')}</span>
               <span className="text-slate-400 font-extrabold text-sm">/ 12 mo</span>
             </div>
@@ -1816,8 +1825,8 @@ function Transparency() {
 }
 
 
-/* ---------- Lucky Draw Execution Strategy ---------- */
-function LuckyDrawSystem() {
+/* ---------- Travel Reward Execution Strategy ---------- */
+function TravelRewardSystem() {
   const phases = [
     { n: '01', icon: Scan, title: 'Data Verification', accent: 'cyan',
       img: '/images/transparency_verification.png',
@@ -1851,12 +1860,12 @@ function LuckyDrawSystem() {
         {/* Header */}
         <Reveal>
           <div className="text-center mb-16 max-w-3xl mx-auto">
-            <div className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.3em] neon-cyan font-semibold mb-4"><div className="w-8 h-px bg-cyan" /> Lucky Draw Protocol <div className="w-8 h-px bg-cyan" /></div>
+            <div className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.3em] neon-cyan font-semibold mb-4"><div className="w-8 h-px bg-cyan" /> Travel Reward Protocol <div className="w-8 h-px bg-cyan" /></div>
             <h2 className="font-display text-4xl lg:text-6xl font-bold text-ink leading-tight">
               <KineticText text="How the draw" />
               <br /><span className="gradient-neon"><KineticText text="actually works." delay={0.3} /></span>
             </h2>
-            <p className="mt-6 text-ink/70 text-lg leading-relaxed">Every Sunday, eligible subscribers enter a verified lucky draw. The customer journey stays simple: enter, watch, and receive your result securely.</p>
+            <p className="mt-6 text-ink/70 text-lg leading-relaxed">Every Sunday, eligible subscribers enter a verified travel reward selection. The customer journey stays simple: enter, watch, and receive your result securely.</p>
           </div>
         </Reveal>
 
@@ -1986,11 +1995,11 @@ function LuckyDrawSystem() {
               <div>
                 <div className="text-[11px] uppercase tracking-widest neon-cyan font-semibold mb-2 font-mono">// Customer-End Draw Experience</div>
                 <div className="font-display text-2xl lg:text-3xl font-bold text-ink mb-4">You don't just wait - you <span className="gradient-neon">participate.</span></div>
-                <p className="text-sm text-ink/70 leading-relaxed mb-6">Every Sunday, subscribers log in to their BEDUINE account, use their Lucky Draw Credit to enter, and see results instantly. The draw is triggered by the system itself - not secretly by the company.</p>
+                <p className="text-sm text-ink/70 leading-relaxed mb-6">Every Sunday, subscribers log in to their BEDUINE account, use their Travel Reward Credit to enter, and see results instantly. The selection is triggered by the system itself - not secretly by the company.</p>
                 <div className="space-y-3">
                   {[
                     { step: '1', t: 'Log in on Sunday', d: 'Open your BEDUINE app or web portal' },
-                    { step: '2', t: 'Activate your entry', d: 'Use your 1 Lucky Draw Credit to lock your ticket' },
+                    { step: '2', t: 'Activate your entry', d: 'Use your 1 Travel Reward Credit to lock your ticket' },
                     { step: '3', t: 'Watch the draw', d: 'Digital scratch card or RNG animation reveals results' },
                     { step: '4', t: 'Instant result', d: 'Win -> Tour coupon | Not selected -> Discount credits confirmed' },
                   ].map((s) => (
@@ -2002,7 +2011,7 @@ function LuckyDrawSystem() {
                 </div>
               </div>
               <div className="relative rounded-2xl overflow-hidden border border-slate-line group shadow-2xl h-[320px]">
-                <img src="/images/lucky_draw_ticket_1779521667122.png" alt="Lucky Draw Ticket" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-90" />
+                <img src="/images/lucky_draw_ticket_1779521667122.png" alt="Travel Reward Ticket" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-90" />
                 <div className="absolute inset-0 bg-gradient-to-t from-cosmos via-cosmos/50 to-cosmos/25" />
                 <div className="absolute inset-0 p-6 flex flex-col justify-between">
                   <div className="flex items-center justify-between">
@@ -2039,7 +2048,7 @@ function LuckyDrawSystem() {
               <div className="text-[10px] uppercase tracking-widest neon-cyan font-semibold">Sample Winner SMS</div>
             </div>
             <div className="glass rounded-xl p-4 border border-cyan/20 text-sm text-ink/80 leading-relaxed font-mono">
-              Congratulations <span className="neon-gold">[Name]</span>! You are a BEDUINE Lucky Draw Winner! Your coupon: <span className="neon-cyan">BEDWIN-JULY-12345</span>. Call <span className="text-ink">+91 8768903565</span> for details.
+              Congratulations <span className="neon-gold">[Name]</span>! You are a BEDUINE Travel Reward Winner! Your coupon: <span className="neon-cyan">BEDWIN-JULY-12345</span>. Call <span className="text-ink">+91 8768903565</span> for details.
             </div>
           </div>
         </Reveal>
@@ -2053,14 +2062,14 @@ function CreditArchitecture(_props: { activePlan: string | null; ldcTokens: numb
   const [activeTab, setActiveTab] = useState<'domestic' | 'intl'>('domestic');
 
   const credits = [
-    { type: 'LDC', name: 'Lucky Draw Credit', icon: Sparkles, accent: 'cyan',
-      desc: '1 Credit is issued per subscription. This credit acts as a token that the user manually spends on the mobile app/web portal on Sunday to lock their participation in that week\'s draw.',
-      rule: '1 Credit = 1 Entry in the weekly Lucky Draw',
+    { type: 'TRC', name: 'Travel Reward Credit', icon: Sparkles, accent: 'cyan',
+      desc: '1 Credit is issued per subscription. This credit acts as a token that the user manually spends on the mobile app/web portal on Sunday to lock their participation in that week\'s travel reward selection.',
+      rule: '1 Credit = 1 Entry in the weekly Travel Reward selection',
       details: ['Automatically added upon payment verification', 'Used every Sunday to activate draw entry', 'Ticket ID confirmed and locked for that week', 'No extra credits can be purchased - fair chance for all'] },
     { type: 'DC', name: 'Discount Credits', icon: CreditCard, accent: 'teal',
       desc: 'These act as the protective floor for non-winners. If a user does not win, these credits allow them to claim a flat ₹500 off per tour booking.',
       rule: '1 Tour Booking = 1 Discount Credit applied',
-      details: ['Domestic: ₹500 discount per credit (Up to ₹2,000 safety floor)', 'International: ₹500 discount per credit (Up to ₹20,000 safety floor)', 'Credits never expire and stack across bookings', 'Credits visible on your digital dashboard'] },
+      details: ['Domestic: ₹500 discount per credit (Up to ₹2,000 safety floor)', 'International: ₹500 discount per credit (Up to ₹20,000 safety floor)', 'Credits valid for 12 months (up to subscription expiry)', 'Credits visible on your digital dashboard'] },
   ];
 
   const domesticCredits = [
@@ -2070,9 +2079,9 @@ function CreditArchitecture(_props: { activePlan: string | null; ldcTokens: numb
   ];
 
   const intlCredits = [
-    { plan: 'Silver', price: '₹4,999', ldc: '1 (Monthly)', dc: '₹5,000', total: '₹5,000', color: 'from-sky-400 to-blue-600', image: '/images/nepal.png' },
-    { plan: 'Gold', price: '₹7,999', ldc: '1 (Monthly)', dc: '₹10,000', total: '₹10,000', color: 'from-emerald-400 to-teal-600', image: '/images/thailand.png' },
-    { plan: 'Platinum', price: '₹14,999', ldc: '1 (Monthly)', dc: '₹20,000', total: '₹20,000', color: 'from-cyan via-cyan-bright to-cyan-deep', image: '/images/vietnam.png' },
+    { plan: 'Silver', price: '₹4,999', ldc: '1', dc: '₹5,000', total: '₹5,000', color: 'from-sky-400 to-blue-600', image: '/images/nepal.png' },
+    { plan: 'Gold', price: '₹7,999', ldc: '1', dc: '₹10,000', total: '₹10,000', color: 'from-emerald-400 to-teal-600', image: '/images/thailand.png' },
+    { plan: 'Platinum', price: '₹14,999', ldc: '1', dc: '₹20,000', total: '₹20,000', color: 'from-cyan via-cyan-bright to-cyan-deep', image: '/images/vietnam.png' },
   ];
 
   const currentCredits = activeTab === 'domestic' ? domesticCredits : intlCredits;
@@ -2124,17 +2133,17 @@ function CreditArchitecture(_props: { activePlan: string | null; ldcTokens: numb
                   </div>
 
                   {/* Visual illustration slot */}
-                  {c.type === 'LDC' ? (
-                    /* Lucky Draw Token Image */
+                  {c.type === 'TRC' ? (
+                    /* Travel Reward Token Image */
                     <div className="relative rounded-2xl overflow-hidden border border-white/10 group shadow-2xl mb-6 h-40 bg-slate-950 shrink-0">
                       {/* Sweeping glare reflection effect */}
                       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:animate-card-shine pointer-events-none z-10" />
-                      <img src="/images/lucky_draw_token.png" alt="Lucky Draw Token" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-80" />
+                      <img src="/images/lucky_draw_token.png" alt="Travel Reward Token" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-80" />
                       <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent z-[2]" />
                       <div className="absolute inset-0 p-5 flex flex-col justify-between z-[3]">
                         <div className="flex justify-between items-start">
                           <span className="text-[9px] font-mono tracking-widest text-[#18D7F2] font-black bg-slate-950/60 px-2 py-0.5 rounded border border-[#18D7F2]/30 shadow-md">
-                            LUCKY TOKEN
+                            REWARD TOKEN
                           </span>
                           <span className="text-[#18D7F2] font-mono text-[9px] flex items-center gap-1 bg-slate-950/60 px-2 py-0.5 rounded border border-[#18D7F2]/20">
                             <span className="w-1.5 h-1.5 rounded-full bg-[#18D7F2] animate-pulse" /> active
@@ -2145,7 +2154,7 @@ function CreditArchitecture(_props: { activePlan: string | null; ldcTokens: numb
                             WEEKLY DRAW
                           </div>
                           <div className="flex justify-between items-center text-[10px] font-mono text-slate-300 font-bold">
-                            <span>LDC UNIT</span>
+                            <span>TRC UNIT</span>
                             <span>EXP: Sunday 8PM</span>
                           </div>
                         </div>
@@ -2284,7 +2293,7 @@ function CreditArchitecture(_props: { activePlan: string | null; ldcTokens: numb
                 </div>
 
                 <div className="rounded-xl p-3.5 bg-slate-950/65 border border-slate-800/80 flex items-center justify-between text-xs font-mono text-slate-300 font-semibold shadow-inner relative z-10">
-                  <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-cyan" /> Lucky Draw Entry</span>
+                  <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-cyan" /> Travel Reward Entry</span>
                   <div className="h-4 w-px bg-slate-800" />
                   <span className="text-[#00C7A3] font-bold flex items-center gap-1.5">
                     <ShieldCheck className="w-4 h-4 text-[#00C7A3]" /> Guaranteed DC
@@ -3019,10 +3028,10 @@ function CTABanner({ onSelectPlan }: { onSelectPlan: (planName: string) => void 
 }
 
 /* ---------- Terms And Conditions Accordion ---------- */
-export function LandingContent({ onSelectPlan }: { onSelectPlan: (planName: string) => void }) {
+export function LandingContent({ onSelectPlan, setView }: { onSelectPlan: (planName: string) => void; setView: (v: any) => void }) {
   return (
     <>
-      <Hero />
+      <Hero setView={setView} />
       <TrustStrip />
 
       <div className="relative video-bg-container">
@@ -3066,7 +3075,7 @@ export function LandingContent({ onSelectPlan }: { onSelectPlan: (planName: stri
           <ScrollRoundedSection><HowItWorks /></ScrollRoundedSection>
           <ScrollRoundedSection><Plans onSelectPlan={onSelectPlan} /></ScrollRoundedSection>
           <ScrollRoundedSection><InternationalPlans onSelectPlan={onSelectPlan} /></ScrollRoundedSection>
-          <ScrollRoundedSection><LuckyDrawSystem /></ScrollRoundedSection>
+          <ScrollRoundedSection><TravelRewardSystem /></ScrollRoundedSection>
           <ScrollRoundedSection><CreditArchitecture activePlan={null} ldcTokens={0} discountCredits={0} /></ScrollRoundedSection>
           <ScrollRoundedSection><NonWinnerGuarantee /></ScrollRoundedSection>
           <Destinations />

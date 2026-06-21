@@ -4,6 +4,7 @@ import {
   ArrowLeft, ShieldCheck, Mail, Phone, Lock, User, Sparkles, Globe, Plane, Heart, ArrowRight
 } from 'lucide-react';
 import { WelcomeScreen } from '@/components/ui/onboarding-welcome-screen';
+import { supabase } from './utils/supabaseClient';
 
 interface LoginPageProps {
   onBack: () => void;
@@ -16,7 +17,6 @@ export default function LoginPage({ onBack, onLoginSuccess, initialMode = 'login
   const [viewMode, setViewMode] = useState<'welcome-login' | 'login' | 'register' | 'signup-auth'>(
     initialMode === 'login' ? 'welcome-login' : 'register'
   );
-  const [showGoogleModal, setShowGoogleModal] = useState(false);
   const [customEmail, setCustomEmail] = useState('');
   const [customName, setCustomName] = useState('');
   const [customStep, setCustomStep] = useState(1); // 1: Email, 2: Name/Details
@@ -31,83 +31,74 @@ export default function LoginPage({ onBack, onLoginSuccess, initialMode = 'login
 
   if (otpSent) { /* dummy read to avoid TS6133 */ }
 
-  const handleSelectAccount = (name: string, email: string, mobile?: string) => {
-    let dob = '';
-    let preferredLanguage = 'English';
-    let dietaryPreferences = 'None';
-    let accessibilityRequirements = 'None';
-    let savedTravelers: any[] = [];
-    let savedPickups: any[] = [];
-
-    if (name === 'Arunasish Roychowdhury') {
-      dob = '1989-05-12';
-      preferredLanguage = 'Bengali';
-      dietaryPreferences = 'Non-Vegetarian';
-      accessibilityRequirements = 'None';
-      savedTravelers = [
-        { id: 't-aru-1', firstName: 'Ankita', lastName: 'Roychowdhury', email: 'ankita.roy@gmail.com', phone: '+91 94330 54321', ageGroup: 'Adult', relationship: 'Spouse' },
-        { id: 't-aru-2', firstName: 'Dilip', lastName: 'Roychowdhury', email: 'dilip.roy@gmail.com', phone: '+91 94330 98765', ageGroup: 'Senior', relationship: 'Father' }
-      ];
-      savedPickups = [
-        { id: 'p-aru-1', type: 'hotel', hotelName: 'ITC Royal Bengal, Kolkata', customAddress: '', label: 'ITC Royal Bengal (Saved)' },
-        { id: 'p-aru-2', type: 'hotel', hotelName: 'Kolkata Airport Arrival Gate', customAddress: '', label: 'Kolkata Airport (Saved)' }
-      ];
-    } else if (name === 'Rahul Sen') {
-      dob = '1994-08-15';
-      preferredLanguage = 'Bengali';
-      dietaryPreferences = 'Vegetarian';
-      accessibilityRequirements = 'Wheelchair assistance at pick-up';
-      savedTravelers = [
-        { id: 't-rah-1', firstName: 'Priya', lastName: 'Sen', email: 'priya.sen@gmail.com', phone: '+91 98765 11111', ageGroup: 'Adult', relationship: 'Spouse' },
-        { id: 't-rah-2', firstName: 'Rakesh', lastName: 'Sen', email: 'rakesh.sen@gmail.com', phone: '+91 98765 22222', ageGroup: 'Child', relationship: 'Son' }
-      ];
-      savedPickups = [
-        { id: 'p-rah-1', type: 'manual', hotelName: '', customAddress: 'Salt Lake Sector V, Block EP & GP, Kolkata', label: 'Salt Lake Office (Saved)' },
-        { id: 'p-rah-2', type: 'hotel', hotelName: 'Srinagar Airport Gate 2', customAddress: '', label: 'Srinagar Airport (Saved)' }
-      ];
-    } else if (name === 'Guest Traveler') {
-      dob = '2000-01-01';
-      preferredLanguage = 'English';
-      dietaryPreferences = 'None';
-      accessibilityRequirements = 'None';
-      savedTravelers = [];
-      savedPickups = [];
+  const handleGoogleLogin = async () => {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: window.location.origin
+      }
+    });
+    if (error) {
+      if (error.message.includes("provider is not enabled") || error.message.includes("Unsupported provider")) {
+        alert(
+          "Google Auth Provider is not enabled!\n\n" +
+          "To enable Google Sign-In:\n" +
+          "1. Open your Supabase Dashboard: https://supabase.com/dashboard\n" +
+          "2. Select your Beduine project (nsrvnqeleyzdaydbvzgp).\n" +
+          "3. Go to 'Authentication' -> 'Providers' (left sidebar).\n" +
+          "4. Enable 'Google' and add your Client ID and Client Secret."
+        );
+      } else {
+        alert(`Google sign in failed: ${error.message}`);
+      }
     }
-
-    const mockUser = {
-      fullName: name,
-      email: email,
-      mobile: mobile || (name === 'Arunasish Roychowdhury' ? '+91 94330 12345' : name === 'Rahul Sen' ? '+91 98765 43210' : name === 'Guest Traveler' ? '+91 99999 88888' : ''),
-      city: '',
-      memberId: `BDN-${Math.floor(1000 + Math.random() * 9000)}-2026`,
-      planName: name === 'Arunasish Roychowdhury' ? 'Platinum' : name === 'Rahul Sen' ? 'Gold' : '',
-      planPrice: name === 'Arunasish Roychowdhury' ? '₹9,999/yr' : name === 'Rahul Sen' ? '₹4,999/yr' : '',
-      planType: name === 'Arunasish Roychowdhury' ? 'platinum' : name === 'Rahul Sen' ? 'gold' : '',
-      color: name === 'Arunasish Roychowdhury' ? 'from-amber-600 via-amber-500 to-amber-700' : name === 'Rahul Sen' ? 'from-amber-400 via-amber-500 to-amber-600' : 'from-slate-400 via-slate-500 to-slate-700',
-      glow: name === 'Arunasish Roychowdhury' ? 'rgba(245, 158, 11, 0.4)' : name === 'Rahul Sen' ? 'rgba(251, 191, 36, 0.4)' : 'rgba(148, 163, 184, 0.4)',
-      drawToken: `LDC-${Math.floor(100000 + Math.random() * 900000)}`,
-      dob,
-      preferredLanguage,
-      dietaryPreferences,
-      accessibilityRequirements,
-      savedTravelers,
-      savedPickups
-    };
-    onLoginSuccess(mockUser);
   };
 
-  const handleCustomSubmit = (e: React.FormEvent) => {
+  const handleFacebookLogin = async () => {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'facebook',
+      options: {
+        redirectTo: window.location.origin
+      }
+    });
+    if (error) {
+      if (error.message.includes("provider is not enabled") || error.message.includes("Unsupported provider")) {
+        alert(
+          "Facebook Auth Provider is not enabled!\n\n" +
+          "To enable Facebook Sign-In:\n" +
+          "1. Open your Supabase Dashboard: https://supabase.com/dashboard\n" +
+          "2. Select your Beduine project (nsrvnqeleyzdaydbvzgp).\n" +
+          "3. Go to 'Authentication' -> 'Providers' (left sidebar).\n" +
+          "4. Enable 'Facebook' and add your App ID and App Secret."
+        );
+      } else {
+        alert(`Facebook sign in failed: ${error.message}`);
+      }
+    }
+  };
+
+  const handleCustomSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (viewMode === 'login') {
-      if (!customEmail.endsWith('@gmail.com') && !customEmail.includes('@')) {
-        alert('Please enter a valid Gmail address.');
+      if (!customEmail.includes('@')) {
+        alert('Please enter a valid email address.');
         return;
       }
-      handleSelectAccount(customEmail.split('@')[0], customEmail);
+      
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: customEmail,
+        password: 'beduine 123'
+      });
+
+      if (error) {
+        alert(`Login failed: ${error.message}`);
+      } else if (data.user) {
+        onLoginSuccess(data.user);
+      }
     } else {
       if (customStep === 1) {
-        if (!customEmail.endsWith('@gmail.com') && !customEmail.includes('@')) {
-          alert('Please enter a valid Gmail address.');
+        if (!customEmail.includes('@')) {
+          alert('Please enter a valid email address.');
           return;
         }
         setViewMode('signup-auth');
@@ -117,37 +108,106 @@ export default function LoginPage({ onBack, onLoginSuccess, initialMode = 'login
           alert('Please enter your full name.');
           return;
         }
-        handleSelectAccount(customName, customEmail);
+        
+        const { data, error } = await supabase.auth.signUp({
+          email: customEmail,
+          password: 'beduine 123',
+          options: {
+            data: {
+              full_name: customName
+            }
+          }
+        });
+
+        if (error) {
+          alert(`Sign up failed: ${error.message}`);
+        } else if (data.user) {
+          onLoginSuccess(data.user);
+        }
       }
     }
   };
 
-  const handlePhoneSubmit = (e: React.FormEvent) => {
+  const handlePhoneSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const formattedPhone = `+91${phoneNumber}`;
+
     if (phoneStep === 1) {
       if (phoneNumber.length < 10) {
         alert('Please enter a valid 10-digit mobile number.');
         return;
       }
+      
+      const { error } = await supabase.auth.signInWithOtp({
+        phone: formattedPhone
+      });
+
+      if (error) {
+        if (error.message.includes("provider is not enabled") || error.message.includes("Unsupported provider")) {
+          alert(
+            "Phone Auth / SMS Provider is not enabled!\n\n" +
+            "To enable Phone OTP Sign-In:\n" +
+            "1. Open your Supabase Dashboard: https://supabase.com/dashboard\n" +
+            "2. Select your Beduine project (nsrvnqeleyzdaydbvzgp).\n" +
+            "3. Go to 'Authentication' -> 'Providers' (left sidebar).\n" +
+            "4. Toggle 'Phone' to Enabled.\n\n" +
+            "Note: You can configure Twilio or another SMS provider, or use the default sandbox for testing."
+          );
+        } else {
+          alert(`Failed to send SMS OTP: ${error.message}`);
+        }
+        return;
+      }
+
       setOtpSent(true);
       setPhoneStep(2);
     } else if (phoneStep === 2) {
-      if (phoneOtp.length < 4) {
-        alert('Please enter the 4-digit OTP.');
+      if (phoneOtp.length < 6) {
+        alert('Please enter the 6-digit OTP.');
         return;
       }
-      setPhoneStep(3);
+
+      const { data, error } = await supabase.auth.verifyOtp({
+        phone: formattedPhone,
+        token: phoneOtp,
+        type: 'sms'
+      });
+
+      if (error) {
+        alert(`OTP Verification failed: ${error.message}`);
+        return;
+      }
+
+      const user = data.user;
+      if (user) {
+        if (!user.user_metadata?.full_name) {
+          setPhoneStep(3);
+        } else {
+          onLoginSuccess(user);
+        }
+      }
     } else {
       if (!phoneName.trim()) {
         alert('Please enter your full name.');
         return;
       }
-      handleSelectAccount(phoneName, '', phoneNumber);
+
+      const { data, error } = await supabase.auth.updateUser({
+        data: {
+          full_name: phoneName
+        }
+      });
+
+      if (error) {
+        alert(`Failed to save name: ${error.message}`);
+      } else if (data.user) {
+        onLoginSuccess(data.user);
+      }
     }
   };
 
-  const handleFacebookLogin = () => {
-    handleSelectAccount('Traveler User', 'user@social.com');
+  const handleFacebookLoginClick = () => {
+    handleFacebookLogin();
   };
 
   return (
@@ -391,8 +451,6 @@ export default function LoginPage({ onBack, onLoginSuccess, initialMode = 'login
                               />
                             </div>
                           </div>
-
-
                         </div>
                       ) : (
                         <div className="text-left">
@@ -458,8 +516,8 @@ export default function LoginPage({ onBack, onLoginSuccess, initialMode = 'login
                               type="text"
                               id="otpInput"
                               required
-                              maxLength={4}
-                              placeholder="Enter 4-digit OTP"
+                              maxLength={6}
+                              placeholder="Enter 6-digit OTP"
                               value={phoneOtp}
                               onChange={(e) => setPhoneOtp(e.target.value.replace(/\D/g, ''))}
                               className="w-full pl-11 pr-4 py-4 rounded-xl bg-white border border-slate-200/80 text-slate-800 text-sm outline-none focus:border-[#FF6B6B] transition-all focus:ring-2 focus:ring-[#FF6B6B]/10 font-mono tracking-[0.4em] text-center placeholder:text-slate-400"
@@ -518,7 +576,7 @@ export default function LoginPage({ onBack, onLoginSuccess, initialMode = 'login
                   <div className="space-y-2.5">
                     <button
                       type="button"
-                      onClick={() => setShowGoogleModal(true)}
+                      onClick={handleGoogleLogin}
                       className="w-full py-3.5 px-4 rounded-xl bg-white text-slate-750 font-bold hover:bg-slate-50 flex items-center justify-center gap-3 transition-all duration-200 cursor-pointer shadow-sm border border-slate-200/80 text-[11px] uppercase tracking-wider hover:border-slate-300"
                     >
                       <svg className="w-4 h-4" viewBox="0 0 24 24">
@@ -532,7 +590,7 @@ export default function LoginPage({ onBack, onLoginSuccess, initialMode = 'login
 
                     <button
                       type="button"
-                      onClick={handleFacebookLogin}
+                      onClick={handleFacebookLoginClick}
                       className="w-full py-3.5 px-4 rounded-xl text-white font-bold flex items-center justify-center gap-3 transition-all duration-200 cursor-pointer shadow-sm border-none text-[11px] uppercase tracking-wider hover:brightness-110"
                       style={{ background: '#1877F2' }}
                     >
@@ -597,55 +655,6 @@ export default function LoginPage({ onBack, onLoginSuccess, initialMode = 'login
 
       {/* Google Account Selector Simulation Modal */}
       <AnimatePresence>
-        {showGoogleModal && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white/95 backdrop-blur-xl rounded-[32px] p-6 max-w-sm w-full border border-slate-200/80 shadow-2xl relative"
-            >
-              <h3 className="text-base font-bold text-slate-800 mb-1">Choose a Google Account</h3>
-              <p className="text-xs text-slate-400 mb-5">to sign in to BEDUINE Dashboard</p>
-
-              <div className="space-y-2.5">
-                {[
-                  { name: 'Arunasish Roychowdhury', email: 'arunasish.roy@gmail.com' },
-                  { name: 'Rahul Sen', email: 'rahul.sen99@gmail.com' },
-                  { name: 'Guest Traveler', email: 'traveler.guest@gmail.com' }
-                ].map((acc) => (
-                  <button
-                    key={acc.email}
-                    type="button"
-                    onClick={() => {
-                      handleSelectAccount(acc.name, acc.email);
-                      setShowGoogleModal(false);
-                    }}
-                    className="w-full text-left p-3.5 rounded-2xl bg-slate-50 border border-slate-100 hover:border-[#FF6B6B]/40 hover:bg-slate-100/50 transition-all flex items-center gap-3 cursor-pointer"
-                  >
-                    <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-[#FF6B6B] to-[#3B82F6] flex items-center justify-center font-bold text-white text-sm">
-                      {acc.name.charAt(0)}
-                    </div>
-                    <div>
-                      <span className="block text-xs font-bold text-slate-800">{acc.name}</span>
-                      <span className="block text-[10px] text-slate-450 font-mono">{acc.email}</span>
-                    </div>
-                  </button>
-                ))}
-              </div>
-
-              <div className="mt-5 pt-4 border-t border-slate-100 text-right">
-                <button
-                  type="button"
-                  onClick={() => setShowGoogleModal(false)}
-                  className="px-4 py-2 rounded-xl text-xs text-slate-500 hover:text-slate-800 transition-colors cursor-pointer border-none bg-transparent font-bold"
-                >
-                  Cancel
-                </button>
-              </div>
-            </motion.div>
-          </div>
-        )}
       </AnimatePresence>
 
     </section>

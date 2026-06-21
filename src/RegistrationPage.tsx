@@ -6,6 +6,7 @@ import {
   Check, ChevronRight, Crown, Printer, 
   ShieldCheck, Users, Award, Star
 } from 'lucide-react';
+import { supabase } from './utils/supabaseClient';
 
 interface RegistrationPageProps {
   initialPlanName: string;
@@ -76,7 +77,7 @@ const ALL_PLANS = [
     benefits: [
       '1 weekly eligible entry during subscription',
       'Selected member tour benefit up to ₹25,000 (3N/4D)',
-      '5 x 500-value Discount Credits issued once per subscription',
+      '10 x 500-value Discount Credits issued once per subscription',
       'Up to 5% off on other paid tours',
       'Name change – One time allowed',
       'Visa assistance included'
@@ -93,7 +94,7 @@ const ALL_PLANS = [
     benefits: [
       '1 weekly eligible entry during subscription',
       'Selected member tour benefit up to ₹50,000 (4N/5D)',
-      '8 x 500-value Discount Credits issued once per subscription',
+      '20 x 500-value Discount Credits issued once per subscription',
       'Up to 7% off on other paid tours',
       'Name change – Two times allowed',
       'Visa assistance + Airport lounge access'
@@ -110,7 +111,7 @@ const ALL_PLANS = [
     benefits: [
       '1 weekly eligible entry during subscription',
       'Selected member tour benefit up to ₹1,00,000 (5N/6D)',
-      '15 x 500-value Discount Credits issued once per subscription',
+      '40 x 500-value Discount Credits issued once per subscription',
       'Up to 10% off on other paid tours',
       'Name change – Unlimited allowed',
       'Full visa processing + lounge access',
@@ -193,7 +194,7 @@ export default function RegistrationPage({ initialPlanName, onBack, prefilledDat
     setStep(prev => prev - 1);
   };
 
-  const handleFormSubmit = (e: React.FormEvent) => {
+  const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.is18Plus || !formData.agreeTerms) {
       alert("Please confirm you are 18+ and agree to the Terms & Conditions.");
@@ -218,6 +219,31 @@ export default function RegistrationPage({ initialPlanName, onBack, prefilledDat
       glow: selectedPlan.glow,
       drawToken: `LDC-${Math.floor(100000 + Math.random() * 900000)}`
     };
+
+    // Sign up via Supabase to create a real user session
+    const { error } = await supabase.auth.signUp({
+      email: formData.email,
+      password: 'beduine 123',
+      options: {
+        data: {
+          full_name: formData.fullName,
+          city: formData.city,
+          planName: selectedPlan.name,
+          planPrice: selectedPlan.price,
+          planType: selectedPlan.type,
+          dob: formData.dob,
+          preferredLanguage: 'English',
+          dietaryPreferences: 'None',
+          accessibilityRequirements: 'None',
+          savedTravelers: [],
+          savedPickups: []
+        }
+      }
+    });
+
+    if (error) {
+      alert(`Registration session creation failed: ${error.message}`);
+    }
 
     setReceipt(newReceipt);
     if (onRegisterSuccess) {

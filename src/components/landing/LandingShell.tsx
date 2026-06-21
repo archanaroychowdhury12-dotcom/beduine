@@ -22,7 +22,7 @@ import {
   Video,
   X,
 } from 'lucide-react';
-import { DESKTOP_NAV, NAV } from '../../data/siteData';
+import { NAV } from '../../data/siteData';
 import { ParticleButton, StarField } from './LandingExperience';
 import { openCookiePreferenceModal } from '../legal/CookieConsentBanner';
 
@@ -37,11 +37,12 @@ interface NavbarProps {
   introComplete?: boolean;
 }
 
-export function Navbar({ view, setView, currentUser, setCurrentUser, setLoginInitialMode, introComplete }: NavbarProps) {
+export function Navbar({ view, setView, currentUser, setCurrentUser: _setCurrentUser, setLoginInitialMode, introComplete }: NavbarProps) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState<string>('');
   const [hoveredId, setHoveredId] = useState<string | null>(null);
+
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 30);
@@ -120,8 +121,8 @@ export function Navbar({ view, setView, currentUser, setCurrentUser, setLoginIni
           <div className="pointer-events-none absolute -left-14 top-1/2 h-24 w-24 -translate-y-1/2 rounded-full bg-[#18D7F2]/10 blur-2xl" />
           <div className="pointer-events-none absolute -right-14 top-1/2 h-24 w-24 -translate-y-1/2 rounded-full bg-[#F7B500]/10 blur-2xl" />
 
-          <div className="relative flex items-center justify-between gap-2 xl:gap-4 px-3 sm:px-4 lg:px-5 h-14 lg:h-16">
-            <div className="flex items-center gap-2 xl:gap-5 min-w-0">
+          <div className="relative flex items-center justify-between gap-1 lg:gap-1.5 xl:gap-3 px-2 sm:px-4 lg:px-3 xl:px-4 h-14 lg:h-16">
+            <div className="flex items-center gap-1 lg:gap-1.5 xl:gap-3 min-w-0">
               <a 
                 href="#top" 
                 className="group flex items-center gap-3 rounded-2xl pr-2 no-underline" 
@@ -137,29 +138,29 @@ export function Navbar({ view, setView, currentUser, setCurrentUser, setLoginIni
                 }}
               >
                 <div 
-                  className="relative w-11 h-11 rounded-2xl overflow-hidden border bg-white flex items-center justify-center p-1.5 shadow-lg shadow-cyan-900/10 transition-transform duration-300 group-hover:scale-105"
+                  className="relative w-10 h-10 lg:w-11 lg:h-11 rounded-2xl overflow-hidden border bg-white flex items-center justify-center p-1.5 shadow-lg shadow-cyan-900/10 transition-transform duration-300 group-hover:scale-105"
                   style={{ borderColor: isDashboard ? '#E7DCCF' : 'rgba(24, 215, 242, 0.32)' }}
                 >
                   <img src="/images/bedune_logo_cropped.png" alt="BEDUINE Logo" className="w-full h-full object-contain" />
                   <span className="absolute bottom-1 right-1 h-2.5 w-2.5 rounded-full border-2 border-white bg-[#00A676]" />
                 </div>
                 <div className="leading-tight min-w-0">
-                  <div className="font-display text-base lg:text-lg font-black tracking-normal" style={{ color: '#1E3147' }}>BEDUINE</div>
-                  <div className="hidden sm:block text-[9px] uppercase tracking-[0.22em] font-black whitespace-nowrap" style={{ color: '#138A8A' }}>Tour & Travels</div>
+                  <div className="font-display text-sm lg:text-[13.5px] xl:text-[15px] font-black tracking-normal" style={{ color: '#1E3147' }}>BEDUINE</div>
+                  <div className="hidden sm:block lg:hidden text-[9px] uppercase tracking-[0.22em] font-black whitespace-nowrap" style={{ color: '#138A8A' }}>Tour & Travels</div>
                 </div>
               </a>
-              <nav className="hidden lg:flex items-center gap-1 rounded-full border border-white/70 bg-white/55 p-1 shadow-inner shadow-slate-200/40">
+              <nav className="hidden lg:flex items-center gap-[3px] xl:gap-1 rounded-full border border-white/70 bg-white/55 p-1 shadow-inner shadow-slate-200/40">
                 {view === 'paid-tour' ? bookingNav.map((n) => (
                   <a
                     key={n.id}
                     href={`#${n.id}`}
                     data-magnetic
-                    className="relative inline-flex items-center gap-1 xl:gap-1.5 text-xs xl:text-sm font-bold whitespace-nowrap px-2.5 py-1.5 xl:px-3.5 xl:py-2 rounded-full transition-all duration-300 hover:scale-[1.03] text-[#1E3147] hover:text-[#138A8A] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#18D7F2]/45"
+                    className="relative inline-flex items-center gap-1 text-xs xl:text-sm font-bold whitespace-nowrap px-2.5 py-1.5 xl:px-3.5 xl:py-2 rounded-full transition-all duration-300 hover:scale-[1.03] text-[#1E3147] hover:text-[#138A8A] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#18D7F2]/45"
                   >
                     <n.icon className="relative z-10 w-3 h-3 xl:w-3.5 xl:h-3.5" strokeWidth={2.3} />
                     <span className="relative z-10">{n.label}</span>
                   </a>
-                )) : DESKTOP_NAV.map((n) => (
+                )) : NAV.map((n) => (
                   <a 
                     key={n.id} 
                     href={`#${n.id}`} 
@@ -185,7 +186,7 @@ export function Navbar({ view, setView, currentUser, setCurrentUser, setLoginIni
                         if (el) el.scrollIntoView({ behavior: 'smooth' });
                       }
                     }}
-                    className="relative inline-flex items-center gap-1 xl:gap-1.5 text-xs xl:text-sm font-bold whitespace-nowrap px-2.5 py-1.5 xl:px-3.5 xl:py-2 rounded-full transition-all duration-300 hover:scale-[1.03] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#18D7F2]/45"
+                    className="relative inline-flex items-center gap-1 text-[10px] xl:text-[11px] font-bold whitespace-nowrap px-[6px] py-[4px] xl:px-2.5 xl:py-1.5 rounded-full transition-all duration-300 hover:scale-[1.03] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#18D7F2]/45"
                     style={{ 
                       color: activeSection === n.id || hoveredId === n.id 
                         ? '#138A8A' 
@@ -201,26 +202,15 @@ export function Navbar({ view, setView, currentUser, setCurrentUser, setLoginIni
                         transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                       />
                     )}
-                    <n.icon className="relative z-10 w-3.5 h-3.5" strokeWidth={2.3} />
                     <span className="relative z-10">{n.label}</span>
                   </a>
                 ))}
               </nav>
             </div>
-            <div className="hidden lg:flex items-center gap-1.5 xl:gap-2.5">
+            <div className="hidden lg:flex items-center gap-1 xl:gap-1.5">
               {currentUser ? (
                 <>
-                  <button 
-                    onClick={() => {
-                      setCurrentUser(null);
-                      setView('landing');
-                      window.scrollTo({ top: 0, behavior: 'smooth' });
-                    }} 
-                    data-magnetic 
-                    className="text-[11px] xl:text-xs font-bold px-2.5 py-1.5 xl:px-3 xl:py-2 whitespace-nowrap bg-[#FF6B6B]/10 border border-[#FF6B6B]/20 text-[#FF6B6B] hover:bg-[#FF6B6B]/20 hover:border-[#FF6B6B]/40 hover:scale-[1.02] active:scale-[0.98] transition-all rounded-full cursor-pointer"
-                  >
-                    Log Out
-                  </button>
+
                   <a 
                     href="#plans"
                     onClick={(e) => {
@@ -234,8 +224,8 @@ export function Navbar({ view, setView, currentUser, setCurrentUser, setLoginIni
                       }
                     }}
                   >
-                    <ParticleButton variant={isDashboard ? 'teal' : 'cyan'} className="px-2.5 xl:px-4 py-1.5 xl:py-2 rounded-full font-bold text-xs xl:text-sm inline-flex items-center gap-1 xl:gap-1.5 text-white">
-                      Subscribe Now <ArrowRight className="w-3.5 h-3.5" />
+                    <ParticleButton variant={isDashboard ? 'teal' : 'cyan'} className="px-2 xl:px-3 py-1.5 rounded-full font-bold text-[10px] xl:text-[11.5px] inline-flex items-center gap-1 xl:gap-1.5 text-white">
+                      Subscribe Now <ArrowRight className="w-3 h-3 xl:w-3.5 xl:h-3.5" />
                     </ParticleButton>
                   </a>
                   <button 
@@ -244,10 +234,10 @@ export function Navbar({ view, setView, currentUser, setCurrentUser, setLoginIni
                       window.scrollTo({ top: 0, behavior: 'smooth' });
                     }}
                     data-magnetic
-                    className="text-[10px] xl:text-xs transition-all font-extrabold px-3.5 py-1.5 xl:px-5 xl:py-2.5 rounded-full border whitespace-nowrap uppercase tracking-wider cursor-pointer shadow-lg hover:scale-105"
+                    className="text-[9.5px] xl:text-[11px] transition-all font-extrabold px-2 xl:px-3 py-1.5 xl:py-2 rounded-full border whitespace-nowrap uppercase tracking-wider cursor-pointer shadow-lg hover:scale-105"
                     style={{ background: 'linear-gradient(135deg, #FF6B4A, #E8590C)', color: '#fff', borderColor: 'transparent', boxShadow: '0 4px 15px rgba(232,89,12,0.25)' }}
                   >
-                    <span className="inline-flex items-center gap-1 xl:gap-1.5"><Compass className="w-3 h-3 xl:w-3.5 xl:h-3.5" /> Customize Plan</span>
+                    <span className="inline-flex items-center gap-1"><Compass className="w-3 h-3 xl:w-3.5 xl:h-3.5" /> Customize Plan</span>
                   </button>
                   <button 
                     onClick={() => {
@@ -255,7 +245,7 @@ export function Navbar({ view, setView, currentUser, setCurrentUser, setLoginIni
                       window.scrollTo({ top: 0, behavior: 'smooth' });
                     }} 
                     data-magnetic 
-                    className="rounded-full w-10 h-10 bg-gradient-to-br from-[#0096C7] to-[#00B4D8] text-white flex items-center justify-center font-bold text-xs shadow-sm hover:scale-105 hover:shadow-md transition-all cursor-pointer border-2 border-white uppercase"
+                    className="rounded-full w-9 h-9 lg:w-10 lg:h-10 bg-gradient-to-br from-[#0096C7] to-[#00B4D8] text-white flex items-center justify-center font-bold text-xs shadow-sm hover:scale-105 hover:shadow-md transition-all cursor-pointer border-2 border-white uppercase"
                     title={currentUser.fullName || 'My Dashboard'}
                   >
                     {currentUser.fullName ? currentUser.fullName.split(' ').map((n: string) => n.charAt(0)).join('').slice(0, 2) : 'U'}
@@ -270,12 +260,12 @@ export function Navbar({ view, setView, currentUser, setCurrentUser, setLoginIni
                       window.scrollTo({ top: 0, behavior: 'smooth' });
                     }} 
                     data-magnetic 
-                    className="text-xs xl:text-sm transition-colors font-bold px-2.5 xl:px-4 py-1.5 xl:py-2 whitespace-nowrap bg-white/45 border border-slate-200/70 rounded-full cursor-pointer"
+                    className="text-[10px] xl:text-xs transition-colors font-bold px-2 xl:px-3 py-1.5 whitespace-nowrap bg-white/45 border border-slate-200/70 rounded-full cursor-pointer"
                     style={{ color: isDashboard ? '#1E3147' : '#7E919D' }}
                     onMouseEnter={(e) => e.currentTarget.style.color = '#138A8A'}
                     onMouseLeave={(e) => e.currentTarget.style.color = isDashboard ? '#1E3147' : '#7E919D'}
                   >
-                    Log In
+                    Log In / <span className="font-extrabold text-slate-800">Register</span>
                   </button>
  
                   <button 
@@ -284,10 +274,10 @@ export function Navbar({ view, setView, currentUser, setCurrentUser, setLoginIni
                       window.scrollTo({ top: 0, behavior: 'smooth' });
                     }}
                     data-magnetic
-                    className="text-[10px] xl:text-xs transition-all font-extrabold px-3.5 py-1.5 xl:px-5 xl:py-2.5 rounded-full border whitespace-nowrap uppercase tracking-wider cursor-pointer shadow-lg hover:scale-105"
+                    className="text-[9.5px] xl:text-[11px] transition-all font-extrabold px-2 xl:px-3 py-1.5 xl:py-2 rounded-full border whitespace-nowrap uppercase tracking-wider cursor-pointer shadow-lg hover:scale-105"
                     style={{ background: 'linear-gradient(135deg, #FF6B4A, #E8590C)', color: '#fff', borderColor: 'transparent', boxShadow: '0 4px 15px rgba(232,89,12,0.25)' }}
                   >
-                    <span className="inline-flex items-center gap-1 xl:gap-1.5"><Compass className="w-3 h-3 xl:w-3.5 xl:h-3.5" /> Customize Plan</span>
+                    <span className="inline-flex items-center gap-1"><Compass className="w-3 h-3 xl:w-3.5 xl:h-3.5" /> Customize Plan</span>
                   </button>
                   <a 
                     href="#plans"
@@ -302,8 +292,8 @@ export function Navbar({ view, setView, currentUser, setCurrentUser, setLoginIni
                       }
                     }}
                   >
-                    <ParticleButton variant={isDashboard ? 'teal' : 'cyan'} className="px-2.5 xl:px-4 py-1.5 xl:py-2 rounded-full font-bold text-xs xl:text-sm inline-flex items-center gap-1 xl:gap-1.5 text-white">
-                      Subscribe Now <ArrowRight className="w-3.5 h-3.5" />
+                    <ParticleButton variant={isDashboard ? 'teal' : 'cyan'} className="px-2 xl:px-3 py-1.5 rounded-full font-bold text-[10px] xl:text-[11.5px] inline-flex items-center gap-1 xl:gap-1.5 text-white">
+                      Subscribe Now <ArrowRight className="w-3 h-3 xl:w-3.5 xl:h-3.5" />
                     </ParticleButton>
                   </a>
                 </>
@@ -385,18 +375,7 @@ export function Navbar({ view, setView, currentUser, setCurrentUser, setLoginIni
                           </span>
                         </div>
                       </div>
-                      <div className="h-px bg-slate-100 my-0.5" />
-                      <button 
-                        onClick={() => {
-                          setOpen(false);
-                          setCurrentUser(null);
-                          setView('landing');
-                          window.scrollTo({ top: 0, behavior: 'smooth' });
-                        }}
-                        className="w-full text-center py-2 rounded-xl text-xs font-bold transition-all bg-red-50 text-red-500 border border-red-100 hover:bg-red-100/60 cursor-pointer"
-                      >
-                        Log Out
-                      </button>
+
                     </div>
                   ) : (
                     <>
@@ -410,7 +389,7 @@ export function Navbar({ view, setView, currentUser, setCurrentUser, setLoginIni
                         className="mt-3 w-full text-center py-2.5 rounded-full border text-xs font-bold transition-all bg-transparent cursor-pointer"
                         style={{ borderColor: '#E7DCCF', color: '#1E3147' }}
                       >
-                        Log In
+                        Log In / <span className="font-extrabold text-slate-800">Register</span>
                       </button>
 
                     </>

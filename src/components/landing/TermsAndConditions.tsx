@@ -1,4 +1,4 @@
-﻿import { useState } from 'react';
+import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ChevronRight, Shield } from 'lucide-react';
 import { Reveal } from './LandingExperience';
@@ -19,12 +19,12 @@ export function TermsAndConditions() {
     },
     {
       id: 'B',
-      title: 'B. Lucky Draw Rules',
-      content: `7. Each subscription includes 1 (One) Lucky Draw Credit (LDC).
-8. Only active subscribers are eligible to participate in the Lucky Draw.
-9. The Lucky Draw will be conducted through a Random Number Generator (RNG) or any other approved automated digital system.
+      title: 'B. Travel Reward Rules',
+      content: `7. Each subscription includes 1 (One) Travel Reward Credit (TRC).
+8. Only active subscribers are eligible to participate in the Travel Reward selection.
+9. The Travel Reward selection will be conducted through a Random Number Generator (RNG) or any other approved automated digital system.
 10. The Company's decision regarding winner selection shall be final and binding.
-11. Lucky Draw results cannot be challenged, modified, or reconsidered once announced.
+11. Travel Reward selection results cannot be challenged, modified, or reconsidered once announced.
 12. In case of technical issues, system failures, force majeure events, or unforeseen circumstances, the Company reserves the right to postpone, reschedule, or modify the draw.
 13. A minimum of 5% of the total valid participants will be selected as winners every week, using the "Round-Up" rule.
 14. The draw may be conducted live, recorded, or through an automated digital platform.
@@ -129,7 +129,7 @@ Platinum Plan (4 DC):
     {
       id: 'L',
       title: 'L. Legal & Compliance',
-      content: `59. The Beduin Lucky Draw Program is a promotional membership benefit program and shall not be considered a lottery, gambling, betting, or wagering activity.
+      content: `59. The Beduin Travel Reward Program is a promotional membership benefit program and shall not be considered a lottery, gambling, betting, or wagering activity.
 60. The Company reserves the right to amend, modify, suspend, or update these Terms & Conditions at any time without prior notice.
 61. Any dispute arising from the subscription program shall be subject to the exclusive jurisdiction of the courts of Nadia, West Bengal, India.
 62. By purchasing and activating a subscription, the subscriber confirms that they have read, understood, and agreed to all the Terms & Conditions mentioned above.`

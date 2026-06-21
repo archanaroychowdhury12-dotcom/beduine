@@ -2,7 +2,6 @@ import {
   Award,
   Banknote,
   Compass,
-  CreditCard,
   Crown,
   FileCheck2,
   Globe,
@@ -21,9 +20,7 @@ export const NAV = [
   { id: 'about', label: 'About', icon: Compass },
   { id: 'how', label: 'How It Works', icon: Sparkles },
   { id: 'plans', label: 'Plans', icon: Crown },
-  { id: 'intl-plans', label: 'International', icon: Globe },
-  { id: 'luckydraw', label: 'Member Selection', icon: Ticket },
-  { id: 'credits', label: 'Credits', icon: CreditCard },
+  { id: 'luckydraw', label: 'Travel Reward', icon: Ticket },
   { id: 'destinations', label: 'Destinations', icon: MapPin },
   { id: 'services', label: 'Services', icon: Hotel },
   { id: 'contact', label: 'Contact', icon: MessageCircle },
@@ -45,7 +42,7 @@ export const PLANS = [
     image: '/images/sundarbans_mangrove_1779521789593.png',
     imageLabel: 'Sundarbans - Boat Safari',
     destinations: ['Sundarban', 'Digha', 'Mousuni Island', 'Purulia'],
-    benefits: ['1 Weekly Promotional Draw entry', 'Eligible for promotional winner benefits', '500 discount credit if not selected', 'Up to 5% off on paid domestic tours', '12-month subscription validity', '18+ Membership Only'],
+    benefits: ['1 Weekly Promotional Draw entry', 'Eligible for promotional winner benefits', '₹500 discount credit if not selected', 'Up to 5% off on paid domestic tours', '12-month subscription validity', '18+ Membership Only'],
   },
   {
     name: 'Gold', price: 799, tagline: 'Balanced Choice', icon: Award,
@@ -55,7 +52,7 @@ export const PLANS = [
     image: '/images/darjeeling_tea_1779521805614.png',
     imageLabel: 'Darjeeling - Tea Gardens',
     destinations: ['Darjeeling', 'Dooars', 'Puri', 'Daring Bari'],
-    benefits: ['1 Weekly Promotional Draw entry', 'Eligible for promotional winner benefits', '1,000 discount credits if not selected', 'Up to 7% off on paid domestic tours', 'One-time family name change allowed', '18+ Membership Only'],
+    benefits: ['1 Weekly Promotional Draw entry', 'Eligible for promotional winner benefits', '₹1,000 discount credits if not selected', 'Up to 7% off on paid domestic tours', 'One-time family name change allowed', '18+ Membership Only'],
   },
   {
     name: 'Platinum', price: 1499, tagline: 'Premium Experience', icon: Crown,
@@ -70,7 +67,7 @@ export const PLANS = [
     benefits: [
       '1 Weekly Promotional Draw entry',
       'Eligible for promotional winner benefits',
-      '2,000 discount credits if not selected',
+      '₹2,000 discount credits if not selected',
       'Up to 10% off on paid domestic tours',
       'Two family name changes allowed',
       '18+ Membership Only'
@@ -87,7 +84,7 @@ export const INTL_PLANS = [
     image: '/images/nepal.png',
     imageLabel: 'Nepal - Valley & Peaks',
     destinations: ['Nepal', 'Bhutan'],
-    benefits: ['1 Monthly Promotional Draw entry', 'Winner tour value up to ₹25,000 (3N/4D)', '5,000 discount credits if not selected', 'Up to 5% off on paid international tours', 'One-time family name change allowed', '18+ Membership Only'],
+    benefits: ['1 Weekly Promotional Draw entry', 'Winner tour value up to ₹25,000 (3N/4D)', '₹5,000 discount credits if not selected', 'Up to 5% off on paid international tours', 'One-time family name change allowed', '18+ Membership Only'],
   },
   {
     name: 'Gold', price: 7999, tagline: 'Premium Explorer', icon: Plane,
@@ -97,7 +94,7 @@ export const INTL_PLANS = [
     image: '/images/thailand.png',
     imageLabel: 'Thailand - Temples & Beaches',
     destinations: ['Thailand', 'Bali (Indonesia)'],
-    benefits: ['1 Monthly Promotional Draw entry', 'Winner tour value up to ₹50,000 (4N/5D)', '10,000 discount credits if not selected', 'Up to 7% off on paid international tours', 'Two family name changes allowed', '18+ Membership Only'],
+    benefits: ['1 Weekly Promotional Draw entry', 'Winner tour value up to ₹50,000 (4N/5D)', '₹10,000 discount credits if not selected', 'Up to 7% off on paid international tours', 'Two family name changes allowed', '18+ Membership Only'],
   },
   {
     name: 'Platinum', price: 14999, tagline: 'Ultimate World Pass', icon: Rocket,
@@ -107,7 +104,7 @@ export const INTL_PLANS = [
     image: '/images/vietnam.png',
     imageLabel: 'Vietnam - Bays & Cities',
     destinations: ['Dubai', 'Vietnam'],
-    benefits: ['1 Monthly Promotional Draw entry', 'Winner tour value up to ₹1,00,000 (5N/6D)', '20,000 discount credits if not selected', 'Up to 10% off on paid international tours', 'Unlimited name changes allowed', '18+ Membership Only'],
+    benefits: ['1 Weekly Promotional Draw entry', 'Winner tour value up to ₹1,00,000 (5N/6D)', '₹20,000 discount credits if not selected', 'Up to 10% off on paid international tours', 'Unlimited name changes allowed', '18+ Membership Only'],
   },
 ];
 

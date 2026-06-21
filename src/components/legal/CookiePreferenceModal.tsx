@@ -52,18 +52,18 @@ export function CookiePreferenceModal({ isOpen, onClose, onSave }: CookiePrefere
   };
 
   return (
-    <div className="fixed inset-0 z-9999 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm animate-fadeIn">
-      <div className="relative w-full max-w-xl bg-white rounded-3xl border border-slate-line/80 shadow-2xl p-6 sm:p-8 overflow-hidden max-h-[90vh] flex flex-col">
+    <div className="fixed inset-0 z-9999 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm animate-fadeIn">
+      <div className="relative w-full max-w-xl bg-slate-900 rounded-3xl border border-white/10 shadow-2xl p-6 sm:p-8 overflow-hidden max-h-[90vh] flex flex-col text-white">
         <div className="absolute top-0 right-0 w-48 h-48 bg-gradient-to-bl from-cyan/10 to-transparent rounded-full pointer-events-none" />
         
-        <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+        <div className="flex items-center justify-between pb-4 border-b border-white/10">
           <div className="flex items-center gap-2.5">
-            <ShieldCheck className="w-5 h-5 text-cyan-deep" />
-            <h3 className="font-display font-bold text-lg text-[#10233F]">Cookie Preference Center</h3>
+            <ShieldCheck className="w-5 h-5 text-cyan" />
+            <h3 className="font-display font-bold text-lg text-white">Cookie Preference Center</h3>
           </div>
           <button
             onClick={onClose}
-            className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 transition-colors flex items-center justify-center text-slate-500 cursor-pointer border-none"
+            className="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 transition-colors flex items-center justify-center text-slate-400 cursor-pointer border-none"
             aria-label="Close settings"
           >
             <X className="w-4 h-4" />
@@ -71,7 +71,7 @@ export function CookiePreferenceModal({ isOpen, onClose, onSave }: CookiePrefere
         </div>
 
         <div className="flex-1 overflow-y-auto py-5 space-y-5 pr-1">
-          <p className="text-xs text-[#728091] font-mono leading-relaxed">
+          <p className="text-xs text-slate-400 font-mono leading-relaxed">
             We use cookies to improve your travel searching experience. Customize your cookie settings below. Essential cookies are necessary to operate the booking system.
           </p>
 
@@ -79,31 +79,31 @@ export function CookiePreferenceModal({ isOpen, onClose, onSave }: CookiePrefere
             {COOKIE_CATEGORIES.map(cat => (
               <div
                 key={cat.id}
-                className="p-4 rounded-2xl border border-slate-100 bg-slate-50/50 hover:bg-slate-50 transition-all flex items-start gap-4"
+                className="p-4 rounded-2xl border border-white/5 bg-white/5 hover:bg-white/10 transition-all flex items-start gap-4"
               >
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="font-display font-bold text-sm text-[#10233F]">{cat.name}</span>
+                    <span className="font-display font-bold text-sm text-white">{cat.name}</span>
                     {cat.required && (
-                      <span className="text-[10px] font-mono uppercase bg-slate-200 text-slate-600 px-1.5 py-0.5 rounded">
+                      <span className="text-[10px] font-mono uppercase bg-white/10 text-slate-300 px-1.5 py-0.5 rounded">
                         Required
                       </span>
                     )}
                   </div>
-                  <p className="text-xs text-[#728091] leading-relaxed mb-3">{cat.description}</p>
+                  <p className="text-xs text-slate-400 leading-relaxed mb-3">{cat.description}</p>
                   
                   {/* Expanded cookie list */}
-                  <div className="bg-white/80 border border-slate-100 rounded-xl p-2.5">
-                    <div className="text-[10px] font-bold text-[#10233F] font-mono mb-1.5">Cookies used:</div>
+                  <div className="bg-black/25 border border-white/5 rounded-xl p-2.5">
+                    <div className="text-[10px] font-bold text-white font-mono mb-1.5">Cookies used:</div>
                     <div className="grid gap-2">
                       {cat.cookies.map(ck => (
-                        <div key={ck.name} className="flex justify-between items-start text-[10px] font-mono border-b border-slate-50 pb-1.5 last:border-0 last:pb-0">
+                        <div key={ck.name} className="flex justify-between items-start text-[10px] font-mono border-b border-white/5 pb-1.5 last:border-0 last:pb-0">
                           <div>
-                            <span className="font-bold text-cyan-deep">{ck.name}</span>
+                            <span className="font-bold text-cyan">{ck.name}</span>
                             <span className="text-slate-400 mx-1">({ck.provider})</span>
-                            <div className="text-slate-500 mt-0.5">{ck.purpose}</div>
+                            <div className="text-slate-400 mt-0.5">{ck.purpose}</div>
                           </div>
-                          <span className="text-slate-500 shrink-0">{ck.duration}</span>
+                          <span className="text-slate-400 shrink-0">{ck.duration}</span>
                         </div>
                       ))}
                     </div>
@@ -115,7 +115,7 @@ export function CookiePreferenceModal({ isOpen, onClose, onSave }: CookiePrefere
                   disabled={cat.required}
                   onClick={() => handleToggle(cat.id)}
                   className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
-                    prefs[cat.id] ? 'bg-cyan-deep' : 'bg-slate-200'
+                    prefs[cat.id] ? 'bg-cyan' : 'bg-slate-700'
                   } ${cat.required ? 'opacity-50 cursor-not-allowed' : ''}`}
                 >
                   <span
@@ -129,19 +129,19 @@ export function CookiePreferenceModal({ isOpen, onClose, onSave }: CookiePrefere
           </div>
         </div>
 
-        <div className="pt-4 border-t border-slate-100 flex gap-3">
+        <div className="pt-4 border-t border-white/10 flex gap-3">
           <button
             onClick={() => {
               const allOn = { essential: true, functional: true, analytics: true, marketing: true };
               setPrefs(allOn);
             }}
-            className="flex-1 py-2.5 text-xs font-bold text-[#10233F] bg-slate-100 rounded-full hover:bg-slate-200 transition-all cursor-pointer border-none"
+            className="flex-1 py-2.5 text-xs font-bold text-white bg-white/5 rounded-full hover:bg-white/10 transition-all cursor-pointer border-none"
           >
             Allow All
           </button>
           <button
             onClick={handleSave}
-            className="flex-1 py-2.5 text-xs font-bold text-white bg-cyan-deep rounded-full hover:bg-[#007A94] transition-all cursor-pointer border-none shadow-md shadow-cyan-950/10"
+            className="flex-1 py-2.5 text-xs font-bold text-slate-950 bg-cyan rounded-full hover:bg-cyan/90 transition-all cursor-pointer border-none shadow-md shadow-cyan-950/10"
           >
             Save Preferences
           </button>

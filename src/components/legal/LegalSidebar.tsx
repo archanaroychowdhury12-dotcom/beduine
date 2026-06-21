@@ -49,10 +49,10 @@ export function LegalSidebar({ sections }: LegalSidebarProps) {
   return (
     <aside className="hidden lg:block w-64 shrink-0 no-print">
       <div className="sticky top-28 max-h-[75vh] overflow-y-auto pr-2">
-        <h4 className="font-display font-bold text-xs uppercase tracking-widest text-[#10233F] mb-4">
+        <h4 className="font-display font-bold text-xs uppercase tracking-widest text-white mb-4">
           Table of Contents
         </h4>
-        <nav className="space-y-1 font-mono text-[11px] border-l border-slate-200">
+        <nav className="space-y-1 font-mono text-[11px] border-l border-white/10">
           {sections.map(sec => {
             const isActive = activeSection === sec.num;
             return (
@@ -62,11 +62,11 @@ export function LegalSidebar({ sections }: LegalSidebarProps) {
                 onClick={(e) => handleScrollToSection(e, sec.num)}
                 className={`group flex items-start gap-2 py-2 pl-4 -ml-px border-l transition-all select-none no-underline ${
                   isActive
-                    ? 'border-[#FF6157] text-[#FF6157] font-bold'
-                    : 'border-transparent text-[#728091] hover:text-[#10233F] hover:border-slate-300'
+                    ? 'border-cyan text-cyan font-bold'
+                    : 'border-transparent text-slate-400 hover:text-white hover:border-white/20'
                 }`}
               >
-                <span className="shrink-0 text-cyan-deep opacity-60 group-hover:opacity-100">
+                <span className="shrink-0 text-cyan opacity-60 group-hover:opacity-100">
                   {sec.num}.
                 </span>
                 <span className="leading-tight">{sec.title}</span>
