@@ -11,6 +11,9 @@ interface NavbarProps {
 export const Navbar: React.FC<NavbarProps> = ({ currentView, setCurrentView }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState<string>('home');
+
+  const isLightBg = isScrolled || currentView === 'booking' || currentView === 'about' || currentView === 'packages';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -19,10 +22,31 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, setCurrentView }) =
       } else {
         setIsScrolled(false);
       }
+
+      if (currentView === 'home') {
+        const sections = ['packages', 'about', 'destinations', 'why-us'];
+        let currentActive = 'home';
+        
+        const threshold = 160;
+        for (const sectionId of sections) {
+          const el = document.getElementById(sectionId);
+          if (el) {
+            const rect = el.getBoundingClientRect();
+            if (rect.top <= threshold) {
+              currentActive = sectionId;
+            }
+          }
+        }
+        setActiveSection(currentActive);
+      } else {
+        setActiveSection('home');
+      }
     };
-    window.addEventListener('scroll', handleScroll);
+
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [currentView]);
 
   const handleNavClick = (view: string, hash?: string) => {
     setCurrentView(view);
@@ -42,7 +66,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, setCurrentView }) =
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled || currentView === 'booking' || currentView === 'about' || currentView === 'packages'
+        isLightBg
           ? 'bg-white/95 backdrop-blur-md py-3.5 shadow-lg border-b border-slate-100 text-slate-900'
           : 'bg-gradient-to-b from-black/50 via-black/20 to-transparent py-5 text-white backdrop-blur-[1px]'
       }`}
@@ -75,9 +99,9 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, setCurrentView }) =
           <button
             onClick={() => handleNavClick('home')}
             className={`text-sm font-bold tracking-wide transition-colors cursor-pointer ${
-              currentView === 'home'
+              currentView === 'home' && activeSection === 'home'
                 ? (isScrolled ? 'text-amber-600 border-b-2 border-amber-500 pb-1' : 'text-amber-400 border-b-2 border-amber-400 pb-1')
-                : (isScrolled || currentView !== 'home' ? 'text-slate-600 hover:text-amber-600' : 'text-slate-100 hover:text-amber-300')
+                : (isLightBg ? 'text-slate-600 hover:text-amber-600' : 'text-slate-100 hover:text-amber-300')
             }`}
           >
             Home
@@ -88,9 +112,9 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, setCurrentView }) =
               <button
                 onClick={() => handleNavClick('packages')}
                 className={`text-sm font-semibold tracking-wide transition-colors cursor-pointer ${
-                  currentView === 'packages'
+                  currentView === 'packages' || (currentView === 'home' && activeSection === 'packages')
                     ? (isScrolled ? 'text-amber-600 border-b-2 border-amber-500 pb-1' : 'text-amber-400 border-b-2 border-amber-400 pb-1')
-                    : (isScrolled || currentView !== 'home' ? 'text-slate-700 hover:text-amber-600' : 'text-slate-100 hover:text-amber-300')
+                    : (isLightBg ? 'text-slate-700 hover:text-amber-600' : 'text-slate-100 hover:text-amber-300')
                 }`}
               >
                 Packages
@@ -98,9 +122,9 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, setCurrentView }) =
               <button
                 onClick={() => handleNavClick('about')}
                 className={`text-sm font-semibold tracking-wide transition-colors cursor-pointer ${
-                  currentView === 'about'
+                  currentView === 'about' || (currentView === 'home' && activeSection === 'about')
                     ? (isScrolled ? 'text-amber-600 border-b-2 border-amber-500 pb-1' : 'text-amber-400 border-b-2 border-amber-400 pb-1')
-                    : (isScrolled || currentView !== 'home' ? 'text-slate-700 hover:text-amber-600' : 'text-slate-100 hover:text-amber-300')
+                    : (isLightBg ? 'text-slate-700 hover:text-amber-600' : 'text-slate-100 hover:text-amber-300')
                 }`}
               >
                 About Us
@@ -110,7 +134,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, setCurrentView }) =
                 className={`text-sm font-semibold tracking-wide transition-colors cursor-pointer ${
                   currentView === 'customize'
                     ? (isScrolled ? 'text-amber-600 border-b-2 border-amber-500 pb-1' : 'text-amber-400 border-b-2 border-amber-400 pb-1')
-                    : (isScrolled || currentView !== 'home' ? 'text-slate-700 hover:text-amber-600' : 'text-slate-100 hover:text-amber-300')
+                    : (isLightBg ? 'text-slate-700 hover:text-amber-600' : 'text-slate-100 hover:text-amber-300')
                 }`}
               >
                 Customize Tour
@@ -120,7 +144,9 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, setCurrentView }) =
                   <button
                     onClick={() => handleNavClick('home', 'destinations')}
                     className={`text-sm font-semibold tracking-wide transition-colors cursor-pointer ${
-                      isScrolled ? 'text-slate-700 hover:text-amber-600' : 'text-slate-100 hover:text-amber-300'
+                      activeSection === 'destinations'
+                        ? (isScrolled ? 'text-amber-600 border-b-2 border-amber-500 pb-1' : 'text-amber-400 border-b-2 border-amber-400 pb-1')
+                        : (isLightBg ? 'text-slate-700 hover:text-amber-600' : 'text-slate-100 hover:text-amber-300')
                     }`}
                   >
                     Destinations
@@ -128,7 +154,9 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, setCurrentView }) =
                   <button
                     onClick={() => handleNavClick('home', 'why-us')}
                     className={`text-sm font-semibold tracking-wide transition-colors cursor-pointer ${
-                      isScrolled ? 'text-slate-700 hover:text-amber-600' : 'text-slate-100 hover:text-amber-300'
+                      activeSection === 'why-us'
+                        ? (isScrolled ? 'text-amber-600 border-b-2 border-amber-500 pb-1' : 'text-amber-400 border-b-2 border-amber-400 pb-1')
+                        : (isLightBg ? 'text-slate-700 hover:text-amber-600' : 'text-slate-100 hover:text-amber-300')
                     }`}
                   >
                     Why Us
@@ -216,7 +244,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, setCurrentView }) =
             <button
               onClick={() => handleNavClick('home')}
               className={`text-left text-base font-bold py-2.5 px-4 rounded-xl transition-colors ${
-                currentView === 'home' ? 'bg-amber-50 text-amber-600' : 'text-slate-700 hover:bg-slate-100'
+                currentView === 'home' && activeSection === 'home' ? 'bg-amber-50 text-amber-600' : 'text-slate-700 hover:bg-slate-100'
               }`}
             >
               Home
@@ -226,13 +254,17 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, setCurrentView }) =
               <>
                 <button
                   onClick={() => handleNavClick('packages')}
-                  className={`text-left text-base font-semibold py-2.5 px-4 rounded-xl ${currentView === 'packages' ? 'bg-amber-50 text-amber-600' : 'text-slate-700 hover:bg-slate-100'}`}
+                  className={`text-left text-base font-semibold py-2.5 px-4 rounded-xl ${
+                    currentView === 'packages' || (currentView === 'home' && activeSection === 'packages') ? 'bg-amber-50 text-amber-600' : 'text-slate-700 hover:bg-slate-100'
+                  }`}
                 >
                   Packages
                 </button>
                 <button
                   onClick={() => handleNavClick('about')}
-                  className={`text-left text-base font-semibold py-2.5 px-4 rounded-xl ${currentView === 'about' ? 'bg-amber-50 text-amber-600' : 'text-slate-700 hover:bg-slate-100'}`}
+                  className={`text-left text-base font-semibold py-2.5 px-4 rounded-xl ${
+                    currentView === 'about' || (currentView === 'home' && activeSection === 'about') ? 'bg-amber-50 text-amber-600' : 'text-slate-700 hover:bg-slate-100'
+                  }`}
                 >
                   About Us
                 </button>
@@ -242,6 +274,26 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, setCurrentView }) =
                 >
                   Customize Tour
                 </button>
+                {currentView === 'home' && (
+                  <>
+                    <button
+                      onClick={() => handleNavClick('home', 'destinations')}
+                      className={`text-left text-base font-semibold py-2.5 px-4 rounded-xl ${
+                        activeSection === 'destinations' ? 'bg-amber-50 text-amber-600' : 'text-slate-700 hover:bg-slate-100'
+                      }`}
+                    >
+                      Destinations
+                    </button>
+                    <button
+                      onClick={() => handleNavClick('home', 'why-us')}
+                      className={`text-left text-base font-semibold py-2.5 px-4 rounded-xl ${
+                        activeSection === 'why-us' ? 'bg-amber-50 text-amber-600' : 'text-slate-700 hover:bg-slate-100'
+                      }`}
+                    >
+                      Why Us
+                    </button>
+                  </>
+                )}
               </>
             )}
 

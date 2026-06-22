@@ -121,10 +121,11 @@ export default function App() {
   const [pendingPlan, setPendingPlan] = useState<string | null>(null);
   const [loginInitialMode, setLoginInitialMode] = useState<'login' | 'register'>('login');
 
-  const handleSetView = useCallback((newView: any) => {
+  const handleSetView = useCallback((newView: any, hash?: string) => {
     setView(newView);
-    const path = newView === 'landing' ? '/' : `/${newView}`;
-    if (window.location.pathname !== path) {
+    const path = newView === 'landing' ? '/' : `/${newView}${hash || ''}`;
+    const currentFull = window.location.pathname + window.location.hash;
+    if (currentFull !== path) {
       window.history.pushState(null, '', path);
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -147,7 +148,7 @@ export default function App() {
       if (session?.user) {
         const mapped = mapSupabaseUser(session.user);
         setCurrentUser(mapped);
-        if (window.location.pathname === '/login' || window.location.pathname === '/') {
+        if (window.location.pathname === '/login') {
           checkPendingPlanAndRedirect();
         }
       }
@@ -158,7 +159,9 @@ export default function App() {
         const mapped = mapSupabaseUser(session.user);
         setCurrentUser(mapped);
         if (event === 'SIGNED_IN') {
-          checkPendingPlanAndRedirect();
+          if (window.location.pathname === '/login' || window.location.pathname === '/register') {
+            checkPendingPlanAndRedirect();
+          }
         }
       } else {
         setCurrentUser(null);
@@ -244,7 +247,7 @@ export default function App() {
         {['landing', 'terms', 'legal', 'privacy-policy', 'terms-and-conditions', 'refund-policy', 'cancellation-policy', 'membership-rules', 'website-disclaimer', 'cookie-policy', 'affiliate-agent-policy', 'grievance-redressal'].includes(view) && (
           <Navbar 
             view={view} 
-            setView={setView} 
+            setView={handleSetView} 
             currentUser={currentUser} 
             setCurrentUser={setCurrentUser}
             setLoginInitialMode={setLoginInitialMode}

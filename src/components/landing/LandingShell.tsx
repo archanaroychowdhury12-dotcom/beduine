@@ -29,7 +29,7 @@ import { openCookiePreferenceModal } from '../legal/CookieConsentBanner';
 /* ---------- Navbar ---------- */
 interface NavbarProps {
   view: string;
-  setView: (v: any) => void;
+  setView: (v: any, hash?: string) => void;
   currentUser: any;
   setCurrentUser: (user: any) => void;
   setLoginInitialMode: (mode: 'login' | 'register') => void;
@@ -231,8 +231,6 @@ export function Navbar({ view, setView, currentUser, setCurrentUser: _setCurrent
                    <button 
                     onClick={() => {
                       setView('paid-tour');
-                      window.location.hash = 'customize';
-                      window.scrollTo({ top: 0, behavior: 'smooth' });
                     }}
                     data-magnetic
                     className="text-[9.5px] xl:text-[11px] transition-all font-extrabold px-2 xl:px-3 py-1.5 xl:py-2 rounded-full border whitespace-nowrap uppercase tracking-wider cursor-pointer shadow-lg hover:scale-105"
@@ -272,8 +270,6 @@ export function Navbar({ view, setView, currentUser, setCurrentUser: _setCurrent
                   <button 
                     onClick={() => {
                       setView('paid-tour');
-                      window.location.hash = 'customize';
-                      window.scrollTo({ top: 0, behavior: 'smooth' });
                     }}
                     data-magnetic
                     className="text-[9.5px] xl:text-[11px] transition-all font-extrabold px-2 xl:px-3 py-1.5 xl:py-2 rounded-full border whitespace-nowrap uppercase tracking-wider cursor-pointer shadow-lg hover:scale-105"
@@ -400,8 +396,6 @@ export function Navbar({ view, setView, currentUser, setCurrentUser: _setCurrent
                     onClick={() => {
                       setOpen(false);
                       setView('paid-tour');
-                      window.location.hash = 'customize';
-                      window.scrollTo({ top: 0, behavior: 'smooth' });
                     }}
                     className="mt-2 w-full text-center py-2.5 rounded-full text-xs font-extrabold transition-all uppercase tracking-wider text-white border-none cursor-pointer"
                     style={{ background: 'linear-gradient(135deg, #FF6B4A, #E8590C)', boxShadow: '0 4px 15px rgba(232,89,12,0.25)' }}
@@ -440,7 +434,7 @@ export function Navbar({ view, setView, currentUser, setCurrentUser: _setCurrent
 }
 
 interface FooterProps {
-  setView?: (v: any) => void;
+  setView?: (v: any, hash?: string) => void;
 }
 
 export function Footer({ setView }: FooterProps) {

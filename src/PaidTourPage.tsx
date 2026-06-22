@@ -33,6 +33,8 @@ export default function PaidTourPage({
         setCurrentView('packages');
       } else if (hash === 'customize') {
         setCurrentView('customize');
+      } else {
+        setCurrentView('home');
       }
     };
 
@@ -51,21 +53,12 @@ export default function PaidTourPage({
   };
 
   const handleReturnHome = () => {
-    if (onNavigate) {
-      onNavigate('landing');
-    } else {
-      setCurrentView('home');
-    }
+    setCurrentView('home');
     setTargetTourId(null);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleNavigate = (view: string) => {
-    if (view === 'home' && onNavigate) {
-      onNavigate('landing');
-      return;
-    }
-
     if (view === 'customize') {
       window.location.hash = 'customize';
       setCurrentView('customize');

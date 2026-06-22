@@ -50,9 +50,7 @@ function Counter({ end, suffix = '' }: { end: number; suffix?: string }) {
 }
 
 export const HomeView: React.FC<HomeViewProps> = ({
-  onStartBooking,
-  currentUser,
-  onNavigate
+  onStartBooking
 }) => {
   const [showFloat, setShowFloat] = useState(false);
   const [searchDest, setSearchDest] = useState('');
