@@ -10,23 +10,23 @@ const formatINR = (value: number) => `₹${value.toLocaleString('en-IN')}`;
 // Child Component imports
 import { BookingPortalHeader } from './BookingPortalHeader';
 import { TourSelection } from './TourSelection';
-import { TravelerInfoSection } from './TravelerInfoSection';
-import { PickupSection, ADD_ONS } from './PickupSection';
-import { VoucherSection } from './VoucherSection';
-import { PriceSummarySticky } from './PriceSummarySticky';
+import { TravelerInfoSection } from './TravelerInfoForm';
+import { PickupSection, ADD_ONS } from './PickupDropoffForm';
+import { VoucherSection } from './VoucherCouponPanel';
+import { PriceSummarySticky } from './PriceSummary';
 import { PaymentSection } from './PaymentSection';
-import { ConfirmationScreen } from './ConfirmationScreen';
+import { ConfirmationScreen } from './BookingConfirmation';
 import { ReceiptModal } from './ReceiptModal';
-import { SupportFaqSection } from './SupportFaqSection';
+import { SupportFaqSection } from './TourFAQ';
 
-interface BookingPortalContainerProps {
+interface TourBookingFormProps {
   initialTourId?: string | null;
   onReturnHome: () => void;
   currentUser?: any;
   setCurrentUser?: any;
 }
 
-export const BookingPortalContainer: React.FC<BookingPortalContainerProps> = ({
+export const TourBookingForm: React.FC<TourBookingFormProps> = ({
   initialTourId,
   onReturnHome,
   currentUser,
@@ -229,7 +229,7 @@ export const BookingPortalContainer: React.FC<BookingPortalContainerProps> = ({
     let insuranceTotal = 0;
     let isInsuranceSelected = addOnsSelected.includes('insurance');
 
-    ADD_ONS.forEach(addon => {
+    ADD_ONS.forEach((addon: any) => {
       if (addOnsSelected.includes(addon.id)) {
         if (addon.id === 'insurance') {
           // Standard: ₹399/person. Gold: 50% off. Platinum: Free.

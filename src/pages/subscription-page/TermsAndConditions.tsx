@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ChevronRight, Shield } from 'lucide-react';
-import { Reveal } from './LandingExperience';
+import { Reveal } from './SubscriptionHelpers';
 
 export function TermsAndConditions() {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);

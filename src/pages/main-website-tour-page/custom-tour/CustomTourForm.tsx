@@ -5,10 +5,10 @@ import {
   TransportPreference,
   MealPreference,
   TourActivity
-} from '../../types';
-import { validateCustomTourForm, ValidationErrors } from '../../utils/customTourValidation';
+} from '../../../types';
+import { validateCustomTourForm, ValidationErrors } from '../../../utils/customTourValidation';
 import { CustomTourEstimator } from './CustomTourEstimator';
-import { TOUR_PACKAGES } from '../../data/tours';
+import { TOUR_PACKAGES } from '../../../data/tours';
 import {
   Compass, MapPin, Plus, Minus, Check, Phone, Mail
 } from 'lucide-react';
@@ -58,7 +58,7 @@ export const CustomTourForm: React.FC<CustomTourFormProps> = ({
 
   const handlePackageChange = (packageId: string) => {
     setSelectedPackageId(packageId);
-    const pkg = TOUR_PACKAGES.find(p => p.id === packageId);
+    const pkg = TOUR_PACKAGES.find((p: any) => p.id === packageId);
     if (pkg) {
       setDestination(pkg.destination);
       setDurationNights(pkg.durationNights);
@@ -147,7 +147,7 @@ export const CustomTourForm: React.FC<CustomTourFormProps> = ({
               onChange={(e) => handlePackageChange(e.target.value)}
               className="w-full px-4 py-3 rounded-2xl border border-slate-200 outline-none text-xs text-slate-700 bg-slate-50/50 focus:bg-white focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 font-bold"
             >
-              {TOUR_PACKAGES.map((pkg) => (
+              {TOUR_PACKAGES.map((pkg: any) => (
                 <option key={pkg.id} value={pkg.id}>
                   {pkg.name} ({pkg.durationNights}N/{pkg.durationDays}D) - From ₹{pkg.basePrice.toLocaleString('en-IN')}
                 </option>
@@ -283,7 +283,7 @@ export const CustomTourForm: React.FC<CustomTourFormProps> = ({
                   <button
                     type="button"
                     onClick={() => {
-                      const selectedPackage = TOUR_PACKAGES.find(p => p.id === selectedPackageId) || TOUR_PACKAGES[0];
+                      const selectedPackage = TOUR_PACKAGES.find((p: any) => p.id === selectedPackageId) || TOUR_PACKAGES[0];
                       const minNights = selectedPackage ? selectedPackage.durationNights : 1;
                       setDurationNights(Math.max(minNights, durationNights - 1));
                     }}

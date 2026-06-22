@@ -1,5 +1,5 @@
 import React from 'react';
-import { CustomTourRequest } from '../../types';
+import { CustomTourRequest } from '../../../types';
 import { CheckCircle2, ArrowRight } from 'lucide-react';
 
 interface CustomTourSuccessProps {

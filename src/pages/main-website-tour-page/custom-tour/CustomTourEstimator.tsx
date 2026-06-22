@@ -5,8 +5,8 @@ import {
   TransportPreference,
   MealPreference,
   TourActivity
-} from '../../types';
-import { calculateEstimatedPriceRange, getBudgetMessage } from '../../utils/customTourCalculator';
+} from '../../../types';
+import { calculateEstimatedPriceRange, getBudgetMessage } from '../../../utils/customTourCalculator';
 import { Sparkles, Info } from 'lucide-react';
 
 interface CustomTourEstimatorProps {

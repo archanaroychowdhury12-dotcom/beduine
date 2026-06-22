@@ -23,8 +23,8 @@ import {
   X,
 } from 'lucide-react';
 import { NAV } from '../../data/siteData';
-import { ParticleButton, StarField } from './LandingExperience';
-import { openCookiePreferenceModal } from '../legal/CookieConsentBanner';
+import { ParticleButton, StarField } from './SubscriptionHelpers';
+import { openCookiePreferenceModal } from '../../components/legal/CookieConsentBanner';
 
 /* ---------- Navbar ---------- */
 interface NavbarProps {

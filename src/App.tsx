@@ -7,15 +7,15 @@ import {
   LandingContent,
   RouteFallback,
   StickySubscribeButton,
-} from './components/landing/LandingExperience';
-import { FloatingButtons, Footer, MobileSticky, Navbar } from './components/landing/LandingShell';
-import { TermsAndConditions } from './components/landing/TermsAndConditions';
+} from './pages/subscription-page/SubscriptionLandingPage';
+import { FloatingButtons, Footer, MobileSticky, Navbar } from './pages/subscription-page/LandingShell';
+import { TermsAndConditions } from './pages/subscription-page/TermsAndConditions';
 
 const LoginPage = lazy(() => import('./LoginPage'));
 const RegistrationPage = lazy(() => import('./RegistrationPage'));
 const DashboardPage = lazy(() => import('./DashboardPage'));
 const ErrorPage = lazy(() => import('./ErrorPage'));
-const PaidTourPage = lazy(() => import('./PaidTourPage'));
+const PaidTourPage = lazy(() => import('./pages/main-website-tour-page/MainWebsiteTourPage'));
 const VerifyCouponPage = lazy(() => import('./components/VerifyCouponPage'));
 
 const LegalCenterPage = lazy(() => import('./app/legal/page'));

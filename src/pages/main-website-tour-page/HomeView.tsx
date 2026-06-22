@@ -15,8 +15,8 @@ import {
   totalReviewCount,
   TOUR_REVIEW_CARDS,
   voucherDisplay,
-} from '../data/paidTourContent';
-import { useScrollReveal } from '../hooks/useScrollReveal';
+} from '../../data/paidTourContent';
+import { useScrollReveal } from '../../hooks/useScrollReveal';
 
 interface HomeViewProps {
   onStartBooking: (tourId?: string) => void;
@@ -177,7 +177,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
             </div>
             <div className="flex flex-wrap items-center gap-2 mt-5 pt-4 border-t border-orange-100/50">
               <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mr-1">Popular:</span>
-              {popularTags.map(t=>(
+              {popularTags.map((t: string)=>(
                 <button key={t} onClick={()=>setSearchDest(t)} className="px-3 py-1.5 rounded-full bg-cream hover:bg-brand hover:text-white text-brand text-xs font-bold transition-all border border-orange-200/50 cursor-pointer">{t}</button>
               ))}
             </div>
@@ -228,7 +228,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 stagger">
-          {FEATURED_PAID_TOUR_CARDS.map((pkg) => (
+          {FEATURED_PAID_TOUR_CARDS.map((pkg: any) => (
             <div key={pkg.id} onClick={() => onStartBooking(pkg.id)} className="group cursor-pointer">
               <div className="relative h-[500px] rounded-[2rem] overflow-hidden shadow-xl card-lift img-zoom">
                 <img src={pkg.img} alt={pkg.name} className="w-full h-full object-cover" />
@@ -319,7 +319,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
 
         {/* Asymmetric blob grid matching the template exactly */}
         <div className="grid grid-cols-2 md:grid-cols-3 gap-5 md:gap-6">
-          {DESTINATION_TILES.slice(0, 5).map((d,i)=>(
+          {DESTINATION_TILES.slice(0, 5).map((d: any, i: number)=>(
             <button
               key={d.id}
               onClick={()=>onStartBooking(d.tourId)}
@@ -412,7 +412,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
               <div className="md:col-span-1 text-center"><img src={paidTourReviews[reviewIdx].img} alt="" className="w-28 h-28 mx-auto rounded-full object-cover shadow-xl border-4 border-white ring-4 ring-orange-200/50"/><h4 className="font-serif text-lg font-bold text-slate-900 mt-4">{paidTourReviews[reviewIdx].name}</h4><p className="text-xs text-slate-500">{paidTourReviews[reviewIdx].role}</p></div>
               <div className="md:col-span-2 space-y-4">
-                <div className="flex space-x-1 text-brand">{[...Array(5)].map((_,i)=><Star key={i} className="w-5 h-5 fill-current"/>)}</div>
+                <div className="flex space-x-1 text-brand">{[...Array(5)].map((_, i: number)=><Star key={i} className="w-5 h-5 fill-current"/>)}</div>
                 <p className="font-serif text-xl sm:text-2xl text-slate-800 leading-relaxed italic">"{paidTourReviews[reviewIdx].quote}"</p>
                 <div className="pt-3 border-t border-orange-100/50 flex items-center justify-between">
                   <span className="text-xs font-bold text-brand uppercase tracking-wider">Tour: {paidTourReviews[reviewIdx].tour}</span>
@@ -421,7 +421,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                     <button onClick={()=>setReviewIdx((reviewIdx+1)%paidTourReviews.length)} className="w-9 h-9 rounded-full bg-brand text-white hover:bg-brand-dark flex items-center justify-center transition-colors shadow cursor-pointer"><ChevronRight className="w-4 h-4"/></button>
                   </div>
                 </div>
-                <div className="flex space-x-1.5">{paidTourReviews.map((_,i)=><button key={i} onClick={()=>setReviewIdx(i)} className={`h-1.5 rounded-full transition-all cursor-pointer ${i===reviewIdx?'w-8 bg-brand':'w-1.5 bg-orange-200'}`}></button>)}</div>
+                <div className="flex space-x-1.5">{paidTourReviews.map((_: any, i: number)=><button key={i} onClick={()=>setReviewIdx(i)} className={`h-1.5 rounded-full transition-all cursor-pointer ${i===reviewIdx?'w-8 bg-brand':'w-1.5 bg-orange-200'}`}></button>)}</div>
               </div>
             </div>
           </div>

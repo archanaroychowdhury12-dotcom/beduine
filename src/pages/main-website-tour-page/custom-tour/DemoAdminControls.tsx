@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { CustomTourRequest } from '../../types';
-import { customTourService } from '../../services/customTourService';
+import { CustomTourRequest } from '../../../types';
+import { customTourService } from '../../../services/customTourService';
 import { UserCheck, Send, AlertOctagon } from 'lucide-react';
 
 interface DemoAdminControlsProps {

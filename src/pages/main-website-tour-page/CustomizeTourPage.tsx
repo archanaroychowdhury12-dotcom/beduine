@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { CustomTourRequest } from '../types';
-import { CustomTourForm } from '../components/custom-tour/CustomTourForm';
-import { CustomTourSuccess } from '../components/custom-tour/CustomTourSuccess';
-import { customTourService } from '../services/customTourService';
+import { CustomTourRequest } from '../../types';
+import { CustomTourForm } from './custom-tour/CustomTourForm';
+import { CustomTourSuccess } from './custom-tour/CustomTourSuccess';
+import { customTourService } from '../../services/customTourService';
 import { Sparkles } from 'lucide-react';
 
 interface CustomizeTourPageProps {

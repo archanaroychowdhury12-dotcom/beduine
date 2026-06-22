@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { CustomTourRequest } from '../../types';
-import { customTourService } from '../../services/customTourService';
+import { CustomTourRequest } from '../../../types';
+import { customTourService } from '../../../services/customTourService';
 import { DemoAdminControls } from './DemoAdminControls';
 import {
   Check, Clock, ShieldAlert, CreditCard, ShieldCheck,
@@ -75,7 +75,7 @@ export const CustomTourDetailPanel: React.FC<CustomTourDetailPanelProps> = ({
   };
 
   // Find active quotation
-  const activeQuotation = request.quotations.find(q => q.id === request.currentQuotationId);
+  const activeQuotation = request.quotations.find((q: any) => q.id === request.currentQuotationId);
 
   // Status mapping to indices (1 to 5)
   const getStatusStep = (status: string): number => {
@@ -240,7 +240,7 @@ export const CustomTourDetailPanel: React.FC<CustomTourDetailPanelProps> = ({
           <div>
             <span className="text-[10px] text-slate-400 uppercase block mb-1">Target Activities</span>
             <div className="flex flex-wrap gap-1.5">
-              {request.activities.map((a, i) => (
+              {request.activities.map((a: string, i: number) => (
                 <span key={i} className="px-2 py-0.5 rounded-full bg-slate-100 border text-[10px] font-bold text-slate-600">
                   {a}
                 </span>

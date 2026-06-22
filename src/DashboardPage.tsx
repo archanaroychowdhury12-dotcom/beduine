@@ -10,8 +10,8 @@ import {
   AlertTriangle, Lock, Unlock, RefreshCw, UserPlus, Download
 } from 'lucide-react';
 import { customTourService } from './services/customTourService';
-import { CustomTourForm } from './components/custom-tour/CustomTourForm';
-import { CustomTourDetailPanel } from './components/custom-tour/CustomTourDetailPanel';
+import { CustomTourForm } from './pages/main-website-tour-page/custom-tour/CustomTourForm';
+import { CustomTourDetailPanel } from './pages/main-website-tour-page/custom-tour/CustomTourDetailPanel';
 import { CustomTourRequest } from './types';
 
 interface DashboardPageProps {

@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import { AboutPage } from './components/AboutPage';
-import { BookingPortalContainer } from './components/BookingPortal/BookingPortalContainer';
-import { Footer as TourFooter } from './components/Footer';
-import { HomeView } from './components/HomeView';
-import { Navbar as TourNavbar } from './components/Navbar';
-import { PackagesPage } from './components/PackagesPage';
-import { CustomizeTourPage } from './pages/CustomizeTourPage';
+import { AboutPage } from './AboutPage';
+import { TourBookingForm } from './TourBookingForm';
+import { Footer as TourFooter } from '../../components/Footer';
+import { HomeView } from './HomeView';
+import { Navbar as TourNavbar } from '../../components/Navbar';
+import { TourPackageSelection } from './TourPackageSelection';
+import { CustomizeTourPage } from './CustomizeTourPage';
 
 type TourView = 'home' | 'about' | 'packages' | 'booking' | 'customize';
 
@@ -90,10 +90,10 @@ export default function PaidTourPage({
           <AboutPage onStartBooking={() => handleStartBooking()} onNavigate={handleNavigate} />
         )}
         {currentView === 'packages' && (
-          <PackagesPage onStartBooking={handleStartBooking} onNavigate={handleNavigate} />
+          <TourPackageSelection onStartBooking={handleStartBooking} onNavigate={handleNavigate} />
         )}
         {currentView === 'booking' && (
-          <BookingPortalContainer
+          <TourBookingForm
             initialTourId={targetTourId}
             onReturnHome={handleReturnHome}
             currentUser={currentUser}

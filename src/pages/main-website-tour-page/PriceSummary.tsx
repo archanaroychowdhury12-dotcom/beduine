@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Tag, Users, ChevronUp, ChevronDown, Calendar, Clock, MapPin, Bookmark, HelpCircle } from 'lucide-react';
 import { PriceCalculation, TourPackage } from '../../types';
-import { ADD_ONS } from './PickupSection';
+import { ADD_ONS } from './PickupDropoffForm';
 
 interface PriceSummaryStickyProps {
   tour: TourPackage;
@@ -125,7 +125,7 @@ export const PriceSummarySticky: React.FC<PriceSummaryStickyProps> = ({
                 </button>
               </div>
               <div className="space-y-1">
-                {ADD_ONS.filter(a => pricing.addOnsSelected?.includes(a.id)).map(addon => (
+                {ADD_ONS.filter((a: any) => pricing.addOnsSelected?.includes(a.id)).map((addon: any) => (
                   <div key={addon.id} className="flex justify-between text-[11px] text-slate-500">
                     <span className="truncate max-w-[150px] font-semibold">{addon.name}</span>
                     <span className="font-mono">{formatINR(addon.perPerson ? addon.price * pricing.travelerCount : addon.price)}</span>

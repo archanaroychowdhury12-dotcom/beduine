@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { PaymentDetails, TourPackage, Traveler, PickupInfo, Voucher, PriceCalculation } from '../../types';
 import { CreditCard, ShieldCheck, Lock, AlertCircle, ArrowRight, Sparkles, Edit2, ShieldAlert } from 'lucide-react';
-import { ADD_ONS } from './PickupSection';
+import { ADD_ONS } from './PickupDropoffForm';
 
 interface PaymentSectionProps {
   tour: TourPackage;
@@ -193,7 +193,7 @@ export const PaymentSection: React.FC<PaymentSectionProps> = ({
                   : 'No add-ons selected'}
               </span>
               <div className="text-[10px] text-slate-500 mt-1 space-y-0.5">
-                {ADD_ONS.filter(a => addOnsSelected.includes(a.id)).map((addon, i) => (
+                {ADD_ONS.filter((a: any) => addOnsSelected.includes(a.id)).map((addon: any, i: number) => (
                   <span key={i} className="block">• {addon.name} ({formatINR(addon.price)})</span>
                 ))}
               </div>

@@ -3,8 +3,8 @@ import {
   Star, ArrowRight, MapPin, Award,
   Compass, Heart, Calendar, ChevronRight
 } from 'lucide-react';
-import { averageRating, BEDUINE_BRAND, FEATURED_PAID_TOUR_CARDS, totalReviewCount } from '../data/paidTourContent';
-import { useScrollReveal } from '../hooks/useScrollReveal';
+import { averageRating, BEDUINE_BRAND, FEATURED_PAID_TOUR_CARDS, totalReviewCount } from '../../data/paidTourContent';
+import { useScrollReveal } from '../../hooks/useScrollReveal';
 
 interface AboutPageProps {
   onStartBooking: () => void;
@@ -208,7 +208,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onStartBooking, onNavigate
           <h2 className="font-serif text-4xl sm:text-5xl font-bold text-slate-900 mt-3">Destinations You Don't Wanna Miss</h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-7">
-          {FEATURED_PAID_TOUR_CARDS.slice(0, 3).map((d) => (
+          {FEATURED_PAID_TOUR_CARDS.slice(0, 3).map((d: any) => (
             <button key={d.id} onClick={() => onNavigate('packages')} className="group relative h-96 rounded-[2rem] overflow-hidden shadow-xl text-left cursor-pointer card-lift img-zoom">
               <img src={d.img} alt={d.name} className="absolute inset-0 w-full h-full object-cover" />
               <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-transparent"></div>
