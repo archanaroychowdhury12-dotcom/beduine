@@ -1,8 +1,6 @@
 import { lazy, Suspense, useCallback, useEffect, useState } from 'react';
-import { AnimatePresence } from 'framer-motion';
 import { ArrowRight, Check } from 'lucide-react';
 import {
-  CinematicIntro,
   CustomCursor,
   LandingContent,
   RouteFallback,
@@ -106,8 +104,7 @@ const mapSupabaseUser = (supabaseUser: any) => {
 /* ---------- App ---------- */
 
 export default function App() {
-  const [introComplete, setIntroComplete] = useState(false);
-  const handleIntroComplete = useCallback(() => setIntroComplete(true), []);
+  const introComplete = true;
 
   const [view, setView] = useState<
     'landing' | 'login' | 'register' | 'terms' | 'dashboard' | 'paid-tour' | 'error' |
@@ -237,7 +234,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-cosmos text-ink relative">
-      <AnimatePresence>{!introComplete && <CinematicIntro onComplete={handleIntroComplete} />}</AnimatePresence>
+      {/* Intro animation completely bypassed */}
       
       {introComplete && view !== 'paid-tour' && <CustomCursor />}
 
