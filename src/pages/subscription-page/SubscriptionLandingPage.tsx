@@ -351,7 +351,7 @@ export function LandingContent({ onSelectPlan, setView }: { onSelectPlan: (planN
           className="fixed inset-0 w-full h-full object-cover pointer-events-none"
           style={{
             zIndex: 0,
-            transform: 'translate3d(0, 0, 0)',
+            transform: 'translate3d(0, 0, 0) scale(2.8)',
             backfaceVisibility: 'hidden',
             willChange: 'transform'
           }}
