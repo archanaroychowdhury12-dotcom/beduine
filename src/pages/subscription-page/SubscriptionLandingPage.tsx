@@ -8,6 +8,7 @@ import { Plans, InternationalPlans } from './SubscriptionPlans';
 import { TravelRewardSystem, NonWinnerGuarantee } from './LuckyDrawSection';
 import { DiscountCreditsSection } from './DiscountCreditsSection';
 import { Destinations, Winners } from './MemberDashboardPreview';
+import { WinnerReviews } from './WinnerReviews';
 import { SubscriptionCTA } from './SubscriptionCTA';
 import { SubscriptionFAQ } from './SubscriptionFAQ';
 
@@ -386,6 +387,7 @@ export function LandingContent({ onSelectPlan, setView }: { onSelectPlan: (planN
           <ScrollRoundedSection><NonWinnerGuarantee /></ScrollRoundedSection>
           <Destinations />
           <ScrollRoundedSection><Winners /></ScrollRoundedSection>
+          <ScrollRoundedSection><WinnerReviews /></ScrollRoundedSection>
           <ScrollRoundedSection><Transparency /></ScrollRoundedSection>
           <ScrollRoundedSection><SubscriptionCTA onSelectPlan={onSelectPlan} /></ScrollRoundedSection>
           <ScrollRoundedSection><SubscriptionFAQ /></ScrollRoundedSection>
