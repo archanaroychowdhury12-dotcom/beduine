@@ -115,7 +115,10 @@ function PlanCard({ plan, index, onSelectPlan }: { plan: typeof PLANS[number]; i
             </div>
           </div>
 
-
+          <div className="p-7 border-b border-slate-800/80">
+            <div className="flex items-center gap-2 mb-3"><MapPin className="w-4 h-4 text-cyan" /><div className="text-[11px] uppercase tracking-widest text-cyan font-bold">Winner Destinations</div></div>
+            <ul className="space-y-2">{plan.destinations.map((d) => <li key={d} className="flex items-start gap-2 text-sm text-slate-200 font-bold"><GoldCheck size={15} /><span>{d}</span></li>)}</ul>
+          </div>
 
           <div className="p-7 space-y-2.5">{plan.benefits.slice(0, 4).map((b) => <div key={b} className="flex items-start gap-2.5 text-sm text-slate-200 font-bold"><GoldCheck size={16} /><span>{b}</span></div>)}</div>
 
@@ -207,7 +210,10 @@ function IntlPlanCard({ plan, index }: { plan: typeof INTL_PLANS[number]; index:
             </div>
           </div>
 
-
+          <div className="p-7 border-b border-slate-800/80">
+            <div className="flex items-center gap-2 mb-3"><Plane className="w-4 h-4 text-cyan" /><div className="text-[11px] uppercase tracking-widest text-cyan font-bold">International Destinations</div></div>
+            <ul className="space-y-2">{plan.destinations.map((d) => <li key={d} className="flex items-start gap-2 text-sm text-slate-200 font-bold"><GoldCheck size={15} variant="cyan" /><span>{d}</span></li>)}</ul>
+          </div>
 
           <div className="p-7 space-y-2.5">{plan.benefits.slice(0, 4).map((b) => <div key={b} className="flex items-start gap-2.5 text-sm text-slate-200 font-bold"><GoldCheck size={16} variant="cyan" /><span>{b}</span></div>)}</div>
 
