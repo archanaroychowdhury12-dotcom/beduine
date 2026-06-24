@@ -6,7 +6,7 @@ import {
   RouteFallback,
   StickySubscribeButton,
 } from './pages/subscription-page/SubscriptionLandingPage';
-import { FloatingButtons, Footer, MobileSticky, Navbar, BackToTop, Chatbot } from './pages/subscription-page/LandingShell';
+import { FloatingButtons, Footer, MobileSticky, Navbar } from './pages/subscription-page/LandingShell';
 import { TermsAndConditions } from './pages/subscription-page/TermsAndConditions';
 
 const LoginPage = lazy(() => import('./LoginPage'));
@@ -404,9 +404,6 @@ export default function App() {
         <CookieModalTrigger>
           <CookieConsentBanner />
         </CookieModalTrigger>
-
-        <BackToTop />
-        <Chatbot />
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 import { motion, AnimatePresence, useScroll, useMotionValueEvent, useInView } from 'framer-motion';
-import { Star, MessageCircle, X, Calendar, Plane, Eye, MapPin } from 'lucide-react';
+import { Star, MessageCircle, X, Calendar, Plane, Eye } from 'lucide-react';
 
 /* ===================== Types ===================== */
 interface Destination {
@@ -12,8 +12,6 @@ interface Destination {
   img: string;
   category: string;
   planBadge: string;
-  price?: string;
-  location?: string;
 }
 
 interface ScatteredShowcaseProps {
@@ -210,8 +208,7 @@ function DetailModal({ d, accent, onClose }: { d: Destination; accent: typeof CA
       </motion.div>
     </motion.div>
   );
-}
-/* ===================== Single Scattered Card ===================== */
+}/* ===================== Single Scattered Card ===================== */
 function ScatteredCard({
   d, index, total, isActive, isPast, activeIndex, onSelect,
 }: {
@@ -454,16 +451,6 @@ function ScatteredCard({
               ))}
             </div>
 
-            {/* Price and Location Display */}
-            <div className="flex items-center justify-between mt-3 pt-2.5 border-t border-white/10 text-xs">
-              <span className="flex items-center gap-1 text-slate-350 font-bold">
-                <MapPin className="w-3.5 h-3.5" style={{ color: cardAccent.text }} /> {d.location || 'India'}
-              </span>
-              <span className="font-extrabold font-mono text-[12px] bg-white/10 px-2 py-0.5 rounded-full border border-white/20 text-white">
-                {d.price || '₹4,999+'}
-              </span>
-            </div>
-
             {/* CTA buttons - active only */}
             <AnimatePresence>
               {isActive && (
@@ -519,7 +506,6 @@ function MobileCardItem({ d, i, feats, accent, onSelect }: {
   const inView = useInView(ref, { once: true, margin: '-50px' });
   return (
     <motion.div ref={ref}
-      id={`dest-card-${d.name.replace(/\s+/g, '-').toLowerCase()}`}
       initial={{ opacity: 0, y: 50, scale: 0.93 }}
       animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
       transition={{ duration: 0.7, delay: i * 0.04, ease: [0.22, 1, 0.36, 1] }}
@@ -548,16 +534,6 @@ function MobileCardItem({ d, i, feats, accent, onSelect }: {
         <div className="flex flex-wrap gap-1 mt-2">
           {feats.map(f => <span key={f} className="px-2 py-0.5 rounded text-[8px] font-mono font-bold bg-white/5 border border-white/5 text-slate-400">{f}</span>)}
         </div>
-
-        {/* Price and Location Display */}
-        <div className="flex items-center justify-between mt-3 pt-2 border-t border-white/5 text-xs">
-          <span className="flex items-center gap-1 text-slate-400 font-bold text-[11px]">
-            <MapPin className="w-3 h-3 text-emerald-400" /> {d.location || 'India'}
-          </span>
-          <span className="font-extrabold font-mono text-[11px] text-white">
-            {d.price || '₹4,999+'}
-          </span>
-        </div>
         <div className="flex gap-2 mt-3">
           <span className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-[9px] font-bold uppercase tracking-wider cursor-pointer"
             style={{ background: `linear-gradient(135deg,${accent.text},${accent.text}bb)`, color: '#030712' }}>
@@ -581,16 +557,9 @@ export default function ScatteredShowcase({ destinations }: ScatteredShowcasePro
   const [isMobile, setIsMobile] = useState(false);
   const [selectedCard, setSelectedCard] = useState<Destination | null>(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const [activeFilter, setActiveFilter] = useState<'all' | 'escapes' | 'trails' | 'royal' | 'intl'>('all');
-
-  // Filter destinations based on active tab selection
-  const filteredDestinations = useMemo(() => {
-    if (activeFilter === 'all') return destinations;
-    return destinations.filter(d => d.category === activeFilter);
-  }, [destinations, activeFilter]);
 
   // Dynamically resolve colors based on the active card's category
-  const activeCard = filteredDestinations[activeIndex] || filteredDestinations[0];
+  const activeCard = destinations[activeIndex];
   const activeCategory = activeCard?.category || 'escapes';
   const accent = CATEGORY_ACCENTS[activeCategory] || CATEGORY_ACCENTS.escapes;
 
@@ -607,7 +576,7 @@ export default function ScatteredShowcase({ destinations }: ScatteredShowcasePro
   });
 
   useMotionValueEvent(scrollYProgress, 'change', (v) => {
-    const n = filteredDestinations.length;
+    const n = destinations.length;
     if (n <= 0) return;
     const idx = Math.min(n - 1, Math.floor(v * (n + 0.6)));
     setActiveIndex(Math.max(0, idx));
@@ -624,85 +593,23 @@ export default function ScatteredShowcase({ destinations }: ScatteredShowcasePro
 
   // Scroll track height - enough for each card to have a scroll "moment"
   const trackHeight = useMemo(() => {
-    const n = filteredDestinations.length;
-    const h = n * 62 + 110;
+    const h = destinations.length * 62 + 110;
     return Math.max(360, Math.min(760, h));
-  }, [filteredDestinations.length]);
+  }, [destinations.length]);
 
   // Jump to a specific card via progress dots
   const jumpToCard = useCallback((targetIdx: number) => {
     if (!containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
     const scrollableHeight = containerRef.current.scrollHeight - window.innerHeight;
-    const targetScroll = window.scrollY + rect.top + (targetIdx / (filteredDestinations.length + 0.6)) * scrollableHeight;
+    const targetScroll = window.scrollY + rect.top + (targetIdx / (destinations.length + 0.6)) * scrollableHeight;
     window.scrollTo({ top: targetScroll, behavior: 'smooth' });
-  }, [filteredDestinations.length]);
-
-  useEffect(() => {
-    const handleScrollToDest = (e: CustomEvent<{ name: string }>) => {
-      const targetName = e.detail.name;
-      const found = destinations.find(d => d.name.toLowerCase() === targetName.toLowerCase());
-      if (!found) return;
-
-      if (activeFilter !== 'all' && found.category !== activeFilter) {
-        setActiveFilter('all');
-        setTimeout(() => {
-          const idx = destinations.findIndex(d => d.name.toLowerCase() === targetName.toLowerCase());
-          if (idx !== -1) {
-            if (isMobile) {
-              const el = document.getElementById(`dest-card-${targetName.replace(/\s+/g, '-').toLowerCase()}`);
-              if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            } else {
-              jumpToCard(idx);
-            }
-          }
-        }, 120);
-      } else {
-        const idx = filteredDestinations.findIndex(d => d.name.toLowerCase() === targetName.toLowerCase());
-        if (idx !== -1) {
-          if (isMobile) {
-            const el = document.getElementById(`dest-card-${targetName.replace(/\s+/g, '-').toLowerCase()}`);
-            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          } else {
-            jumpToCard(idx);
-          }
-        }
-      }
-    };
-    window.addEventListener('scroll-to-destination' as any, handleScrollToDest);
-    return () => window.removeEventListener('scroll-to-destination' as any, handleScrollToDest);
-  }, [destinations, filteredDestinations, activeFilter, isMobile, jumpToCard]);
+  }, [destinations.length]);
 
   if (isMobile) {
     return (
       <>
-        {/* Mobile Filters */}
-        <div className="flex items-center justify-center flex-wrap gap-2 py-4 px-2 bg-slate-950/45 sticky top-[72px] z-30 border-b border-white/5 backdrop-blur-md">
-          {[
-            { id: 'all', label: 'All' },
-            { id: 'escapes', label: 'Weekend' },
-            { id: 'trails', label: 'Himalayan' },
-            { id: 'royal', label: 'Royal' },
-            { id: 'intl', label: 'Global' }
-          ].map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => {
-                setActiveFilter(tab.id as any);
-                setActiveIndex(0);
-              }}
-              className="px-3.5 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider border transition-all duration-350 cursor-pointer"
-              style={{
-                background: activeFilter === tab.id ? '#18D7F2' : 'transparent',
-                color: activeFilter === tab.id ? '#030712' : '#F8FAFC',
-                borderColor: activeFilter === tab.id ? '#18D7F2' : 'rgba(255,255,255,0.1)'
-              }}
-            >
-              {tab.label}
-            </button>
-          ))}
-        </div>
-        <MobileShowcase destinations={filteredDestinations} onSelect={setSelectedCard} />
+        <MobileShowcase destinations={destinations} onSelect={setSelectedCard} />
         <AnimatePresence>
           {selectedCard && (
             <DetailModal
@@ -744,36 +651,6 @@ export default function ScatteredShowcase({ destinations }: ScatteredShowcasePro
               className="text-slate-300 text-sm lg:text-base mt-2.5 text-center max-w-xl">
               Scroll through handpicked destinations crafted for unforgettable journeys.
             </motion.p>
-
-            {/* Filter Tabs */}
-            <div className="pointer-events-auto flex items-center justify-center flex-wrap gap-2.5 mt-5 max-w-2xl mx-auto z-40 relative">
-              {[
-                { id: 'all', label: 'All' },
-                { id: 'escapes', label: 'Weekend Escapes' },
-                { id: 'trails', label: 'Himalayan Trails' },
-                { id: 'royal', label: 'Royal Heritage' },
-                { id: 'intl', label: 'International' }
-              ].map((tab) => (
-                <button
-                  key={tab.id}
-                  onClick={() => {
-                    setActiveFilter(tab.id as any);
-                    setActiveIndex(0); // Reset index on filter change
-                  }}
-                  className="px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider cursor-pointer border transition-all duration-300 shadow-md hover:scale-105"
-                  style={{
-                    background: activeFilter === tab.id
-                      ? `linear-gradient(135deg, ${accent.text}, ${accent.text}bb)`
-                      : 'rgba(3, 12, 22, 0.65)',
-                    color: activeFilter === tab.id ? '#030712' : '#F8FAFC',
-                    borderColor: activeFilter === tab.id ? accent.border : 'rgba(255, 255, 255, 0.12)',
-                    backdropFilter: 'blur(10px)'
-                  }}
-                >
-                  {tab.label}
-                </button>
-              ))}
-            </div>
           </div>
 
           {/* 3D Stage */}
@@ -816,8 +693,8 @@ export default function ScatteredShowcase({ destinations }: ScatteredShowcasePro
             {/* Perspective container */}
             <div className="absolute inset-0 flex items-center justify-center" style={{ perspective: '1200px', transformStyle: 'preserve-3d' }}>
               <AnimatePresence mode="popLayout">
-                {filteredDestinations.map((d, i) => (
-                  <ScatteredCard key={d.name} d={d} index={i} total={filteredDestinations.length}
+                {destinations.map((d, i) => (
+                  <ScatteredCard key={d.name} d={d} index={i} total={destinations.length}
                     isActive={i === activeIndex} isPast={i < activeIndex} activeIndex={activeIndex}
                     onSelect={() => setSelectedCard(d)} />
                 ))}
@@ -825,8 +702,8 @@ export default function ScatteredShowcase({ destinations }: ScatteredShowcasePro
             </div>
 
             {/* Progress dots */}
-            <ProgressDots total={filteredDestinations.length} active={activeIndex}
-              names={filteredDestinations.map(d => d.name)} activeColor={accent.text} onJump={jumpToCard} />
+            <ProgressDots total={destinations.length} active={activeIndex}
+              names={destinations.map(d => d.name)} activeColor={accent.text} onJump={jumpToCard} />
 
             {/* Counter badge */}
             <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-40 pointer-events-none select-none">
@@ -834,10 +711,10 @@ export default function ScatteredShowcase({ destinations }: ScatteredShowcasePro
                 <span className="text-white/95 font-mono text-xs font-bold">{String(activeIndex + 1).padStart(2, '0')}</span>
                 <div className="w-16 h-0.5 rounded-full bg-white/10 relative overflow-hidden">
                   <motion.div className="absolute inset-y-0 left-0 rounded-full"
-                    animate={{ width: `${((activeIndex + 1) / Math.max(1, filteredDestinations.length)) * 100}%` }}
+                    animate={{ width: `${((activeIndex + 1) / destinations.length) * 100}%` }}
                     style={{ background: accent.text }} transition={{ duration: 0.4 }} />
                 </div>
-                <span className="text-white/40 font-mono text-xs font-bold">{String(filteredDestinations.length).padStart(2, '0')}</span>
+                <span className="text-white/40 font-mono text-xs font-bold">{String(destinations.length).padStart(2, '0')}</span>
               </div>
             </div>
           </div>
