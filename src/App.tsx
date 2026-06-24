@@ -222,7 +222,7 @@ export default function App() {
 
   // Manage body cursor visibility: default cursor during intro and the embedded tour site, hidden only for the custom landing cursor.
   useEffect(() => {
-    if (!introComplete || view === 'paid-tour' || view === 'landing') {
+    if (!introComplete || view === 'paid-tour') {
       document.body.style.cursor = 'auto';
     } else {
       document.body.style.cursor = 'none';
@@ -236,12 +236,12 @@ export default function App() {
     <div className="min-h-screen bg-cosmos text-ink relative">
       {/* Intro animation completely bypassed */}
       
-      {introComplete && view !== 'paid-tour' && view !== 'landing' && <CustomCursor />}
+      {introComplete && view !== 'paid-tour' && <CustomCursor />}
 
       {/* Main page content container - invisible during intro to prevent menu leak, then fades in beautifully */}
       <div className={`transition-opacity duration-700 ${introComplete ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
         {view !== 'paid-tour' && <div className="noise fixed inset-0 pointer-events-none z-30" />}
-        {['terms', 'legal', 'privacy-policy', 'terms-and-conditions', 'refund-policy', 'cancellation-policy', 'membership-rules', 'website-disclaimer', 'cookie-policy', 'affiliate-agent-policy', 'grievance-redressal'].includes(view) && (
+        {['landing', 'terms', 'legal', 'privacy-policy', 'terms-and-conditions', 'refund-policy', 'cancellation-policy', 'membership-rules', 'website-disclaimer', 'cookie-policy', 'affiliate-agent-policy', 'grievance-redressal'].includes(view) && (
           <Navbar 
             view={view} 
             setView={handleSetView} 
@@ -393,20 +393,20 @@ export default function App() {
           )}
           </Suspense>
         </main>
-        {['terms', 'legal', 'privacy-policy', 'terms-and-conditions', 'refund-policy', 'cancellation-policy', 'membership-rules', 'website-disclaimer', 'cookie-policy', 'affiliate-agent-policy', 'grievance-redressal'].includes(view) && (
+        {['landing', 'terms', 'legal', 'privacy-policy', 'terms-and-conditions', 'refund-policy', 'cancellation-policy', 'membership-rules', 'website-disclaimer', 'cookie-policy', 'affiliate-agent-policy', 'grievance-redressal'].includes(view) && (
           <Footer setView={handleSetView} />
         )}
-        {view === 'landing' && false && <FloatingButtons />}
-        {view === 'landing' && false && <MobileSticky onSelectPlan={handleSelectPlan} />}
-        {view === 'landing' && false && <StickySubscribeButton onSelectPlan={handleSelectPlan} />}
+        {view === 'landing' && <FloatingButtons />}
+        {view === 'landing' && <MobileSticky onSelectPlan={handleSelectPlan} />}
+        {view === 'landing' && <StickySubscribeButton onSelectPlan={handleSelectPlan} />}
         
         {/* Cookie Consent Banner and Preferences Modal trigger */}
         <CookieModalTrigger>
           <CookieConsentBanner />
         </CookieModalTrigger>
 
-        {view !== 'landing' && <BackToTop />}
-        {view !== 'landing' && <Chatbot />}
+        <BackToTop />
+        <Chatbot />
       </div>
     </div>
   );
