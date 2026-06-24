@@ -8,6 +8,7 @@ import {
   Hotel,
   MapPin,
   MessageCircle,
+  MessageSquare,
   Plane,
   Rocket,
   Sparkles,
@@ -22,6 +23,7 @@ export const NAV = [
   { id: 'plans', label: 'Plans', icon: Crown },
   { id: 'luckydraw', label: 'Travel Reward', icon: Ticket },
   { id: 'destinations', label: 'Destinations', icon: MapPin },
+  { id: 'winner-reviews', label: 'Reviews', icon: MessageSquare },
   { id: 'contact', label: 'Contact', icon: MessageCircle },
 ];
 

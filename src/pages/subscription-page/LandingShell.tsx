@@ -62,7 +62,7 @@ export function Navbar({ view, setView, currentUser, setCurrentUser: _setCurrent
         return;
       }
 
-      const sections = ['about', 'plans', 'destinations', 'contact'];
+      const sections = ['about', 'plans', 'destinations', 'winner-reviews', 'contact'];
       let closestSection = '';
       let minDistance = Infinity;
 
