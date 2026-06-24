@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useRef } from 'react';
 import {
   Sparkles, Calendar, Star, ArrowRight, ShieldCheck, Heart, Compass,
-  Play, MapPin, Mountain, Clock, Quote, Ticket, Wallet, Flame, Zap, Plane,
+  Play, MapPin, Mountain, Clock, Quote, Ticket, Wallet, Flame, Zap,
   ThumbsUp,
   Share2, MessageCircle, Search, Users, Mail, Send, CheckCircle2, ChevronRight,
-  ChevronLeft, Camera, Hotel, Utensils, Globe, Smile, Briefcase
+  ChevronLeft, Camera, Globe, Smile, Briefcase
 } from 'lucide-react';
 import {
   averageRating,
@@ -18,6 +18,8 @@ import {
 } from '../../data/paidTourContent';
 import { useScrollReveal } from '../../hooks/useScrollReveal';
 import { motion, useScroll, useTransform } from 'framer-motion';
+import { Reveal, TiltCard, KineticText } from '../subscription-page/SubscriptionHelpers';
+import { SERVICES } from '../../data/siteData';
 
 interface HomeViewProps {
   onStartBooking: (tourId?: string) => void;
@@ -51,7 +53,8 @@ function Counter({ end, suffix = '' }: { end: number; suffix?: string }) {
 }
 
 export const HomeView: React.FC<HomeViewProps> = ({
-  onStartBooking
+  onStartBooking,
+  onNavigate
 }) => {
   const [showFloat, setShowFloat] = useState(false);
   const [searchDest, setSearchDest] = useState('');
@@ -81,7 +84,6 @@ export const HomeView: React.FC<HomeViewProps> = ({
 
   */
   const paidTourReviews = reviews;
-  const heroTour = FEATURED_PAID_TOUR_CARDS[3] ?? FEATURED_PAID_TOUR_CARDS[0];
   const topReview = paidTourReviews[0];
   const popularTags = FEATURED_PAID_TOUR_CARDS.map((tour) => tour.location.split(',')[0]);
   const reviewSummary = `${averageRating.toFixed(1)}/5 (${totalReviewCount.toLocaleString('en-IN')} reviews)`;
@@ -360,31 +362,75 @@ export const HomeView: React.FC<HomeViewProps> = ({
       </section>
 
       {/* ===================== SERVICES ===================== */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-slate-950 text-white relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2"></div>
-        <div className="max-w-7xl mx-auto relative">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-end mb-14 sr">
-            <div className="lg:col-span-7 space-y-3">
-              <span className="text-sm font-bold tracking-[0.2em] uppercase text-brand-light">our services</span>
-              <h2 className="font-serif text-4xl sm:text-5xl font-bold text-white">What We Offer For <span className="text-gradient-brand">Every Adventure</span></h2>
-            </div>
-            <p className="lg:col-span-5 text-slate-400 text-base leading-relaxed">From dreaming of a destination to returning home with lifelong memories — we handle every detail.</p>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[1px] bg-slate-800/50 rounded-3xl overflow-hidden stagger">
-            {[
-              { icon:Plane, title:'Flight Booking', desc:'First-class & business class air tickets to 500+ destinations.' },
-              { icon:Hotel, title:'Luxury Hotels', desc:'Hand-picked 5-star hotels, ryokans, and eco-resorts.' },
-              { icon:Camera, title:'Photo Tours', desc:'Photographer-led expeditions with golden hour scheduling.' },
-              { icon:Mountain, title:'Adventure Hikes', desc:'Certified alpine guides for iconic mountain treks.' },
-              { icon:Utensils, title:'Gourmet Dining', desc:'Michelin-starred reservations and cooking classes.' },
-              { icon:Compass, title:'Private Concierge', desc:'24/7 personal travel advisor for VIP perks.' }
-            ].map((s,i)=>(
-              <div key={i} onClick={()=>onStartBooking()} className="group p-9 bg-slate-950 hover:bg-brand transition-colors duration-500 cursor-pointer space-y-4">
-                <div className="w-14 h-14 rounded-2xl bg-brand/15 text-brand-light group-hover:bg-white group-hover:text-brand flex items-center justify-center transition-all duration-500"><s.icon className="w-7 h-7"/></div>
-                <h3 className="font-serif text-xl font-bold text-white">{s.title}</h3>
-                <p className="text-sm text-slate-400 group-hover:text-white/90 leading-relaxed transition-colors">{s.desc}</p>
+      <section id="services" className="relative py-20 lg:py-24 overflow-hidden bg-[#030C16] text-white">
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2 z-0"></div>
+        <div className="max-w-7xl mx-auto px-5 lg:px-8 relative z-10">
+          <Reveal>
+            <div className="text-center mb-16 max-w-3xl mx-auto">
+              <div className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.3em] text-[#00F5D4] font-semibold mb-4">
+                <div className="w-8 h-px bg-[#00F5D4]" /> Services <div className="w-8 h-px bg-[#00F5D4]" />
               </div>
-            ))}
+              <h2 className="font-serif text-4xl lg:text-6xl font-bold text-white leading-tight">
+                <KineticText text="End-to-end travel," />
+                <br />
+                <span className="bg-gradient-to-r from-[#00F5D4] via-emerald-400 to-[#00F5D4] bg-clip-text text-transparent">
+                  <KineticText text="handled." delay={0.4} />
+                </span>
+              </h2>
+            </div>
+          </Reveal>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+            {SERVICES.map((s, i) => {
+              const isCustomTour = s.title.toLowerCase().includes('customized');
+              const handleClick = () => {
+                if (isCustomTour) {
+                  onNavigate?.('customize');
+                } else {
+                  onStartBooking();
+                }
+              };
+              return (
+                <Reveal key={s.title} delay={(i % 3) * 0.08}>
+                  <TiltCard intensity={4}>
+                    <div 
+                      onClick={handleClick}
+                      className="glass rounded-2xl p-5 border border-white/5 hover:border-[#00F5D4]/40 transition-all h-full tilt-inner flex flex-col justify-between group cursor-pointer"
+                    >
+                      <div>
+                        {/* Premium Card Header Image */}
+                        <div className="relative h-44 rounded-xl overflow-hidden mb-5 z-0">
+                          <img
+                            src={s.image}
+                            alt={s.title}
+                            className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-108"
+                            loading="lazy"
+                          />
+                          {/* Dark gradient shadow overlay */}
+                          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-slate-950/10 to-transparent pointer-events-none" />
+
+                          {/* Floating icon badge */}
+                          <div className="absolute bottom-3 left-3 z-10">
+                            <div className="w-10 h-10 rounded-xl bg-black/40 backdrop-blur-md flex items-center justify-center border border-white/10 shadow-lg">
+                              <s.icon className="w-5 h-5 text-[#00F5D4] animate-pulse" strokeWidth={2} />
+                            </div>
+                          </div>
+                        </div>
+
+                        <h3 className="font-serif text-lg font-bold text-white mb-2 transition-colors duration-300 group-hover:text-[#00F5D4]">
+                          {s.title}
+                        </h3>
+                        <p className="text-sm text-slate-300 leading-relaxed">{s.desc}</p>
+                      </div>
+
+                      <div className="mt-5 pt-4 border-t border-white/5 flex items-center gap-2 text-xs font-semibold text-[#00F5D4]">
+                        <span>{isCustomTour ? 'Customize now' : 'Book now'}</span>
+                        <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" />
+                      </div>
+                    </div>
+                  </TiltCard>
+                </Reveal>
+              );
+            })}
           </div>
         </div>
       </section>

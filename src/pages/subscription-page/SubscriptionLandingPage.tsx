@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Crown } from 'lucide-react';
 import { ScrollRoundedSection, ParticleButton } from './SubscriptionHelpers';
 import { SubscriptionHero, TrustStrip } from './SubscriptionHero';
-import { AboutUs, Journey, HowItWorks, Services, Transparency } from './SubscriptionBenefits';
+import { AboutUs, Journey, HowItWorks, Transparency } from './SubscriptionBenefits';
 import { Plans, InternationalPlans } from './SubscriptionPlans';
 import { TravelRewardSystem, NonWinnerGuarantee } from './LuckyDrawSection';
 import { DiscountCreditsSection } from './DiscountCreditsSection';
@@ -386,7 +386,6 @@ export function LandingContent({ onSelectPlan, setView }: { onSelectPlan: (planN
           <ScrollRoundedSection><NonWinnerGuarantee /></ScrollRoundedSection>
           <Destinations />
           <ScrollRoundedSection><Winners /></ScrollRoundedSection>
-          <ScrollRoundedSection><Services /></ScrollRoundedSection>
           <ScrollRoundedSection><Transparency /></ScrollRoundedSection>
           <ScrollRoundedSection><SubscriptionCTA onSelectPlan={onSelectPlan} /></ScrollRoundedSection>
           <ScrollRoundedSection><SubscriptionFAQ /></ScrollRoundedSection>

@@ -6,7 +6,7 @@ import {
   Lock, TrendingUp, Scan, Download, MapPin, Phone, Crown, Camera
 } from 'lucide-react';
 import { Reveal, TiltCard, GoldCheck, KineticText, FloatingIcon, SubSectionBadge } from './SubscriptionHelpers';
-import { SERVICES, JOURNEY_IMAGES, JOURNEY_FLOATS, AUDIT_REPORTS } from '../../data/siteData';
+import { JOURNEY_IMAGES, JOURNEY_FLOATS, AUDIT_REPORTS } from '../../data/siteData';
 
 /* ---------- About Us / Mission / Vision ---------- */
 export function AboutUs() {
@@ -353,64 +353,7 @@ export function HowItWorks() {
   );
 }
 
-/* ---------- Services ---------- */
-export function Services() {
-  return (
-    <section id="services" className="relative py-14 lg:py-20 overflow-hidden">
-      <div className="max-w-7xl mx-auto px-5 lg:px-8 relative z-10">
-        <Reveal>
-          <div className="text-center mb-16 max-w-3xl mx-auto">
-            <div className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.3em] neon-cyan font-semibold mb-4"><div className="w-8 h-px bg-cyan" /> Services <div className="w-8 h-px bg-cyan" /></div>
-            <h2 className="font-display text-4xl lg:text-6xl font-bold text-ink leading-tight">
-              <KineticText text="End-to-end travel," />
-              <br /><span className="gradient-neon"><KineticText text="handled." delay={0.4} /></span>
-            </h2>
-          </div>
-        </Reveal>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-          {SERVICES.map((s, i) => (
-            <Reveal key={s.title} delay={(i % 3) * 0.08}>
-              <TiltCard intensity={4}>
-                <div className="glass rounded-2xl p-5 border border-slate-line hover:neon-border-cyan transition-all h-full tilt-inner flex flex-col justify-between group">
-                  <div>
-                    {/* Premium Card Header Image */}
-                    <div className="relative h-44 rounded-xl overflow-hidden mb-5 z-0">
-                      <img
-                        src={s.image}
-                        alt={s.title}
-                        className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-108"
-                        loading="lazy"
-                      />
-                      {/* Dark gradient shadow overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-slate-950/10 to-transparent pointer-events-none" />
 
-                      {/* Floating icon badge */}
-                      <div className="absolute bottom-3 left-3 z-10">
-                        <div className="w-10 h-10 rounded-xl glass-cyan flex items-center justify-center border border-slate-line/80 shadow-lg backdrop-blur-md">
-                          <s.icon className="w-5 h-5 text-cyan animate-pulse" strokeWidth={2} />
-                        </div>
-                      </div>
-                    </div>
-
-                    <h3 className="font-display text-lg font-bold text-ink mb-2 transition-colors duration-300 group-hover:text-cyan">
-                      {s.title}
-                    </h3>
-                    <p className="text-sm text-ink/65 leading-relaxed">{s.desc}</p>
-                  </div>
-
-                  <div className="mt-5 pt-4 border-t border-slate-line/40 flex items-center gap-2 text-xs font-semibold neon-cyan">
-                    <span>Learn more</span>
-                    <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" />
-                  </div>
-                </div>
-              </TiltCard>
-            </Reveal>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
 
 /* ---------- Transparency ---------- */
 export function Transparency() {
