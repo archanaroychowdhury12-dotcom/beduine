@@ -3,14 +3,19 @@ import { motion } from 'framer-motion';
 import { 
   Route, Tag, Trophy, ShieldCheck, Gem, 
   CreditCard, FileCheck2, Wallet, Gift, ArrowRight, Eye, FileText, 
-  Lock, TrendingUp, Scan, Download 
+  Lock, TrendingUp, Scan, Download, MapPin, Globe, Phone, Crown, Camera
 } from 'lucide-react';
 import { Reveal, TiltCard, GoldCheck, KineticText, FloatingIcon, SubSectionBadge } from './SubscriptionHelpers';
 import { SERVICES, JOURNEY_IMAGES, JOURNEY_FLOATS, AUDIT_REPORTS } from '../../data/siteData';
 
 /* ---------- About Us / Mission / Vision ---------- */
 export function AboutUs() {
-
+  const officeMapsUrl = 'https://maps.app.goo.gl/JEqUWXKofJTKfFNY6';
+  const officeHighlights = [
+    { label: 'Office Area', value: 'Fulia, Nadia', icon: MapPin },
+    { label: 'PIN Code', value: '741402', icon: ShieldCheck },
+    { label: 'Route', value: 'Google Maps', icon: Route },
+  ];
 
   const pillars = [
     {
@@ -117,7 +122,7 @@ export function AboutUs() {
       </div>
 
       {/* ── Pillars Grid Section ── */}
-      <div className="max-w-7xl mx-auto px-5 lg:px-8 py-20 lg:py-24 relative z-10">
+      <div className="max-w-7xl mx-auto px-5 lg:px-8 py-20 lg:py-24 relative z-10 border-b border-white/5">
         <Reveal>
           <div className="text-center mb-16 max-w-2xl mx-auto">
             <SubSectionBadge text="Core Philosophy" theme="gold" />
@@ -147,6 +152,134 @@ export function AboutUs() {
               </TiltCard>
             </Reveal>
           ))}
+        </div>
+      </div>
+
+      {/* ── Registered Office Section ── */}
+      <div className="py-20 lg:py-24 relative z-10 bg-black/10">
+        <div className="max-w-7xl mx-auto px-5 lg:px-8">
+          <Reveal>
+            <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-12 lg:gap-16 items-center">
+              <div>
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gold-accent/10 border border-gold-accent/20 text-[#C89C53] text-[10px] font-bold uppercase tracking-widest mb-6 font-mono">
+                  <MapPin className="w-3.5 h-3.5" /> Visit Our Office
+                </div>
+                <h3 className="font-serif text-3xl lg:text-5xl font-black text-white leading-tight mb-5">
+                  Fulia, Nadia,<br /><span className="text-white/50">West Bengal — 741402</span>
+                </h3>
+                <p className="text-sm text-white/70 leading-relaxed mb-8 max-w-md">
+                  Plan your next great escape from our home base. We're here to help you dream, plan, and travel better — every step of the way.
+                </p>
+
+                {/* Highlights List */}
+                <div className="space-y-4 mb-8">
+                  {officeHighlights.map((item) => (
+                    <div key={item.label} className="flex items-center gap-4 text-white/90">
+                      <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[#C89C53]">
+                        <item.icon className="w-4 h-4" />
+                      </div>
+                      <div className="text-left">
+                        <div className="text-[10px] text-white/40 uppercase tracking-wider font-mono">{item.label}</div>
+                        <div className="text-sm font-bold mt-0.5">{item.value}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Action buttons */}
+                <div className="flex flex-wrap gap-4 pt-6 border-t border-white/10">
+                  <a
+                    href={officeMapsUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-3 px-5 py-2.5 rounded-xl bg-[#138A8A] text-white text-sm hover:scale-[1.02] transition-all no-underline text-left group border border-[#138A8A]/20 cursor-pointer shadow-lg shadow-[#138A8A]/10"
+                  >
+                    <MapPin className="w-5 h-5 text-white shrink-0 group-hover:animate-bounce" />
+                    <div>
+                      <div className="text-xs font-black uppercase tracking-wider leading-none">Open Office Location</div>
+                      <div className="text-[9px] text-white/75 mt-0.5 font-medium">In Google Maps</div>
+                    </div>
+                  </a>
+                  
+                  <a
+                    href="https://www.beduine.in"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-3 px-5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm hover:bg-white/10 transition-all no-underline text-left cursor-pointer"
+                  >
+                    <Camera className="w-5 h-5 text-[#C89C53] shrink-0" />
+                    <div>
+                      <div className="text-xs font-bold uppercase tracking-wider leading-none text-white/90">View Gallery</div>
+                      <div className="text-[9px] text-white/50 mt-0.5 font-medium">Office &amp; Experiences</div>
+                    </div>
+                  </a>
+                  
+                  <a
+                    href="tel:+918768903565"
+                    className="inline-flex items-center gap-3 px-5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm hover:bg-white/10 transition-all no-underline text-left cursor-pointer"
+                  >
+                    <Phone className="w-5 h-5 text-[#C89C53] shrink-0" />
+                    <div>
+                      <div className="text-xs font-bold uppercase tracking-wider leading-none text-white/90">+91 87689 03565</div>
+                      <div className="text-[9px] text-white/50 mt-0.5 font-medium">Call or Whatsapp</div>
+                    </div>
+                  </a>
+                </div>
+              </div>
+
+              {/* Stacked Map and Office Photo */}
+              <div className="flex flex-col gap-6 w-full">
+                {/* Card 1: Interactive Live Map */}
+                <a
+                  href={officeMapsUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="relative overflow-hidden rounded-[2.5rem] shadow-2xl group border border-white/10 h-[260px] md:h-[280px] w-full block cursor-pointer glass"
+                >
+                  <iframe
+                    src="https://maps.google.com/maps?q=Beduine%20Tour%20And%20Travels%20Pvt.%20Ltd,%20Fulia&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0, pointerEvents: 'none' }}
+                    allowFullScreen={true}
+                    loading="lazy"
+                    title="Beduine Tour And Travels Location Map"
+                    className="w-full h-full opacity-70 group-hover:opacity-95 group-hover:scale-[1.03] transition-all duration-700 ease-out"
+                  />
+                  <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors duration-300" />
+                  <div className="absolute bottom-6 left-6 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-black/75 border border-white/10 backdrop-blur-md text-[10px] font-black uppercase tracking-widest text-white shadow-lg z-10">
+                    <MapPin className="w-3.5 h-3.5 text-rose-500 fill-rose-500 animate-pulse" /> Live Location (Click to Navigate)
+                  </div>
+                </a>
+
+                {/* Card 2: Office Photo */}
+                <div className="relative overflow-hidden rounded-[2.5rem] shadow-2xl group border border-white/10 h-[260px] md:h-[280px] w-full glass">
+                  <img src="/images/office_setup.png" alt="BEDUINE office setup" className="w-full h-full object-cover opacity-70 group-hover:opacity-95 group-hover:scale-[1.03] transition-all duration-700 ease-out" loading="lazy" />
+                  
+                  {/* Logo Wall Close-up Overlay Right */}
+                  <div className="absolute right-5 top-5 z-10 hidden sm:block w-36 overflow-hidden rounded-3xl border border-white/15 bg-slate-950/50 p-1.5 shadow-2xl backdrop-blur-md text-left">
+                    <img src="/images/office_logo.png" alt="BEDUINE office logo wall" className="h-28 w-full rounded-2xl object-cover object-center" loading="lazy" />
+                    <div className="px-2 py-1.5 text-[9px] font-bold text-white/85">Logo wall close-up</div>
+                  </div>
+
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                  
+                  <div className="absolute bottom-5 left-5 right-5 z-10 p-4 bg-slate-950/80 border border-white/10 rounded-2xl backdrop-blur-md flex items-center justify-between gap-4 flex-wrap sm:flex-nowrap">
+                    <div className="text-left">
+                      <div className="text-xs text-neon-gold font-mono">// Fulia HQ Setup</div>
+                      <div className="font-display font-semibold text-white text-sm mt-0.5">Welcome to BEDUINE Tour & Travels</div>
+                    </div>
+                    <a href="#plans" className="shrink-0 w-full sm:w-auto">
+                      <button className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-gradient-to-r from-yellow-400 via-amber-400 to-yellow-500 hover:from-yellow-500 hover:via-amber-500 hover:to-yellow-600 text-slate-950 text-xs font-black uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-lg shadow-yellow-500/20 hover:scale-[1.03] transition-all duration-300 cursor-pointer border-none">
+                        <Crown className="w-4 h-4 fill-current" />
+                        Subscribe Now
+                      </button>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Reveal>
         </div>
       </div>
     </section>
