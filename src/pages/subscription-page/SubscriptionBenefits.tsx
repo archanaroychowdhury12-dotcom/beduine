@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { 
   Route, Tag, Trophy, ShieldCheck, Gem, 
   CreditCard, FileCheck2, Wallet, Gift, ArrowRight, Eye, FileText, 
-  Lock, TrendingUp, Scan, Download, MapPin, Globe, Phone, Crown, Camera
+  Lock, TrendingUp, Scan, Download, MapPin, Phone, Crown, Camera
 } from 'lucide-react';
 import { Reveal, TiltCard, GoldCheck, KineticText, FloatingIcon, SubSectionBadge } from './SubscriptionHelpers';
 import { SERVICES, JOURNEY_IMAGES, JOURNEY_FLOATS, AUDIT_REPORTS } from '../../data/siteData';
