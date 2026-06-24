@@ -22,7 +22,6 @@ export const NAV = [
   { id: 'plans', label: 'Plans', icon: Crown },
   { id: 'luckydraw', label: 'Travel Reward', icon: Ticket },
   { id: 'destinations', label: 'Destinations', icon: MapPin },
-  { id: 'services', label: 'Services', icon: Hotel },
   { id: 'contact', label: 'Contact', icon: MessageCircle },
 ];
 

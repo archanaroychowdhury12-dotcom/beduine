@@ -24,7 +24,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, setCurrentView }) =
       }
 
       if (currentView === 'home') {
-        const sections = ['packages', 'about', 'destinations', 'why-us'];
+        const sections = ['packages', 'about', 'destinations', 'services', 'why-us'];
         let currentActive = 'home';
         
         const threshold = 160;
@@ -150,6 +150,16 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, setCurrentView }) =
                     }`}
                   >
                     Destinations
+                  </button>
+                  <button
+                    onClick={() => handleNavClick('home', 'services')}
+                    className={`text-sm font-semibold tracking-wide transition-colors cursor-pointer ${
+                      activeSection === 'services'
+                        ? (isScrolled ? 'text-amber-600 border-b-2 border-amber-500 pb-1' : 'text-amber-400 border-b-2 border-amber-400 pb-1')
+                        : (isLightBg ? 'text-slate-700 hover:text-amber-600' : 'text-slate-100 hover:text-amber-300')
+                    }`}
+                  >
+                    Services
                   </button>
                   <button
                     onClick={() => handleNavClick('home', 'why-us')}
@@ -283,6 +293,14 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, setCurrentView }) =
                       }`}
                     >
                       Destinations
+                    </button>
+                    <button
+                      onClick={() => handleNavClick('home', 'services')}
+                      className={`text-left text-base font-semibold py-2.5 px-4 rounded-xl ${
+                        activeSection === 'services' ? 'bg-amber-50 text-amber-600' : 'text-slate-700 hover:bg-slate-100'
+                      }`}
+                    >
+                      Services
                     </button>
                     <button
                       onClick={() => handleNavClick('home', 'why-us')}
