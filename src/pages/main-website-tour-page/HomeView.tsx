@@ -17,6 +17,7 @@ import {
   voucherDisplay,
 } from '../../data/paidTourContent';
 import { useScrollReveal } from '../../hooks/useScrollReveal';
+import { motion, useScroll, useTransform } from 'framer-motion';
 
 interface HomeViewProps {
   onStartBooking: (tourId?: string) => void;
@@ -60,6 +61,11 @@ export const HomeView: React.FC<HomeViewProps> = ({
 
   useScrollReveal();
 
+  const { scrollY } = useScroll();
+  const heroOpacity = useTransform(scrollY, [0, 450], [1, 0]);
+  const heroScale = useTransform(scrollY, [0, 450], [1, 0.95]);
+  const heroY = useTransform(scrollY, [0, 450], [0, -30]);
+
   useEffect(() => {
     const fn = () => { setShowFloat(window.scrollY > 700); };
     window.addEventListener('scroll', fn, { passive: true });
@@ -93,8 +99,16 @@ export const HomeView: React.FC<HomeViewProps> = ({
 
       {/* ===================== HERO ===================== */}
       <section className="relative min-h-screen flex items-center pt-20 overflow-hidden">
+        {/* Cinematic Looping Video Background */}
         <div className="absolute inset-0">
-          <img src={heroTour?.img ?? '/images/kashmir_dal_lake_1779521728036.png'} alt={heroTour?.name ?? 'BEDUINE paid tour'} className="w-full h-full object-cover anim-ken-burns" />
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            src="/images/hero_bg_video.mp4"
+            className="w-full h-full object-cover"
+          />
           <div className="absolute inset-0 bg-gradient-to-b from-slate-950/60 via-slate-950/30 to-slate-950/80"></div>
           <div className="absolute inset-0 bg-gradient-to-r from-slate-950/50 via-transparent to-slate-950/30"></div>
         </div>
@@ -105,7 +119,10 @@ export const HomeView: React.FC<HomeViewProps> = ({
         <div className="absolute top-1/3 right-1/4 w-3 h-3 bg-amber-300 rounded-full anim-bounce-subtle hidden lg:block" style={{ animationDelay: '1s' }}></div>
         <div className="absolute bottom-1/3 left-1/3 w-2 h-2 bg-white/50 rounded-full anim-bounce-subtle hidden lg:block" style={{ animationDelay: '2s' }}></div>
 
-        <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20 w-full">
+        <motion.div 
+          style={{ opacity: heroOpacity, y: heroY, scale: heroScale }}
+          className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20 w-full"
+        >
           <div className="max-w-3xl">
             {/* Badges */}
             <div className="flex flex-wrap gap-3 mb-8">
@@ -129,13 +146,13 @@ export const HomeView: React.FC<HomeViewProps> = ({
             </p>
 
             <div className="flex flex-wrap gap-4 mb-14">
-              <button onClick={() => onStartBooking()} className="group relative overflow-hidden px-9 py-5 rounded-full bg-gradient-to-r from-brand via-orange-500 to-amber-500 text-white font-bold text-base transition-all hover:-translate-y-1 shadow-2xl shadow-brand/30 flex items-center gap-3 cursor-pointer">
+              <button onClick={() => onStartBooking()} className="group relative overflow-hidden px-9 py-5 rounded-full bg-gradient-to-r from-brand via-orange-500 to-amber-500 text-white font-bold text-base transition-all hover:-translate-y-1 shadow-2xl shadow-brand/30 flex items-center gap-3 cursor-pointer border-none">
                 <span className="absolute inset-0 anim-shimmer"></span>
-                <Calendar className="w-5 h-5 relative" /><span className="relative">Book Paid Tour</span><ArrowRight className="w-5 h-5 relative group-hover:translate-x-1 transition-transform" />
+                <Calendar className="w-5 h-5 relative" /><span className="relative">Book Now</span><ArrowRight className="w-5 h-5 relative group-hover:translate-x-1 transition-transform" />
               </button>
               <a href="#packages" onClick={(e) => { e.preventDefault(); document.getElementById('packages')?.scrollIntoView({ behavior: 'smooth' }); }}
-                className="glass px-9 py-5 rounded-full text-white font-bold text-base flex items-center gap-3 hover:bg-white/15 transition-all cursor-pointer">
-                <Compass className="w-5 h-5 text-amber-400" /><span>Explore Packages</span>
+                className="glass px-9 py-5 rounded-full text-white font-bold text-base flex items-center gap-3 hover:bg-white/15 transition-all cursor-pointer no-underline">
+                <Compass className="w-5 h-5 text-amber-400" /><span>Explore Tours</span>
               </a>
             </div>
 
@@ -146,7 +163,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
               <span className="flex items-center gap-2"><Star className="w-4 h-4 text-amber-400 fill-current" /> {reviewSummary}</span>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Scroll indicator */}
         <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-10 anim-bounce-subtle">

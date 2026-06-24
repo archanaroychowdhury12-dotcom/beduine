@@ -2258,3 +2258,122 @@ input:focus-visible,
   animation: wave-pulse 10s ease-in-out infinite;
   will-change: transform, opacity;
 }
+
+/* Card Hover Upgrades */
+.card-lift {
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s cubic-bezier(0.25, 1, 0.5, 1) !important;
+  will-change: transform, box-shadow;
+}
+.card-lift:hover {
+  transform: translateY(-8px) scale(1.02) !important;
+  box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.45), 0 0 50px -10px var(--brand, rgba(232, 89, 12, 0.25)) !important;
+}
+
+.img-zoom {
+  overflow: hidden;
+}
+.img-zoom img {
+  transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1) !important;
+  will-change: transform;
+}
+.img-zoom:hover img {
+  transform: scale(1.08) !important;
+}
+
+/* Theme Toggle Configuration */
+:root {
+  --color-cosmos: #030c15;
+  --color-void: #010409;
+  --color-deep: #0a111a;
+  --color-abyss: #060a10;
+  --color-ink: #f8fafc;
+  --color-slate-line: rgba(255, 255, 255, 0.08);
+}
+
+.light-theme {
+  --color-cosmos: #FAF9F6;
+  --color-void: #FFFFFF;
+  --color-deep: #F5F5F0;
+  --color-abyss: #EAEAE0;
+  --color-ink: #1C1917;
+  --color-slate-line: rgba(148, 163, 184, 0.18);
+}
+
+/* Chatbot Style Utilities */
+.chat-message-bubble {
+  border-radius: 18px;
+  max-width: 85%;
+  padding: 10px 14px;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+/* Smooth Focus States for Accessibility */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--color-cyan, #18D7F2);
+  outline-offset: 2px;
+}
+
+
+/* Card Hover Upgrades */
+.card-lift {
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s cubic-bezier(0.25, 1, 0.5, 1) !important;
+  will-change: transform, box-shadow;
+}
+.card-lift:hover {
+  transform: translateY(-8px) scale(1.02) !important;
+  box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.45), 0 0 50px -10px var(--brand, rgba(232, 89, 12, 0.25)) !important;
+}
+
+.img-zoom {
+  overflow: hidden;
+}
+.img-zoom img {
+  transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1) !important;
+  will-change: transform;
+}
+.img-zoom:hover img {
+  transform: scale(1.08) !important;
+}
+
+/* Theme Toggle Configuration */
+:root {
+  --color-cosmos: #030c15;
+  --color-void: #010409;
+  --color-deep: #0a111a;
+  --color-abyss: #060a10;
+  --color-ink: #f8fafc;
+  --color-slate-line: rgba(255, 255, 255, 0.08);
+}
+
+.light-theme {
+  --color-cosmos: #FAF9F6;
+  --color-void: #FFFFFF;
+  --color-deep: #F5F5F0;
+  --color-abyss: #EAEAE0;
+  --color-ink: #1C1917;
+  --color-slate-line: rgba(148, 163, 184, 0.18);
+}
+
+/* Chatbot Style Utilities */
+.chat-message-bubble {
+  border-radius: 18px;
+  max-width: 85%;
+  padding: 10px 14px;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+/* Smooth Focus States for Accessibility */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--color-cyan, #18D7F2);
+  outline-offset: 2px;
+}

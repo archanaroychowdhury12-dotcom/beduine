@@ -20,35 +20,35 @@ export function SubscriptionHero({ setView }: HeroProps) {
   const slide = HERO_SLIDES[currentSlideIndex];
 
   const { scrollY } = useScroll();
-  const yParallax = useTransform(scrollY, [0, 800], [0, 150]);
+  const heroOpacity = useTransform(scrollY, [0, 450], [1, 0]);
+  const heroScale = useTransform(scrollY, [0, 450], [1, 0.95]);
+  const heroY = useTransform(scrollY, [0, 450], [0, -30]);
 
   return (
-    <section id="top" className="relative z-20 min-h-screen flex items-center bg-[#f4f7f6] overflow-hidden pt-28 pb-16">
-      {/* Background with Parallax (Brightened) */}
-      <div className="absolute inset-0 z-0 overflow-hidden bg-[#f4f7f6]">
-        <AnimatePresence mode="popLayout">
-          <motion.div
-            key={currentSlideIndex}
-            style={{ y: yParallax }}
-            initial={{ scale: 1.1, opacity: 0 }}
-            animate={{ scale: 1, opacity: 0.95 }}
-            exit={{ scale: 0.95, opacity: 0 }}
-            transition={{ duration: 1.6, ease: [0.25, 1, 0.5, 1] }}
-            className="absolute inset-0"
-          >
-            <img src={slide.image} alt={slide.tagline} className="w-full h-full object-cover" fetchPriority="high" width="1920" height="1080" />
-          </motion.div>
-        </AnimatePresence>
-        {/* Soft, light overlays to guarantee high contrast without darkening the beautiful image */}
-        <div className="absolute inset-0 bg-gradient-to-b from-white/35 via-white/5 to-[#f4f7f6]/95 z-[2]" />
-        <div className="absolute inset-0 bg-gradient-to-r from-white/65 via-white/15 to-transparent z-[2]" />
+    <section id="top" className="relative z-20 min-h-screen flex items-center bg-[#030C15] overflow-hidden pt-28 pb-16">
+      {/* Cinematic Looping Video Background */}
+      <div className="absolute inset-0 z-0 overflow-hidden">
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          src="/images/landing_background_video.mp4"
+          className="w-full h-full object-cover"
+        />
+        {/* Dark overlays to guarantee high contrast */}
+        <div className="absolute inset-0 bg-gradient-to-b from-slate-950/80 via-slate-950/40 to-[#030C15]" />
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/70 via-transparent to-transparent" />
       </div>
 
-      <div className="absolute inset-0 grid-pattern opacity-[0.03] z-[1]" />
+      <div className="absolute inset-0 grid-pattern opacity-[0.05] z-[1]" />
 
       <div className="relative max-w-7xl mx-auto px-5 lg:px-8 w-full z-10 grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
         {/* Left Column: Cursive Tagline, Animated Heading, Description, and CTA */}
-        <div className="lg:col-span-6 text-left flex flex-col justify-center relative min-h-[440px]">
+        <motion.div 
+          style={{ opacity: heroOpacity, y: heroY, scale: heroScale }}
+          className="lg:col-span-6 text-left flex flex-col justify-center relative min-h-[440px]"
+        >
           <AnimatePresence mode="wait">
             <motion.div
               key={currentSlideIndex}
@@ -60,33 +60,36 @@ export function SubscriptionHero({ setView }: HeroProps) {
             >
               {/* Company Name & Secondary Tagline */}
               <div className="mb-2 flex flex-col">
-                <span className="text-xs uppercase tracking-widest text-[#0096C7] font-extrabold font-mono">
+                <span className="text-xs uppercase tracking-widest text-cyan font-extrabold font-mono neon-cyan">
                   BEDUINE TOUR & TRAVELS
                 </span>
-                <span className="font-pacifico text-3xl md:text-4xl text-[#0096C7] leading-relaxed drop-shadow-[0_2px_4px_rgba(255,255,255,0.9)] mt-1">
+                <span className="font-pacifico text-3xl md:text-4xl text-neon-gold leading-relaxed drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] mt-1">
                   {slide.tagline}
                 </span>
               </div>
 
               {/* Headline (Main Tagline) */}
               <h1 className="font-display font-black text-4xl sm:text-5xl lg:text-6xl tracking-tight leading-[1.1] uppercase mb-4 flex flex-col">
-                <span className="text-[#0B1F2E] drop-shadow-[0_2px_8px_rgba(255,255,255,0.9)]">
+                <span className="text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
                   {slide.title1}
                 </span>
-                <span className="bg-gradient-to-r from-[#0096C7] via-[#00B4D8] to-[#0077B6] bg-clip-text text-transparent drop-shadow-[0_1.5px_4px_rgba(255,255,255,0.4)]">
+                <span className="bg-gradient-to-r from-cyan via-[#00C7A3] to-neon-gold bg-clip-text text-transparent drop-shadow-[0_1.5px_4px_rgba(0,0,0,0.5)]">
                   {slide.title2}
                 </span>
               </h1>
 
               {/* Description */}
-              <p className="text-sm sm:text-base text-slate-700/95 font-bold leading-relaxed max-w-md mb-6 drop-shadow-[0_1.5px_3px_rgba(255,255,255,0.9)]">
+              <p className="text-sm sm:text-base text-slate-300 font-medium leading-relaxed max-w-md mb-6 drop-shadow-md">
                 {slide.desc}
               </p>
 
               {/* Action Buttons */}
               <div className="flex flex-wrap gap-3 items-center mb-8">
-                <a href="#plans" className="cursor-pointer">
-                  <button className="px-6 py-3 bg-gradient-to-r from-[#00A2FF] to-[#00D9FF] hover:from-[#0088D1] hover:to-[#00C2E6] text-white font-bold rounded-full shadow-lg shadow-cyan-500/20 hover:-translate-y-0.5 transition-all text-xs uppercase tracking-wider border-none cursor-pointer flex items-center gap-1.5">
+                <a href="#plans" onClick={(e) => {
+                  e.preventDefault();
+                  document.getElementById('plans')?.scrollIntoView({ behavior: 'smooth' });
+                }} className="cursor-pointer">
+                  <button className="px-6 py-3 bg-gradient-to-r from-cyan to-cyan-deep hover:scale-105 text-slate-955 font-bold rounded-full shadow-lg shadow-cyan-500/20 transition-all text-xs uppercase tracking-wider border-none cursor-pointer flex items-center gap-1.5">
                     View Plans <ArrowRight className="w-3.5 h-3.5" />
                   </button>
                 </a>
@@ -95,7 +98,7 @@ export function SubscriptionHero({ setView }: HeroProps) {
                     setView('terms');
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                   }}
-                  className="px-6 py-3 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-full shadow-lg hover:-translate-y-0.5 transition-all text-xs uppercase tracking-wider border-none cursor-pointer flex items-center gap-1.5"
+                  className="px-6 py-3 bg-white/10 hover:bg-white/20 text-white font-bold rounded-full shadow-lg hover:-translate-y-0.5 transition-all text-xs uppercase tracking-wider border border-white/20 cursor-pointer flex items-center gap-1.5"
                 >
                   Read Terms
                 </button>
@@ -115,31 +118,31 @@ export function SubscriptionHero({ setView }: HeroProps) {
               <div className="flex items-center gap-3 mt-2 select-none pointer-events-none">
                 {/* Polaroid 1 */}
                 <div
-                  className="bg-white p-2.5 pb-4 shadow-[0_12px_24px_rgba(0,0,0,0.08)] rounded border border-slate-100/50 w-32 rotate-[-8deg] transform hover:rotate-[-4deg] transition-transform duration-300"
+                  className="bg-slate-900/90 p-2.5 pb-4 shadow-2xl rounded border border-white/10 w-32 rotate-[-8deg] transform hover:rotate-[-4deg] transition-transform duration-300"
                 >
                   <img
                     src="/images/kashmir_dal_lake_1779521728036.png"
                     alt="Kashmir"
                     className="w-full h-18 object-cover rounded-sm"
                   />
-                  <div className="text-[9px] text-slate-800 font-pacifico mt-1.5 text-center">Kashmir Dal Lake</div>
+                  <div className="text-[9px] text-slate-350 font-pacifico mt-1.5 text-center">Kashmir Dal Lake</div>
                 </div>
 
                 {/* Polaroid 2 */}
                 <div
-                  className="bg-white p-2.5 pb-4 shadow-[0_12px_24px_rgba(0,0,0,0.08)] rounded border border-slate-100/50 w-32 rotate-[6deg] -ml-5 transform hover:rotate-[2deg] transition-transform duration-300 z-10"
+                  className="bg-slate-900/90 p-2.5 pb-4 shadow-2xl rounded border border-white/10 w-32 rotate-[6deg] -ml-5 transform hover:rotate-[2deg] transition-transform duration-300 z-10"
                 >
                   <img
                     src="/images/darjeeling_tea_1779521805614.png"
                     alt="Darjeeling"
                     className="w-full h-18 object-cover rounded-sm"
                   />
-                  <div className="text-[9px] text-slate-800 font-pacifico mt-1.5 text-center">Darjeeling Tea</div>
+                  <div className="text-[9px] text-slate-350 font-pacifico mt-1.5 text-center">Darjeeling Tea</div>
                 </div>
               </div>
             </motion.div>
           </AnimatePresence>
-        </div>
+        </motion.div>
 
         {/* Right Column: Dynamic Circular/Oval Frame + Floating Airplane + Clouds + Hearts */}
         <div className="lg:col-span-6 relative flex items-center justify-center min-h-[460px]">
