@@ -303,15 +303,6 @@ export function NonWinnerGuarantee() {
                   </div>
 
                   <h3 className="font-display text-lg font-bold text-ink mb-3">{card.plan} Plan ROI Example</h3>
-                  <div className="flex items-center gap-1.5 mb-5 font-mono text-xs font-black text-slate-500 uppercase tracking-widest">// Supported tours</div>
-                  <ul className="space-y-2 mb-6">
-                    {card.tours.map((t) => (
-                      <li key={t} className="flex items-center gap-2 text-sm text-ink/80 font-semibold">
-                        <GoldCheck size={14} />
-                        <span>{t}</span>
-                      </li>
-                    ))}
-                  </ul>
 
                   <div className="border-t border-slate-line/50 pt-5 mb-5">
                     <div className="flex items-center gap-3 mb-3">
