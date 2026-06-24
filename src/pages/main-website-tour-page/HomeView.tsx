@@ -78,6 +78,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
 
   */
   const paidTourReviews = reviews;
+  const heroTour = FEATURED_PAID_TOUR_CARDS[3] ?? FEATURED_PAID_TOUR_CARDS[0];
   const topReview = paidTourReviews[0];
   const popularTags = FEATURED_PAID_TOUR_CARDS.map((tour) => tour.location.split(',')[0]);
   const reviewSummary = `${averageRating.toFixed(1)}/5 (${totalReviewCount.toLocaleString('en-IN')} reviews)`;
