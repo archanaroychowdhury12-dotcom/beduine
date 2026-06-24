@@ -27,7 +27,7 @@ const REVIEWS_DATA: Review[] = [
     duration: '5N/6D Premium Tour',
     compliment: 'A big compliment to Beduine for such flawless planning! They covered all flight costs, booked a royal houseboat on Dal Lake and a luxury resort in Gulmarg. The food was delicious, and the tour guide kept checking on us. We felt extremely safe and pampered!',
     avatar: '/images/winner_ananya_das.png',
-    mainImg: '/images/kashmir_dal_lake_1779521728036.png',
+    mainImg: '/images/kashmir_lake_review.png',
     gallery: [
       '/images/kashmir_resort.png',
       '/images/kashmir_valley.png'
@@ -45,7 +45,7 @@ const REVIEWS_DATA: Review[] = [
     duration: '3N/4D Classic Tour',
     compliment: 'I was skeptical about lucky draws, but Beduine proved me wrong. Our Darjeeling tour was arranged at a premium mountain view resort. The Himalayan toy train tickets were pre-booked, and the private cab driver was very polite. A wonderful experience overall!',
     avatar: '/images/winner_rajesh_kumar.png',
-    mainImg: '/images/darjeeling_tea_1779521805614.png',
+    mainImg: '/images/darjeeling_tea_review.png',
     gallery: [
       '/images/darjeeling_resort.png',
       '/images/darjeeling_hills.png'
@@ -63,7 +63,7 @@ const REVIEWS_DATA: Review[] = [
     duration: '2N/3D Jungle Safari',
     compliment: 'My Silver subscription of just ₹499 got me a fully planned 3-day luxury tour to Sundarban! The jungle safari, resort stay, and local guide service were outstanding. Highly recommend Beduine!',
     avatar: '/images/winner_priya_sen.png',
-    mainImg: '/images/sundarbans_mangrove_1779521789593.png',
+    mainImg: '/images/sundarbans_boat_review.png',
     gallery: [
       '/images/sundarbans_forest_card.png',
       '/images/sunderbans_forest.png'
@@ -81,7 +81,7 @@ const REVIEWS_DATA: Review[] = [
     duration: '4N/5D Luxury Tour',
     compliment: 'Beduine backwater tour was pure bliss. The luxury houseboat they booked was exceptionally clean and had a private chef who prepared fresh fish fry for us. The Munnar hill hotel was also breathtaking. Top marks for hospitality!',
     avatar: '/images/winner_arjun_roy.png',
-    mainImg: '/images/kerala_houseboat_1779521772928.png',
+    mainImg: '/images/kerala_houseboat_review.png',
     gallery: [
       '/images/happy_family_travelers.png',
       '/images/tropical_coast.png'
