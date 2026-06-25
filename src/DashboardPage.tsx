@@ -447,13 +447,13 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack }
   };
 
   const handleResetAllDemoUsers = async () => {
-    if (!window.confirm("Are you sure you want to reset all demo/test accounts?")) return;
+    if (!window.confirm("Are you sure you want to reset all user accounts to a zero-state?")) return;
     const auth = (supabase.auth as any);
-    auth.resetDemoAccounts();
+    auth.resetAllAccounts();
     const updatedList = auth.getUsersList();
     setAdminUsers(updatedList);
     setSelectedAdminUser(null);
-    alert("All demo/test accounts have been reset successfully.");
+    alert("All user accounts have been reset to ₹0 balance, null plans, and zero-credits successfully.");
   };
 
   const handleAdminAddBalance = async () => {
@@ -3833,7 +3833,7 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack }
             onClick={handleResetAllDemoUsers}
             className="px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider text-white bg-red-505 bg-rose-500 hover:bg-rose-600 transition-colors border-none cursor-pointer flex items-center gap-1.5 shadow-md shadow-red-100"
           >
-            <Trash2 className="w-4 h-4" /> Reset Demo Accounts
+            <Trash2 className="w-4 h-4" /> Reset All Accounts
           </button>
         </div>
 

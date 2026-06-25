@@ -116,6 +116,40 @@ class MockAuth {
         }
       }
     }
+
+    // 4. One-time reset of ALL user accounts (real + demo) to 0/inactive state as requested
+    const initializedAllReset = localStorage.getItem('beduine_all_reset_v5');
+    if (!initializedAllReset) {
+      const allUsers = this.getUsers();
+      const updated = allUsers.map(u => {
+        return {
+          ...u,
+          user_metadata: {
+            ...u.user_metadata,
+            planName: null,
+            planPrice: null,
+            planType: null,
+            subscriptionStatus: 'inactive',
+            real_wallet_balance: 0,
+            demo_wallet_balance: 0,
+            discount_credits: 0,
+            weekly_eligible_entry_count: 0,
+            used_credits: 0,
+            pending_credits: 0,
+            selected_member_benefit_status: 'none',
+            ledger: [],
+            demo_transactions: []
+          }
+        };
+      });
+      this.saveUsers(updated);
+      localStorage.setItem('beduine_all_reset_v5', 'true');
+      
+      if (this.currentSession?.user) {
+        this.currentSession.user = updated.find(u => u.id === this.currentSession.user.id) || this.currentSession.user;
+        this.saveSession(this.currentSession);
+      }
+    }
   }
 
   private triggerChange(event: string) {
@@ -389,44 +423,35 @@ class MockAuth {
     }
   }
 
-  resetDemoAccounts() {
+  resetAllAccounts() {
     const users = this.getUsers();
     const updatedUsers = users.map(u => {
-      const email = u.email || '';
-      const isDemo = u.user_metadata?.is_demo_user || email.includes('demo') || email.includes('test') || email.includes('admin');
-      if (isDemo) {
-        return {
-          ...u,
-          user_metadata: {
-            ...u.user_metadata,
-            planName: null,
-            planPrice: null,
-            planType: null,
-            subscriptionStatus: 'inactive',
-            real_wallet_balance: 0,
-            demo_wallet_balance: 0,
-            discount_credits: 0,
-            weekly_eligible_entry_count: 0,
-            used_credits: 0,
-            pending_credits: 0,
-            selected_member_benefit_status: 'none',
-            ledger: [],
-            demo_transactions: []
-          }
-        };
-      }
-      return u;
+      return {
+        ...u,
+        user_metadata: {
+          ...u.user_metadata,
+          planName: null,
+          planPrice: null,
+          planType: null,
+          subscriptionStatus: 'inactive',
+          real_wallet_balance: 0,
+          demo_wallet_balance: 0,
+          discount_credits: 0,
+          weekly_eligible_entry_count: 0,
+          used_credits: 0,
+          pending_credits: 0,
+          selected_member_benefit_status: 'none',
+          ledger: [],
+          demo_transactions: []
+        }
+      };
     });
     this.saveUsers(updatedUsers);
 
-    // Also update current session if the current user is a demo user
+    // Also update current session if active
     if (this.currentSession?.user) {
-      const curEmail = this.currentSession.user.email || '';
-      const isDemo = this.currentSession.user.user_metadata?.is_demo_user || curEmail.includes('demo') || curEmail.includes('test') || curEmail.includes('admin');
-      if (isDemo) {
-        this.currentSession.user = updatedUsers.find(u => u.id === this.currentSession.user.id) || this.currentSession.user;
-        this.saveSession(this.currentSession);
-      }
+      this.currentSession.user = updatedUsers.find(u => u.id === this.currentSession.user.id) || this.currentSession.user;
+      this.saveSession(this.currentSession);
     }
     this.triggerChange('USER_UPDATED');
   }
