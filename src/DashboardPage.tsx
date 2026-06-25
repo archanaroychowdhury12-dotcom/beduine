@@ -510,6 +510,25 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack }
     setEditDob(profileDob);
   }, [profileName, profileEmail, profileMobile, profileAddress, profileCity, profileDob]);
 
+  const loadDemoBalance = () => {
+    const newEntry: CreditLedgerEntry = {
+      id: `TXN-DC-${Math.floor(100000 + Math.random() * 900000)}`,
+      date: new Date().toLocaleDateString('en-US', {
+        month: 'short',
+        day: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      }),
+      type: 'issued',
+      creditType: 'discount',
+      amount: 10,
+      reason: 'Demo / testing balance loaded by user'
+    };
+    setLedger(prev => [...prev, newEntry]);
+    alert('₹5,000 Demo Balance has been added to your wallet! You now have 10 additional ₹500 discount vouchers.');
+  };
+
   // Credit calculation functions
   const availableDiscountCredits = ledger
     .filter(x => x.creditType === 'discount')
@@ -2120,7 +2139,15 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack }
         <div className="bg-gradient-to-r from-[#00D4F5] to-[#3B82F6] rounded-[22px] p-6 text-center text-white shadow-md relative overflow-hidden">
           <span className="text-[10px] uppercase tracking-wider font-mono block text-white/80 font-bold">AVAILABLE WALLET BALANCE</span>
           <span className="text-4xl font-black block mt-1 text-white">₹{discountCreditBalance}</span>
-          <span className="text-xs text-white/90 mt-1 block font-medium">Valid up to 12 months (Subscription Expiry)</span>
+          <span className="text-xs text-white/90 mt-1 block font-medium mb-3">Valid up to 12 months (Subscription Expiry)</span>
+          
+          <button 
+            onClick={loadDemoBalance}
+            className="px-4 py-2 bg-white text-[#3B82F6] hover:bg-white/95 font-bold rounded-xl text-xs tracking-wider uppercase transition-all duration-300 shadow-md hover:shadow-lg active:scale-95 flex items-center gap-1.5 mx-auto cursor-pointer border-none"
+          >
+            <Sparkles className="w-4 h-4 text-amber-500 fill-amber-500 animate-pulse" />
+            <span>Load ₹5,000 Demo Balance</span>
+          </button>
         </div>
 
         {/* Coupons list representing active vouchers */}
