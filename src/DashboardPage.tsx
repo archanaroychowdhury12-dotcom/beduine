@@ -7,12 +7,14 @@ import {
   ChevronRight, User, Bell, ChevronLeft,
   LayoutDashboard, ShieldCheck, Tag, Route, Share2, Phone,
   MessageCircle, Trash2, Copy, FileText, CheckCircle2, Clock,
-  AlertTriangle, Lock, Unlock, RefreshCw, UserPlus, Download
+  AlertTriangle, Lock, Unlock, RefreshCw, UserPlus, Download, Award
 } from 'lucide-react';
 import { customTourService } from './services/customTourService';
 import { CustomTourForm } from './pages/main-website-tour-page/custom-tour/CustomTourForm';
 import { CustomTourDetailPanel } from './pages/main-website-tour-page/custom-tour/CustomTourDetailPanel';
 import { CustomTourRequest } from './types';
+import { supabase } from './utils/supabaseClient';
+import { demoWalletService, DemoTransaction } from './services/demoWalletService';
 
 interface DashboardPageProps {
   user: any;
@@ -286,11 +288,11 @@ const generateRandomToken = () => {
 };
 
 export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack }: DashboardPageProps) {
-  // Navigation states - supports 11 tabs as requested
+  // Navigation states - supports 11 tabs as requested, plus admin control
   const [activeTab, setActiveTab] = useState<
     'overview' | 'subscription' | 'weekly-participation' | 'credits' |
     'coupons' | 'bookings' | 'custom-tours' | 'referrals' |
-    'notifications' | 'support' | 'profile'
+    'notifications' | 'support' | 'profile' | 'admin-panel'
   >('overview');
 
   // Profile states
@@ -317,44 +319,226 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack }
     { name: 'Sundarbans Forest', desc: 'Misty Mangroves', img: '/images/sundarbans_forest_card.png' }
   ];
 
-  // Derived plan states
-  const planName = user?.planName || 'Silver Plan';
-  const planType = user?.planType || 'domestic';
-  const memberId = user?.memberId || 'BDN-F-741402';
-  const voucherCount = planName?.toLowerCase()?.includes('platinum') ? 4 : planName?.toLowerCase()?.includes('gold') ? 2 : 1;
+  // Environment variables & Roles
+  const isDemoWalletEnabled = import.meta.env.VITE_ENABLE_DEMO_WALLET === 'true';
+  const isDemoOrAdminUser = user?.is_demo_user || 
+                            user?.email?.includes('demo') || 
+                            user?.email?.includes('test') || 
+                            user?.email?.includes('admin');
+  const showDemoWallet = isDemoWalletEnabled && isDemoOrAdminUser;
 
-  // Credit Ledger State - Initialized with default issued items
-  const [ledger, setLedger] = useState<CreditLedgerEntry[]>(() => {
-    const signupDate = user?.date || 'June 20, 2026';
-    const initLedger: CreditLedgerEntry[] = [
-      {
-        id: 'TXN-TRC-001',
-        date: signupDate,
-        type: 'issued',
-        creditType: 'lucky_draw',
-        amount: 1,
-        reason: 'Subscription activation entitlement token'
-      },
-      {
-        id: 'TXN-DC-001',
-        date: signupDate,
-        type: 'issued',
-        creditType: 'discount',
-        amount: voucherCount,
-        reason: `Subscription signup reward - ${voucherCount} Discount Vouchers issued`
-      },
-      {
-        id: 'TXN-DC-002',
-        date: signupDate,
-        type: 'reserved',
-        creditType: 'discount',
-        amount: -1,
-        reason: 'Reserved for domestic booking: Puri Beach Escape',
-        bookingRef: 'BDN-PURI-901B'
+  // Subscription states
+  const [activePlan, setActivePlan] = useState<string | null>(() => user?.planName || null);
+  const [activePlanPrice, setActivePlanPrice] = useState<string | null>(() => user?.planPrice || null);
+  const [activePlanType, setActivePlanType] = useState<string | null>(() => user?.planType || null);
+  const [subscriptionStatus, setSubscriptionStatus] = useState<string>(() => user?.subscriptionStatus || 'inactive');
+  const [realWalletBalance, setRealWalletBalance] = useState<number>(() => user?.real_wallet_balance ?? 0);
+  const [demoWalletBalance, setDemoWalletBalance] = useState<number>(() => user?.demo_wallet_balance ?? 0);
+  const [demoTransactions, setDemoTransactions] = useState<any[]>(() => user?.demo_transactions || []);
+
+  // Checkout flow states
+  const [selectedPlanId, setSelectedPlanId] = useState<string>('Silver');
+  const [paymentMethod, setPaymentMethod] = useState<'real_payment' | 'demo_wallet'>('real_payment');
+  const [checkoutLoading, setCheckoutLoading] = useState(false);
+  const [checkoutSuccess, setCheckoutSuccess] = useState<any | null>(null);
+
+  // Admin panel state
+  const [adminUsers, setAdminUsers] = useState<any[]>([]);
+  const [selectedAdminUser, setSelectedAdminUser] = useState<any | null>(null);
+  const [adminCustomAmount, setAdminCustomAmount] = useState<string>('');
+  const [adminFilter, setAdminFilter] = useState<'all' | 'real' | 'demo'>('all');
+
+  // Sync React state if user prop changes
+  useEffect(() => {
+    setActivePlan(user?.planName || null);
+    setActivePlanPrice(user?.planPrice || null);
+    setActivePlanType(user?.planType || null);
+    setSubscriptionStatus(user?.subscriptionStatus || 'inactive');
+    setRealWalletBalance(user?.real_wallet_balance ?? 0);
+    setDemoWalletBalance(user?.demo_wallet_balance ?? 0);
+    setDemoTransactions(user?.demo_transactions || []);
+  }, [user]);
+
+  // Derived plan states
+  const planName = activePlan;
+  const planType = activePlanType || 'domestic';
+  const memberId = user?.memberId || 'BDN-F-741402';
+  const voucherCount = planName ? (planName.toLowerCase().includes('platinum') ? 4 : planName.toLowerCase().includes('gold') ? 2 : 1) : 0;
+
+  // Credit Ledger State - Initialized from user object
+  const [ledger, setLedger] = useState<CreditLedgerEntry[]>(() => user?.ledger || []);
+
+  useEffect(() => {
+    setLedger(user?.ledger || []);
+  }, [user?.ledger]);
+
+  const handleAddDemoBalance = async (amount: number) => {
+    if (amount <= 0) return;
+    const res = await demoWalletService.addDemoBalance(user.id, amount);
+    if (res.success) {
+      setDemoWalletBalance(res.balance);
+      const txns = await demoWalletService.getDemoTransactions(user.id);
+      setDemoTransactions(txns);
+      
+      await supabase.auth.updateUser({
+        data: {
+          demo_wallet_balance: res.balance,
+          demo_transactions: txns
+        }
+      });
+      alert(res.message);
+    } else {
+      alert(res.message);
+    }
+  };
+
+  const handleCheckout = async () => {
+    setCheckoutLoading(true);
+    try {
+      const res = await demoWalletService.checkoutSubscription(user.id, selectedPlanId, paymentMethod);
+      setCheckoutLoading(false);
+      if (res.success) {
+        setCheckoutSuccess(res);
+        const updatedUser = res.user;
+        setActivePlan(updatedUser.user_metadata.planName);
+        setActivePlanPrice(updatedUser.user_metadata.planPrice);
+        setActivePlanType(updatedUser.user_metadata.planType);
+        setSubscriptionStatus(updatedUser.user_metadata.subscriptionStatus);
+        setDemoWalletBalance(updatedUser.user_metadata.demo_wallet_balance ?? 0);
+        setLedger(updatedUser.user_metadata.ledger || []);
+        const txns = await demoWalletService.getDemoTransactions(user.id);
+        setDemoTransactions(txns);
+
+        await supabase.auth.updateUser({
+          data: updatedUser.user_metadata
+        });
+      } else {
+        alert(res.message);
       }
-    ];
-    return initLedger;
-  });
+    } catch (e: any) {
+      setCheckoutLoading(false);
+      alert(e.message || 'Checkout failed');
+    }
+  };
+
+  // Sync users list when admin tab opens
+  useEffect(() => {
+    if (activeTab === 'admin-panel') {
+      const auth = (supabase.auth as any);
+      if (auth?.getUsersList) {
+        setAdminUsers(auth.getUsersList());
+      }
+    }
+  }, [activeTab]);
+
+  const handleResetSelectedDemoUser = async (userToReset: any) => {
+    const res = await demoWalletService.resetDemoAccount(userToReset.id);
+    if (res.success) {
+      const auth = (supabase.auth as any);
+      const updatedList = auth.getUsersList();
+      setAdminUsers(updatedList);
+      if (selectedAdminUser && selectedAdminUser.id === userToReset.id) {
+        setSelectedAdminUser(updatedList.find((u: any) => u.id === userToReset.id) || null);
+      }
+      alert(`Demo user ${userToReset.email} reset successfully.`);
+    } else {
+      alert(res.message);
+    }
+  };
+
+  const handleResetAllDemoUsers = async () => {
+    if (!window.confirm("Are you sure you want to reset all demo/test accounts?")) return;
+    const auth = (supabase.auth as any);
+    auth.resetDemoAccounts();
+    const updatedList = auth.getUsersList();
+    setAdminUsers(updatedList);
+    setSelectedAdminUser(null);
+    alert("All demo/test accounts have been reset successfully.");
+  };
+
+  const handleAdminAddBalance = async () => {
+    if (!selectedAdminUser) return;
+    const amt = parseFloat(adminCustomAmount);
+    if (isNaN(amt) || amt <= 0) {
+      alert("Please enter a valid amount.");
+      return;
+    }
+    const res = await demoWalletService.addDemoBalance(selectedAdminUser.id, amt);
+    if (res.success) {
+      const auth = (supabase.auth as any);
+      const updatedList = auth.getUsersList();
+      setAdminUsers(updatedList);
+      setSelectedAdminUser(updatedList.find((u: any) => u.id === selectedAdminUser.id) || null);
+      setAdminCustomAmount('');
+      alert(res.message);
+    } else {
+      alert(res.message);
+    }
+  };
+
+  const handleAdminRemoveBalance = async () => {
+    if (!selectedAdminUser) return;
+    const auth = (supabase.auth as any);
+    const users = auth.getUsersList();
+    const idx = users.findIndex((u: any) => u.id === selectedAdminUser.id);
+    if (idx === -1) return;
+    
+    const userToModify = users[idx];
+    const currentBalance = userToModify.user_metadata?.demo_wallet_balance ?? 0;
+    
+    const amt = parseFloat(adminCustomAmount);
+    let newBalance = 0;
+    let reason = "Removed demo balance by admin";
+    
+    if (!isNaN(amt) && amt > 0) {
+      newBalance = Math.max(0, currentBalance - amt);
+      reason = `Deducted test balance: -₹${amt} by admin`;
+    }
+    
+    const newTxn = {
+      id: `DEMO-TXN-${Math.floor(100000 + Math.random() * 900000)}`,
+      userId: selectedAdminUser.id,
+      amount: newBalance - currentBalance,
+      transaction_type: 'debit' as const,
+      wallet_type: 'demo' as const,
+      payment_type: 'demo_wallet' as const,
+      reason,
+      status: 'success' as const,
+      created_at: new Date().toISOString()
+    };
+    
+    const demoTransactions = userToModify.user_metadata?.demo_transactions || [];
+    demoTransactions.unshift(newTxn);
+    
+    userToModify.user_metadata = {
+      ...userToModify.user_metadata,
+      demo_wallet_balance: newBalance,
+      demo_transactions
+    };
+    
+    users[idx] = userToModify;
+    auth.saveUsersList(users);
+    
+    setAdminUsers(users);
+    setSelectedAdminUser(userToModify);
+    setAdminCustomAmount('');
+    alert(`Demo balance updated to ₹${newBalance} for ${userToModify.email}.`);
+  };
+
+  const getAllTransactions = () => {
+    const list: any[] = [];
+    adminUsers.forEach(u => {
+      const realTxns = u.user_metadata?.real_transactions || [];
+      const demoTxns = u.user_metadata?.demo_transactions || [];
+      realTxns.forEach((t: any) => {
+        list.push({ ...t, email: u.email, wallet_type: 'real' });
+      });
+      demoTxns.forEach((t: any) => {
+        list.push({ ...t, email: u.email, wallet_type: 'demo' });
+      });
+    });
+    return list.sort((a, b) => new Date(b.created_at || b.date).getTime() - new Date(a.created_at || a.date).getTime());
+  };
 
   // Track if current week's participation activated manually by customer
   const [isWeeklyActivated, setIsWeeklyActivated] = useState(false);
@@ -1103,7 +1287,7 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack }
     setNotifications(notifications.filter(n => n.id !== id));
   };
 
-  // 11 Menu items list with Lucide Icons
+  // 11 Menu items list with Lucide Icons + Admin Control if enabled
   const sidebarItems = [
     { id: 'overview', label: 'Overview', icon: LayoutDashboard },
     { id: 'subscription', label: 'My Subscription', icon: ShieldCheck },
@@ -1117,6 +1301,10 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack }
     { id: 'support', label: 'Support', icon: Phone },
     { id: 'profile', label: 'Profile', icon: User },
   ];
+
+  if (showDemoWallet) {
+    sidebarItems.push({ id: 'admin-panel', label: 'Admin Control', icon: ShieldCheck });
+  }
 
   /* ==================== TAB RENDERERS ==================== */
 
@@ -1316,15 +1504,209 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack }
   };
 
   // 2. MY SUBSCRIPTION TAB
+  // 2. MY SUBSCRIPTION TAB
   const renderSubscription = () => {
     const plansInfo: any = {
-      'Silver Plan': { price: '₹499', period: 'Annual', maxSelectedBenefit: '₹3,000' },
-      'Gold Plan': { price: '₹799', period: 'Annual', maxSelectedBenefit: '₹5,000' },
-      'Platinum Plan': { price: '₹1,499', period: 'Annual', maxSelectedBenefit: '₹10,000' },
+      'Silver Domestic': { price: '₹499', period: 'Annual', maxSelectedBenefit: '₹3,000' },
+      'Gold Domestic': { price: '₹799', period: 'Annual', maxSelectedBenefit: '₹5,000' },
+      'Platinum Domestic': { price: '₹1,499', period: 'Annual', maxSelectedBenefit: '₹10,000' },
       'Silver International': { price: '₹4,999', period: 'Annual', maxSelectedBenefit: '₹25,000' },
-      'Gold International': { price: '₹7,999', period: 'Annual', maxSelectedBenefit: '₹50,000' }
+      'Gold International': { price: '₹7,999', period: 'Annual', maxSelectedBenefit: '₹50,000' },
+      'Platinum International': { price: '₹14,999', period: 'Annual', maxSelectedBenefit: '₹1,00,000' }
     };
-    const currentPlanDetails = plansInfo[planName] || { price: '₹499', period: 'Annual', maxSelectedBenefit: '₹3,000' };
+    
+    const currentPlanDetails = activePlan ? (plansInfo[activePlan] || { price: '₹499', period: 'Annual', maxSelectedBenefit: '₹3,000' }) : null;
+
+    if (!activePlan) {
+      if (checkoutSuccess) {
+        const source = checkoutSuccess.user.user_metadata.subscription_source;
+        return (
+          <div className="bg-white border border-slate-100 shadow-[0_8px_30px_rgba(16,35,63,0.03)] rounded-[28px] p-6 text-center space-y-6 max-w-lg mx-auto">
+            <div className="w-16 h-16 rounded-full bg-emerald-50 text-emerald-500 flex items-center justify-center mx-auto shadow-md">
+              <CheckCircle2 className="w-8 h-8" />
+            </div>
+            <div>
+              <h2 className="text-xl font-black text-slate-800">
+                {source === 'demo' ? 'Demo Payment Successful' : 'Payment Successful'}
+              </h2>
+              <p className="text-sm text-slate-500 mt-2">
+                {source === 'demo' 
+                  ? 'Demo payment successful. Subscription activated for testing.' 
+                  : 'Your payment was successful and membership has been activated!'}
+              </p>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100 text-left space-y-2.5 text-xs font-mono text-slate-600">
+              <div>Plan Name: <strong className="text-slate-850">{checkoutSuccess.user.user_metadata.planName}</strong></div>
+              <div>Price Charged: <strong className="text-slate-850">{checkoutSuccess.user.user_metadata.planPrice}</strong></div>
+              <div>Credits Issued: <strong className="text-slate-850">{PLAN_CREDITS[selectedPlanId]} Vouchers (₹500 value each)</strong></div>
+              <div>Payment Mode: <strong className="text-indigo-600 uppercase">{paymentMethod.replace('_', ' ')}</strong></div>
+            </div>
+
+            <button
+              onClick={() => {
+                setCheckoutSuccess(null);
+                setActiveTab('overview');
+              }}
+              className="px-6 py-3 w-full bg-slate-900 text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-all shadow-md cursor-pointer border-none"
+            >
+              Go to Dashboard Overview
+            </button>
+          </div>
+        );
+      }
+
+      return (
+        <div className="bg-white border border-slate-100 shadow-[0_8px_30px_rgba(16,35,63,0.03)] rounded-[28px] p-5 sm:p-7 text-left space-y-6">
+          <div>
+            <h2 className="text-base font-black flex items-center gap-2 text-slate-800 uppercase tracking-wide">
+              <ShieldCheck className="w-5 h-5 text-[#FF6B6B]" /> Join Beduine Membership
+            </h2>
+            <p className="text-xs text-slate-400">Choose a travel subscription plan to start your journey with guaranteed discount credits and weekly travel draw entries.</p>
+          </div>
+
+          <div className="grid sm:grid-cols-2 gap-4">
+            {/* Domestic Section */}
+            <div className="space-y-3">
+              <span className="block text-[10px] uppercase font-mono text-slate-400 tracking-wider font-bold">🇮🇳 Domestic Annual Plans</span>
+              <div className="space-y-2.5">
+                {[
+                  { id: 'Silver', name: 'Silver Domestic', price: '₹499', credits: 1 },
+                  { id: 'Gold', name: 'Gold Domestic', price: '₹799', credits: 2 },
+                  { id: 'Platinum', name: 'Platinum Domestic', price: '₹1,499', credits: 4 }
+                ].map(p => (
+                  <label
+                    key={p.id}
+                    className={`flex items-center justify-between p-4 rounded-2xl border-2 transition-all cursor-pointer ${
+                      selectedPlanId === p.id 
+                        ? 'border-[#FF6B6B] bg-orange-50/20' 
+                        : 'border-slate-100 hover:border-slate-200 bg-white shadow-sm'
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <input
+                        type="radio"
+                        name="plan"
+                        checked={selectedPlanId === p.id}
+                        onChange={() => setSelectedPlanId(p.id)}
+                        className="accent-[#FF6B6B]"
+                      />
+                      <div>
+                        <span className="text-xs font-bold text-slate-800 block">{p.name}</span>
+                        <span className="text-[10px] text-slate-400 font-bold">{p.credits} Voucher{p.credits > 1 ? 's' : ''} issued</span>
+                      </div>
+                    </div>
+                    <span className="text-sm font-black text-[#FF6B6B]">{p.price}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            {/* International Section */}
+            <div className="space-y-3">
+              <span className="block text-[10px] uppercase font-mono text-slate-400 tracking-wider font-bold">🌐 International Annual Plans</span>
+              <div className="space-y-2.5">
+                {[
+                  { id: 'Silver_Int', name: 'Silver International', price: '₹4,999', credits: 5 },
+                  { id: 'Gold_Int', name: 'Gold International', price: '₹7,999', credits: 8 },
+                  { id: 'Platinum_Int', name: 'Platinum International', price: '₹14,999', credits: 15 }
+                ].map(p => (
+                  <label
+                    key={p.id}
+                    className={`flex items-center justify-between p-4 rounded-2xl border-2 transition-all cursor-pointer ${
+                      selectedPlanId === p.id 
+                        ? 'border-[#FF6B6B] bg-orange-50/20' 
+                        : 'border-slate-100 hover:border-slate-200 bg-white shadow-sm'
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <input
+                        type="radio"
+                        name="plan"
+                        checked={selectedPlanId === p.id}
+                        onChange={() => setSelectedPlanId(p.id)}
+                        className="accent-[#FF6B6B]"
+                      />
+                      <div>
+                        <span className="text-xs font-bold text-slate-800 block">{p.name}</span>
+                        <span className="text-[10px] text-slate-400 font-bold">{p.credits} Voucher{p.credits > 1 ? 's' : ''} issued</span>
+                      </div>
+                    </div>
+                    <span className="text-sm font-black text-[#FF6B6B]">{p.price}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Payment Method Selector */}
+          <div className="pt-4 border-t border-slate-150 space-y-3">
+            <span className="block text-[10px] uppercase font-mono text-slate-400 tracking-wider font-bold">Choose Payment Method</span>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <label
+                className={`flex items-center gap-3 p-4 rounded-2xl border-2 transition-all cursor-pointer bg-white shadow-sm ${
+                  paymentMethod === 'real_payment' ? 'border-[#FF6B6B] bg-orange-50/10' : 'border-slate-100 hover:border-slate-200'
+                }`}
+              >
+                <input
+                  type="radio"
+                  name="payment"
+                  checked={paymentMethod === 'real_payment'}
+                  onChange={() => setPaymentMethod('real_payment')}
+                  className="accent-[#FF6B6B]"
+                />
+                <div>
+                  <span className="text-xs font-bold text-slate-800 block">Real Payment</span>
+                  <span className="text-[9.5px] text-slate-400 font-medium">Use credit card / UPI gateway</span>
+                </div>
+              </label>
+
+              {showDemoWallet && (
+                <label
+                  className={`flex items-center gap-3 p-4 rounded-2xl border-2 transition-all cursor-pointer bg-white shadow-sm ${
+                    paymentMethod === 'demo_wallet' ? 'border-indigo-650 bg-indigo-50/5' : 'border-slate-100 hover:border-slate-200'
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    name="payment"
+                    checked={paymentMethod === 'demo_wallet'}
+                    onChange={() => setPaymentMethod('demo_wallet')}
+                    className="accent-indigo-600"
+                  />
+                  <div>
+                    <span className="text-xs font-bold text-slate-800 block">Demo Wallet Payment</span>
+                    <span className="text-[9.5px] text-indigo-500 font-bold">Simulate using ₹{demoWalletBalance} Test Balance</span>
+                  </div>
+                </label>
+              )}
+            </div>
+          </div>
+
+          {/* Checkout Action */}
+          <div className="pt-4 border-t border-slate-150 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div className="text-left">
+              <span className="text-[9.5px] uppercase font-mono text-slate-400 font-bold block">Selected Plan Total Due</span>
+              <span className="text-2xl font-black text-slate-800">
+                ₹{PLAN_PRICES[selectedPlanId]}
+              </span>
+            </div>
+
+            <button
+              onClick={handleCheckout}
+              disabled={checkoutLoading}
+              className={`px-8 py-3.5 text-xs font-bold uppercase tracking-wider text-white rounded-full transition-all cursor-pointer shadow-lg border-none ${
+                paymentMethod === 'demo_wallet'
+                  ? 'bg-indigo-650 hover:bg-indigo-700 shadow-indigo-100'
+                  : 'bg-gradient-to-r from-[#FF6B6B] to-[#8B5CF6] hover:from-[#FF8E53] hover:to-[#8B5CF6] shadow-rose-200'
+              }`}
+            >
+              {checkoutLoading ? 'Processing Checkout...' : `Pay ₹${PLAN_PRICES[selectedPlanId]} & Activate`}
+            </button>
+          </div>
+        </div>
+      );
+    }
 
     return (
       <div className="bg-white border border-slate-100 shadow-[0_8px_30px_rgba(16,35,63,0.03)] rounded-[28px] p-5 sm:p-7 text-left space-y-6">
@@ -1335,8 +1717,8 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack }
             </h2>
             <p className="text-xs text-slate-400">Manage your Beduine membership plans and invoice downloads</p>
           </div>
-          <span className="bg-emerald-500 text-white px-3.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">
-            Active
+          <span className="bg-emerald-500 text-white px-3.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider flex items-center gap-1">
+            {user?.subscription_source === 'demo' ? 'Test Active' : 'Active'}
           </span>
         </div>
 
@@ -1347,9 +1729,14 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack }
             <div>
               <div className="flex items-center gap-2.5">
                 <Crown className="w-5 h-5 text-gold-accent animate-pulse" />
-                <span className="text-[10px] uppercase font-bold tracking-widest text-[#00D4F5] font-mono">Beduine Member Card</span>
+                <span className="text-[10px] uppercase font-bold tracking-widest text-[#00D4F5] font-mono">
+                  {user?.subscription_source === 'demo' ? 'BEDUINE TEST MEMBER CARD' : 'BEDUINE MEMBER CARD'}
+                </span>
               </div>
-              <div className="text-3xl font-black tracking-wide uppercase mt-4">{planName}</div>
+              <div className="text-3xl font-black tracking-wide uppercase mt-4">
+                {planName}
+                {user?.subscription_source === 'demo' && <span className="text-xs text-amber-500 font-bold block normal-case font-sans tracking-normal mt-0.5">Demo Subscription</span>}
+              </div>
               <div className="text-[11px] text-white/60 font-mono tracking-widest uppercase mt-0.5">{planType} Membership Tier</div>
             </div>
             <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center p-2.5">
@@ -1373,11 +1760,11 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack }
         <div className="grid sm:grid-cols-3 gap-4 pt-4">
           <div className="p-4 rounded-xl border border-slate-100 bg-slate-50/50">
             <span className="text-[9px] uppercase tracking-wider font-bold text-slate-400 font-mono">RECURRING PRICE</span>
-            <span className="block text-lg font-black text-slate-800 mt-1">{currentPlanDetails.price} / {currentPlanDetails.period}</span>
+            <span className="block text-lg font-black text-slate-800 mt-1">{currentPlanDetails ? currentPlanDetails.price : '₹0'} / {currentPlanDetails ? currentPlanDetails.period : 'Annual'}</span>
           </div>
           <div className="p-4 rounded-xl border border-slate-100 bg-slate-50/50">
             <span className="text-[9px] uppercase tracking-wider font-bold text-slate-400 font-mono">MAX TOUR BENEFITS</span>
-            <span className="block text-lg font-black text-slate-800 mt-1">Up to {currentPlanDetails.maxSelectedBenefit}</span>
+            <span className="block text-lg font-black text-slate-800 mt-1">Up to {currentPlanDetails ? currentPlanDetails.maxSelectedBenefit : '₹0'}</span>
           </div>
           <div className="p-4 rounded-xl border border-slate-100 bg-slate-50/50">
             <span className="text-[9px] uppercase tracking-wider font-bold text-slate-400 font-mono">NEXT SELECTION DATE</span>
@@ -1430,8 +1817,16 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack }
                   <td className="py-3 font-bold">June 20, 2026</td>
                   <td className="py-3 font-mono">BDN-INV-7812A</td>
                   <td className="py-3 font-bold">{planName}</td>
-                  <td className="py-3 font-black text-slate-800">{currentPlanDetails.price}</td>
-                  <td className="py-3"><span className="px-2.5 py-0.5 rounded-full text-[9px] font-bold bg-emerald-50 text-emerald-600 border border-emerald-100">Paid</span></td>
+                  <td className="py-3 font-black text-slate-800">{currentPlanDetails ? currentPlanDetails.price : '₹0'}</td>
+                  <td className="py-3">
+                    <span className={`px-2.5 py-0.5 rounded-full text-[9px] font-bold border uppercase ${
+                      user?.subscription_source === 'demo' 
+                        ? 'bg-amber-50 text-amber-600 border border-amber-100'
+                        : 'bg-emerald-50 text-emerald-600 border border-emerald-100'
+                    }`}>
+                      {user?.subscription_source === 'demo' ? 'Demo Paid' : 'Paid'}
+                    </span>
+                  </td>
                   <td className="py-3 text-right">
                     <button className="text-[10px] font-bold text-[#00D4F5] hover:underline cursor-pointer border-none bg-transparent">Download PDF</button>
                   </td>
@@ -2127,34 +2522,149 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack }
   };
 
   // 4. MY CREDITS TAB
+  // 4. MY CREDITS TAB
   const renderCredits = () => {
     return (
-      <div className="bg-white border border-slate-100 shadow-[0_8px_30px_rgba(16,35,63,0.03)] rounded-[28px] p-5 sm:p-7 text-left space-y-6">
-        <h2 className="text-base font-black flex items-center gap-2 mb-1 text-slate-800 uppercase tracking-wide">
-          <CreditCard className="w-5 h-5 text-[#FF6B6B]" /> My Discount Credits Wallet
-        </h2>
-        <p className="text-xs text-slate-400">Apply credits automatically at checkout on paid tour requests</p>
-
-        {/* Balance card display */}
-        <div className="bg-gradient-to-r from-[#00D4F5] to-[#3B82F6] rounded-[22px] p-6 text-center text-white shadow-md relative overflow-hidden">
-          <span className="text-[10px] uppercase tracking-wider font-mono block text-white/80 font-bold">AVAILABLE WALLET BALANCE</span>
-          <span className="text-4xl font-black block mt-1 text-white">₹{discountCreditBalance}</span>
-          <span className="text-xs text-white/90 mt-1 block font-medium mb-3">Valid up to 12 months (Subscription Expiry)</span>
-          
-          <button 
-            onClick={loadDemoBalance}
-            className="px-4 py-2 bg-white text-[#3B82F6] hover:bg-white/95 font-bold rounded-xl text-xs tracking-wider uppercase transition-all duration-300 shadow-md hover:shadow-lg active:scale-95 flex items-center gap-1.5 mx-auto cursor-pointer border-none"
-          >
-            <Sparkles className="w-4 h-4 text-amber-500 fill-amber-500 animate-pulse" />
-            <span>Load ₹5,000 Demo Balance</span>
-          </button>
+      <div className="space-y-6 text-left">
+        <div>
+          <span className="text-[10px] font-black uppercase tracking-widest text-[#FF6B6B] font-mono block">Billing &amp; Wallets</span>
+          <h1 className="text-slate-800 font-serif text-3xl font-black mt-1 leading-tight">My Wallet &amp; Discount Vouchers</h1>
         </div>
 
-        {/* Coupons list representing active vouchers */}
-        <div>
+        <div className="grid md:grid-cols-2 gap-6">
+          {/* Card 2: Discount Credits Wallet */}
+          <div className="bg-white border border-slate-100 shadow-[0_8px_30px_rgba(16,35,63,0.03)] rounded-[28px] p-6 space-y-4">
+            <div className="flex justify-between items-start">
+              <div>
+                <h3 className="text-sm font-bold text-slate-800 uppercase tracking-wide flex items-center gap-2">
+                  <Gift className="w-5 h-5 text-[#FF6B6B]" /> Discount Credits
+                </h3>
+                <p className="text-xs text-slate-400 mt-0.5">Value protection credits issued from active plan</p>
+              </div>
+            </div>
+
+            <div className="bg-gradient-to-r from-red-400 to-[#FF8E53] rounded-[22px] p-6 text-center text-white shadow-md">
+              <span className="text-[10px] uppercase tracking-wider font-mono block text-white/80 font-bold">AVAILABLE DISCOUNT VALUE</span>
+              <span className="text-4xl font-black block mt-1 text-white">
+                {availableDiscountCredits > 0 ? `₹${discountCreditBalance}` : 'No Discount Credits available.'}
+              </span>
+              <span className="text-xs text-white/90 mt-1 block font-medium">
+                {availableDiscountCredits > 0 ? `${availableDiscountCredits} x ₹500 discount vouchers` : '0 vouchers active'}
+              </span>
+            </div>
+
+            <div className="text-[11px] text-slate-500 font-medium">
+              Source: <strong className="text-slate-700 capitalize">{activePlan ? `${user?.subscription_source || 'Real'} subscription` : 'No subscription active'}</strong>
+            </div>
+          </div>
+
+          {/* Card 4: Demo Wallet (only visible if showDemoWallet is true) */}
+          {showDemoWallet ? (
+            <div className="bg-slate-900 border border-slate-850 shadow-xl rounded-[28px] p-6 text-white space-y-4">
+              <div className="flex justify-between items-start">
+                <div>
+                  <h3 className="text-sm font-bold text-white uppercase tracking-wide flex items-center gap-2">
+                    <ShieldCheck className="w-5 h-5 text-[#00D4F5]" /> Demo Wallet
+                  </h3>
+                  <p className="text-xs text-slate-400 mt-0.5">For testing subscription purchase flow only</p>
+                </div>
+              </div>
+
+              <div className="bg-gradient-to-r from-[#00b4d8] to-[#0077b6] rounded-[22px] p-6 text-center text-white shadow-md">
+                <span className="text-[10px] uppercase tracking-wider font-mono block text-white/80 font-bold">DEMO BALANCE (TEST ONLY)</span>
+                <span className="text-4xl font-black block mt-1 text-white">₹{demoWalletBalance} Test Balance</span>
+                <span className="text-[9.5px] bg-white/25 px-2.5 py-0.5 rounded-full mt-2 inline-block font-mono tracking-wide uppercase font-bold text-white/90">Not Real Money</span>
+              </div>
+
+              <div className="space-y-3">
+                <span className="block text-[10px] uppercase font-mono text-slate-400 tracking-wider font-bold">Top-up Preset Amount</span>
+                <div className="grid grid-cols-3 gap-2">
+                  {[499, 799, 1499, 4999, 7999, 14999].map(amount => (
+                    <button
+                      key={amount}
+                      onClick={() => handleAddDemoBalance(amount)}
+                      className="py-1.5 bg-white/10 hover:bg-white/20 text-white font-bold text-[10px] rounded-lg transition-colors border-none cursor-pointer"
+                    >
+                      +₹{amount}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="pt-2 flex gap-2">
+                <input
+                  type="number"
+                  id="custom-demo-amount-input"
+                  placeholder="Custom Demo Amount"
+                  className="px-3 py-1.5 rounded-lg bg-white/10 border border-white/20 text-white text-xs outline-none focus:border-[#00D4F5] transition-colors shrink min-w-0"
+                />
+                <button
+                  onClick={() => {
+                    const input = document.getElementById('custom-demo-amount-input') as HTMLInputElement;
+                    const val = parseFloat(input?.value || '0');
+                    if (val > 0) {
+                      handleAddDemoBalance(val);
+                      if (input) input.value = '';
+                    } else {
+                      alert("Please enter a valid amount");
+                    }
+                  }}
+                  className="px-3 py-1.5 bg-[#00D4F5] hover:bg-[#00B4D8] text-slate-900 font-bold text-xs rounded-lg transition-colors border-none cursor-pointer shrink-0"
+                >
+                  Add Custom
+                </button>
+              </div>
+
+              <div className="pt-3 border-t border-white/10 flex justify-between items-center">
+                <button
+                  onClick={() => setActiveTab('subscription')}
+                  className="text-xs text-[#00D4F5] hover:underline font-bold bg-transparent border-none cursor-pointer flex items-center gap-1"
+                >
+                  Use Demo Wallet to Subscribe <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
+
+              <div className="p-2.5 bg-white/5 border border-white/10 rounded-xl text-[10px] text-slate-350 leading-relaxed font-medium">
+                Use this balance only for testing subscription flow. This is not real money.
+              </div>
+            </div>
+          ) : (
+            <div className="bg-slate-50 border border-dashed border-slate-200 rounded-[28px] p-8 flex flex-col items-center justify-center text-center">
+              <Lock className="w-8 h-8 text-slate-300 mb-2" />
+              <h3 className="text-xs font-bold text-slate-700 uppercase">Demo Wallet Locked</h3>
+              <p className="text-[10px] text-slate-400 mt-1 max-w-[200px]">Demo Wallet is only available for testing accounts or in development modes.</p>
+            </div>
+          )}
+        </div>
+
+        {/* Card 3: Real Wallet & Payments */}
+        <div className="bg-white border border-slate-100 shadow-[0_8px_30px_rgba(16,35,63,0.03)] rounded-[28px] p-6 space-y-4">
+          <div className="flex justify-between items-start">
+            <div>
+              <h3 className="text-sm font-bold text-slate-800 uppercase tracking-wide flex items-center gap-2">
+                <CreditCard className="w-5 h-5 text-indigo-500" /> Real Wallet &amp; Payments
+              </h3>
+              <p className="text-xs text-slate-400 mt-0.5">Your real billing account and wallet transactions</p>
+            </div>
+          </div>
+          <div className="p-5 rounded-2xl bg-slate-50 border border-slate-100 text-center">
+            <span className="text-[10px] uppercase font-mono tracking-wider text-slate-400 font-bold block">Available Real Balance</span>
+            <span className="text-3xl font-black text-slate-800 block mt-1">₹{realWalletBalance}</span>
+            <span className="text-xs text-slate-400 mt-1 block font-bold">Wallet balance: ₹0</span>
+          </div>
+          <div className="pt-2">
+            <span className="block text-[10px] uppercase font-mono text-slate-400 tracking-wider font-bold mb-2">Real Payment History</span>
+            <div className="text-center py-6 border border-dashed border-slate-200 rounded-xl text-xs text-slate-400 font-bold">
+              No real payments recorded.
+            </div>
+          </div>
+        </div>
+
+        {/* Vouchers list representing active vouchers */}
+        <div className="pt-4">
           <h3 className="text-xs font-bold text-slate-700 uppercase tracking-wider mb-3">Available Vouchers</h3>
           {availableDiscountCredits === 0 ? (
-            <div className="text-center py-6 border-2 border-dashed border-slate-200 rounded-2xl text-xs text-slate-400 font-bold">
+            <div className="text-center py-8 border-2 border-dashed border-slate-200 rounded-2xl text-xs text-slate-400 font-bold">
               No active vouchers left in your wallet.
             </div>
           ) : (
@@ -2992,6 +3502,280 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack }
     );
   };
 
+  // 12. ADMIN CONTROL PANEL
+  const renderAdminPanel = () => {
+    const allUsersList = adminUsers;
+    const transactionsList = getAllTransactions();
+    const PLAN_CREDITS: Record<string, number> = {
+      'Silver': 1,
+      'Gold': 2,
+      'Platinum': 4,
+      'Silver_Int': 5,
+      'Gold_Int': 8,
+      'Platinum_Int': 15
+    };
+    
+    // Calculate revenues: real payments vs demo payments
+    const realRevenue = adminUsers
+      .filter(u => u.user_metadata?.subscriptionStatus === 'active' && u.user_metadata?.subscription_source === 'real')
+      .reduce((sum, u) => {
+        const priceStr = u.user_metadata?.planPrice || '₹0';
+        const priceVal = parseInt(priceStr.replace(/[^0-9]/g, '')) || 0;
+        return sum + priceVal;
+      }, 0);
+
+    const demoRevenue = adminUsers
+      .filter(u => u.user_metadata?.subscriptionStatus === 'active' && u.user_metadata?.subscription_source === 'demo')
+      .reduce((sum, u) => {
+        const priceStr = u.user_metadata?.planPrice || '₹0';
+        const priceVal = parseInt(priceStr.replace(/[^0-9]/g, '')) || 0;
+        return sum + priceVal;
+      }, 0);
+
+    return (
+      <div className="bg-white border border-slate-100 shadow-[0_8px_30px_rgba(16,35,63,0.03)] rounded-[28px] p-5 sm:p-7 text-left space-y-6">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-150 pb-5">
+          <div>
+            <h2 className="text-base font-black flex items-center gap-2 text-slate-800 uppercase tracking-wide">
+              <ShieldCheck className="w-5 h-5 text-indigo-600" /> Admin Control Panel
+            </h2>
+            <p className="text-xs text-slate-400">Exclusively for admin/testers to manage test users, demo wallets, and analytics</p>
+          </div>
+          <button
+            onClick={handleResetAllDemoUsers}
+            className="px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider text-white bg-red-505 bg-rose-500 hover:bg-rose-600 transition-colors border-none cursor-pointer flex items-center gap-1.5 shadow-md shadow-red-100"
+          >
+            <Trash2 className="w-4 h-4" /> Reset Demo Accounts
+          </button>
+        </div>
+
+        {/* Analytics Section */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="p-5 rounded-2xl bg-emerald-50 border border-emerald-100">
+            <span className="text-[10px] uppercase font-mono tracking-wider text-emerald-600 font-bold block">Verified Real Revenue</span>
+            <span className="text-3xl font-black text-emerald-800 block mt-1">₹{realRevenue}</span>
+            <span className="text-[10px] text-emerald-500 font-medium block mt-1.5">★ Excludes all demo/test transactions</span>
+          </div>
+          <div className="p-5 rounded-2xl bg-indigo-50 border border-indigo-100">
+            <span className="text-[10px] uppercase font-mono tracking-wider text-indigo-600 font-bold block">Demo Wallet Subscriptions</span>
+            <span className="text-3xl font-black text-indigo-800 block mt-1">₹{demoRevenue}</span>
+            <span className="text-[10px] text-indigo-500 font-medium block mt-1.5 font-bold">⚙ Simulated testing value only</span>
+          </div>
+        </div>
+
+        <div className="grid lg:grid-cols-12 gap-6 items-start">
+          {/* Mock Users Table */}
+          <div className="lg:col-span-8 space-y-4">
+            <h3 className="text-xs font-bold text-slate-700 uppercase tracking-wider">User Directory ({allUsersList.length})</h3>
+            <div className="overflow-x-auto border border-slate-100 rounded-2xl">
+              <table className="w-full text-left text-xs border-collapse">
+                <thead>
+                  <tr className="border-b bg-slate-50 text-slate-450 font-bold uppercase tracking-wider">
+                    <th className="p-3">Email / Name</th>
+                    <th className="p-3">Role / Status</th>
+                    <th className="p-3">Active Subscription</th>
+                    <th className="p-3">Demo Wallet</th>
+                    <th className="p-3 text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100 text-slate-650 font-medium">
+                  {allUsersList.map((u: any) => {
+                    const email = u.email || '';
+                    const isDemo = u.user_metadata?.is_demo_user || email.includes('demo') || email.includes('test') || email.includes('admin');
+                    const isActive = u.user_metadata?.subscriptionStatus === 'active';
+                    const plan = u.user_metadata?.planName || 'None';
+                    const source = u.user_metadata?.subscription_source || '';
+                    
+                    return (
+                      <tr 
+                        key={u.id} 
+                        className={`hover:bg-slate-50/50 transition-colors cursor-pointer ${
+                          selectedAdminUser?.id === u.id ? 'bg-indigo-50/30' : ''
+                        }`}
+                        onClick={() => setSelectedAdminUser(u)}
+                      >
+                        <td className="p-3">
+                          <div className="font-bold text-slate-800">{u.user_metadata?.full_name || 'No Name'}</div>
+                          <div className="text-slate-450 font-mono text-[10px]">{email}</div>
+                        </td>
+                        <td className="p-3">
+                          <div className="flex flex-col gap-1 items-start">
+                            <span className={`px-2 py-0.5 rounded-full text-[9px] font-bold uppercase ${
+                              isDemo ? 'bg-indigo-50 text-indigo-600 border border-indigo-100' : 'bg-slate-100 text-slate-600 border border-slate-200'
+                            }`}>
+                              {isDemo ? 'Tester / Demo' : 'Real Customer'}
+                            </span>
+                          </div>
+                        </td>
+                        <td className="p-3">
+                          {isActive ? (
+                            <div>
+                              <span className="text-slate-800 font-bold block">{plan}</span>
+                              <span className={`text-[8.5px] uppercase font-mono tracking-wider font-bold ${
+                                source === 'demo' ? 'text-amber-500' : 'text-emerald-500'
+                              }`}>
+                                {source === 'demo' ? 'Test Subscription' : 'Real Paid'}
+                              </span>
+                            </div>
+                          ) : (
+                            <span className="text-slate-400 italic">No Subscription</span>
+                          )}
+                        </td>
+                        <td className="p-3 font-mono font-bold text-slate-800">
+                          ₹{u.user_metadata?.demo_wallet_balance ?? 0}
+                        </td>
+                        <td className="p-3 text-right" onClick={(e) => e.stopPropagation()}>
+                          <div className="flex justify-end gap-2">
+                            <button
+                              onClick={() => setSelectedAdminUser(u)}
+                              className="px-2.5 py-1 text-[10px] font-bold text-indigo-650 hover:bg-indigo-50 rounded-lg cursor-pointer border-none bg-transparent"
+                            >
+                              Manage
+                            </button>
+                            {isDemo && (
+                              <button
+                                onClick={() => handleResetSelectedDemoUser(u)}
+                                className="px-2.5 py-1 text-[10px] font-bold text-rose-500 hover:bg-rose-50 rounded-lg cursor-pointer border-none bg-transparent"
+                              >
+                                Reset
+                              </button>
+                            )}
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* User Controls Panel */}
+          <div className="lg:col-span-4 space-y-4">
+            <h3 className="text-xs font-bold text-slate-700 uppercase tracking-wider">User Wallet Management</h3>
+            {selectedAdminUser ? (
+              <div className="bg-slate-50 border border-slate-150 rounded-2xl p-5 space-y-4">
+                <div>
+                  <span className="text-[10px] uppercase font-mono tracking-wider text-slate-400 font-bold block">Selected User</span>
+                  <div className="text-sm font-black text-slate-855 mt-1">{selectedAdminUser.user_metadata?.full_name || 'No Name'}</div>
+                  <div className="text-xs font-mono text-slate-500 mt-0.5">{selectedAdminUser.email}</div>
+                </div>
+
+                <div className="p-4 rounded-xl bg-white border border-slate-200">
+                  <span className="text-[9px] uppercase font-mono tracking-wider text-slate-450 font-bold block">Current Demo Balance</span>
+                  <span className="text-lg font-black text-slate-800 mt-1 block">₹{selectedAdminUser.user_metadata?.demo_wallet_balance ?? 0} Test Balance</span>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="block text-[10px] font-bold text-slate-400 uppercase">Amount (₹)</label>
+                  <input
+                    type="number"
+                    value={adminCustomAmount}
+                    onChange={(e) => setAdminCustomAmount(e.target.value)}
+                    placeholder="e.g. 500"
+                    className="w-full px-3 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-800 text-xs outline-none focus:border-indigo-500 transition-colors"
+                  />
+                  <div className="grid grid-cols-2 gap-2.5 pt-2">
+                    <button
+                      onClick={handleAdminAddBalance}
+                      className="w-full py-2.5 bg-indigo-650 hover:bg-indigo-700 text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-colors border-none cursor-pointer"
+                    >
+                      Add Demo Funds
+                    </button>
+                    <button
+                      onClick={handleAdminRemoveBalance}
+                      className="w-full py-2.5 bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-colors border-none cursor-pointer"
+                    >
+                      Remove Funds
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="bg-slate-50 border border-dashed border-slate-200 rounded-2xl p-8 text-center text-xs text-slate-400 font-bold">
+                Select a user from the directory to manage their wallet balances.
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Transaction log filters */}
+        <div className="pt-6 border-t border-slate-150 space-y-4">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <h3 className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-2">
+              <FileText className="w-4 h-4 text-slate-400" /> Subscription &amp; Wallet Transactions
+            </h3>
+            <div className="flex gap-2">
+              {(['all', 'real', 'demo'] as const).map(f => (
+                <button
+                  key={f}
+                  onClick={() => setAdminFilter(f)}
+                  className={`px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer border-none ${
+                    adminFilter === f 
+                      ? 'bg-indigo-650 text-white shadow-sm' 
+                      : 'bg-slate-100 hover:bg-slate-150 text-slate-500'
+                  }`}
+                >
+                  {f === 'all' ? 'All Payments' : f === 'real' ? 'Real Payments' : 'Demo Payments'}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="overflow-x-auto rounded-2xl border border-slate-105 border-slate-100">
+            <table className="w-full text-left text-xs border-collapse">
+              <thead>
+                <tr className="border-b bg-slate-50 text-slate-400 font-bold uppercase tracking-wider">
+                  <th className="p-3">User Email</th>
+                  <th className="p-3">Date / Time</th>
+                  <th className="p-3">Transaction ID</th>
+                  <th className="p-3">Payment Source</th>
+                  <th className="p-3 text-center">Amount</th>
+                  <th className="p-3">Reason / Details</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100 text-slate-650 font-medium">
+                {transactionsList.filter((t: any) => {
+                  if (adminFilter === 'real') return t.wallet_type === 'real' || t.payment_type === 'real_payment';
+                  if (adminFilter === 'demo') return t.wallet_type === 'demo' || t.payment_type === 'demo_wallet';
+                  return true;
+                }).slice(0, 30).map((t: any) => (
+                  <tr key={t.id} className="hover:bg-slate-50/50 transition-colors">
+                    <td className="p-3 font-semibold text-slate-800">{t.email}</td>
+                    <td className="p-3">{new Date(t.created_at || t.date).toLocaleString('en-IN')}</td>
+                    <td className="p-3 font-mono font-bold text-slate-500">{t.id}</td>
+                    <td className="p-3">
+                      <span className={`px-2 py-0.5 rounded-full text-[9px] font-black uppercase ${
+                        t.wallet_type === 'demo' || t.payment_type === 'demo_wallet' 
+                          ? 'bg-amber-50 text-amber-600 border border-amber-100' 
+                          : 'bg-emerald-50 text-emerald-600 border border-emerald-100'
+                      }`}>
+                        {t.wallet_type === 'demo' || t.payment_type === 'demo_wallet' ? 'Demo Balance' : 'Real Money'}
+                      </span>
+                    </td>
+                    <td className={`p-3 text-center font-black ${t.amount > 0 ? 'text-emerald-500' : 'text-rose-500'}`}>
+                      {t.amount > 0 ? `+₹${t.amount}` : `-₹${Math.abs(t.amount)}`}
+                    </td>
+                    <td className="p-3 leading-normal">{t.reason}</td>
+                  </tr>
+                ))}
+                {transactionsList.filter((t: any) => {
+                  if (adminFilter === 'real') return t.wallet_type === 'real' || t.payment_type === 'real_payment';
+                  if (adminFilter === 'demo') return t.wallet_type === 'demo' || t.payment_type === 'demo_wallet';
+                  return true;
+                }).length === 0 && (
+                  <tr>
+                    <td colSpan={6} className="text-center py-6 text-slate-400 italic">No transactions match the selected filter.</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div 
       className="min-h-screen pt-2 lg:pt-3 pb-10 relative overflow-x-hidden"
@@ -3166,6 +3950,7 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack }
                 {activeTab === 'notifications' && renderNotificationsTab()}
                 {activeTab === 'support' && renderSupport()}
                 {activeTab === 'profile' && renderProfile()}
+                {activeTab === 'admin-panel' && renderAdminPanel()}
               </motion.div>
             </AnimatePresence>
           </motion.main>

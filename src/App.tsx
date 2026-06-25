@@ -79,17 +79,46 @@ const mapSupabaseUser = (supabaseUser: any) => {
     }
   }
 
+  const planName = supabaseUser.user_metadata?.planName || null;
+  const planPrice = supabaseUser.user_metadata?.planPrice || null;
+  const planType = supabaseUser.user_metadata?.planType || null;
+  const subscriptionStatus = supabaseUser.user_metadata?.subscriptionStatus || 'inactive';
+  const real_wallet_balance = supabaseUser.user_metadata?.real_wallet_balance ?? 0;
+  const demo_wallet_balance = supabaseUser.user_metadata?.demo_wallet_balance ?? 0;
+  const is_demo_user = supabaseUser.user_metadata?.is_demo_user ?? (email.includes('demo') || email.includes('test') || email.includes('admin'));
+  const ledger = supabaseUser.user_metadata?.ledger || [];
+  const demo_transactions = supabaseUser.user_metadata?.demo_transactions || [];
+
+  let color = 'from-slate-400 via-slate-500 to-slate-700';
+  let glow = 'rgba(148, 163, 184, 0.4)';
+  if (planName) {
+    const pName = planName.toLowerCase();
+    if (pName.includes('platinum')) {
+      color = 'from-amber-400 via-yellow-500 to-amber-600';
+      glow = 'rgba(245, 158, 11, 0.4)';
+    } else if (pName.includes('gold')) {
+      color = 'from-teal-400 via-emerald-500 to-emerald-600';
+      glow = 'rgba(16, 185, 129, 0.4)';
+    }
+  }
+
   return {
     fullName,
     email,
     mobile,
     city: supabaseUser.user_metadata?.city || '',
     memberId: `BDN-${supabaseUser.id.slice(0, 4).toUpperCase()}-2026`,
-    planName: supabaseUser.user_metadata?.planName || 'Gold',
-    planPrice: supabaseUser.user_metadata?.planPrice || '₹4,999/yr',
-    planType: supabaseUser.user_metadata?.planType || 'gold',
-    color: 'from-teal-400 via-emerald-500 to-emerald-600',
-    glow: 'rgba(16, 185, 129, 0.4)',
+    planName,
+    planPrice,
+    planType,
+    subscriptionStatus,
+    real_wallet_balance,
+    demo_wallet_balance,
+    is_demo_user,
+    ledger,
+    demo_transactions,
+    color,
+    glow,
     drawToken: `LDC-${Math.floor(100000 + Math.random() * 900000)}`,
     dob,
     preferredLanguage,

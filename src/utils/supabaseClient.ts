@@ -13,9 +13,20 @@ const DEMO_USER = {
     phone: '+91 9876543210',
     city: 'Fulia, Nadia',
     dob: '1998-05-15',
-    planName: 'Gold',
-    planPrice: '₹799/yr',
-    planType: 'gold',
+    planName: null,
+    planPrice: null,
+    planType: null,
+    subscriptionStatus: 'inactive',
+    real_wallet_balance: 0,
+    demo_wallet_balance: 0,
+    discount_credits: 0,
+    weekly_eligible_entry_count: 0,
+    used_credits: 0,
+    pending_credits: 0,
+    selected_member_benefit_status: 'none',
+    ledger: [],
+    demo_transactions: [],
+    is_demo_user: true,
     preferredLanguage: 'Bengali',
     dietaryPreferences: 'Non-Vegetarian',
     accessibilityRequirements: 'None',
@@ -61,6 +72,49 @@ class MockAuth {
         expires_in: 3600
       };
       localStorage.setItem('beduine_mock_session', JSON.stringify(this.currentSession));
+    }
+
+    // 3. Ensure all existing demo users are reset to inactive unless already done
+    const initializedDemoReset = localStorage.getItem('beduine_demo_initialized_reset');
+    if (!initializedDemoReset) {
+      const allUsers = this.getUsers();
+      const updated = allUsers.map(u => {
+        const email = u.email || '';
+        const isDemo = u.user_metadata?.is_demo_user || email.includes('demo') || email.includes('test') || email.includes('admin');
+        if (isDemo) {
+          return {
+            ...u,
+            user_metadata: {
+              ...u.user_metadata,
+              planName: null,
+              planPrice: null,
+              planType: null,
+              subscriptionStatus: 'inactive',
+              real_wallet_balance: 0,
+              demo_wallet_balance: 0,
+              discount_credits: 0,
+              weekly_eligible_entry_count: 0,
+              used_credits: 0,
+              pending_credits: 0,
+              selected_member_benefit_status: 'none',
+              ledger: [],
+              demo_transactions: []
+            }
+          };
+        }
+        return u;
+      });
+      this.saveUsers(updated);
+      localStorage.setItem('beduine_demo_initialized_reset', 'true');
+      
+      if (this.currentSession?.user) {
+        const curEmail = this.currentSession.user.email || '';
+        const isDemo = this.currentSession.user.user_metadata?.is_demo_user || curEmail.includes('demo') || curEmail.includes('test') || curEmail.includes('admin');
+        if (isDemo) {
+          this.currentSession.user = updated.find(u => u.id === this.currentSession.user.id) || this.currentSession.user;
+          this.saveSession(this.currentSession);
+        }
+      }
     }
   }
 
@@ -120,14 +174,47 @@ class MockAuth {
     const users = this.getUsers();
     let existingUser = users.find((u) => u.email === email);
     
+    const initialMetadata = {
+      planName: null,
+      planPrice: null,
+      planType: null,
+      subscriptionStatus: 'inactive',
+      real_wallet_balance: 0,
+      demo_wallet_balance: 0,
+      discount_credits: 0,
+      weekly_eligible_entry_count: 0,
+      used_credits: 0,
+      pending_credits: 0,
+      selected_member_benefit_status: 'none',
+      ledger: [],
+      demo_transactions: [],
+      is_demo_user: email.includes('demo') || email.includes('test') || email.includes('admin'),
+      ...(options?.data || {})
+    };
+
+    // Strict zero-state overrides for signup
+    initialMetadata.planName = null;
+    initialMetadata.planPrice = null;
+    initialMetadata.planType = null;
+    initialMetadata.subscriptionStatus = 'inactive';
+    initialMetadata.real_wallet_balance = 0;
+    initialMetadata.demo_wallet_balance = 0;
+    initialMetadata.discount_credits = 0;
+    initialMetadata.weekly_eligible_entry_count = 0;
+    initialMetadata.used_credits = 0;
+    initialMetadata.pending_credits = 0;
+    initialMetadata.selected_member_benefit_status = 'none';
+    initialMetadata.ledger = [];
+    initialMetadata.demo_transactions = [];
+
     if (existingUser) {
-      existingUser.user_metadata = { ...existingUser.user_metadata, ...(options?.data || {}) };
+      existingUser.user_metadata = { ...existingUser.user_metadata, ...initialMetadata };
     } else {
       existingUser = {
         id: 'mock-user-' + Math.random().toString(36).substring(2, 9),
         email,
         phone: options?.data?.phone || '',
-        user_metadata: options?.data || {},
+        user_metadata: initialMetadata,
         created_at: new Date().toISOString(),
       };
       users.push(existingUser);
@@ -150,7 +237,6 @@ class MockAuth {
     let user = users.find((u) => u.email === email);
     
     if (!user) {
-      // Auto-register convenience: if user doesn't exist, create a mock one so they can test easily
       user = {
         id: 'mock-user-' + Math.random().toString(36).substring(2, 9),
         email,
@@ -158,9 +244,20 @@ class MockAuth {
         user_metadata: {
           full_name: email.split('@')[0],
           city: 'Fulia',
-          planName: 'Gold',
-          planPrice: '₹799/yr',
-          planType: 'gold',
+          planName: null,
+          planPrice: null,
+          planType: null,
+          subscriptionStatus: 'inactive',
+          real_wallet_balance: 0,
+          demo_wallet_balance: 0,
+          discount_credits: 0,
+          weekly_eligible_entry_count: 0,
+          used_credits: 0,
+          pending_credits: 0,
+          selected_member_benefit_status: 'none',
+          ledger: [],
+          demo_transactions: [],
+          is_demo_user: email.includes('demo') || email.includes('test') || email.includes('admin'),
           dob: '1995-01-01',
           preferredLanguage: 'English',
           dietaryPreferences: 'None',
@@ -207,9 +304,20 @@ class MockAuth {
           full_name: '',
           phone: phone,
           city: 'Fulia',
-          planName: 'Gold',
-          planPrice: '₹799/yr',
-          planType: 'gold',
+          planName: null,
+          planPrice: null,
+          planType: null,
+          subscriptionStatus: 'inactive',
+          real_wallet_balance: 0,
+          demo_wallet_balance: 0,
+          discount_credits: 0,
+          weekly_eligible_entry_count: 0,
+          used_credits: 0,
+          pending_credits: 0,
+          selected_member_benefit_status: 'none',
+          ledger: [],
+          demo_transactions: [],
+          is_demo_user: phone.includes('demo') || phone.includes('test') || phone.includes('admin'),
           dob: '1995-01-01',
           preferredLanguage: 'English',
           dietaryPreferences: 'None',
@@ -261,6 +369,66 @@ class MockAuth {
     this.saveSession(null);
     this.triggerChange('SIGNED_OUT');
     return { error: null as any };
+  }
+
+  // Administrative and Demo helper functions
+  getUsersList(): any[] {
+    return this.getUsers();
+  }
+
+  saveUsersList(users: any[]) {
+    this.saveUsers(users);
+    // Sync current session if modified
+    if (this.currentSession?.user) {
+      const updatedUser = users.find(u => u.id === this.currentSession.user.id);
+      if (updatedUser) {
+        this.currentSession.user = updatedUser;
+        this.saveSession(this.currentSession);
+        this.triggerChange('USER_UPDATED');
+      }
+    }
+  }
+
+  resetDemoAccounts() {
+    const users = this.getUsers();
+    const updatedUsers = users.map(u => {
+      const email = u.email || '';
+      const isDemo = u.user_metadata?.is_demo_user || email.includes('demo') || email.includes('test') || email.includes('admin');
+      if (isDemo) {
+        return {
+          ...u,
+          user_metadata: {
+            ...u.user_metadata,
+            planName: null,
+            planPrice: null,
+            planType: null,
+            subscriptionStatus: 'inactive',
+            real_wallet_balance: 0,
+            demo_wallet_balance: 0,
+            discount_credits: 0,
+            weekly_eligible_entry_count: 0,
+            used_credits: 0,
+            pending_credits: 0,
+            selected_member_benefit_status: 'none',
+            ledger: [],
+            demo_transactions: []
+          }
+        };
+      }
+      return u;
+    });
+    this.saveUsers(updatedUsers);
+
+    // Also update current session if the current user is a demo user
+    if (this.currentSession?.user) {
+      const curEmail = this.currentSession.user.email || '';
+      const isDemo = this.currentSession.user.user_metadata?.is_demo_user || curEmail.includes('demo') || curEmail.includes('test') || curEmail.includes('admin');
+      if (isDemo) {
+        this.currentSession.user = updatedUsers.find(u => u.id === this.currentSession.user.id) || this.currentSession.user;
+        this.saveSession(this.currentSession);
+      }
+    }
+    this.triggerChange('USER_UPDATED');
   }
 }
 
