@@ -1,3 +1,32 @@
+// === Subscription & Credit Types ===
+export type TripCategory = 'domestic' | 'international';
+
+export interface CreditLedgerEntry {
+  id: string;
+  date: string;
+  type: 'issued' | 'reserved' | 'redeemed' | 'reversed' | 'expired' | 'admin_adjustment';
+  creditType: 'lucky_draw' | 'discount';
+  amount: number;
+  reason: string;
+  bookingRef?: string;
+  adminRef?: string;
+  source?: 'demo' | 'real';
+  creditCategory: 'domestic' | 'international' | 'travel_reward';
+  creditValue: number;
+  usableFor: 'domestic_only' | 'international_only' | 'lucky_draw';
+}
+
+// === Plan Data Type ===
+export interface PlanData {
+  name: string;
+  price: number;
+  credits: number;
+  category: TripCategory;
+  creditValue: number;
+  usableFor: 'domestic_only' | 'international_only';
+}
+
+// === Tour & Booking Types ===
 export interface ItineraryDay {
   day: number;
   title: string;
@@ -10,6 +39,7 @@ export interface TourPackage {
   id: string;
   name: string;
   destination: string;
+  category: TripCategory;
   durationDays: number;
   durationNights: number;
   basePrice: number;
@@ -278,4 +308,33 @@ export interface CustomTourRequest {
   bookingId?: string;
   voucherCode?: string;
 }
+
+// === Franchise & Agent Network Types ===
+export interface Franchise {
+  id: string;
+  name: string;
+  type: 'Master' | 'Standard' | 'CityHub';
+  state: string;
+  city: string;
+  investment: number;
+  commissionRate: number;
+  totalRevenue: number;
+  agentCount: number;
+}
+
+export interface Agent {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  franchiseId: string;
+  franchiseName: string;
+  earningModel: 'salary' | 'commission';
+  targetRegistrations: number;
+  achievedRegistrations: number;
+  accruedCommission: number;
+  salary: number;
+  status: 'active' | 'pending_approval' | 'suspended';
+}
+
 

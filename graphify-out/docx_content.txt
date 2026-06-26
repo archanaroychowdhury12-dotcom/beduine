@@ -1,0 +1,837 @@
+Addres – Fulia, Nadia, West Bengal, Pin-741402
+www.beduin.in
+BUSINESS PLAN
+About us
+Beduin Tour & Travels is a customer-first travel company dedicated to crafting memorable journeys across India and beyond. We combine curated itineraries, transparent pricing and a unique subscription model that rewards members with monthly lucky draws, exclusive discounts, and group luxury tours. Whether it’s a family getaway, a romantic escape, or an adventure with friends, our experienced team handles the planning so you can relax and collect moments that last a lifetime. Join Beduin — where every trip becomes a memory.
+Mission
+At Beduin Tour & Travels, our mission is to transform travel into an accessible, reliable, and rewarding experience for everyone. We strive to:
+Offer carefully crafted tours that balance culture, comfort and adventure.
+Provide a unique subscription-based model where members enjoy weekly lucky draws and guaranteed discounts.
+Deliver luxury tours for winners while ensuring that non-winners never feel left behind, thanks to fair and transparent benefits.
+Build a community of happy travelers who see Beduin not just as a company, but as a trusted partner in creating memories.
+We believe travel is not just about visiting destinations — it’s about building stories, emotions, and connections that last a lifetime.
+Vision
+The vision of Beduin Tour & Travels is to revolutionize the travel industry with a sustainable, inclusive, and transparent model that benefits every traveler.
+We seek to:
+Expand our presence across India with a franchise and agent-driven network, reaching even the remotest travelers.
+Integrate cutting-edge technology to ensure seamless subscriptions, lucky draw transparency, and hassle-free tour management.
+Position Beduin as a global name in innovative travel solutions, starting from domestic roots and branching out to international experiences.
+Build a community of loyal subscribers who see travel not as an expense but as a lifetime investment in memories.
+Our ultimate vision is simple: “Safar jo yad rahe” — journeys that live forever in the hearts of our travelers.
+Destination we serve
+Domestic Destination
+International Destination
+Our Services
+Tour Package
+Customized Tour Pckage
+Hotel Booking
+Train Ticket Booking
+Flight Ticket Booking
+Visa Application
+Currency Exchange
+Our Business Model
+Subscription & Lucky Draw Model
+At Beduin Tour & Travels, we have introduced a unique subscription-based travel model that blends excitement, transparency, and guaranteed value for every customer.
+How It Works
+1. Choose a Subscription Plan (12 months validity):
+Silver Plan – ₹499
+✔ Travel Reward Credit (1) → Weekly Lucky Draw Participation
+✔ Winner Tour Value: ₹3,000
+✔ Tour Duration: 2N/3D
+✔ Winner Destinations (Seasonal):
+Sundarban
+Digha
+Mousuni Island
+Purulia
+✔ Non-Winner Facility: 1 Discount Credit (₹500 off on 1 Domestic Tour)
+✔ Travel insurance – Payable
+✔ Others Paid tour discount upto 5% (In Subscription Period)
+✔ Name change for family members – No Option
+Gold Plan – ₹799
+✔ Travel Reward Credit (1) → Weekly Lucky Draw Participation
+✔ Winner Tour Value: ₹5,000
+✔ Tour Duration: 2N/3D
+✔ Winner Destinations (Seasonal):
+Darjeeling
+Dooars
+Puri
+Daring Bari
+✔ Non-Winner Facility: 2 Discount Credits (₹500 × 2 = ₹1000 off on 2 Domestic Tours)
+✔ Travel insurance – 50% off
+✔ Others Paid tour discount up to 7% (In Subscription Period)
+✔ Name change for family members – One Time
+Platinum Plan – ₹1499
+✔ Travel Reward Credit (1) → Weekly Lucky Draw Participation
+✔ Winner Tour Value: ₹10,000
+✔ Tour Duration: 3N/4D (sometimes 4N/5D depending on destination)
+✔ Winner Destinations (Seasonal):
+Kashmir
+Goa
+Sikkim
+Himachal (Shimla+Manali)
+✔ Non-Winner Facility: 4 Discount Credits (₹500 × 4 = ₹2000 off on 4 Domestic Tours)
+✔ Travel insurance – Free
+✔ Others Paid tour discount up to 10% (In Subscription Period)
+✔ Name change for family members – Two Times
+Common Facilities for All Subscribers
+Subscription Validity → 12 Months
+Pickup & Drop Facility → From company-selected points
+Tours conducted Quarterly for Winners (Jan–Mar → July batch, Apr–Jun → October batch, etc.)
+Non-Winners always get assured discounts on paid domestic tours
+Digital customer dashboard for → Lucky Draw entry, credits, booking updates
+Tagline Suggestion:
+“Choose Your Plan. Try Your Luck. Travel Beyond Limits.”
+2. Weekly Lucky Draw:
+Every Sunday, a transparent lucky draw is held among all active subscribers.
+5% of total subscribers win (Always rounded up to the next whole number).
+Winners are grouped by quarter, and enjoy a luxury tour (2N/3D or 3N/4D) arranged by the company in the following travel cycle.
+3. Tour Execution:
+Jan–Mar Winners → Tour in July
+Apr–Jun Winners → Tour in October
+Jul–Sep Winners → Tour in January (next year)
+Oct–Dec Winners → Tour in April (next year)
+Winner Benefits
+Winners enjoy fully planned luxury tours to destinations chosen seasonally by the company (e.g., Sundarban, Darjeeling, Kashmir, Goa, and Sikkim).
+All expenses for accommodation, transport, meals and experiences are covered — subscribers only pay their subscription fee.
+Non-Winner Benefits
+No subscriber is ever left out! Even if you don’t win the weekly draw, you still enjoy guaranteed benefits:
+Silver Plan (₹499): Flat ₹500 discount on 1 domestic tour package within 12 months.
+Gold Plan (₹799): Flat ₹500 discount × 2 (on any 2 domestic tours within 12 months).
+Platinum Plan (₹1499): Flat ₹500 discount × 4 (on any 4 domestic tours within 12 months).
+This ensures that every subscriber gets more value than their subscription fee, whether they win or not.
+Why This Model Works
+Fair & Transparent: Winners selected through a live/recorded digital draw.
+Value for All: Winners enjoy luxury tours, non-winners enjoy discounts.
+Sustainable & Scalable: Tours are planned quarterly, allowing bulk bookings and premium experiences.
+Engaging:  Weekly excitement keeps customers connected with the brand.
+How Lucky Draw will execute
+How Beduin Lucky Draw Will Be Conducted
+Data Collection & Verification
+All subscriptions made during the week (up to Saturday 11:59 PM) are collected.
+Each subscriber is assigned a unique ticket ID / number.
+Duplicate or invalid entries (unverified payments, fake accounts) are filtered out.
+Final subscriber list is frozen for that week’s draw.
+Winner Count Calculation
+Total number of active subscribers = N.
+Winners = 5% of N (rounded up).
+Example: 1047 subscriber’s → 52.35 → 53 winners.
+Example: 1051 subscriber’s → 52.55 → 53 winners.
+Formula: Winners = ROUNDUP (N × 0.05, 0)
+Random Selection Process
+Random number generator (RNG) software is used to pick winners.
+Example: Random.org, Google Random Picker, or an in-house secured system.
+The RNG is run live or recorded with screen share for full transparency.
+The selected Ticket IDs = Final Winners.
+Transparency & Proof
+The entire draw is screen recorded or lives streamed (FB / YouTube)
+A winner report (CSV / PDF) is generated with:
+Total subscribers
+Total winners selected
+List of winner IDs / Names
+Date & Time of draw
+RNG seed / verification log
+Report is saved in company records for audit.
+Winner Announcement
+Winners are announced every Sunday evening via:
+Company Website (Winners Page)
+Social Media (FB, Instagram, WhatsApp groups)
+SMS & Email notification
+Example SMS:
+Congratulations [Name]! You are a Beduin Lucky Draw Winner! Your coupon: BEDWIN-JULY-12345. Call ‪+91 8768903565‬ for details.
+Post-Draw Process
+Each winner gets a unique digital coupon code (QR/UUID) stored in the company system.
+Winners are grouped into their quarterly tour batch (Jan–Mar → July, Apr–Jun → October, etc.).
+Non-winners get reminder SMS about their discount benefits (₹500 × 1/2/4 depending on plan).
+Why Customers Will Trust the System
+Always Round Up Rule: ensures fairness (more winners, never less).
+Digital RNG + Live/Recorded Proof: no manual manipulation.
+Public Announcements: winners’ names are visible, transparent.
+Coupon Codes: secure, unique, cannot be duplicated.
+So the customer knows: “Every Sunday, Beduin runs a fair digital draw. If I win, I travel free. If not, I still get discounts. Either way, I gain.”
+Lucky Draw Will Be Conducted (Customer-End Model)
+How Beduin Lucky Draw Will Be Conducted (Customer-End Model)
+Subscription & Credit System
+Every subscriber who buys a 12-month subscription plan (Silver, Gold, Platinum) will receive 1 Travel Reward Credit.
+1 Credit = 1 Chance to participate in the Lucky Draw.
+Credits are automatically added to the customer’s account once the subscription payment is verified.
+Weekly Lucky Draw Participation
+Every Sunday, subscribers can log in to their Beduin account / mobile app / web portal.
+They will use their 1 Credit to activate their entry for that week’s Lucky Draw.
+Once they enter, their Ticket ID is confirmed and locked for that week’s draw.
+No extra credits can be purchased — fair chance for everyone.
+Winner Count Calculation
+The system counts all participants for that week (N).
+Winners = 5% of N (rounded up).
+Example: 1047 participant’s → 52.35 → 53 winners.
+Example: 1051 participant’s → 52.55 → 53 winners.
+The system automatically calculates and confirms this number before the draw.
+Draw Execution (Customer-Side Transparency)
+Instead of being done secretly by the company, the draw is triggered by the system itself in front of customers.
+Options:
+Digital Scratch Card: Customers scratch their card online and instantly see if they win.
+Spin-Free RNG Animation: A neutral random selection where customer IDs flash, and winners are highlighted.
+Quiz/Engagement Draw: Optional fun-based entry.
+In all cases, the process is automated and equal for every customer, without manual control from the company.
+Winner Notification & Benefits
+Winners instantly see their result on screen:
+“Congratulations! You are a Beduin Lucky Draw Winner! Your tour coupon: BEDWIN-JULY-12345.”
+They also receive confirmation by SMS + Email.
+Their account automatically stores the e-coupon for the upcoming quarterly tour.
+Non-Winner Notification & Benefits
+Non-winners will see:
+“Better luck next time! Don’t worry, you still enjoy your guaranteed discount benefit.”
+Their account dashboard shows how many ₹500 discounts remain for their subscription (Silver = 1, Gold = 2, Platinum = 4).
+Why This Model Is Even Better
+Customer-Driven: Every subscriber controls their own participation.
+Transparency: No manual handling by the company → removes doubt of manipulation.
+Engagement: Weekly log-in keeps customers connected to the brand.
+Fairness: 1 Credit = 1 Attempt → equal opportunity for all.
+Trust: Customers feel in control → “I tried my own luck.”
+So the message to customers is:
+“With Beduin, you don’t just wait for a lucky draw — you take part in it yourself. One subscription = one credit = one real chance to win.”
+Customer Credit Model
+Travel Reward Credit (TRC) → for weekly lucky draw participation
+Discount Credits (DC) → for guaranteed savings on paid tours
+Beduin Tour & Travels – Subscription & Credit-Based Lucky Draw Model
+Two Types of Credits for Every Subscriber
+When a customer purchases a 12-month subscription plan, they automatically receive:
+Travel Reward Credit (TRC):
+1 Credit = 1 Entry in the weekly Lucky Draw.
+Every subscriber gets 1 Travel Reward Credit per subscription.
+Used to participate every Sunday in the live digital draw.
+Discount Credits (DC):
+These are Unlucky Credits, used when the subscriber does not win.
+They can redeem these credits for discounts on any paid domestic tours.
+Credit Allocation by Plan:
+Silver Plan (₹499) → 1 Discount Credit (worth ₹500 off)
+Gold Plan (₹799) → 2 Discount Credits (worth ₹500 × 2 = ₹1000 off)
+Platinum Plan (₹1499) → 4 Discount Credits (worth ₹500 × 4 = ₹2000 off)
+Rule: 1 Domestic Tour Booking = 1 Discount Credit can be applied.
+Weekly Lucky Draw Participation
+Every Sunday, subscribers log in to their account / mobile app.
+They use their 1 Travel Reward Credit (TRC) to enter the draw.
+The system confirms all entries and freezes the list at cut-off time.
+Winners = 5% of total entries (always rounded up).
+Draw Execution (Customer-End Transparency)
+The draw happens digitally in front of customers (via RNG animation / scratch card).
+Each participant instantly knows if they are a Winner or Non-Winner.
+Winner Benefits
+Winners get a Luxury Tour Coupon (valid for quarterly tour batches).
+Tours are arranged seasonally, worth ₹3,000 – ₹10,000 depending on plan (Silver/Gold/Platinum).
+Example: Silver → Sundarban/Digha/Mousuni Island/Purulia, Gold → Darjeeling/Dooars/Puri/Daring Bari, Platinum → Kashmir/Goa/Sikkim/Himachal.
+Non-Winner Benefits
+Non-Winners immediately receive a notification:
+“Better luck next time! You still have [X] Discount Credits to use on paid tours.”
+They can use these Discount Credits to get flat ₹500 off per domestic tour booking.
+Example:
+Silver → 1 Discount Credit → 1× ₹500 off
+Gold → 2 Discount Credits → 2× ₹500 off (on 2 different tours)
+Platinum → 4 Discount Credits → 4× ₹500 off (on 4 different tours)
+Why Customers Love This Model
+1. Double Benefits: Win → Luxury Tour, Lose → Guaranteed Discounts.
+2. Fair Play: Everyone gets the same chance in weekly draws.
+3. Transparency: Company doesn’t control winners; customers activate their own luck.
+4. Continuous Engagement: Weekly participation keeps customers connected.
+5. Assured Value: Even if unlucky, subscription fee is recovered via discount credits.
+In simple words:
+Every Beduin member gets 2 types of credits:
+Travel Reward Credit (1 per subscription) → chance to win free luxury trips.
+Discount Credits (1/2/4 depending on plan) → guaranteed savings on paid tours.
+So, nobody loses — everyone gains!
+Lucky Draw Winner Tour Details for Subscribers
+Silver Plan – ₹499
+Budget Equivalent Tour Value: ₹3,000
+Tour Type: Short Domestic Gateway (Nature & Adventure)
+Seasonal Destinations (chosen by company):
+Sundarban
+Digha
+Mousuni Island (Sea + Camping Experience)
+Purulia
+Perfect for quick escapes with full luxury stay, meals and sightseeing.
+Lucky Winners under this plan will enjoy a 2N/3D luxury tour to any of these destinations — included within the subscription itself.
+Gold Plan – ₹799
+Budget Equivalent Tour Value: ₹5,000
+Tour Type: Premium Domestic Experiences (Hill Stations, Beaches, Culture)
+Seasonal Destinations (chosen by company):
+Darjeeling
+Dooars
+Puri
+Daring Bari
+Best for couples, friends or family who want short but premium trips.
+Winners under this plan will enjoy Premium 2N/3D Tour Packages — covering hill stations, beaches, and cultural destinations.
+Platinum Plan – ₹1499
+Budget Equivalent Tour Value: ₹10,000
+Tour Type: Luxury Long Tours (Hill, Desert, Backwater, Culture)
+Seasonal Destinations (chosen by company):
+Kashmir
+Goa
+Sikkim
+Himachal (Shimla+Manali)
+Winners enjoy full luxury hotels, sightseeing, transfers, and curated cultural experiences.
+Platinum Winners will enjoy a Full Luxury Experience, with 2N/3D or 3N/4D or 4N/5D (depending on destination) trips depending on the destination.
+Special Notes
+Tour destinations will be selected by the company based on the season.
+These tours are exclusively available to Lucky Draw Winners.
+Non-Winners will still enjoy benefits through our Discount Benefit System (subscription money adjustment).
+Tours for winners will be arranged once every 3 months, allowing proper luxury planning and group experiences.
+Benefits of This Model
+1. Low Entry Cost → High Reward Value (very attractive for customers).
+2. Exclusive Experience → Only winners enjoy these luxury tours.
+3. Seasonal Flexibility → Best destinations offered in the best seasons.
+4. Company Profitability → Bulk tour bookings help optimize costs.
+5. Brand Loyalty → Customers are motivated to renew subscriptions again and again.
+This positions Beduin Tour & Travels as a unique, customer-focused brand — where every subscription brings value, but winners enjoy unforgettable journeys.
+Lucky Draw Non-Winner Benefits in Details
+At Beduin Tour & Travels, no subscriber ever leaves empty-handed. Even if you don’t win the weekly lucky draw, you still enjoy guaranteed benefits throughout your 12-month subscription period.
+Silver Plan – ₹499
+Discount Value: Flat ₹500 discount
+Usage: Valid for 1 domestic tour package of your choice
+Validity: Anytime within your 12-month subscription period
+Example: If you book a domestic tour worth ₹10,000, you pay only ₹9,500
+Ensures that even a ₹499 subscription pays back fully through discounts.
+Gold Plan – ₹799
+Discount Value: Flat ₹500 discount × 2 times = ₹1,000 total value
+Usage: Valid for any 2 domestic tour packages (can be used separately)
+Validity: 12-month subscription period
+Example:
+First tour: ₹15,000 package → Pay ₹14,500
+Second tour: ₹12,000 package → Pay ₹11,500
+Twice the benefit, making the Gold Plan more rewarding.
+Platinum Plan – ₹1499
+Discount Value: Flat ₹500 discount × 4 times = ₹2,000 total value
+Usage: Valid for any 4 domestic tour packages
+Validity: 12-month subscription period
+Example:
+Tour 1: ₹20,000 package → Pay ₹19,500
+Tour 2: ₹12,000 package → Pay ₹11,500
+Tour 3: ₹10,000 package → Pay ₹9,500
+Tour 4: ₹18,000 package → Pay ₹17,500
+Platinum subscribers enjoy maximum flexibility and savings, ensuring the subscription pays back multiple times.
+Non winners can participate with Lucky Draw winners tour through paying the package value. (According to the discount rules)
+Key Rules & Conditions
+Discounts apply only to Beduin-organized domestic tours.
+Discounts are non-transferable and valid only during the 12-month subscription period.
+They cannot be clubbed with other offers unless explicitly allowed.
+If a discounted tour is canceled, the discount is considered used, unless company policy allows reinstatement.
+Benefits for Customers
+Guaranteed Value: Every subscriber gets more than what they paid for.
+Freedom of Choice: Apply discounts on tours that match your preference.
+Flexibility: Use once, twice, or multiple times depending on your plan.
+Trust & Loyalty: Even if you don’t win, you never lose.
+Benefits for the Company
+Builds trust and transparency — customers know they’ll always gain.
+Encourages repeat bookings, as discounts motivate customers to take multiple tours.
+Strengthens subscription renewals, since customers see continuous value.
+In short: Winners enjoy free luxury tours, and non-winners still enjoy assured savings. With Beduin, nobody loses — everyone gains.
+Pickup & Drop Facility
+For every Beduin Tour & Travels package — whether it’s a Lucky Draw Winner Tour or a Non-Winner Paid Tour — we provide a Pickup & Drop Facility.
+The pickup point will be a company-selected location based on the tour destination.
+Customers must arrive on time as per the schedule announced by the company.
+This ensures safe, comfortable, and hassle-free travel for all our guests.
+With Beduin, your journey begins the moment you step into our pickup zone
+Franchise Model
+Beduin Tour & Travels – State-Wise Franchise Model
+Core Franchise Concept
+Purpose: Expand Beduin Tour & Travels PAN-India through trusted local entrepreneurs.
+Franchise Role: Handle local subscriptions, customer service, and tour promotion.
+Company Role: Provide technology, branding, lucky draw system, tour execution, training, and support.
+Franchise Types
+1. City/State Associate Franchise (Small Scale)
+Investment: ₹50,000 – ₹75,000
+Commission: 5–8% on subscriptions sold
+Target: Small towns / Tier-3 cities
+2. Standard Franchise (District/Metro)
+Investment: ₹2,00,000 – ₹3,00,000
+Commission: 8–10% on subscriptions + share on tour packages
+Target: State capitals & Tier-2 cities
+3. Master State Franchise (State-Level Rights)
+Investment: ₹7,00,000 – ₹12,00,000
+Commission: 12–15% on subscriptions + royalties from sub-franchisees
+Target: One per state (handles marketing, training & support of all city franchises under them)
+State-Wise Franchise Allocation Plan
+East India
+West Bengal (HQ State) → Master Franchise at Kolkata; city/district franchises at Siliguri, Asansol, Durgapur, Howrah, Malda.
+Odisha → Master Franchise at Bhubaneswar; city franchises at Cuttack, Puri, Rourkela.
+Bihar & Jharkhand → Master at Patna/Ranchi; local hubs at Gaya, Muzaffarpur, Dhanbad, Jamshedpur.
+North-East India → Master at Guwahati (Assam); city franchises in Shillong, Agartala, Imphal, Aizawl, Gangtok.
+North India
+Delhi NCR → State-level franchise at Delhi; city franchises at Noida, Gurgaon, Ghaziabad.
+Uttar Pradesh → Master at Lucknow; city franchises at Varanasi, Kanpur, Agra, Prayagraj.
+Punjab, Haryana, Himachal → Master at Chandigarh; city hubs at Amritsar, Shimla, Manali.
+Rajasthan → Master at Jaipur; city hubs at Udaipur, Jodhpur, Jaisalmer.
+West India
+Maharashtra → Master at Mumbai; franchises in Pune, Nagpur, Nashik.
+Gujarat → Master at Ahmedabad; franchises in Surat, Vadodara, Rajkot.
+Goa → Direct company-operated or mini franchise (due to tourism demand).
+South India
+Karnataka → Master at Bangalore; city franchises at Mysore, Mangalore, Hampi.
+Tamil Nadu → Master at Chennai; city hubs at Coimbatore, Madurai, Ooty.
+Kerala → Master at Kochi; city hubs at Trivandrum, Munnar, Alleppey.
+Andhra Pradesh & Telangana → Master at Hyderabad; hubs at Vizag, Vijayawada, Warangal.
+Franchise Benefits
+Exclusive State/City rights
+Fixed commission on subscriptions & packages
+Marketing support (digital creatives, campaigns)
+Backend access to CRM & Lucky Draw system
+Training (sales, customer handling, tour operations)
+Brand identity under Beduin Tour & Travels
+Company Benefits
+Rapid PAN-India expansion without heavy infrastructure costs
+Local franchise owners ensure regional trust & customer handling
+Higher subscription sales through local networks
+Shared marketing cost burden with franchise partners
+Possible Challenges
+Maintaining consistency in service quality across states
+Monitoring fraud/false subscriptions by franchisees
+Legal agreements for franchise termination/disputes
+Regional demand differences (tour preferences vary state to state)
+Agent Model
+Beduin Tour & Travels – PAN India Agent Recruitment & Management Model
+Agent Structure under Franchise Model
+Franchise Hierarchy:
+Head Office (HO) → Manages entire India operations.
+State Master Franchise → One per state (training + monitoring).
+District/City Franchise → Sub-franchise handling specific regions.
+Agents → Recruited under each Franchise, directly handling customer acquisition.
+Every Agent is mapped to one Franchise, and that Franchise is mapped to the State → HO.
+Agent Recruitment
+Franchise Owners are responsible for hiring Agents.
+Recruitment Channels:
+Local recruitment drives
+Online applications through Beduin Agent Portal
+Referrals from existing agents
+Requirements:
+Minimum 18+ years
+Basic Smartphone/computer knowledge
+Strong local network & communication skills
+Agent Work Responsibility
+Create & manage new customer subscriptions via the Agent Portal.
+Assist customers with subscription plans (Silver/Gold/Platinum).
+Promote Lucky Draw & Non-Winner Discount Benefits.
+Maintain customer trust & transparency.
+Report daily activity through Portal.
+Agent Earning Models
+A) Salary-Based Agent
+Fixed Monthly Salary (₹10,000–₹15,000 depending on state/city).
+Monthly Target of Registrations (e.g., 50–100 subscriptions).
+Incentives if they exceed targets.
+B) Commission-Based Agent
+No fixed salary.
+Commission per successful subscription:
+Silver Plan: ₹50–₹75 per registration
+Gold Plan: ₹100–₹150 per registration
+Platinum Plan: ₹200–₹300 per registration
+Monthly commission auto-calculated by Portal & transferred.
+Agents can choose their preferred model at the time of joining.
+Agent Portal Features
+Each Agent will have a dedicated login under their Franchise.
+Dashboard:
+Agent Profile & Franchise Mapping
+Total Registrations: Daily / Monthly / Yearly (with date filter)
+Plan-wise Registration Split (Silver/Gold/Platinum)
+Customer Creation Page:
+Add new customer (Name, Mobile, Email, Plan, Payment Screenshot/UPI ref)
+Auto-generate Customer ID
+Track status (Active, Pending Payment Verification, Completed)
+Commission Page (for Commission-Based Agents):
+Subscription List with Commission Earned per customer
+Total Commission Earned (Monthly, Filter by Date)
+Download Commission Report (PDF/Excel)
+Salary Page (for Salary-Based Agents):
+Target vs Achieved Registrations
+Bonus/Extra Incentive if applicable
+Salary Slip Download
+Reports & Filters:
+Daily/Monthly/Yearly Reports
+Custom date filter
+Export option (Excel/PDF)
+Payment & Distribution System
+Salary-Based Agents: Salary auto-generated in system at month-end → Transferred via bank/UPI.
+Commission-Based Agents: Portal auto-calculates commission → Approved by Franchise → Monthly payout by 5th of every month.
+Transparency: Agents can see all their earnings in the portal (real-time updates).
+Franchise Role in Agent Management
+Recruit Agents → Train them in subscription model & Lucky Draw process.
+Monitor performance via Franchise Dashboard (aggregate of all agents under them).
+Approve payments (salary/commission) for agents.
+Maintain quality & service delivery.
+Company Benefits of Agent Model
+Rapid scaling without heavy direct manpower cost.
+Local market penetration via trusted local agents.
+Performance-based payout → higher productivity.
+Franchise bears recruitment/training responsibility → company saves overheads.
+Possible Challenges & Solutions
+Challenge: Fake customer creation for commission.
+Solution: Payment verification mandatory (subscription activates only after company payment confirmation)
+Challenge: Agent churn (high turnover).
+Solution: Incentive program + Career growth path (senior agent, area manager)
+Challenge: Unequal performance across states.
+Solution: Monthly training webinars + Quarterly performance review
+Agent Earning Example
+Commission-Based Agent (Monthly)
+Registers 20 Silver (₹50×20 = ₹1,000)
+Registers 15 Gold (₹100×15 = ₹1,500)
+Registers 10 Platinum (₹200×10 = ₹2,000)
+Total Commission = ₹4,500 (plus extra incentives if target achieved).
+Salary-Based Agent
+Fixed ₹12,000/month + Incentive (₹2,000 if target achieved)
+Total Salary = ₹14,000
+Summary
+Every subscription = 2 Credits for customers (Lucky Draw + Discount).
+Every agent = 2 earning models (Salary or Commission).
+Every franchise = 2 responsibilities (Recruitment + Payment Distribution)
+Customers Referrals Program
+Beduin Tour & Travels – Customer Referral Program
+Objective
+Encourage existing subscribers to bring new members by rewarding them with extra travel benefits, credits, and discounts — but no cash withdrawal option.
+How It Works
+Every subscriber gets a Unique Referral Code/Link.
+If a new customer joins Beduin using that code:
+The new customer gets a welcome benefit (₹100–₹200 discount on their first subscription).
+The referring customer gets Referral Rewards in the form of Credits & Discounts.
+Referral Rewards for Existing Customers
+When you refer a friend and they successfully subscribe:
+Silver Plan Subscriber Referral
+1 successful referral = 1 Extra Discount Credit (worth ₹500 off on a tour).
+Max limit: 2 credits per year.
+Gold Plan Subscriber Referral
+1 successful referral = 1 Extra Discount Credit (worth ₹500 off).
+3 referrals = 1 Bonus Travel Reward Credit (extra entry for weekly draw).
+Max limit: 4 credits per year.
+Platinum Plan Subscriber Referral
+1 successful referral = 1 Extra Discount Credit (worth ₹500 off).
+3 referrals = 1 Bonus Travel Reward Credit.
+5 referrals = 1 Mini Tour Voucher (short 1-day trip organized by Beduin).
+Max limit: 6 credits per year.
+What Customers Can’t  Do
+No referral reward can be converted into cash.
+Rewards cannot be withdrawn or transferred to another person.
+Referral credits are valid only during the 12-month subscription period.
+Customer Benefits
+Extra chances to win (via extra Travel Reward Credits).
+Guaranteed travel savings (via Discount Credits).
+Loyalty rewards (mini tour vouchers for top referrers).
+Community pride: “I brought my friends/family to Beduin.”
+Company Benefits
+Organic customer acquisition at low cost.
+Builds strong word-of-mouth marketing.
+Improves subscription renewals as customers feel rewarded.
+Keeps benefits inside the ecosystem (no money leakage).
+Example Scenario
+A Platinum subscriber refers 5 friends → earns:
+5 Discount Credits (₹500 × 5 = ₹2,500 worth)
+1 Bonus Travel Reward Credit
+1 Free Mini Tour Voucher
+This subscriber has now recovered much more value than their plan, without costing the company direct cash.
+Summary
+Referral = Travel Rewards, not cash.
+Rewards include: Extra Discount Credits, Extra Travel Reward Credits, Mini Tour Vouchers.
+Limits per year to avoid misuse.
+Stronger loyalty & organic growth for Beduin.
+Conclusion – The BEDUIN Promise
+At Beduin Tour & Travels, we believe that travel is more than a journey — it’s a collection of unforgettable memories. Our Subscription + Lucky Draw Model ensures that every member wins, either through free luxury tours or assured discounts on paid packages. This unique approach has already set us apart as one of the most innovative travel companies in India.
+But this is just the beginning.
+Very soon, we are expanding beyond our current plans with:
+Domestic Level Subscription Plans — covering premium destinations across India.
+International Level Subscription Plans — offering unforgettable trips abroad at unbeatable value.
+End-to-End Travel Solutions ✈ — including Hotel Booking, Train Tickets, Flight Tickets, Visa Applications, and Customized Travel Packages.
+With these upcoming services, Beduin Tour & Travels will become your one-stop travel partner — whether you are exploring India or the world.
+Our mission is simple:
+To make travel accessible, transparent, and rewarding for everyone.
+Because at Beduin, it’s not just about the destination — it’s about the journey, the memories, and the happiness you carry forever.
+Safar jo yad rahe… always
+Updated Subscription Plan Destination Matrix
+This section overrides any old destination examples in the earlier business plan pages. Use the following destinations for subscription plan display, website plan cards, subscriber dashboard, reward communication, and marketing materials.
+Domestic Plans
+Silver Domestic Plan - ₹499
+• Sundarban
+• Digha
+• Mousuni Island
+• Purulia
+Gold Domestic Plan - ₹799
+• Darjeeling
+• Dooars
+• Puri
+• Daring Bari
+Platinum Domestic Plan - ₹1,499
+• Kashmir
+• Goa
+• Sikkim
+• Himachal (Shimla+Manali)
+International Plans
+Silver International Plan - ₹4,999
+• Nepal
+• Bhutan
+Gold International Plan - ₹7,999
+• Thailand
+• Bali (Indonesia)
+Platinum International Plan - ₹14,999
+• Dubai
+• Vietnam
+Credit Terminology Update
+The previous lucky-draw-credit terminology has been replaced with Travel Reward Credit (TRC).
+• TRC means Travel Reward Credit and is used for weekly travel reward / lucky draw participation.
+• DC means Discount Credit and is used for guaranteed non-cash discount benefits on eligible paid tours.
+All previous lucky-draw-credit labels in the website, dashboard, admin panel, plan cards, terms, and customer notifications should be updated to TRC.
+Privacy Policy
+Beduin Tour & Travels Privacy Policy
+At Beduin Tour & Travels, we value and respect your privacy. This Privacy Policy explains how we collect, use, store, and protect your personal information.
+Information We Collect
+• Full Name
+• Mobile Number
+• Email Address
+• Date of Birth
+• Address
+• Government ID Details (if required)
+• Payment Information
+• Travel Preferences
+• Device and Website Usage Information
+How We Use Your Information
+• Process subscriptions and bookings
+• Verify customer identity
+• Conduct travel reward / lucky draw participation
+• Send notifications, offers, and updates
+• Provide customer support
+• Improve our services and user experience
+Data Protection
+All customer information is securely stored and protected. We do not sell, rent, or share personal information with third parties except when required by law or for service fulfillment purposes.
+Marketing Communication
+By subscribing to Beduin Tour & Travels, you agree to receive promotional messages, emails, WhatsApp notifications, and travel-related offers.
+Policy Updates
+Beduin Tour & Travels reserves the right to update this Privacy Policy at any time.
+Refund Policy
+Beduin Tour & Travels Refund Policy
+Subscription Fees
+All subscription fees are strictly non-refundable once the subscription has been activated.
+Membership Benefits
+Unused Travel Reward Credits (TRC), Discount Credits, or membership benefits cannot be converted into cash or refunded.
+Tour Bookings
+Refund eligibility for tour bookings will depend on the cancellation policy applicable to the specific tour package booked.
+Duplicate Payments
+In case of duplicate payment due to technical issues, verified excess amounts will be refunded within a reasonable period.
+Company Cancellation
+If Beduin Tour & Travels cancels a paid tour due to operational reasons, customers may receive:
+• Alternative tour options
+• Travel credits
+• Refund as per company policy
+Cancellation Policy
+Beduin Tour & Travels Cancellation Policy
+Subscription Cancellation
+Subscribers may request cancellation of their membership at any time; however, subscription fees will not be refunded.
+Winner Tour Cancellation
+If a winner fails to confirm participation within the specified period, the winner benefit may be cancelled.
+If a winner voluntarily cancels after confirmation, the winner benefit may be forfeited.
+Paid Tour Cancellation
+Cancellation charges may apply depending on:
+• Destination
+• Hotel policy
+• Transportation provider policy
+• Time of cancellation
+Force Majeure
+Beduin Tour & Travels shall not be responsible for cancellations caused by:
+• Natural disasters
+• Political unrest
+• Government restrictions
+• Pandemics
+• Weather conditions
+• Any unforeseen circumstances beyond company control
+Membership Rules
+Beduin Tour & Travels Membership Rules
+Eligibility
+Membership is available to individuals aged 18 years and above.
+Membership Validity
+All subscription plans are valid for 12 months from activation.
+Active Membership
+Only active members are eligible for:
+• Travel reward / lucky draw participation
+• Discount Credits
+• Member Benefits
+• Promotional Offers
+Travel Reward / Lucky Draw Participation
+Members must comply with all participation requirements to remain eligible for draw benefits.
+Discount Credits
+Discount Credits are non-transferable, non-refundable, non-cashable, and valid only during membership validity.
+Misuse of Membership
+The company reserves the right to suspend or terminate memberships in cases involving:
+• Fraudulent activities
+• False information
+• Duplicate accounts
+• Abuse of company benefits
+Member Responsibility
+Members are responsible for maintaining accurate account information and complying with all membership rules.
+Website Disclaimer
+Beduin Tour & Travels Disclaimer
+Beduin Tour & Travels operates a travel membership and promotional reward program designed to provide travel-related benefits to subscribers.
+All travel rewards, discounts, tour destinations, schedules, and benefits are subject to availability and company policies.
+The company reserves the right to modify, suspend, replace, or discontinue any benefit, destination, or promotional offer when required for operational, legal, safety, or business reasons.
+Participation in membership programs does not guarantee selection as a winner.
+By using this website, purchasing a subscription, or booking any service, you agree to all applicable company policies, rules, and terms.
+Cookie Policy
+Beduin Tour & Travels may use cookies and similar technologies to improve website functionality, remember user preferences, understand website traffic, support analytics, and improve service communication.
+Users may manage or disable cookies through their browser settings. Some website features may not function properly if cookies are disabled.
+By continuing to use the Beduin Tour & Travels website, users agree to the use of cookies as described in this Cookie Policy.
+Affiliate / Agent Partner Policy
+Beduin Tour & Travels may appoint affiliates, agents, franchise partners, or marketing associates to promote subscriptions, tour packages, and related services.
+Partners must follow company-approved pricing, communication, branding, customer onboarding, and compliance rules.
+Partners are not permitted to make false promises, unauthorized discounts, fake winner claims, cash-refund promises, or policy commitments not approved by the company.
+The company reserves the right to suspend or terminate any partner account involved in misuse, misrepresentation, fraudulent activity, or violation of company policy.
+BEDUIN TOUR & TRAVELS
+Subscription Membership Terms & Conditions
+Effective Date: As per Company Policy
+By purchasing and activating a Beduin Tour & Travels Subscription Plan, the Subscriber agrees to abide by the following Terms & Conditions.
+A. Membership & Subscription Rules
+1. Subscription plans are available only to individuals aged 18 years or above.
+2. Each subscription is valid for a period of 12 (Twelve) months from the date of activation.
+3. Subscription fees are strictly non-refundable and non-transferable.
+4. A subscription will be activated only after successful payment verification, mobile number verification, and KYC verification (if required).
+5. A customer may purchase multiple subscriptions under the same name, subject to company approval.
+6. All subscription benefits are applicable only to active subscribers.
+B. Lucky Draw Rules
+7. Each subscription includes 1 (One) Travel Reward Credit (TRC).
+8. Only active subscribers are eligible to participate in the Lucky Draw.
+9. The Lucky Draw will be conducted through a Random Number Generator (RNG) or any other approved automated digital system.
+10. The Company's decision regarding winner selection shall be final and binding.
+11. Lucky Draw results cannot be challenged, modified, or reconsidered once announced.
+12. In case of technical issues, system failures, force majeure events, or unforeseen circumstances, the Company reserves the right to postpone, reschedule, or modify the draw.
+13. A minimum of 5% of the total valid participants will be selected as winners every week, using the Round-Up rule.
+14. The draw may be conducted live, recorded, or through an automated digital platform.
+15. Winner announcements may be published through the Company Website, Mobile App, Social Media Platforms, SMS, Email, or any other official communication channel.
+C. Winner Benefits & Conditions
+16. Winner Tour benefits cannot be exchanged for cash or any monetary compensation.
+17. Winner Tour benefits cannot be exchanged for any other tour package, service, voucher, or offer.
+18. Winner Tours will be conducted only on destinations, dates, and itineraries selected by the Company.
+19. Winners must confirm their participation within 15 days of the announcement or invitation. Failure to do so may result in cancellation of the benefit.
+20. If a winner fails to join the allocated tour, the benefit shall be considered forfeited.
+21. Winner Tour benefits are non-transferable except where Name Change benefits are specifically allowed under the subscriber's plan.
+22. Winners must provide valid government-issued identification before joining the tour.
+23. The Company reserves the sole right to determine destinations, hotels, transportation, sightseeing schedules, and tour inclusions.
+24. A subscriber may avail Winner Tour benefits only once during the validity period of a subscription.
+D. Name Change Policy
+25. No Name Change facility is available under the Silver Plan.
+26. Gold Plan subscribers are entitled to one (1) Name Change for an eligible family member.
+27. Platinum Plan subscribers are entitled to two (2) Name Changes for eligible family members.
+28. Family Members include: Spouse, Parents, Children, Brother, and Sister.
+29. All Name Change requests are subject to verification and approval by the Company.
+E. Discount Credit (DC) Policy
+30. 1 Domestic Discount Credit (DC) = 1 Person = ₹500 Discount.
+31. 1 International Discount Credit (DC) = 1 Person = ₹5,000 Discount.
+32. A maximum of one (1) Discount Credit can be used per person per tour booking.
+33. Multiple Discount Credits cannot be combined for a single person's tour cost.
+34. Discount Credits are applicable only on Beduin Tour & Travels Paid Tour Packages.
+35. Discount Credits cannot be redeemed for cash.
+36. Discount Credits cannot be sold, transferred, exchanged, or resold.
+37. Unused Discount Credits automatically expire upon subscription expiry.
+38. Silver Plan: 1 DC = 1 Tour Booking for the subscriber only. The subscriber may use the credit for one paid tour booking.
+39. Gold Plan: 2 DC may be used for two separate tour bookings by the subscriber, or for Subscriber + 1 Family Member/Friend in the same tour, subject to applicable name change rules.
+40. Platinum Plan: 4 DC may be used for four separate tour bookings by the subscriber, for Subscriber + 3 Family Members/Friends in the same tour, or for two persons in two separate tours, subject to applicable name change rules.
+F. Domestic & International Discount Credit Policy
+41. Domestic Membership Discount Credits can only be used for Domestic Paid Tour Packages.
+42. International Membership Discount Credits can only be used for International Paid Tour Packages.
+43. Domestic Discount Credits cannot be used for International Tours, and International Discount Credits cannot be used for Domestic Tours.
+G. Tour Operations & Travel Rules
+44. The Company reserves the right to determine and modify tour schedules, routes, hotels, transportation, and services whenever necessary.
+45. Tours may be postponed, rescheduled, merged, or cancelled if the minimum required number of participants is not achieved.
+46. Tour schedules, itineraries, or destinations may be altered due to weather conditions, natural disasters, political unrest, strikes, road closures, pandemics, government regulations, or any force majeure event.
+47. Any personal expenses, including but not limited to shopping, laundry, room service, personal transportation, medical expenses, and optional activities, shall be borne by the subscriber.
+H. Travel Insurance Policy
+48. Travel insurance benefits shall be governed by the terms and conditions of the respective insurance provider.
+49. Beduin Tour & Travels shall not be responsible for any insurance claim approval, rejection, settlement, or dispute.
+I. Fraud Prevention & Misuse Policy
+50. Any false, misleading, incomplete, or fraudulent information may result in suspension or termination of the subscription.
+51. The Company reserves the right to cancel memberships found involved in duplicate registrations, fake payments, fraudulent activities, or attempts to manipulate the system.
+52. No refund shall be provided in such cases.
+J. Liability Disclaimer
+53. Beduin Tour & Travels shall not be held liable for accidents, illness, injury, theft, loss of personal belongings, natural disasters, delays, cancellations, or any third-party negligence during travel.
+54. Subscribers are solely responsible for complying with local laws, regulations, and authorities during their travels.
+K. Marketing & Publicity Rights
+55. Winners and participants grant Beduin Tour & Travels the right to use their names, photographs, videos, testimonials, and tour experiences for promotional, marketing, and advertising purposes.
+56. By purchasing a subscription, the subscriber provides consent for such usage without any additional compensation.
+L. Legal & Compliance
+57. The Beduin Lucky Draw Program is a promotional membership benefit program and shall not be considered a lottery, gambling, betting, or wagering activity.
+58. The Company reserves the right to amend, modify, suspend, or update these Terms & Conditions at any time without prior notice.
+59. Any dispute arising from the subscription program shall be subject to the exclusive jurisdiction of the courts of Nadia, West Bengal, India.
+60. By purchasing and activating a subscription, the subscriber confirms that they have read, understood, and agreed to all the Terms & Conditions mentioned above.
+M. Discount Credit Category-Locking Logic
+This section must be applied to the subscription system, checkout flow, user dashboard, admin panel, Demo Wallet flow, and credit transaction history.
+1. Discount Credit Value Rules
+Domestic Discount Credit
+- Domestic plan credits are Domestic Discount Credits.
+- Each Domestic Discount Credit value = ₹500.
+- Domestic Discount Credits can only be used for Domestic bookings/plans.
+- Domestic Discount Credits cannot be used for International bookings/plans.
+International Discount Credit
+- International plan credits are International Discount Credits.
+- Each International Discount Credit value = ₹5,000.
+- International Discount Credits can only be used for International bookings/plans.
+- International Discount Credits cannot be used for Domestic bookings/plans.
+2. Important Restriction
+- A user must not be able to use International Discount Credits to get a discount on any Domestic plan, Domestic package, Domestic booking, or Domestic checkout.
+- A user must not be able to use Domestic Discount Credits to get a discount on any International plan, International package, International booking, or International checkout.
+3. Credit Issuing Logic
+Domestic Plans
+- Issue credits with credit_category = "domestic".
+- Issue credits with credit_value = 500.
+- Issue credits with usable_for = "domestic_only".
+International Plans
+- Issue credits with credit_category = "international".
+- Issue credits with credit_value = 5000.
+- Issue credits with usable_for = "international_only".
+4. International Plan Credit Logic
+- Silver International ₹4,999: discount_credit_count = 1, credit_value = ₹5,000, total_discount_value = ₹5,000.
+- Gold International ₹7,999: discount_credit_count = 2, credit_value = ₹5,000, total_discount_value = ₹10,000.
+- Platinum International ₹14,999: discount_credit_count = 4, credit_value = ₹5,000, total_discount_value = ₹20,000.
+5. Domestic Plan Credit Logic
+- For all Domestic plans, each issued Discount Credit must have a value of ₹500.
+- Do not mix Domestic and International credit values.
+6. Checkout Validation
+During booking or subscription checkout:
+- Detect whether the selected checkout item is Domestic or International.
+- If checkout item type = domestic, only allow credits where credit_category = "domestic".
+- If checkout item type = international, only allow credits where credit_category = "international".
+- If the user tries to apply the wrong credit type, block it and show a clear error message.
+Error message for using International DC on Domestic checkout:
+- "International Discount Credits can only be used for International bookings."
+Error message for using Domestic DC on International checkout:
+- "Domestic Discount Credits can only be used for Domestic bookings."
+7. Dashboard Display
+- Show Domestic and International credits separately.
+- Do not combine Domestic and International credits into one total without category labels.
+Domestic Discount Credits dashboard block must show:
+- Available credits.
+- Value per credit: ₹500.
+- Total domestic discount value.
+- Usable only for Domestic bookings.
+International Discount Credits dashboard block must show:
+- Available credits.
+- Value per credit: ₹5,000.
+- Total international discount value.
+- Usable only for International bookings.
+8. Database Suggested Fields
+Add or update these fields in the credits table:
+- credit_category: domestic / international
+- credit_value: 500 for domestic / 5000 for international
+- usable_for: domestic_only / international_only
+- source: real / demo
+- status: available / used / expired
+9. Validation Rules
+- Domestic DC value must always be ₹500.
+- International DC value must always be ₹5,000.
+- International DC cannot be applied to Domestic checkout.
+- Domestic DC cannot be applied to International checkout.
+- Demo Wallet and real payment flow must both follow the same credit category rules.
+- Admin panel must show credit category clearly.
+- Credit transaction history must show whether the credit is Domestic or International.
+10. Testing Checklist
+1. Buy a Domestic plan.
+2. Confirm issued credits are Domestic DC with ₹500 value each.
+3. Buy an International plan.
+4. Confirm issued credits are International DC with ₹5,000 value each.
+5. Try to use International DC on a Domestic booking and confirm the system blocks it.
+6. Try to use Domestic DC on an International booking and confirm the system blocks it.
+7. Confirm dashboard shows Domestic and International credits separately.
+8. Confirm demo subscription and real subscription both follow the same restriction.
+Official Disclaimer
+Beduin Tour & Travels reserves the right to modify tour destinations, schedules, benefits, offers, and operational policies whenever necessary for business, operational, safety, legal, or logistical reasons. All decisions taken by the Company in such matters shall be considered final and binding.
+Tagline
+"Choose Your Plan. Try Your Luck. Travel Beyond Limits."
+BEDUIN TOUR & TRAVELS
+"Safar Jo Yaad Rahe."

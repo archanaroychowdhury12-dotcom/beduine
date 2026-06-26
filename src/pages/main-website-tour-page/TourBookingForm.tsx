@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { TourPackage, Traveler, PickupInfo, Voucher, PaymentDetails, BookingConfirmation, PriceCalculation } from '../../types';
+import { TourPackage, Traveler, PickupInfo, Voucher, PaymentDetails, BookingConfirmation, PriceCalculation, CreditLedgerEntry } from '../../types';
+import { getAvailableCredits, validateCreditApplication, getCategoryErrorMessage, CREDIT_VALUE_DOMESTIC, CREDIT_VALUE_INTERNATIONAL } from '../../utils/creditHelpers';
 import { TOUR_PACKAGES } from '../../data/tours';
 import { getPlanDetails } from '../../data/siteData';
-import { ChevronRight, Check, Clock, X, User, ShieldCheck } from 'lucide-react';
+import { ChevronRight, Check, Clock, X, User, ShieldCheck, Crown } from 'lucide-react';
 import { supabase } from '../../utils/supabaseClient';
 
 const formatINR = (value: number) => `₹${value.toLocaleString('en-IN')}`;
@@ -65,6 +66,19 @@ export const TourBookingForm: React.FC<TourBookingFormProps> = ({
   // Add-ons Selected State
   const [addOnsSelected, setAddOnsSelected] = useState<string[]>([]);
   const [appliedDiscountCredits, setAppliedDiscountCredits] = useState<number>(0);
+  const [creditSelection, setCreditSelection] = useState<'domestic' | 'international' | null>(() => {
+    return selectedTour.category;
+  });
+  const [creditError, setCreditError] = useState<string | null>(null);
+  const [creditSuccess, setCreditSuccess] = useState<string | null>(null);
+
+  const availableDomesticCredits = useMemo(() => {
+    return currentUser ? getAvailableCredits(currentUser.ledger || [], 'domestic') : 0;
+  }, [currentUser]);
+
+  const availableInternationalCredits = useMemo(() => {
+    return currentUser ? getAvailableCredits(currentUser.ledger || [], 'international') : 0;
+  }, [currentUser]);
 
   // Whenever initialTourId changes, update selectedTour
   useEffect(() => {
@@ -88,6 +102,9 @@ export const TourBookingForm: React.FC<TourBookingFormProps> = ({
     setIsPrivateTour(false);
     setAddOnsSelected([]);
     setAppliedDiscountCredits(0);
+    setCreditError(null);
+    setCreditSuccess(null);
+    setCreditSelection(selectedTour.category);
   }, [selectedTour]);
 
   // Lead Traveler + co-travelers manifest
@@ -101,6 +118,15 @@ export const TourBookingForm: React.FC<TourBookingFormProps> = ({
       ageGroup: 'Adult'
     }
   ]);
+
+  // Sync applied credits if traveler count shrinks below applied credits
+  useEffect(() => {
+    if (appliedDiscountCredits > travelers.length) {
+      setAppliedDiscountCredits(travelers.length);
+      setCreditSuccess(null);
+      setCreditError(null);
+    }
+  }, [travelers.length, appliedDiscountCredits]);
 
   // Prefill lead traveler from currentUser when logged in
   useEffect(() => {
@@ -204,6 +230,44 @@ export const TourBookingForm: React.FC<TourBookingFormProps> = ({
     );
   };
 
+  const handleSelectCreditCategory = (category: 'domestic' | 'international') => {
+    setCreditSelection(category);
+    setCreditError(null);
+    setCreditSuccess(null);
+    setAppliedDiscountCredits(0); // Reset applied credits when switching categories
+
+    const categoryError = getCategoryErrorMessage(category, selectedTour.category);
+    if (categoryError) {
+      setCreditError(categoryError);
+    }
+  };
+
+  const handleUpdateAppliedCredits = (value: number) => {
+    if (value < 0) return;
+    
+    setCreditError(null);
+    setCreditSuccess(null);
+
+    const validation = validateCreditApplication({
+      requestedCredits: value,
+      tourCategory: selectedTour.category,
+      availableDomesticCredits,
+      availableInternationalCredits,
+      travelerCount: travelers.length,
+    });
+
+    if (!validation.valid) {
+      setCreditError(validation.error || 'Invalid credit application');
+      setAppliedDiscountCredits(0);
+    } else {
+      setAppliedDiscountCredits(value);
+      if (value > 0) {
+        const creditValue = selectedTour.category === 'international' ? CREDIT_VALUE_INTERNATIONAL : CREDIT_VALUE_DOMESTIC;
+        setCreditSuccess(`Successfully applied ${value} Discount Credit(s). Saved ${formatINR(value * creditValue)}!`);
+      }
+    }
+  };
+
   // Live Price Calculations
   const pricing: PriceCalculation = useMemo(() => {
     const basePricePerPerson = selectedTour.basePrice;
@@ -247,7 +311,8 @@ export const TourBookingForm: React.FC<TourBookingFormProps> = ({
       }
     });
 
-    const discountCreditsTotal = appliedDiscountCredits * 500;
+    const creditValue = selectedTour.category === 'international' ? CREDIT_VALUE_INTERNATIONAL : CREDIT_VALUE_DOMESTIC;
+    const discountCreditsTotal = appliedDiscountCredits * creditValue;
     const subtotalBeforeVoucher = Math.max(0, subtotalBase + privateSurchargeTotal + addOnsTotal + insuranceTotal - memberDiscountTotal - discountCreditsTotal);
 
     let voucherDiscountAmount = 0;
@@ -325,8 +390,9 @@ export const TourBookingForm: React.FC<TourBookingFormProps> = ({
         clearInterval(interval);
         
         const randomIdNum = Math.floor(10000 + Math.random() * 90000);
+        const bookingId = `BED-${selectedTour.id.slice(0, 3).toUpperCase()}-${randomIdNum}`;
         const finalConfirmation: BookingConfirmation = {
-          bookingId: `BED-${selectedTour.id.slice(0, 3).toUpperCase()}-${randomIdNum}`,
+          bookingId: bookingId,
           tour: selectedTour,
           selectedDate,
           isPrivateTour,
@@ -342,6 +408,49 @@ export const TourBookingForm: React.FC<TourBookingFormProps> = ({
           },
           confirmedAt: new Date().toISOString()
         };
+
+        // Handle credit redemption if currentUser is logged in and applied credits
+        if (currentUser && appliedDiscountCredits > 0) {
+          const creditValue = selectedTour.category === 'international' ? CREDIT_VALUE_INTERNATIONAL : CREDIT_VALUE_DOMESTIC;
+          const redemptionEntry: CreditLedgerEntry = {
+            id: `TXN-DC-${Math.floor(100000 + Math.random() * 900000)}`,
+            date: new Date().toLocaleDateString('en-US', {
+              month: 'short',
+              day: '2-digit',
+              year: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit'
+            }),
+            type: 'redeemed',
+            creditType: 'discount',
+            amount: appliedDiscountCredits,
+            reason: `Redeemed for tour booking: ${selectedTour.name}`,
+            bookingRef: bookingId,
+            creditCategory: selectedTour.category,
+            creditValue: creditValue,
+            usableFor: selectedTour.category === 'international' ? 'international_only' : 'domestic_only'
+          };
+          
+          const currentLedger = currentUser.ledger || [];
+          const updatedLedger = [redemptionEntry, ...currentLedger];
+          
+          const updatedUser = {
+            ...currentUser,
+            ledger: updatedLedger,
+            user_metadata: {
+              ...(currentUser.user_metadata || {}),
+              ledger: updatedLedger
+            }
+          };
+          
+          setCurrentUser(updatedUser);
+          
+          supabase.auth.updateUser({
+            data: {
+              ledger: updatedLedger
+            }
+          });
+        }
 
         setConfirmedBookingData(finalConfirmation);
         setBookingStage('confirmed');
@@ -578,8 +687,16 @@ export const TourBookingForm: React.FC<TourBookingFormProps> = ({
                       <span className="text-[10px] text-slate-400 font-black uppercase block tracking-wider">Step 2 — Completed</span>
                       <h4 className="font-bold text-sm text-slate-900 mt-1">
                         {appliedVoucher ? `Applied: ${appliedVoucher.code}` : 'No Voucher Applied'}
+                        {appliedDiscountCredits > 0 && ` • Applied Credits: ${appliedDiscountCredits} (${selectedTour.category === 'international' ? 'Intl' : 'Dom'})`}
                       </h4>
-                      {appliedVoucher && <span className="text-xs text-emerald-700 font-bold">Saved {appliedVoucher.type === 'percentage' ? `${appliedVoucher.value}%` : formatINR(appliedVoucher.value)}</span>}
+                      <div className="flex flex-col gap-0.5 mt-1 text-left">
+                        {appliedVoucher && <span className="text-xs text-emerald-700 font-bold">Saved {appliedVoucher.type === 'percentage' ? `${appliedVoucher.value}%` : formatINR(appliedVoucher.value)} (Promo)</span>}
+                        {appliedDiscountCredits > 0 && (
+                          <span className="text-xs text-amber-750 font-bold">
+                            Saved {formatINR(appliedDiscountCredits * (selectedTour.category === 'international' ? CREDIT_VALUE_INTERNATIONAL : CREDIT_VALUE_DOMESTIC))} (Discount Credits)
+                          </span>
+                        )}
+                      </div>
                     </div>
                     <button
                       onClick={() => setBookingStep(2)}
@@ -596,6 +713,125 @@ export const TourBookingForm: React.FC<TourBookingFormProps> = ({
                       setAppliedVoucher={setAppliedVoucher}
                       subtotal={pricing.subtotalBeforeVoucher}
                     />
+
+                    {/* Beduine Member Discount Credits Section */}
+                    <div className="pt-6 border-t border-slate-100 text-left">
+                      <div className="mb-4">
+                        <h4 className="text-sm font-bold text-slate-900 flex items-center gap-1.5">
+                          <Crown className="w-4 h-4 text-amber-500" />
+                          <span>Beduine Member Discount Credits</span>
+                        </h4>
+                        <p className="text-xs text-slate-500 mt-0.5">Apply your subscription discount credits for additional tour savings.</p>
+                      </div>
+
+                      {!currentUser ? (
+                        <div className="p-4 rounded-xl border border-slate-200/80 bg-slate-50 text-slate-500 text-xs font-semibold">
+                          Please sign in to apply your member discount credits.
+                        </div>
+                      ) : (
+                        <div className="space-y-4">
+                          {/* Credit Type Selector Tabs */}
+                          <div className="grid grid-cols-2 gap-3">
+                            <button
+                              type="button"
+                              onClick={() => handleSelectCreditCategory('domestic')}
+                              className={`p-3 rounded-xl border text-left transition-all cursor-pointer ${
+                                creditSelection === 'domestic'
+                                  ? 'border-amber-500 bg-amber-50/10 font-bold shadow-sm'
+                                  : 'border-slate-200 bg-white hover:border-slate-300'
+                              }`}
+                            >
+                              <div className="flex justify-between items-center">
+                                <span className="text-xs font-bold text-slate-900">Domestic Credits</span>
+                                <span className="text-[10px] bg-slate-100 px-1.5 py-0.5 rounded text-slate-500">₹500 each</span>
+                              </div>
+                              <span className="text-xs font-bold text-slate-500 mt-1 block">
+                                Available: {availableDomesticCredits}
+                              </span>
+                            </button>
+
+                            <button
+                              type="button"
+                              onClick={() => handleSelectCreditCategory('international')}
+                              className={`p-3 rounded-xl border text-left transition-all cursor-pointer ${
+                                creditSelection === 'international'
+                                  ? 'border-amber-500 bg-amber-50/10 font-bold shadow-sm'
+                                  : 'border-slate-200 bg-white hover:border-slate-300'
+                              }`}
+                            >
+                              <div className="flex justify-between items-center">
+                                <span className="text-xs font-bold text-slate-900">International Credits</span>
+                                <span className="text-[10px] bg-slate-100 px-1.5 py-0.5 rounded text-slate-500">₹5,000 each</span>
+                              </div>
+                              <span className="text-xs font-bold text-slate-500 mt-1 block">
+                                Available: {availableInternationalCredits}
+                              </span>
+                            </button>
+                          </div>
+
+                          {/* Error / Warning Alert */}
+                          {creditError && (
+                            <div className="p-3.5 rounded-xl border border-rose-200 bg-rose-50 text-rose-800 text-xs font-bold flex items-center gap-2">
+                              <X className="w-4 h-4 text-rose-600 shrink-0" />
+                              <span>{creditError}</span>
+                            </div>
+                          )}
+
+                          {/* Success Alert */}
+                          {creditSuccess && (
+                            <div className="p-3.5 rounded-xl border border-emerald-250/60 bg-emerald-50 text-emerald-800 text-xs font-bold flex items-center gap-2">
+                              <Check className="w-4 h-4 text-emerald-600 shrink-0" />
+                              <span>{creditSuccess}</span>
+                            </div>
+                          )}
+
+                          {/* Credit Count Input / Control */}
+                          {!creditError && (
+                            <div className="bg-slate-50 border border-slate-200/80 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                              <div>
+                                <span className="text-xs font-bold text-slate-800 block">Apply Discount Credits</span>
+                                <span className="text-[10px] text-slate-500 block mt-0.5">
+                                  Maximum applicable for this booking: {Math.min(
+                                    travelers.length,
+                                    creditSelection === 'international' ? availableInternationalCredits : availableDomesticCredits
+                                  )} credit(s) (1 per traveler).
+                                </span>
+                              </div>
+
+                              <div className="flex items-center gap-2 shrink-0">
+                                <button
+                                  type="button"
+                                  disabled={appliedDiscountCredits <= 0}
+                                  onClick={() => handleUpdateAppliedCredits(appliedDiscountCredits - 1)}
+                                  className="w-9 h-9 rounded-lg border border-slate-200 bg-white hover:bg-slate-100 disabled:opacity-50 text-slate-700 font-black text-sm flex items-center justify-center transition-colors cursor-pointer"
+                                >
+                                  -
+                                </button>
+                                <input
+                                  type="number"
+                                  min={0}
+                                  max={travelers.length}
+                                  value={appliedDiscountCredits}
+                                  onChange={(e) => handleUpdateAppliedCredits(parseInt(e.target.value, 10) || 0)}
+                                  className="w-12 text-center py-1.5 border border-slate-200 rounded-lg bg-white text-sm font-bold focus:outline-none focus:ring-1 focus:ring-amber-500"
+                                />
+                                <button
+                                  type="button"
+                                  disabled={
+                                    appliedDiscountCredits >= travelers.length ||
+                                    appliedDiscountCredits >= (creditSelection === 'international' ? availableInternationalCredits : availableDomesticCredits)
+                                  }
+                                  onClick={() => handleUpdateAppliedCredits(appliedDiscountCredits + 1)}
+                                  className="w-9 h-9 rounded-lg border border-slate-200 bg-white hover:bg-slate-100 disabled:opacity-50 text-slate-700 font-black text-sm flex items-center justify-center transition-colors cursor-pointer"
+                                >
+                                  +
+                                </button>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
 
                     {/* Step Navigation Controls */}
                     <div className="pt-5 border-t border-slate-100 flex justify-between gap-4">

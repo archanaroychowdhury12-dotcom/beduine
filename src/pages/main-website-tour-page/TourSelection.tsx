@@ -60,25 +60,17 @@ export const TourSelection: React.FC<TourSelectionProps> = ({
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 bg-slate-50 rounded-2xl border border-slate-200/60 animate-fadeIn">
           {TOUR_PACKAGES.map((tour) => {
             const isSelected = tour.id === selectedTour.id;
-            const isIntl = !tour.destination.toLowerCase().includes('india') && 
-                            !tour.destination.toLowerCase().includes('west bengal') && 
-                            !tour.destination.toLowerCase().includes('odisha');
+            const isIntl = tour.category === 'international';
             
             return (
               <div
                 key={tour.id}
                 onClick={() => {
-                  if (isIntl) {
-                    alert("International guided packages are currently in preview. Booking open soon!");
-                  } else {
-                    onSelectTour(tour);
-                    setShowTourList(false);
-                  }
+                  onSelectTour(tour);
+                  setShowTourList(false);
                 }}
                 className={`p-4 rounded-xl border-2 transition-all flex items-start gap-3 text-left relative ${
-                  isIntl
-                    ? 'border-slate-200/40 bg-slate-50/50 opacity-60 cursor-not-allowed'
-                    : isSelected
+                  isSelected
                     ? 'border-amber-500 bg-amber-50/20 shadow-sm'
                     : 'border-slate-200 bg-white hover:border-slate-350 cursor-pointer'
                 }`}

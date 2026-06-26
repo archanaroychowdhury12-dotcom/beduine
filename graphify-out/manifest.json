@@ -1,0 +1,2367 @@
+{
+  ".codex-screenshots/axe-accessibility.json": {
+    "mtime": 1781586643.0905824,
+    "ast_hash": "c088faeb68011bcd25975fbf6a329ec0",
+    "semantic_hash": "c088faeb68011bcd25975fbf6a329ec0"
+  },
+  ".codex-screenshots/chrome-profile-2/component_crx_cache/metadata.json": {
+    "mtime": 1781116061.5298862,
+    "ast_hash": "770dfcd6e63fe336082079faf9ce964c",
+    "semantic_hash": "770dfcd6e63fe336082079faf9ce964c"
+  },
+  ".codex-screenshots/chrome-profile/component_crx_cache/metadata.json": {
+    "mtime": 1781115913.3147151,
+    "ast_hash": "770dfcd6e63fe336082079faf9ce964c",
+    "semantic_hash": "770dfcd6e63fe336082079faf9ce964c"
+  },
+  ".codex-screenshots/lighthouse-accessibility.json": {
+    "mtime": 1781586559.3407867,
+    "ast_hash": "83bf640f5fb085a7a8bf3ada03c15497",
+    "semantic_hash": "83bf640f5fb085a7a8bf3ada03c15497"
+  },
+  ".codex-screenshots/lighthouse-desktop.json": {
+    "mtime": 1781585962.7997937,
+    "ast_hash": "8ecf61440f852eeb496e9f10ff1380e7",
+    "semantic_hash": "8ecf61440f852eeb496e9f10ff1380e7"
+  },
+  "package.json": {
+    "mtime": 1781876385.1894498,
+    "ast_hash": "a7bdf023878e8a9adc340bc96b94af90",
+    "semantic_hash": "a7bdf023878e8a9adc340bc96b94af90"
+  },
+  "src/App.tsx": {
+    "mtime": 1782371028.7168713,
+    "ast_hash": "17115d5b7af16cb3e3236ebce5ed8636",
+    "semantic_hash": "17115d5b7af16cb3e3236ebce5ed8636"
+  },
+  "src/DashboardPage.tsx": {
+    "mtime": 1782367352.7259483,
+    "ast_hash": "4afab8b3dc6a4222635be8e758b3aef2",
+    "semantic_hash": "4afab8b3dc6a4222635be8e758b3aef2"
+  },
+  "src/ErrorPage.tsx": {
+    "mtime": 1781617217.8050704,
+    "ast_hash": "6214bc7a7aaa6d29289dac5a6728613a",
+    "semantic_hash": "6214bc7a7aaa6d29289dac5a6728613a"
+  },
+  "src/LoginPage.tsx": {
+    "mtime": 1781876786.453096,
+    "ast_hash": "9cb1b58366cdf737f620fa6f4e559314",
+    "semantic_hash": "9cb1b58366cdf737f620fa6f4e559314"
+  },
+  "src/RegistrationPage.tsx": {
+    "mtime": 1782051141.2857132,
+    "ast_hash": "c1c4ab3c866e8f995960820a9db6e445",
+    "semantic_hash": "c1c4ab3c866e8f995960820a9db6e445"
+  },
+  "src/ScatteredShowcase.tsx": {
+    "mtime": 1782321433.773055,
+    "ast_hash": "7693067154068946249335b677e95a68",
+    "semantic_hash": "7693067154068946249335b677e95a68"
+  },
+  "src/app/affiliate-agent-policy/page.tsx": {
+    "mtime": 1781714595.4086223,
+    "ast_hash": "c043746383ddc7671c5883a97555b474",
+    "semantic_hash": "c043746383ddc7671c5883a97555b474"
+  },
+  "src/app/cancellation-policy/page.tsx": {
+    "mtime": 1781714595.4183354,
+    "ast_hash": "205f5eb9bdc3c37ad0dd098474a91081",
+    "semantic_hash": "205f5eb9bdc3c37ad0dd098474a91081"
+  },
+  "src/app/cookie-policy/page.tsx": {
+    "mtime": 1781714595.4191499,
+    "ast_hash": "62909ec5c621e9bd4f2c1c2f148a557b",
+    "semantic_hash": "62909ec5c621e9bd4f2c1c2f148a557b"
+  },
+  "src/app/grievance-redressal/page.tsx": {
+    "mtime": 1781714595.4196641,
+    "ast_hash": "5fc3c694f9ca10198328685bf5158b0f",
+    "semantic_hash": "5fc3c694f9ca10198328685bf5158b0f"
+  },
+  "src/app/legal/page.tsx": {
+    "mtime": 1782117852.0854528,
+    "ast_hash": "dbec7d32dd4b532e23b510c9a60eeb98",
+    "semantic_hash": "dbec7d32dd4b532e23b510c9a60eeb98"
+  },
+  "src/app/membership-rules/page.tsx": {
+    "mtime": 1781714595.4222362,
+    "ast_hash": "a61098925795b19a0c63896da018dfa2",
+    "semantic_hash": "a61098925795b19a0c63896da018dfa2"
+  },
+  "src/app/privacy-policy/page.tsx": {
+    "mtime": 1781714595.4232414,
+    "ast_hash": "4aa1a325d03088a24ea05d8812957065",
+    "semantic_hash": "4aa1a325d03088a24ea05d8812957065"
+  },
+  "src/app/refund-policy/page.tsx": {
+    "mtime": 1781714595.4249797,
+    "ast_hash": "6b5f84744e22871bb2ccf68262ed5ae6",
+    "semantic_hash": "6b5f84744e22871bb2ccf68262ed5ae6"
+  },
+  "src/app/terms-and-conditions/page.tsx": {
+    "mtime": 1781714595.4261405,
+    "ast_hash": "580c0557093a87d362c363fa734a5a09",
+    "semantic_hash": "580c0557093a87d362c363fa734a5a09"
+  },
+  "src/app/website-disclaimer/page.tsx": {
+    "mtime": 1781714595.4272768,
+    "ast_hash": "b1f0f9f3bcf7640604b768441836c155",
+    "semantic_hash": "b1f0f9f3bcf7640604b768441836c155"
+  },
+  "src/components/Footer.tsx": {
+    "mtime": 1781697120.0785432,
+    "ast_hash": "2e35ca36292ef3cde059c767f5113be7",
+    "semantic_hash": "2e35ca36292ef3cde059c767f5113be7"
+  },
+  "src/components/HomeExtraSections.tsx": {
+    "mtime": 1781692778.0533354,
+    "ast_hash": "8751cc3bbe7ca4eb8e4421a9b4512ec0",
+    "semantic_hash": "8751cc3bbe7ca4eb8e4421a9b4512ec0"
+  },
+  "src/components/Navbar.tsx": {
+    "mtime": 1782320939.446715,
+    "ast_hash": "bcadf13543d9ac904392ffb25f13fdf0",
+    "semantic_hash": "bcadf13543d9ac904392ffb25f13fdf0"
+  },
+  "src/components/VerifyCouponPage.tsx": {
+    "mtime": 1781952362.5691938,
+    "ast_hash": "d9c1fb7ddcb5d54924ec6de35434feba",
+    "semantic_hash": "d9c1fb7ddcb5d54924ec6de35434feba"
+  },
+  "src/components/legal/CookieConsentBanner.tsx": {
+    "mtime": 1781867464.986276,
+    "ast_hash": "5303c2bbcecc2b485d0ae32c6780ee17",
+    "semantic_hash": "5303c2bbcecc2b485d0ae32c6780ee17"
+  },
+  "src/components/legal/CookiePreferenceModal.tsx": {
+    "mtime": 1781867473.5146701,
+    "ast_hash": "15e05a3b5e5a2cc283fd39e2957e8518",
+    "semantic_hash": "15e05a3b5e5a2cc283fd39e2957e8518"
+  },
+  "src/components/legal/GrievanceForm.tsx": {
+    "mtime": 1781867522.099172,
+    "ast_hash": "f7ac34404b3d44bbb448ad266804bfdf",
+    "semantic_hash": "f7ac34404b3d44bbb448ad266804bfdf"
+  },
+  "src/components/legal/ImportantNotice.tsx": {
+    "mtime": 1781867526.3010142,
+    "ast_hash": "16412321d308288cc7528d3f2cc772f2",
+    "semantic_hash": "16412321d308288cc7528d3f2cc772f2"
+  },
+  "src/components/legal/LegalFooter.tsx": {
+    "mtime": 1781867455.786397,
+    "ast_hash": "be2f66f6bc25b17e28fbf80bd3be1081",
+    "semantic_hash": "be2f66f6bc25b17e28fbf80bd3be1081"
+  },
+  "src/components/legal/LegalHeader.tsx": {
+    "mtime": 1781867440.3917952,
+    "ast_hash": "5040deefeb55befe2120c18293787b9c",
+    "semantic_hash": "5040deefeb55befe2120c18293787b9c"
+  },
+  "src/components/legal/LegalPageLayout.tsx": {
+    "mtime": 1781867436.7918656,
+    "ast_hash": "e836c3c67f64fa0317c1bfa7760400d7",
+    "semantic_hash": "e836c3c67f64fa0317c1bfa7760400d7"
+  },
+  "src/components/legal/LegalSection.tsx": {
+    "mtime": 1781867449.888624,
+    "ast_hash": "87420ac9f99c5fd431c7a3e861d80e89",
+    "semantic_hash": "87420ac9f99c5fd431c7a3e861d80e89"
+  },
+  "src/components/legal/LegalSidebar.tsx": {
+    "mtime": 1781867443.9109817,
+    "ast_hash": "965c96789cd615e828ff85aea64920a6",
+    "semantic_hash": "965c96789cd615e828ff85aea64920a6"
+  },
+  "src/components/legal/LegalTableOfContents.tsx": {
+    "mtime": 1781867447.0454636,
+    "ast_hash": "5e97c8b646a57bbe91a84d9596f36edf",
+    "semantic_hash": "5e97c8b646a57bbe91a84d9596f36edf"
+  },
+  "src/components/legal/PolicyCard.tsx": {
+    "mtime": 1781867491.7817512,
+    "ast_hash": "937475bda609c1d3360349b9b87ba64d",
+    "semantic_hash": "937475bda609c1d3360349b9b87ba64d"
+  },
+  "src/components/legal/PolicySearch.tsx": {
+    "mtime": 1781867479.8280609,
+    "ast_hash": "648148edfb944ac97560165142111410",
+    "semantic_hash": "648148edfb944ac97560165142111410"
+  },
+  "src/components/legal/PolicyVersion.tsx": {
+    "mtime": 1781867452.7903337,
+    "ast_hash": "1b265417ac66187f40c283058190c25a",
+    "semantic_hash": "1b265417ac66187f40c283058190c25a"
+  },
+  "src/components/legal/PrintPolicyButton.tsx": {
+    "mtime": 1781867458.6101732,
+    "ast_hash": "4e748c3ca68f615b3332ef7ff1725f4c",
+    "semantic_hash": "4e748c3ca68f615b3332ef7ff1725f4c"
+  },
+  "src/components/legal/PrivacyRequestForm.tsx": {
+    "mtime": 1781867512.1011395,
+    "ast_hash": "35fdfc2e0440053b5be757c14c3909c1",
+    "semantic_hash": "35fdfc2e0440053b5be757c14c3909c1"
+  },
+  "src/components/legal/RefundRequestForm.tsx": {
+    "mtime": 1781867501.8787935,
+    "ast_hash": "1e96306d73baffb98dad366be36344cc",
+    "semantic_hash": "1e96306d73baffb98dad366be36344cc"
+  },
+  "src/components/ui/button.tsx": {
+    "mtime": 1781617821.2227187,
+    "ast_hash": "429d3a7846c78982d60765cc89e00deb",
+    "semantic_hash": "429d3a7846c78982d60765cc89e00deb"
+  },
+  "src/components/ui/onboarding-welcome-screen.tsx": {
+    "mtime": 1781618160.6388485,
+    "ast_hash": "f6a95bd2ad780692df6860048bab165a",
+    "semantic_hash": "f6a95bd2ad780692df6860048bab165a"
+  },
+  "src/data/cinematicShowreelData.ts": {
+    "mtime": 1781585066.50017,
+    "ast_hash": "7b2487cdc07abf030b5c9a9ec0e6077e",
+    "semantic_hash": "7b2487cdc07abf030b5c9a9ec0e6077e"
+  },
+  "src/data/cookieCategories.ts": {
+    "mtime": 1781714170.4975872,
+    "ast_hash": "87a006431a84e4f54f3b253881b12a49",
+    "semantic_hash": "87a006431a84e4f54f3b253881b12a49"
+  },
+  "src/data/legalContacts.ts": {
+    "mtime": 1781714165.2421448,
+    "ast_hash": "a1d0009e2f42e68983e5c34a29cdac74",
+    "semantic_hash": "a1d0009e2f42e68983e5c34a29cdac74"
+  },
+  "src/data/legalPolicies.ts": {
+    "mtime": 1781972046.183047,
+    "ast_hash": "e51370b53612c947d5220180a919a4f3",
+    "semantic_hash": "e51370b53612c947d5220180a919a4f3"
+  },
+  "src/data/paidTourContent.ts": {
+    "mtime": 1781695774.6117356,
+    "ast_hash": "bbf0120240eae07208f184486bb4579b",
+    "semantic_hash": "bbf0120240eae07208f184486bb4579b"
+  },
+  "src/data/siteData.ts": {
+    "mtime": 1782325512.5092735,
+    "ast_hash": "a7997fc815a6f57a1ed7fa49ecb95033",
+    "semantic_hash": "a7997fc815a6f57a1ed7fa49ecb95033"
+  },
+  "src/data/tours.ts": {
+    "mtime": 1781693595.1024835,
+    "ast_hash": "f3851f29580eb07e641718660f967a43",
+    "semantic_hash": "f3851f29580eb07e641718660f967a43"
+  },
+  "src/hooks/useScrollReveal.ts": {
+    "mtime": 1781692778.3028738,
+    "ast_hash": "8f6f39146844174cc6359510e100bb35",
+    "semantic_hash": "8f6f39146844174cc6359510e100bb35"
+  },
+  "src/main.tsx": {
+    "mtime": 1780144604.204785,
+    "ast_hash": "447c8ceb74e5081b004ef36157813957",
+    "semantic_hash": "447c8ceb74e5081b004ef36157813957"
+  },
+  "src/pages/main-website-tour-page/AboutPage.tsx": {
+    "mtime": 1782316427.9605742,
+    "ast_hash": "80308ddd5260a5137877e45612558042",
+    "semantic_hash": "80308ddd5260a5137877e45612558042"
+  },
+  "src/pages/main-website-tour-page/BookingConfirmation.tsx": {
+    "mtime": 1782316427.9612021,
+    "ast_hash": "9d938c9d942fdbb790e5101ceedb15ec",
+    "semantic_hash": "9d938c9d942fdbb790e5101ceedb15ec"
+  },
+  "src/pages/main-website-tour-page/BookingPolicySection.tsx": {
+    "mtime": 1782316427.9612021,
+    "ast_hash": "59550b8d80701bb8bca65ab8f24e0ad0",
+    "semantic_hash": "59550b8d80701bb8bca65ab8f24e0ad0"
+  },
+  "src/pages/main-website-tour-page/BookingPortalHeader.tsx": {
+    "mtime": 1782316427.962214,
+    "ast_hash": "cddae0575cdd56fe34e8b573ebb2e35e",
+    "semantic_hash": "cddae0575cdd56fe34e8b573ebb2e35e"
+  },
+  "src/pages/main-website-tour-page/CustomizeTourPage.tsx": {
+    "mtime": 1782316427.963212,
+    "ast_hash": "53d9ec18d315dc7ceaede24b2bd91592",
+    "semantic_hash": "53d9ec18d315dc7ceaede24b2bd91592"
+  },
+  "src/pages/main-website-tour-page/HomeView.tsx": {
+    "mtime": 1782321521.0280094,
+    "ast_hash": "b99234feec3e7ace077768aed7f9279e",
+    "semantic_hash": "b99234feec3e7ace077768aed7f9279e"
+  },
+  "src/pages/main-website-tour-page/MainWebsiteTourPage.tsx": {
+    "mtime": 1782316427.9652321,
+    "ast_hash": "ffb099b636a8964f5856857c8d711d5e",
+    "semantic_hash": "ffb099b636a8964f5856857c8d711d5e"
+  },
+  "src/pages/main-website-tour-page/PageIntro.tsx": {
+    "mtime": 1782316427.9652321,
+    "ast_hash": "41d98ea803573d9708f42bbf4b4a8cda",
+    "semantic_hash": "41d98ea803573d9708f42bbf4b4a8cda"
+  },
+  "src/pages/main-website-tour-page/PaymentSection.tsx": {
+    "mtime": 1782316427.966758,
+    "ast_hash": "eca089ff0cb23cf4722c22c499f83e28",
+    "semantic_hash": "eca089ff0cb23cf4722c22c499f83e28"
+  },
+  "src/pages/main-website-tour-page/PickupDropoffForm.tsx": {
+    "mtime": 1782316427.966758,
+    "ast_hash": "84dda8cc3597f86650fa8ca114ab8d5d",
+    "semantic_hash": "84dda8cc3597f86650fa8ca114ab8d5d"
+  },
+  "src/pages/main-website-tour-page/PriceSummary.tsx": {
+    "mtime": 1782316427.966758,
+    "ast_hash": "9f9ef9f141e304618fe02dd00211c789",
+    "semantic_hash": "9f9ef9f141e304618fe02dd00211c789"
+  },
+  "src/pages/main-website-tour-page/ReceiptModal.tsx": {
+    "mtime": 1782316427.9677906,
+    "ast_hash": "5ed9aa5b31f5a07704abf9208fc65879",
+    "semantic_hash": "5ed9aa5b31f5a07704abf9208fc65879"
+  },
+  "src/pages/main-website-tour-page/TourBookingForm.tsx": {
+    "mtime": 1782316427.9677906,
+    "ast_hash": "af8cbaeb0d678f275233a23c0065317a",
+    "semantic_hash": "af8cbaeb0d678f275233a23c0065317a"
+  },
+  "src/pages/main-website-tour-page/TourDetails.tsx": {
+    "mtime": 1782316427.9677906,
+    "ast_hash": "efe25fef471a3bbfd41de392af6758b0",
+    "semantic_hash": "efe25fef471a3bbfd41de392af6758b0"
+  },
+  "src/pages/main-website-tour-page/TourFAQ.tsx": {
+    "mtime": 1782316427.9693153,
+    "ast_hash": "82b9e22c6dfc1cd295b04298bb5fbe31",
+    "semantic_hash": "82b9e22c6dfc1cd295b04298bb5fbe31"
+  },
+  "src/pages/main-website-tour-page/TourPackageCard.tsx": {
+    "mtime": 1782316427.9703462,
+    "ast_hash": "7beac37660feb6f2820908698b49b2da",
+    "semantic_hash": "7beac37660feb6f2820908698b49b2da"
+  },
+  "src/pages/main-website-tour-page/TourPackageSelection.tsx": {
+    "mtime": 1782316427.970683,
+    "ast_hash": "e15155af8b4b1c8a2423c832ad746a3b",
+    "semantic_hash": "e15155af8b4b1c8a2423c832ad746a3b"
+  },
+  "src/pages/main-website-tour-page/TourSelection.tsx": {
+    "mtime": 1782316427.971205,
+    "ast_hash": "26ab761cd78532cbf27dfd989e3b6cb1",
+    "semantic_hash": "26ab761cd78532cbf27dfd989e3b6cb1"
+  },
+  "src/pages/main-website-tour-page/TravelerInfoForm.tsx": {
+    "mtime": 1782316427.9722333,
+    "ast_hash": "46a4c5d99e0f27afce3330243cf56ee0",
+    "semantic_hash": "46a4c5d99e0f27afce3330243cf56ee0"
+  },
+  "src/pages/main-website-tour-page/VoucherCouponPanel.tsx": {
+    "mtime": 1782316427.9722333,
+    "ast_hash": "c59e50b6b85fdb51d25beea75b3a51f1",
+    "semantic_hash": "c59e50b6b85fdb51d25beea75b3a51f1"
+  },
+  "src/pages/main-website-tour-page/VoucherPackModal.tsx": {
+    "mtime": 1782316427.9732296,
+    "ast_hash": "8aad56847ee9a79cdcb4f68cd2ae12c1",
+    "semantic_hash": "8aad56847ee9a79cdcb4f68cd2ae12c1"
+  },
+  "src/pages/main-website-tour-page/custom-tour/CustomTourDetailPanel.tsx": {
+    "mtime": 1782316427.9732296,
+    "ast_hash": "b1ea3f8fe243325f1311ef46a5f53d79",
+    "semantic_hash": "b1ea3f8fe243325f1311ef46a5f53d79"
+  },
+  "src/pages/main-website-tour-page/custom-tour/CustomTourEstimator.tsx": {
+    "mtime": 1782316427.9732296,
+    "ast_hash": "af72d1c7cb2905e8e3a393aabadeecee",
+    "semantic_hash": "af72d1c7cb2905e8e3a393aabadeecee"
+  },
+  "src/pages/main-website-tour-page/custom-tour/CustomTourForm.tsx": {
+    "mtime": 1782316427.9747517,
+    "ast_hash": "c376b949a1be356c8122a306bdab3a0a",
+    "semantic_hash": "c376b949a1be356c8122a306bdab3a0a"
+  },
+  "src/pages/main-website-tour-page/custom-tour/CustomTourSuccess.tsx": {
+    "mtime": 1782316427.9747517,
+    "ast_hash": "3645144a24f891ecf3cd081cc4ddde17",
+    "semantic_hash": "3645144a24f891ecf3cd081cc4ddde17"
+  },
+  "src/pages/main-website-tour-page/custom-tour/DemoAdminControls.tsx": {
+    "mtime": 1782316427.9757824,
+    "ast_hash": "7a14ca32d7425b4e2acb6159b824ecab",
+    "semantic_hash": "7a14ca32d7425b4e2acb6159b824ecab"
+  },
+  "src/pages/subscription-page/DiscountCreditsSection.tsx": {
+    "mtime": 1782316427.976782,
+    "ast_hash": "32668a250cd44366113c35763b7e4b3e",
+    "semantic_hash": "32668a250cd44366113c35763b7e4b3e"
+  },
+  "src/pages/subscription-page/LandingShell.tsx": {
+    "mtime": 1782325517.0035074,
+    "ast_hash": "fbba1e3b72260249966468b92c13b213",
+    "semantic_hash": "fbba1e3b72260249966468b92c13b213"
+  },
+  "src/pages/subscription-page/LuckyDrawSection.tsx": {
+    "mtime": 1782321806.0431755,
+    "ast_hash": "354568d95cb344e6798f16a4f27da138",
+    "semantic_hash": "354568d95cb344e6798f16a4f27da138"
+  },
+  "src/pages/subscription-page/MemberDashboardPreview.tsx": {
+    "mtime": 1782321433.78008,
+    "ast_hash": "2dbead82a2f697adad98e895d2f02398",
+    "semantic_hash": "2dbead82a2f697adad98e895d2f02398"
+  },
+  "src/pages/subscription-page/SubscriptionBenefits.tsx": {
+    "mtime": 1782320662.6697774,
+    "ast_hash": "ac5f9e5181112ab1a9aa30fe4eb97913",
+    "semantic_hash": "ac5f9e5181112ab1a9aa30fe4eb97913"
+  },
+  "src/pages/subscription-page/SubscriptionCTA.tsx": {
+    "mtime": 1782316427.9834802,
+    "ast_hash": "5cd972cc65c0b2674af48bef102b5a4c",
+    "semantic_hash": "5cd972cc65c0b2674af48bef102b5a4c"
+  },
+  "src/pages/subscription-page/SubscriptionFAQ.tsx": {
+    "mtime": 1782316427.9834802,
+    "ast_hash": "133a9f11e4ce5eb9b7ee2d2485ec623d",
+    "semantic_hash": "133a9f11e4ce5eb9b7ee2d2485ec623d"
+  },
+  "src/pages/subscription-page/SubscriptionHelpers.tsx": {
+    "mtime": 1782316427.9845018,
+    "ast_hash": "7cce696a049f5e34ff1ff5779bcd38bb",
+    "semantic_hash": "7cce696a049f5e34ff1ff5779bcd38bb"
+  },
+  "src/pages/subscription-page/SubscriptionHero.tsx": {
+    "mtime": 1782321433.7813063,
+    "ast_hash": "3ad6ad1c56e1897b52c30ceb32b47b8f",
+    "semantic_hash": "3ad6ad1c56e1897b52c30ceb32b47b8f"
+  },
+  "src/pages/subscription-page/SubscriptionLandingPage.tsx": {
+    "mtime": 1782371032.3809855,
+    "ast_hash": "4b3c76decf4dbd49a19633ecbf5e19a1",
+    "semantic_hash": "4b3c76decf4dbd49a19633ecbf5e19a1"
+  },
+  "src/pages/subscription-page/SubscriptionPlans.tsx": {
+    "mtime": 1782367182.6867952,
+    "ast_hash": "a530a5ac9925c4be62b54138fcb3a53b",
+    "semantic_hash": "a530a5ac9925c4be62b54138fcb3a53b"
+  },
+  "src/pages/subscription-page/TermsAndConditions.tsx": {
+    "mtime": 1782316427.9876285,
+    "ast_hash": "78d6e828ba46c4af1e5a869fee8ef944",
+    "semantic_hash": "78d6e828ba46c4af1e5a869fee8ef944"
+  },
+  "src/pages/subscription-page/WinnerReviews.tsx": {
+    "mtime": 1782326740.8195894,
+    "ast_hash": "24d906269ac5f8b274c0c09790a53f9f",
+    "semantic_hash": "24d906269ac5f8b274c0c09790a53f9f"
+  },
+  "src/services/customTourService.ts": {
+    "mtime": 1782052660.4932835,
+    "ast_hash": "9cefc4305159c923c24db2ca83a18b98",
+    "semantic_hash": "9cefc4305159c923c24db2ca83a18b98"
+  },
+  "src/services/demoWalletService.ts": {
+    "mtime": 1782371512.885299,
+    "ast_hash": "327d398542396730ef9e22f2d1bcbafd",
+    "semantic_hash": "327d398542396730ef9e22f2d1bcbafd"
+  },
+  "src/types.ts": {
+    "mtime": 1782052581.212008,
+    "ast_hash": "485c8fbc98c8258e9b7f90b8ae630cd5",
+    "semantic_hash": "485c8fbc98c8258e9b7f90b8ae630cd5"
+  },
+  "src/utils/ambientSoundscapeSynth.ts": {
+    "mtime": 1781585382.4144723,
+    "ast_hash": "f9710a6f9b970802b1b8b03145a487b4",
+    "semantic_hash": "f9710a6f9b970802b1b8b03145a487b4"
+  },
+  "src/utils/cn.ts": {
+    "mtime": 1780144604.2361522,
+    "ast_hash": "d9837f38cc05303254571985e3164050",
+    "semantic_hash": "d9837f38cc05303254571985e3164050"
+  },
+  "src/utils/customTourCalculator.ts": {
+    "mtime": 1782052599.3682861,
+    "ast_hash": "dd876e9378227764c301dc503f534479",
+    "semantic_hash": "dd876e9378227764c301dc503f534479"
+  },
+  "src/utils/customTourValidation.ts": {
+    "mtime": 1782034287.5325847,
+    "ast_hash": "c4b62d7dceedcb18b044051a46be94ec",
+    "semantic_hash": "c4b62d7dceedcb18b044051a46be94ec"
+  },
+  "src/utils/supabaseClient.ts": {
+    "mtime": 1782391328.2086961,
+    "ast_hash": "8de62514d2e638b70fd2b4dec2001d26",
+    "semantic_hash": "8de62514d2e638b70fd2b4dec2001d26"
+  },
+  "tsconfig.json": {
+    "mtime": 1780144604.3168032,
+    "ast_hash": "c43fbad465f837b222ed6f4b3862df3a",
+    "semantic_hash": "c43fbad465f837b222ed6f4b3862df3a"
+  },
+  "vercel.json": {
+    "mtime": 1782370670.9899428,
+    "ast_hash": "c4a983872cce1119dbfe0dff4f2870d3",
+    "semantic_hash": "c4a983872cce1119dbfe0dff4f2870d3"
+  },
+  "vite.config.ts": {
+    "mtime": 1781584876.362245,
+    "ast_hash": "437e64cad73ba869ed4b503bc1bcb2f5",
+    "semantic_hash": "437e64cad73ba869ed4b503bc1bcb2f5"
+  },
+  ".codex-doc-review/BEDUIN_TOUR_AND_TRAVELS_extracted.txt": {
+    "mtime": 1781715378.8496568,
+    "ast_hash": "fd2fd9285cb6e3f10bb1dcd3b9c43fec",
+    "semantic_hash": "fd2fd9285cb6e3f10bb1dcd3b9c43fec"
+  },
+  "index.html": {
+    "mtime": 1782321433.770441,
+    "ast_hash": "5c90b055b893c9ed8230afdf3016cf5b",
+    "semantic_hash": "5c90b055b893c9ed8230afdf3016cf5b"
+  },
+  "graphify-out/transcripts/Beduine_Logo_Last_Clean_Sound_Adjusted.txt": {
+    "mtime": 1782391832.5916445,
+    "ast_hash": "cae8d14edd025e72c59dbab6f378c95a",
+    "semantic_hash": "cae8d14edd025e72c59dbab6f378c95a"
+  },
+  "graphify-out/transcripts/hero_bg_video.txt": {
+    "mtime": 1782391836.2801995,
+    "ast_hash": "74ce666b76b98191ccb6730c01760d3e",
+    "semantic_hash": "74ce666b76b98191ccb6730c01760d3e"
+  },
+  ".codex-screenshots/dashboard-bookings-desktop.png": {
+    "mtime": 1781408866.4336667,
+    "ast_hash": "781d2fe0c8c1ba13c16d2abfa616b6d5",
+    "semantic_hash": "781d2fe0c8c1ba13c16d2abfa616b6d5"
+  },
+  ".codex-screenshots/dashboard-bookings-scrolled.png": {
+    "mtime": 1781408946.5655143,
+    "ast_hash": "c929c6968d47c08c5d3b6b226767c579",
+    "semantic_hash": "c929c6968d47c08c5d3b6b226767c579"
+  },
+  ".codex-screenshots/dashboard-credits-desktop.png": {
+    "mtime": 1781408859.1498785,
+    "ast_hash": "dcdb23807f457675d2f0fdae27ee2fad",
+    "semantic_hash": "dcdb23807f457675d2f0fdae27ee2fad"
+  },
+  ".codex-screenshots/dashboard-credits-mobile.png": {
+    "mtime": 1781409019.7555354,
+    "ast_hash": "7c8dc0fe39f1f5804a83c970978d03de",
+    "semantic_hash": "7c8dc0fe39f1f5804a83c970978d03de"
+  },
+  ".codex-screenshots/dashboard-credits-scrolled.png": {
+    "mtime": 1781408936.1838539,
+    "ast_hash": "df30166e304baf9a15ed851ef3a2e4ab",
+    "semantic_hash": "df30166e304baf9a15ed851ef3a2e4ab"
+  },
+  ".codex-screenshots/dashboard-draws-desktop.png": {
+    "mtime": 1781408862.7675743,
+    "ast_hash": "18b17f3c1870b860c8b7265ffb41af61",
+    "semantic_hash": "18b17f3c1870b860c8b7265ffb41af61"
+  },
+  ".codex-screenshots/dashboard-draws-scrolled.png": {
+    "mtime": 1781408940.9639943,
+    "ast_hash": "18760383674714e03a5cdb0fa810a312",
+    "semantic_hash": "18760383674714e03a5cdb0fa810a312"
+  },
+  ".codex-screenshots/dashboard-edit-profile-desktop.png": {
+    "mtime": 1781408870.1611798,
+    "ast_hash": "d43116b8a0fc0a63e67fb50e413c0482",
+    "semantic_hash": "d43116b8a0fc0a63e67fb50e413c0482"
+  },
+  ".codex-screenshots/dashboard-edit-profile-mobile.png": {
+    "mtime": 1781409011.443882,
+    "ast_hash": "92bbb48f622daf7891037e0cfc64837a",
+    "semantic_hash": "92bbb48f622daf7891037e0cfc64837a"
+  },
+  ".codex-screenshots/dashboard-edit-profile-scrolled.png": {
+    "mtime": 1781408951.692759,
+    "ast_hash": "8131494c65831ad68c4d54c189df9fac",
+    "semantic_hash": "8131494c65831ad68c4d54c189df9fac"
+  },
+  ".codex-screenshots/dashboard-lucky-status-desktop.png": {
+    "mtime": 1781408873.4286861,
+    "ast_hash": "1196ced669defd7326593f88df5951ab",
+    "semantic_hash": "1196ced669defd7326593f88df5951ab"
+  },
+  ".codex-screenshots/dashboard-lucky-status-mobile.png": {
+    "mtime": 1781409015.5787451,
+    "ast_hash": "eb5b1b303a09f5816c6f417cc59bac9a",
+    "semantic_hash": "eb5b1b303a09f5816c6f417cc59bac9a"
+  },
+  ".codex-screenshots/dashboard-lucky-status-scrolled.png": {
+    "mtime": 1781408957.7298987,
+    "ast_hash": "45f9d7a60d8eaed9e2b61f109e3e8603",
+    "semantic_hash": "45f9d7a60d8eaed9e2b61f109e3e8603"
+  },
+  "Initial_Scene_-_2026-06-05_202606052345_frames/frame_001.jpg": {
+    "mtime": 1780683904.6603396,
+    "ast_hash": "0748856d399b576225c266492584a1d1",
+    "semantic_hash": "0748856d399b576225c266492584a1d1"
+  },
+  "Initial_Scene_-_2026-06-05_202606052345_frames/frame_002.jpg": {
+    "mtime": 1780683904.7017462,
+    "ast_hash": "feee4648386f3a76bde8a9364134dbfa",
+    "semantic_hash": "feee4648386f3a76bde8a9364134dbfa"
+  },
+  "Initial_Scene_-_2026-06-05_202606052345_frames/frame_003.jpg": {
+    "mtime": 1780683904.7198572,
+    "ast_hash": "7e3ece9f816f71364ad234390ee3bb88",
+    "semantic_hash": "7e3ece9f816f71364ad234390ee3bb88"
+  },
+  "Initial_Scene_-_2026-06-05_202606052345_frames/frame_004.jpg": {
+    "mtime": 1780683904.7348468,
+    "ast_hash": "78f88cccae1bd59b4a54d6fe734eeced",
+    "semantic_hash": "78f88cccae1bd59b4a54d6fe734eeced"
+  },
+  "Initial_Scene_-_2026-06-05_202606052345_frames/frame_005.jpg": {
+    "mtime": 1780683904.7523627,
+    "ast_hash": "dbceadf986f10470f49b1914b9cda663",
+    "semantic_hash": "dbceadf986f10470f49b1914b9cda663"
+  },
+  "Initial_Scene_-_2026-06-05_202606052345_frames/frame_006.jpg": {
+    "mtime": 1780683904.7677257,
+    "ast_hash": "957825a3d9be62a309f365ebfb6a8ab1",
+    "semantic_hash": "957825a3d9be62a309f365ebfb6a8ab1"
+  },
+  "Initial_Scene_-_2026-06-05_202606052345_frames/frame_008.jpg": {
+    "mtime": 1780683904.7760744,
+    "ast_hash": "c2d38cfc0bf245e03e867b6729ae1ff0",
+    "semantic_hash": "c2d38cfc0bf245e03e867b6729ae1ff0"
+  },
+  "Initial_Scene_-_2026-06-05_202606052345_frames/frame_010.jpg": {
+    "mtime": 1780683904.7939696,
+    "ast_hash": "59023b11214a939306ad18668c75be2f",
+    "semantic_hash": "59023b11214a939306ad18668c75be2f"
+  },
+  "public/images/about_forest_bg.png": {
+    "mtime": 1781850539.8855927,
+    "ast_hash": "5b8b87cdea75e8d64875a814094040ef",
+    "semantic_hash": "5b8b87cdea75e8d64875a814094040ef"
+  },
+  "public/images/about_mission.png": {
+    "mtime": 1780145977.2239678,
+    "ast_hash": "3bf4591a441777e24167b58589345de5",
+    "semantic_hash": "3bf4591a441777e24167b58589345de5"
+  },
+  "public/images/about_promise.png": {
+    "mtime": 1780146013.8771925,
+    "ast_hash": "60eb192624073d9c41d4b22780316fc4",
+    "semantic_hash": "60eb192624073d9c41d4b22780316fc4"
+  },
+  "public/images/about_vision.png": {
+    "mtime": 1780145995.1816633,
+    "ast_hash": "58f848e4d5e823520953709310c8259c",
+    "semantic_hash": "58f848e4d5e823520953709310c8259c"
+  },
+  "public/images/airplane_nobg.png": {
+    "mtime": 1782316427.9310987,
+    "ast_hash": "3a836dc6218edea18ebe1327cd165c8e",
+    "semantic_hash": "3a836dc6218edea18ebe1327cd165c8e"
+  },
+  "public/images/bakkhali_beach.png": {
+    "mtime": 1780196168.0218875,
+    "ast_hash": "9e5d6081ecda9d41fb3f45a02f9512ac",
+    "semantic_hash": "9e5d6081ecda9d41fb3f45a02f9512ac"
+  },
+  "public/images/bakkhali_beach_premium.png": {
+    "mtime": 1780212490.7765737,
+    "ast_hash": "2c6191570e91522eef93d8bf84603b95",
+    "semantic_hash": "2c6191570e91522eef93d8bf84603b95"
+  },
+  "public/images/bali.png": {
+    "mtime": 1780681975.0980802,
+    "ast_hash": "1a2375e0e9ea60ac2d5454cd97ad786c",
+    "semantic_hash": "1a2375e0e9ea60ac2d5454cd97ad786c"
+  },
+  "public/images/barcelona.png": {
+    "mtime": 1781703209.7235672,
+    "ast_hash": "a9c5bfb2005b21cdacb572c2ad5a73da",
+    "semantic_hash": "a9c5bfb2005b21cdacb572c2ad5a73da"
+  },
+  "public/images/barcelona_hotspot.png": {
+    "mtime": 1781713988.8818197,
+    "ast_hash": "ccc2d4c0f36c41c9a2c9cbad688b8ba3",
+    "semantic_hash": "ccc2d4c0f36c41c9a2c9cbad688b8ba3"
+  },
+  "public/images/beduin_travel_hero_1779521651766.png": {
+    "mtime": 1780144603.492836,
+    "ast_hash": "4611c2934de789b784276a69b945f817",
+    "semantic_hash": "4611c2934de789b784276a69b945f817"
+  },
+  "public/images/beduine-floating-plane.png": {
+    "mtime": 1780144603.40074,
+    "ast_hash": "90eeb4802e5afbc8f4cad9d8b28d812b",
+    "semantic_hash": "90eeb4802e5afbc8f4cad9d8b28d812b"
+  },
+  "public/images/beduine_travel_hero_1779521651766.png": {
+    "mtime": 1780144603.4490402,
+    "ast_hash": "4611c2934de789b784276a69b945f817",
+    "semantic_hash": "4611c2934de789b784276a69b945f817"
+  },
+  "public/images/bedune_logo.png": {
+    "mtime": 1781767285.676378,
+    "ast_hash": "f7ff972366dbb61be0f1691e9d8be4a0",
+    "semantic_hash": "f7ff972366dbb61be0f1691e9d8be4a0"
+  },
+  "public/images/bedune_logo_badge.png": {
+    "mtime": 1781767192.1523895,
+    "ast_hash": "6c11878c09f5a859d358a91c19395b9e",
+    "semantic_hash": "6c11878c09f5a859d358a91c19395b9e"
+  },
+  "public/images/bedune_logo_cropped.png": {
+    "mtime": 1781767285.676378,
+    "ast_hash": "f7ff972366dbb61be0f1691e9d8be4a0",
+    "semantic_hash": "f7ff972366dbb61be0f1691e9d8be4a0"
+  },
+  "public/images/bedune_logo_transparent.png": {
+    "mtime": 1781767285.676378,
+    "ast_hash": "f7ff972366dbb61be0f1691e9d8be4a0",
+    "semantic_hash": "f7ff972366dbb61be0f1691e9d8be4a0"
+  },
+  "public/images/book_paid_tour_icon.png": {
+    "mtime": 1781714098.299811,
+    "ast_hash": "2d552a5b94661cbe13d8feeb8599e075",
+    "semantic_hash": "2d552a5b94661cbe13d8feeb8599e075"
+  },
+  "public/images/chatgpt_dashboard_bg.png": {
+    "mtime": 1781693740.6858487,
+    "ast_hash": "ff5ebd61ccb4b5f3629eb0f49ad2ce38",
+    "semantic_hash": "ff5ebd61ccb4b5f3629eb0f49ad2ce38"
+  },
+  "public/images/co_travelers_map.png": {
+    "mtime": 1781410655.6145344,
+    "ast_hash": "57c8aae1977a70300440818635ab323c",
+    "semantic_hash": "57c8aae1977a70300440818635ab323c"
+  },
+  "public/images/credit_card_holographic_1779521713449.png": {
+    "mtime": 1780144603.536883,
+    "ast_hash": "ee553be5fb9475c797e60867e60bd4b8",
+    "semantic_hash": "ee553be5fb9475c797e60867e60bd4b8"
+  },
+  "public/images/darjeeling_hills.png": {
+    "mtime": 1781703584.3492117,
+    "ast_hash": "f72a4532dc047606e19feeb3c56a8964",
+    "semantic_hash": "f72a4532dc047606e19feeb3c56a8964"
+  },
+  "public/images/darjeeling_hills_card.png": {
+    "mtime": 1781714016.2738662,
+    "ast_hash": "5e616c978db20cb3131a4aabc80c9a42",
+    "semantic_hash": "5e616c978db20cb3131a4aabc80c9a42"
+  },
+  "public/images/darjeeling_resort.png": {
+    "mtime": 1781433814.7282615,
+    "ast_hash": "3fc1efc458f5a88189ce854f63f3d6aa",
+    "semantic_hash": "3fc1efc458f5a88189ce854f63f3d6aa"
+  },
+  "public/images/darjeeling_tea_1779521805614.png": {
+    "mtime": 1780144603.580599,
+    "ast_hash": "53e04f47834561c2dd308a019062ee73",
+    "semantic_hash": "53e04f47834561c2dd308a019062ee73"
+  },
+  "public/images/darjeeling_tea_review.png": {
+    "mtime": 1782326677.8551283,
+    "ast_hash": "6f88c44c0f2a83c1bd64a9f68db8c136",
+    "semantic_hash": "6f88c44c0f2a83c1bd64a9f68db8c136"
+  },
+  "public/images/dashboard_beach_cliff.jpg": {
+    "mtime": 1781693771.5954187,
+    "ast_hash": "c14e05d4483d4a516065f5935806476d",
+    "semantic_hash": "c14e05d4483d4a516065f5935806476d"
+  },
+  "public/images/dashboard_beach_cliff.png": {
+    "mtime": 1781693740.6858487,
+    "ast_hash": "ff5ebd61ccb4b5f3629eb0f49ad2ce38",
+    "semantic_hash": "ff5ebd61ccb4b5f3629eb0f49ad2ce38"
+  },
+  "public/images/dashboard_bg.jpg": {
+    "mtime": 1781416484.4101648,
+    "ast_hash": "703433930b42aa95ec057d37a825f5c9",
+    "semantic_hash": "703433930b42aa95ec057d37a825f5c9"
+  },
+  "public/images/dooars_safari.png": {
+    "mtime": 1780196208.785233,
+    "ast_hash": "a9300adf409f49f81c15247a954cdc21",
+    "semantic_hash": "a9300adf409f49f81c15247a954cdc21"
+  },
+  "public/images/dubai_sidebar_banner.png": {
+    "mtime": 1781714125.9992535,
+    "ast_hash": "93c8b3aa08f1a8076f9d3e199fcfd127",
+    "semantic_hash": "93c8b3aa08f1a8076f9d3e199fcfd127"
+  },
+  "public/images/dubai_skyline_1779539448313.png": {
+    "mtime": 1780152456.761105,
+    "ast_hash": "540a3c33e00b4f8c92c9f130c269cfeb",
+    "semantic_hash": "540a3c33e00b4f8c92c9f130c269cfeb"
+  },
+  "public/images/error_traveler.png": {
+    "mtime": 1781617151.927453,
+    "ast_hash": "3ab38047d57ed68e1a29de7c3f913a46",
+    "semantic_hash": "3ab38047d57ed68e1a29de7c3f913a46"
+  },
+  "public/images/europe.png": {
+    "mtime": 1780682013.1875892,
+    "ast_hash": "ccd3d4e4ebe8e89c3a544d95c2aaf9f1",
+    "semantic_hash": "ccd3d4e4ebe8e89c3a544d95c2aaf9f1"
+  },
+  "public/images/goa_beaches.png": {
+    "mtime": 1780145438.0891097,
+    "ast_hash": "b1202c751ae61a89f80de780b57a7603",
+    "semantic_hash": "b1202c751ae61a89f80de780b57a7603"
+  },
+  "public/images/gokarna_beach.png": {
+    "mtime": 1781703628.2725594,
+    "ast_hash": "6ef6b38a4965039437f803c9e0e3e333",
+    "semantic_hash": "6ef6b38a4965039437f803c9e0e3e333"
+  },
+  "public/images/gokarna_beach_card.png": {
+    "mtime": 1781714030.1235702,
+    "ast_hash": "bc395a07be013f40b4919746eaffd7fc",
+    "semantic_hash": "bc395a07be013f40b4919746eaffd7fc"
+  },
+  "public/images/happy_family_travelers.png": {
+    "mtime": 1780665733.362674,
+    "ast_hash": "ddb6aa61fde740c07b2f742123137b3f",
+    "semantic_hash": "ddb6aa61fde740c07b2f742123137b3f"
+  },
+  "public/images/happy_travelers_family_1779521684057.png": {
+    "mtime": 1780144603.6749375,
+    "ast_hash": "7d227196a4e43f12945e82aa33c1acbb",
+    "semantic_hash": "7d227196a4e43f12945e82aa33c1acbb"
+  },
+  "public/images/himachal_hills.png": {
+    "mtime": 1780145419.5546262,
+    "ast_hash": "18d65fcd10d0e18956baaec4774f34a8",
+    "semantic_hash": "18d65fcd10d0e18956baaec4774f34a8"
+  },
+  "public/images/japan.png": {
+    "mtime": 1780682048.3914578,
+    "ast_hash": "188a8106ffe92cb5b3d92fd986ab97bc",
+    "semantic_hash": "188a8106ffe92cb5b3d92fd986ab97bc"
+  },
+  "public/images/kashmir_dal_lake_1779521728036.png": {
+    "mtime": 1780144603.7231772,
+    "ast_hash": "f8091986635b9ca49ad747c16b7d285b",
+    "semantic_hash": "f8091986635b9ca49ad747c16b7d285b"
+  },
+  "public/images/kashmir_lake_review.png": {
+    "mtime": 1782326654.870315,
+    "ast_hash": "9e0fea015a0ef1e824d4d5abefc9aa59",
+    "semantic_hash": "9e0fea015a0ef1e824d4d5abefc9aa59"
+  },
+  "public/images/kashmir_resort.png": {
+    "mtime": 1781433866.54439,
+    "ast_hash": "ed6027a1d73406017db26edaa0fc6abc",
+    "semantic_hash": "ed6027a1d73406017db26edaa0fc6abc"
+  },
+  "public/images/kashmir_valley.png": {
+    "mtime": 1781703473.3512146,
+    "ast_hash": "ce60dd80e3ca38f1b5a69c0961a515b6",
+    "semantic_hash": "ce60dd80e3ca38f1b5a69c0961a515b6"
+  },
+  "public/images/kashmir_valley_card.png": {
+    "mtime": 1781714003.9273958,
+    "ast_hash": "7bcd2bffe053a76272fc88995aed2c67",
+    "semantic_hash": "7bcd2bffe053a76272fc88995aed2c67"
+  },
+  "public/images/kerala_houseboat_1779521772928.png": {
+    "mtime": 1780144603.7729576,
+    "ast_hash": "864e3064c991f344c1df22d99eac815f",
+    "semantic_hash": "864e3064c991f344c1df22d99eac815f"
+  },
+  "public/images/kerala_houseboat_review.png": {
+    "mtime": 1782326722.6871433,
+    "ast_hash": "5f07bd52f3be93bf941dd64a98736dd9",
+    "semantic_hash": "5f07bd52f3be93bf941dd64a98736dd9"
+  },
+  "public/images/login_bg_clouds.png": {
+    "mtime": 1781688771.4700835,
+    "ast_hash": "b0db1d2a23f293ba5174d77550f183b0",
+    "semantic_hash": "b0db1d2a23f293ba5174d77550f183b0"
+  },
+  "public/images/login_suitcase.png": {
+    "mtime": 1781688382.6970913,
+    "ast_hash": "f4e0fc1f286185452941766f05bcde0b",
+    "semantic_hash": "f4e0fc1f286185452941766f05bcde0b"
+  },
+  "public/images/lucky_draw_ticket_1779521667122.png": {
+    "mtime": 1780144603.8181515,
+    "ast_hash": "0d48383309e64b2dfa20f2265ac34955",
+    "semantic_hash": "0d48383309e64b2dfa20f2265ac34955"
+  },
+  "public/images/malaysia.png": {
+    "mtime": 1780681956.3948011,
+    "ast_hash": "28738652de9a5ea28ce510ec5b300add",
+    "semantic_hash": "28738652de9a5ea28ce510ec5b300add"
+  },
+  "public/images/maldives_overwater_1779539482305.png": {
+    "mtime": 1780152488.6526604,
+    "ast_hash": "a8d73a9e4a762a740ba274bd31e80e54",
+    "semantic_hash": "a8d73a9e4a762a740ba274bd31e80e54"
+  },
+  "public/images/maldives_resort.png": {
+    "mtime": 1781433844.108026,
+    "ast_hash": "aa4dfa8b0d5dec5cf2c331320aecf133",
+    "semantic_hash": "aa4dfa8b0d5dec5cf2c331320aecf133"
+  },
+  "public/images/map_3d_frames/frame_001.jpg": {
+    "mtime": 1780683904.6603396,
+    "ast_hash": "0748856d399b576225c266492584a1d1",
+    "semantic_hash": "0748856d399b576225c266492584a1d1"
+  },
+  "public/images/map_3d_frames/frame_002.jpg": {
+    "mtime": 1780683904.7017462,
+    "ast_hash": "feee4648386f3a76bde8a9364134dbfa",
+    "semantic_hash": "feee4648386f3a76bde8a9364134dbfa"
+  },
+  "public/images/map_3d_frames/frame_003.jpg": {
+    "mtime": 1780683904.7198572,
+    "ast_hash": "7e3ece9f816f71364ad234390ee3bb88",
+    "semantic_hash": "7e3ece9f816f71364ad234390ee3bb88"
+  },
+  "public/images/map_3d_frames/frame_004.jpg": {
+    "mtime": 1780683904.7348468,
+    "ast_hash": "78f88cccae1bd59b4a54d6fe734eeced",
+    "semantic_hash": "78f88cccae1bd59b4a54d6fe734eeced"
+  },
+  "public/images/map_3d_frames/frame_005.jpg": {
+    "mtime": 1780683904.7523627,
+    "ast_hash": "dbceadf986f10470f49b1914b9cda663",
+    "semantic_hash": "dbceadf986f10470f49b1914b9cda663"
+  },
+  "public/images/map_3d_frames/frame_006.jpg": {
+    "mtime": 1780683904.7677257,
+    "ast_hash": "957825a3d9be62a309f365ebfb6a8ab1",
+    "semantic_hash": "957825a3d9be62a309f365ebfb6a8ab1"
+  },
+  "public/images/map_3d_frames/frame_008.jpg": {
+    "mtime": 1780683904.7760744,
+    "ast_hash": "c2d38cfc0bf245e03e867b6729ae1ff0",
+    "semantic_hash": "c2d38cfc0bf245e03e867b6729ae1ff0"
+  },
+  "public/images/map_3d_frames/frame_010.jpg": {
+    "mtime": 1780683904.7939696,
+    "ast_hash": "59023b11214a939306ad18668c75be2f",
+    "semantic_hash": "59023b11214a939306ad18668c75be2f"
+  },
+  "public/images/media__1779521572563.png": {
+    "mtime": 1780144603.8991652,
+    "ast_hash": "cbd26f63e8fbd5b214a80225200e941b",
+    "semantic_hash": "cbd26f63e8fbd5b214a80225200e941b"
+  },
+  "public/images/mousuni_island.png": {
+    "mtime": 1780196188.046154,
+    "ast_hash": "18f123dbd57ec1422e70badb2adfa74a",
+    "semantic_hash": "18f123dbd57ec1422e70badb2adfa74a"
+  },
+  "public/images/mousuni_island_premium.png": {
+    "mtime": 1780212520.8528993,
+    "ast_hash": "6517e13032852d99e31b2ba43f775fc4",
+    "semantic_hash": "6517e13032852d99e31b2ba43f775fc4"
+  },
+  "public/images/mukutmanipur.png/mukutmanipur_1780681865269.png": {
+    "mtime": 1780681865.2740111,
+    "ast_hash": "6aaffba1e367c9f7f9c2e5c49f9eadda",
+    "semantic_hash": "6aaffba1e367c9f7f9c2e5c49f9eadda"
+  },
+  "public/images/mukutmanipur_premium.png": {
+    "mtime": 1780681865.2740111,
+    "ast_hash": "6aaffba1e367c9f7f9c2e5c49f9eadda",
+    "semantic_hash": "6aaffba1e367c9f7f9c2e5c49f9eadda"
+  },
+  "public/images/nepal.png": {
+    "mtime": 1780681940.2750971,
+    "ast_hash": "67ee362e7febc9b8778ae7d9dda40417",
+    "semantic_hash": "67ee362e7febc9b8778ae7d9dda40417"
+  },
+  "public/images/office_logo.png": {
+    "mtime": 1780144603.9573371,
+    "ast_hash": "0204e789f5f861015fafb453cb822d23",
+    "semantic_hash": "0204e789f5f861015fafb453cb822d23"
+  },
+  "public/images/office_setup.png": {
+    "mtime": 1780924900.803821,
+    "ast_hash": "daaeab20c777b224d5a5cca8ab94ca25",
+    "semantic_hash": "daaeab20c777b224d5a5cca8ab94ca25"
+  },
+  "public/images/puri_konark.png": {
+    "mtime": 1780196229.0922291,
+    "ast_hash": "4ff1adb7a72b6795ed6a1adde73b0a0d",
+    "semantic_hash": "4ff1adb7a72b6795ed6a1adde73b0a0d"
+  },
+  "public/images/rajasthan_palace_1779521744228.png": {
+    "mtime": 1780144604.0358477,
+    "ast_hash": "d5b774f276f99d63f3504dc5edac8751",
+    "semantic_hash": "d5b774f276f99d63f3504dc5edac8751"
+  },
+  "public/images/selection_support_icon.png": {
+    "mtime": 1781714112.8860998,
+    "ast_hash": "0fe04748fc545ea5925b988f9a605805",
+    "semantic_hash": "0fe04748fc545ea5925b988f9a605805"
+  },
+  "public/images/service_currency.png": {
+    "mtime": 1780679943.4132097,
+    "ast_hash": "5f2ec8bee96fb5b421fce41df78fc77f",
+    "semantic_hash": "5f2ec8bee96fb5b421fce41df78fc77f"
+  },
+  "public/images/service_flights.png": {
+    "mtime": 1780679907.588216,
+    "ast_hash": "dbd19f8e8aa74da60963373bd46f6a2e",
+    "semantic_hash": "dbd19f8e8aa74da60963373bd46f6a2e"
+  },
+  "public/images/service_hotels.png": {
+    "mtime": 1780679869.8780794,
+    "ast_hash": "10f8262c60094ff9c2b7e2f05db544e7",
+    "semantic_hash": "10f8262c60094ff9c2b7e2f05db544e7"
+  },
+  "public/images/service_tours.png": {
+    "mtime": 1780679850.5985105,
+    "ast_hash": "10c9fb89e976869029a52cb8ecc9bec4",
+    "semantic_hash": "10c9fb89e976869029a52cb8ecc9bec4"
+  },
+  "public/images/service_trains.png": {
+    "mtime": 1780679889.7182734,
+    "ast_hash": "acd7439dd5883ea9d1bd91b037fbbe61",
+    "semantic_hash": "acd7439dd5883ea9d1bd91b037fbbe61"
+  },
+  "public/images/service_visas.png": {
+    "mtime": 1780679925.0831597,
+    "ast_hash": "4c84990ac981dd65fab19690d5912f95",
+    "semantic_hash": "4c84990ac981dd65fab19690d5912f95"
+  },
+  "public/images/singapore_skyline_1779539502293.png": {
+    "mtime": 1780152472.0223153,
+    "ast_hash": "e5a9f24b7cfd10349f33be1bba28111c",
+    "semantic_hash": "e5a9f24b7cfd10349f33be1bba28111c"
+  },
+  "public/images/sri_lanka.png": {
+    "mtime": 1780681921.0776043,
+    "ast_hash": "5e6c6247c35213e3af6fdb97bf0b516b",
+    "semantic_hash": "5e6c6247c35213e3af6fdb97bf0b516b"
+  },
+  "public/images/sundarbans_boat_review.png": {
+    "mtime": 1782326700.76533,
+    "ast_hash": "3dcc7effcd31edc965fc478f5d551c09",
+    "semantic_hash": "3dcc7effcd31edc965fc478f5d551c09"
+  },
+  "public/images/sundarbans_forest_card.png": {
+    "mtime": 1781714045.682669,
+    "ast_hash": "49b3aefd30d2666d608d2d8f6260b0fe",
+    "semantic_hash": "49b3aefd30d2666d608d2d8f6260b0fe"
+  },
+  "public/images/sundarbans_mangrove_1779521789593.png": {
+    "mtime": 1780144604.1430674,
+    "ast_hash": "784ff32a0a2b6092372fc10df72f3e22",
+    "semantic_hash": "784ff32a0a2b6092372fc10df72f3e22"
+  },
+  "public/images/sundarbans_mangrove_premium.png": {
+    "mtime": 1780212459.213657,
+    "ast_hash": "c01e6102a84bda93c79d3144ca1d75fa",
+    "semantic_hash": "c01e6102a84bda93c79d3144ca1d75fa"
+  },
+  "public/images/sunderbans_forest.png": {
+    "mtime": 1781703691.574446,
+    "ast_hash": "6d7f4d4e7ab7b0ed0a7783368a5b6e31",
+    "semantic_hash": "6d7f4d4e7ab7b0ed0a7783368a5b6e31"
+  },
+  "public/images/thailand.png": {
+    "mtime": 1780681900.2687514,
+    "ast_hash": "4bb2041b614f66855909d2a416baf3f8",
+    "semantic_hash": "4bb2041b614f66855909d2a416baf3f8"
+  },
+  "public/images/transparency_audit.png": {
+    "mtime": 1780161409.762446,
+    "ast_hash": "10425136d20c9caf1c25180ee7b86b57",
+    "semantic_hash": "10425136d20c9caf1c25180ee7b86b57"
+  },
+  "public/images/transparency_rng.png": {
+    "mtime": 1780161394.2926972,
+    "ast_hash": "805c84559070afd22e57bc47480d6d4b",
+    "semantic_hash": "805c84559070afd22e57bc47480d6d4b"
+  },
+  "public/images/transparency_verification.png": {
+    "mtime": 1780161378.1232903,
+    "ast_hash": "cee57597164dc48f541a02783325d0f0",
+    "semantic_hash": "cee57597164dc48f541a02783325d0f0"
+  },
+  "public/images/transparency_winner.png": {
+    "mtime": 1780161428.4178617,
+    "ast_hash": "620a2164ba080f8dd92fc0cf362daf9d",
+    "semantic_hash": "620a2164ba080f8dd92fc0cf362daf9d"
+  },
+  "public/images/travel_login_bg.jpg": {
+    "mtime": 1781416484.4046538,
+    "ast_hash": "b7390a6b7b5181c20f451a2a4f075b46",
+    "semantic_hash": "b7390a6b7b5181c20f451a2a4f075b46"
+  },
+  "public/images/travel_login_bg.png": {
+    "mtime": 1781264040.8664815,
+    "ast_hash": "1cbde42ae65e3e93547c3dbc360ed608",
+    "semantic_hash": "1cbde42ae65e3e93547c3dbc360ed608"
+  },
+  "public/images/tropical_coast.png": {
+    "mtime": 1780145455.4997213,
+    "ast_hash": "2662a31dfc76af4fee2b7425572e425b",
+    "semantic_hash": "2662a31dfc76af4fee2b7425572e425b"
+  },
+  "public/images/turkey.png": {
+    "mtime": 1780682031.3262012,
+    "ast_hash": "0fbbe9b6405e7bb951d71f64777a0ff5",
+    "semantic_hash": "0fbbe9b6405e7bb951d71f64777a0ff5"
+  },
+  "public/images/vietnam.png": {
+    "mtime": 1780681995.6167905,
+    "ast_hash": "48132cff2d5074361ee30b744600ed0a",
+    "semantic_hash": "48132cff2d5074361ee30b744600ed0a"
+  },
+  "public/images/vizag_araku.png": {
+    "mtime": 1780681882.6300268,
+    "ast_hash": "e3509d952abe9d21c03148fdc56f745a",
+    "semantic_hash": "e3509d952abe9d21c03148fdc56f745a"
+  },
+  "public/images/waterfall_bg.png": {
+    "mtime": 1780195191.3241732,
+    "ast_hash": "9bfb16fc4bf958d76052c59d98afd75c",
+    "semantic_hash": "9bfb16fc4bf958d76052c59d98afd75c"
+  },
+  "public/images/winner_ananya_das.png": {
+    "mtime": 1780145475.6206398,
+    "ast_hash": "8ebc4e0c06da14e072f6810924adabda",
+    "semantic_hash": "8ebc4e0c06da14e072f6810924adabda"
+  },
+  "public/images/winner_arjun_roy.png": {
+    "mtime": 1780145529.1958628,
+    "ast_hash": "43faad9911b398bf5e940b45b65c8c7d",
+    "semantic_hash": "43faad9911b398bf5e940b45b65c8c7d"
+  },
+  "public/images/winner_meera_bose.png": {
+    "mtime": 1780145544.5035937,
+    "ast_hash": "ea11830616db98d08286d49dd62ade0a",
+    "semantic_hash": "ea11830616db98d08286d49dd62ade0a"
+  },
+  "public/images/winner_priya_sen.png": {
+    "mtime": 1780145509.0246258,
+    "ast_hash": "98d50a90971337146362b41a915d722d",
+    "semantic_hash": "98d50a90971337146362b41a915d722d"
+  },
+  "public/images/winner_rajesh_kumar.png": {
+    "mtime": 1780145492.5881543,
+    "ast_hash": "ca86cd36ca6826d3be80531c3565d37a",
+    "semantic_hash": "ca86cd36ca6826d3be80531c3565d37a"
+  },
+  "public/images/winner_subhadeep_ghosh.png": {
+    "mtime": 1780145562.011076,
+    "ast_hash": "b31e58cce5d720ccddfdc6940538ce9d",
+    "semantic_hash": "b31e58cce5d720ccddfdc6940538ce9d"
+  },
+  "public/images/Beduine_Logo_Last_Clean_Sound_Adjusted.mp4": {
+    "mtime": 1780920721.5565221,
+    "ast_hash": "7c03b53c5b52d8dd8e9803b2070bc402",
+    "semantic_hash": "7c03b53c5b52d8dd8e9803b2070bc402"
+  },
+  "public/images/hero_bg_video.mp4": {
+    "mtime": 1780930138.6621196,
+    "ast_hash": "db6cf1a8e85b19e47bab04e57b4f3ae7",
+    "semantic_hash": "db6cf1a8e85b19e47bab04e57b4f3ae7"
+  },
+  "public/images/landing_background_video.mp4": {
+    "mtime": 1782316427.954817,
+    "ast_hash": "0b5d95c3c1d45a306e7c136b3403e20c",
+    "semantic_hash": "0b5d95c3c1d45a306e7c136b3403e20c"
+  },
+  "E:\\busness\\bediine\\.codex-screenshots\\axe-accessibility.json": {
+    "mtime": 1781586643.0905824,
+    "ast_hash": "c088faeb68011bcd25975fbf6a329ec0",
+    "semantic_hash": "c088faeb68011bcd25975fbf6a329ec0"
+  },
+  "E:\\busness\\bediine\\.codex-screenshots\\chrome-profile-2\\component_crx_cache\\metadata.json": {
+    "mtime": 1781116061.5298862,
+    "ast_hash": "770dfcd6e63fe336082079faf9ce964c",
+    "semantic_hash": "770dfcd6e63fe336082079faf9ce964c"
+  },
+  "E:\\busness\\bediine\\.codex-screenshots\\chrome-profile\\component_crx_cache\\metadata.json": {
+    "mtime": 1781115913.3147151,
+    "ast_hash": "770dfcd6e63fe336082079faf9ce964c",
+    "semantic_hash": "770dfcd6e63fe336082079faf9ce964c"
+  },
+  "E:\\busness\\bediine\\.codex-screenshots\\lighthouse-accessibility.json": {
+    "mtime": 1781586559.3407867,
+    "ast_hash": "83bf640f5fb085a7a8bf3ada03c15497",
+    "semantic_hash": "83bf640f5fb085a7a8bf3ada03c15497"
+  },
+  "E:\\busness\\bediine\\.codex-screenshots\\lighthouse-desktop.json": {
+    "mtime": 1781585962.7997937,
+    "ast_hash": "8ecf61440f852eeb496e9f10ff1380e7",
+    "semantic_hash": "8ecf61440f852eeb496e9f10ff1380e7"
+  },
+  "E:\\busness\\bediine\\package.json": {
+    "mtime": 1782413126.9748077,
+    "ast_hash": "a0cdcafbf80ebd4f4720f7eabf1a593c",
+    "semantic_hash": "a0cdcafbf80ebd4f4720f7eabf1a593c"
+  },
+  "E:\\busness\\bediine\\src\\App.tsx": {
+    "mtime": 1782371028.7168713,
+    "ast_hash": "17115d5b7af16cb3e3236ebce5ed8636",
+    "semantic_hash": "17115d5b7af16cb3e3236ebce5ed8636"
+  },
+  "E:\\busness\\bediine\\src\\DashboardPage.tsx": {
+    "mtime": 1782412981.5254347,
+    "ast_hash": "ce0b8d76a35630507ad2eea8417b1c0e",
+    "semantic_hash": "ce0b8d76a35630507ad2eea8417b1c0e"
+  },
+  "E:\\busness\\bediine\\src\\ErrorPage.tsx": {
+    "mtime": 1781617217.8050704,
+    "ast_hash": "6214bc7a7aaa6d29289dac5a6728613a",
+    "semantic_hash": "6214bc7a7aaa6d29289dac5a6728613a"
+  },
+  "E:\\busness\\bediine\\src\\LoginPage.tsx": {
+    "mtime": 1781876786.453096,
+    "ast_hash": "9cb1b58366cdf737f620fa6f4e559314",
+    "semantic_hash": "9cb1b58366cdf737f620fa6f4e559314"
+  },
+  "E:\\busness\\bediine\\src\\RegistrationPage.tsx": {
+    "mtime": 1782051141.2857132,
+    "ast_hash": "c1c4ab3c866e8f995960820a9db6e445",
+    "semantic_hash": "c1c4ab3c866e8f995960820a9db6e445"
+  },
+  "E:\\busness\\bediine\\src\\ScatteredShowcase.tsx": {
+    "mtime": 1782321433.773055,
+    "ast_hash": "7693067154068946249335b677e95a68",
+    "semantic_hash": "7693067154068946249335b677e95a68"
+  },
+  "E:\\busness\\bediine\\src\\app\\affiliate-agent-policy\\page.tsx": {
+    "mtime": 1781714595.4086223,
+    "ast_hash": "c043746383ddc7671c5883a97555b474",
+    "semantic_hash": "c043746383ddc7671c5883a97555b474"
+  },
+  "E:\\busness\\bediine\\src\\app\\cancellation-policy\\page.tsx": {
+    "mtime": 1781714595.4183354,
+    "ast_hash": "205f5eb9bdc3c37ad0dd098474a91081",
+    "semantic_hash": "205f5eb9bdc3c37ad0dd098474a91081"
+  },
+  "E:\\busness\\bediine\\src\\app\\cookie-policy\\page.tsx": {
+    "mtime": 1781714595.4191499,
+    "ast_hash": "62909ec5c621e9bd4f2c1c2f148a557b",
+    "semantic_hash": "62909ec5c621e9bd4f2c1c2f148a557b"
+  },
+  "E:\\busness\\bediine\\src\\app\\grievance-redressal\\page.tsx": {
+    "mtime": 1781714595.4196641,
+    "ast_hash": "5fc3c694f9ca10198328685bf5158b0f",
+    "semantic_hash": "5fc3c694f9ca10198328685bf5158b0f"
+  },
+  "E:\\busness\\bediine\\src\\app\\legal\\page.tsx": {
+    "mtime": 1782117852.0854528,
+    "ast_hash": "dbec7d32dd4b532e23b510c9a60eeb98",
+    "semantic_hash": "dbec7d32dd4b532e23b510c9a60eeb98"
+  },
+  "E:\\busness\\bediine\\src\\app\\membership-rules\\page.tsx": {
+    "mtime": 1781714595.4222362,
+    "ast_hash": "a61098925795b19a0c63896da018dfa2",
+    "semantic_hash": "a61098925795b19a0c63896da018dfa2"
+  },
+  "E:\\busness\\bediine\\src\\app\\privacy-policy\\page.tsx": {
+    "mtime": 1781714595.4232414,
+    "ast_hash": "4aa1a325d03088a24ea05d8812957065",
+    "semantic_hash": "4aa1a325d03088a24ea05d8812957065"
+  },
+  "E:\\busness\\bediine\\src\\app\\refund-policy\\page.tsx": {
+    "mtime": 1781714595.4249797,
+    "ast_hash": "6b5f84744e22871bb2ccf68262ed5ae6",
+    "semantic_hash": "6b5f84744e22871bb2ccf68262ed5ae6"
+  },
+  "E:\\busness\\bediine\\src\\app\\terms-and-conditions\\page.tsx": {
+    "mtime": 1781714595.4261405,
+    "ast_hash": "580c0557093a87d362c363fa734a5a09",
+    "semantic_hash": "580c0557093a87d362c363fa734a5a09"
+  },
+  "E:\\busness\\bediine\\src\\app\\website-disclaimer\\page.tsx": {
+    "mtime": 1781714595.4272768,
+    "ast_hash": "b1f0f9f3bcf7640604b768441836c155",
+    "semantic_hash": "b1f0f9f3bcf7640604b768441836c155"
+  },
+  "E:\\busness\\bediine\\src\\components\\Footer.tsx": {
+    "mtime": 1781697120.0785432,
+    "ast_hash": "2e35ca36292ef3cde059c767f5113be7",
+    "semantic_hash": "2e35ca36292ef3cde059c767f5113be7"
+  },
+  "E:\\busness\\bediine\\src\\components\\HomeExtraSections.tsx": {
+    "mtime": 1781692778.0533354,
+    "ast_hash": "8751cc3bbe7ca4eb8e4421a9b4512ec0",
+    "semantic_hash": "8751cc3bbe7ca4eb8e4421a9b4512ec0"
+  },
+  "E:\\busness\\bediine\\src\\components\\Navbar.tsx": {
+    "mtime": 1782320939.446715,
+    "ast_hash": "bcadf13543d9ac904392ffb25f13fdf0",
+    "semantic_hash": "bcadf13543d9ac904392ffb25f13fdf0"
+  },
+  "E:\\busness\\bediine\\src\\components\\VerifyCouponPage.tsx": {
+    "mtime": 1781952362.5691938,
+    "ast_hash": "d9c1fb7ddcb5d54924ec6de35434feba",
+    "semantic_hash": "d9c1fb7ddcb5d54924ec6de35434feba"
+  },
+  "E:\\busness\\bediine\\src\\components\\legal\\CookieConsentBanner.tsx": {
+    "mtime": 1781867464.986276,
+    "ast_hash": "5303c2bbcecc2b485d0ae32c6780ee17",
+    "semantic_hash": "5303c2bbcecc2b485d0ae32c6780ee17"
+  },
+  "E:\\busness\\bediine\\src\\components\\legal\\CookiePreferenceModal.tsx": {
+    "mtime": 1781867473.5146701,
+    "ast_hash": "15e05a3b5e5a2cc283fd39e2957e8518",
+    "semantic_hash": "15e05a3b5e5a2cc283fd39e2957e8518"
+  },
+  "E:\\busness\\bediine\\src\\components\\legal\\GrievanceForm.tsx": {
+    "mtime": 1781867522.099172,
+    "ast_hash": "f7ac34404b3d44bbb448ad266804bfdf",
+    "semantic_hash": "f7ac34404b3d44bbb448ad266804bfdf"
+  },
+  "E:\\busness\\bediine\\src\\components\\legal\\ImportantNotice.tsx": {
+    "mtime": 1781867526.3010142,
+    "ast_hash": "16412321d308288cc7528d3f2cc772f2",
+    "semantic_hash": "16412321d308288cc7528d3f2cc772f2"
+  },
+  "E:\\busness\\bediine\\src\\components\\legal\\LegalFooter.tsx": {
+    "mtime": 1781867455.786397,
+    "ast_hash": "be2f66f6bc25b17e28fbf80bd3be1081",
+    "semantic_hash": "be2f66f6bc25b17e28fbf80bd3be1081"
+  },
+  "E:\\busness\\bediine\\src\\components\\legal\\LegalHeader.tsx": {
+    "mtime": 1781867440.3917952,
+    "ast_hash": "5040deefeb55befe2120c18293787b9c",
+    "semantic_hash": "5040deefeb55befe2120c18293787b9c"
+  },
+  "E:\\busness\\bediine\\src\\components\\legal\\LegalPageLayout.tsx": {
+    "mtime": 1781867436.7918656,
+    "ast_hash": "e836c3c67f64fa0317c1bfa7760400d7",
+    "semantic_hash": "e836c3c67f64fa0317c1bfa7760400d7"
+  },
+  "E:\\busness\\bediine\\src\\components\\legal\\LegalSection.tsx": {
+    "mtime": 1781867449.888624,
+    "ast_hash": "87420ac9f99c5fd431c7a3e861d80e89",
+    "semantic_hash": "87420ac9f99c5fd431c7a3e861d80e89"
+  },
+  "E:\\busness\\bediine\\src\\components\\legal\\LegalSidebar.tsx": {
+    "mtime": 1781867443.9109817,
+    "ast_hash": "965c96789cd615e828ff85aea64920a6",
+    "semantic_hash": "965c96789cd615e828ff85aea64920a6"
+  },
+  "E:\\busness\\bediine\\src\\components\\legal\\LegalTableOfContents.tsx": {
+    "mtime": 1781867447.0454636,
+    "ast_hash": "5e97c8b646a57bbe91a84d9596f36edf",
+    "semantic_hash": "5e97c8b646a57bbe91a84d9596f36edf"
+  },
+  "E:\\busness\\bediine\\src\\components\\legal\\PolicyCard.tsx": {
+    "mtime": 1781867491.7817512,
+    "ast_hash": "937475bda609c1d3360349b9b87ba64d",
+    "semantic_hash": "937475bda609c1d3360349b9b87ba64d"
+  },
+  "E:\\busness\\bediine\\src\\components\\legal\\PolicySearch.tsx": {
+    "mtime": 1781867479.8280609,
+    "ast_hash": "648148edfb944ac97560165142111410",
+    "semantic_hash": "648148edfb944ac97560165142111410"
+  },
+  "E:\\busness\\bediine\\src\\components\\legal\\PolicyVersion.tsx": {
+    "mtime": 1781867452.7903337,
+    "ast_hash": "1b265417ac66187f40c283058190c25a",
+    "semantic_hash": "1b265417ac66187f40c283058190c25a"
+  },
+  "E:\\busness\\bediine\\src\\components\\legal\\PrintPolicyButton.tsx": {
+    "mtime": 1781867458.6101732,
+    "ast_hash": "4e748c3ca68f615b3332ef7ff1725f4c",
+    "semantic_hash": "4e748c3ca68f615b3332ef7ff1725f4c"
+  },
+  "E:\\busness\\bediine\\src\\components\\legal\\PrivacyRequestForm.tsx": {
+    "mtime": 1781867512.1011395,
+    "ast_hash": "35fdfc2e0440053b5be757c14c3909c1",
+    "semantic_hash": "35fdfc2e0440053b5be757c14c3909c1"
+  },
+  "E:\\busness\\bediine\\src\\components\\legal\\RefundRequestForm.tsx": {
+    "mtime": 1781867501.8787935,
+    "ast_hash": "1e96306d73baffb98dad366be36344cc",
+    "semantic_hash": "1e96306d73baffb98dad366be36344cc"
+  },
+  "E:\\busness\\bediine\\src\\components\\ui\\button.tsx": {
+    "mtime": 1781617821.2227187,
+    "ast_hash": "429d3a7846c78982d60765cc89e00deb",
+    "semantic_hash": "429d3a7846c78982d60765cc89e00deb"
+  },
+  "E:\\busness\\bediine\\src\\components\\ui\\onboarding-welcome-screen.tsx": {
+    "mtime": 1781618160.6388485,
+    "ast_hash": "f6a95bd2ad780692df6860048bab165a",
+    "semantic_hash": "f6a95bd2ad780692df6860048bab165a"
+  },
+  "E:\\busness\\bediine\\src\\data\\cinematicShowreelData.ts": {
+    "mtime": 1781585066.50017,
+    "ast_hash": "7b2487cdc07abf030b5c9a9ec0e6077e",
+    "semantic_hash": "7b2487cdc07abf030b5c9a9ec0e6077e"
+  },
+  "E:\\busness\\bediine\\src\\data\\cookieCategories.ts": {
+    "mtime": 1781714170.4975872,
+    "ast_hash": "87a006431a84e4f54f3b253881b12a49",
+    "semantic_hash": "87a006431a84e4f54f3b253881b12a49"
+  },
+  "E:\\busness\\bediine\\src\\data\\legalContacts.ts": {
+    "mtime": 1781714165.2421448,
+    "ast_hash": "a1d0009e2f42e68983e5c34a29cdac74",
+    "semantic_hash": "a1d0009e2f42e68983e5c34a29cdac74"
+  },
+  "E:\\busness\\bediine\\src\\data\\legalPolicies.ts": {
+    "mtime": 1781972046.183047,
+    "ast_hash": "e51370b53612c947d5220180a919a4f3",
+    "semantic_hash": "e51370b53612c947d5220180a919a4f3"
+  },
+  "E:\\busness\\bediine\\src\\data\\paidTourContent.ts": {
+    "mtime": 1781695774.6117356,
+    "ast_hash": "bbf0120240eae07208f184486bb4579b",
+    "semantic_hash": "bbf0120240eae07208f184486bb4579b"
+  },
+  "E:\\busness\\bediine\\src\\data\\siteData.ts": {
+    "mtime": 1782409993.4926558,
+    "ast_hash": "11c9246bde1d149f9ac5bb84d4cdf1f8",
+    "semantic_hash": "11c9246bde1d149f9ac5bb84d4cdf1f8"
+  },
+  "E:\\busness\\bediine\\src\\data\\tours.ts": {
+    "mtime": 1782412879.2475781,
+    "ast_hash": "1c6a55110c4db51f7ff477f2db0a9bb3",
+    "semantic_hash": "1c6a55110c4db51f7ff477f2db0a9bb3"
+  },
+  "E:\\busness\\bediine\\src\\hooks\\useScrollReveal.ts": {
+    "mtime": 1781692778.3028738,
+    "ast_hash": "8f6f39146844174cc6359510e100bb35",
+    "semantic_hash": "8f6f39146844174cc6359510e100bb35"
+  },
+  "E:\\busness\\bediine\\src\\main.tsx": {
+    "mtime": 1780144604.204785,
+    "ast_hash": "447c8ceb74e5081b004ef36157813957",
+    "semantic_hash": "447c8ceb74e5081b004ef36157813957"
+  },
+  "E:\\busness\\bediine\\src\\pages\\main-website-tour-page\\AboutPage.tsx": {
+    "mtime": 1782316427.9605742,
+    "ast_hash": "80308ddd5260a5137877e45612558042",
+    "semantic_hash": "80308ddd5260a5137877e45612558042"
+  },
+  "E:\\busness\\bediine\\src\\pages\\main-website-tour-page\\BookingConfirmation.tsx": {
+    "mtime": 1782316427.9612021,
+    "ast_hash": "9d938c9d942fdbb790e5101ceedb15ec",
+    "semantic_hash": "9d938c9d942fdbb790e5101ceedb15ec"
+  },
+  "E:\\busness\\bediine\\src\\pages\\main-website-tour-page\\BookingPolicySection.tsx": {
+    "mtime": 1782316427.9612021,
+    "ast_hash": "59550b8d80701bb8bca65ab8f24e0ad0",
+    "semantic_hash": "59550b8d80701bb8bca65ab8f24e0ad0"
+  },
+  "E:\\busness\\bediine\\src\\pages\\main-website-tour-page\\BookingPortalHeader.tsx": {
+    "mtime": 1782316427.962214,
+    "ast_hash": "cddae0575cdd56fe34e8b573ebb2e35e",
+    "semantic_hash": "cddae0575cdd56fe34e8b573ebb2e35e"
+  },
+  "E:\\busness\\bediine\\src\\pages\\main-website-tour-page\\CustomizeTourPage.tsx": {
+    "mtime": 1782316427.963212,
+    "ast_hash": "53d9ec18d315dc7ceaede24b2bd91592",
+    "semantic_hash": "53d9ec18d315dc7ceaede24b2bd91592"
+  },
+  "E:\\busness\\bediine\\src\\pages\\main-website-tour-page\\HomeView.tsx": {
+    "mtime": 1782321521.0280094,
+    "ast_hash": "b99234feec3e7ace077768aed7f9279e",
+    "semantic_hash": "b99234feec3e7ace077768aed7f9279e"
+  },
+  "E:\\busness\\bediine\\src\\pages\\main-website-tour-page\\MainWebsiteTourPage.tsx": {
+    "mtime": 1782316427.9652321,
+    "ast_hash": "ffb099b636a8964f5856857c8d711d5e",
+    "semantic_hash": "ffb099b636a8964f5856857c8d711d5e"
+  },
+  "E:\\busness\\bediine\\src\\pages\\main-website-tour-page\\PageIntro.tsx": {
+    "mtime": 1782316427.9652321,
+    "ast_hash": "41d98ea803573d9708f42bbf4b4a8cda",
+    "semantic_hash": "41d98ea803573d9708f42bbf4b4a8cda"
+  },
+  "E:\\busness\\bediine\\src\\pages\\main-website-tour-page\\PaymentSection.tsx": {
+    "mtime": 1782316427.966758,
+    "ast_hash": "eca089ff0cb23cf4722c22c499f83e28",
+    "semantic_hash": "eca089ff0cb23cf4722c22c499f83e28"
+  },
+  "E:\\busness\\bediine\\src\\pages\\main-website-tour-page\\PickupDropoffForm.tsx": {
+    "mtime": 1782316427.966758,
+    "ast_hash": "84dda8cc3597f86650fa8ca114ab8d5d",
+    "semantic_hash": "84dda8cc3597f86650fa8ca114ab8d5d"
+  },
+  "E:\\busness\\bediine\\src\\pages\\main-website-tour-page\\PriceSummary.tsx": {
+    "mtime": 1782316427.966758,
+    "ast_hash": "9f9ef9f141e304618fe02dd00211c789",
+    "semantic_hash": "9f9ef9f141e304618fe02dd00211c789"
+  },
+  "E:\\busness\\bediine\\src\\pages\\main-website-tour-page\\ReceiptModal.tsx": {
+    "mtime": 1782316427.9677906,
+    "ast_hash": "5ed9aa5b31f5a07704abf9208fc65879",
+    "semantic_hash": "5ed9aa5b31f5a07704abf9208fc65879"
+  },
+  "E:\\busness\\bediine\\src\\pages\\main-website-tour-page\\TourBookingForm.tsx": {
+    "mtime": 1782413130.6829703,
+    "ast_hash": "07864ffafb8b2c54d45aee586e4403c6",
+    "semantic_hash": "07864ffafb8b2c54d45aee586e4403c6"
+  },
+  "E:\\busness\\bediine\\src\\pages\\main-website-tour-page\\TourDetails.tsx": {
+    "mtime": 1782316427.9677906,
+    "ast_hash": "efe25fef471a3bbfd41de392af6758b0",
+    "semantic_hash": "efe25fef471a3bbfd41de392af6758b0"
+  },
+  "E:\\busness\\bediine\\src\\pages\\main-website-tour-page\\TourFAQ.tsx": {
+    "mtime": 1782316427.9693153,
+    "ast_hash": "82b9e22c6dfc1cd295b04298bb5fbe31",
+    "semantic_hash": "82b9e22c6dfc1cd295b04298bb5fbe31"
+  },
+  "E:\\busness\\bediine\\src\\pages\\main-website-tour-page\\TourPackageCard.tsx": {
+    "mtime": 1782316427.9703462,
+    "ast_hash": "7beac37660feb6f2820908698b49b2da",
+    "semantic_hash": "7beac37660feb6f2820908698b49b2da"
+  },
+  "E:\\busness\\bediine\\src\\pages\\main-website-tour-page\\TourPackageSelection.tsx": {
+    "mtime": 1782316427.970683,
+    "ast_hash": "e15155af8b4b1c8a2423c832ad746a3b",
+    "semantic_hash": "e15155af8b4b1c8a2423c832ad746a3b"
+  },
+  "E:\\busness\\bediine\\src\\pages\\main-website-tour-page\\TourSelection.tsx": {
+    "mtime": 1782413001.732449,
+    "ast_hash": "b4ed097e8f9187181426451e82389079",
+    "semantic_hash": "b4ed097e8f9187181426451e82389079"
+  },
+  "E:\\busness\\bediine\\src\\pages\\main-website-tour-page\\TravelerInfoForm.tsx": {
+    "mtime": 1782316427.9722333,
+    "ast_hash": "46a4c5d99e0f27afce3330243cf56ee0",
+    "semantic_hash": "46a4c5d99e0f27afce3330243cf56ee0"
+  },
+  "E:\\busness\\bediine\\src\\pages\\main-website-tour-page\\VoucherCouponPanel.tsx": {
+    "mtime": 1782316427.9722333,
+    "ast_hash": "c59e50b6b85fdb51d25beea75b3a51f1",
+    "semantic_hash": "c59e50b6b85fdb51d25beea75b3a51f1"
+  },
+  "E:\\busness\\bediine\\src\\pages\\main-website-tour-page\\VoucherPackModal.tsx": {
+    "mtime": 1782316427.9732296,
+    "ast_hash": "8aad56847ee9a79cdcb4f68cd2ae12c1",
+    "semantic_hash": "8aad56847ee9a79cdcb4f68cd2ae12c1"
+  },
+  "E:\\busness\\bediine\\src\\pages\\main-website-tour-page\\custom-tour\\CustomTourDetailPanel.tsx": {
+    "mtime": 1782316427.9732296,
+    "ast_hash": "b1ea3f8fe243325f1311ef46a5f53d79",
+    "semantic_hash": "b1ea3f8fe243325f1311ef46a5f53d79"
+  },
+  "E:\\busness\\bediine\\src\\pages\\main-website-tour-page\\custom-tour\\CustomTourEstimator.tsx": {
+    "mtime": 1782316427.9732296,
+    "ast_hash": "af72d1c7cb2905e8e3a393aabadeecee",
+    "semantic_hash": "af72d1c7cb2905e8e3a393aabadeecee"
+  },
+  "E:\\busness\\bediine\\src\\pages\\main-website-tour-page\\custom-tour\\CustomTourForm.tsx": {
+    "mtime": 1782316427.9747517,
+    "ast_hash": "c376b949a1be356c8122a306bdab3a0a",
+    "semantic_hash": "c376b949a1be356c8122a306bdab3a0a"
+  },
+  "E:\\busness\\bediine\\src\\pages\\main-website-tour-page\\custom-tour\\CustomTourSuccess.tsx": {
+    "mtime": 1782316427.9747517,
+    "ast_hash": "3645144a24f891ecf3cd081cc4ddde17",
+    "semantic_hash": "3645144a24f891ecf3cd081cc4ddde17"
+  },
+  "E:\\busness\\bediine\\src\\pages\\main-website-tour-page\\custom-tour\\DemoAdminControls.tsx": {
+    "mtime": 1782316427.9757824,
+    "ast_hash": "7a14ca32d7425b4e2acb6159b824ecab",
+    "semantic_hash": "7a14ca32d7425b4e2acb6159b824ecab"
+  },
+  "E:\\busness\\bediine\\src\\pages\\subscription-page\\DiscountCreditsSection.tsx": {
+    "mtime": 1782316427.976782,
+    "ast_hash": "32668a250cd44366113c35763b7e4b3e",
+    "semantic_hash": "32668a250cd44366113c35763b7e4b3e"
+  },
+  "E:\\busness\\bediine\\src\\pages\\subscription-page\\LandingShell.tsx": {
+    "mtime": 1782325517.0035074,
+    "ast_hash": "fbba1e3b72260249966468b92c13b213",
+    "semantic_hash": "fbba1e3b72260249966468b92c13b213"
+  },
+  "E:\\busness\\bediine\\src\\pages\\subscription-page\\LuckyDrawSection.tsx": {
+    "mtime": 1782321806.0431755,
+    "ast_hash": "354568d95cb344e6798f16a4f27da138",
+    "semantic_hash": "354568d95cb344e6798f16a4f27da138"
+  },
+  "E:\\busness\\bediine\\src\\pages\\subscription-page\\MemberDashboardPreview.tsx": {
+    "mtime": 1782321433.78008,
+    "ast_hash": "2dbead82a2f697adad98e895d2f02398",
+    "semantic_hash": "2dbead82a2f697adad98e895d2f02398"
+  },
+  "E:\\busness\\bediine\\src\\pages\\subscription-page\\SubscriptionBenefits.tsx": {
+    "mtime": 1782320662.6697774,
+    "ast_hash": "ac5f9e5181112ab1a9aa30fe4eb97913",
+    "semantic_hash": "ac5f9e5181112ab1a9aa30fe4eb97913"
+  },
+  "E:\\busness\\bediine\\src\\pages\\subscription-page\\SubscriptionCTA.tsx": {
+    "mtime": 1782316427.9834802,
+    "ast_hash": "5cd972cc65c0b2674af48bef102b5a4c",
+    "semantic_hash": "5cd972cc65c0b2674af48bef102b5a4c"
+  },
+  "E:\\busness\\bediine\\src\\pages\\subscription-page\\SubscriptionFAQ.tsx": {
+    "mtime": 1782316427.9834802,
+    "ast_hash": "133a9f11e4ce5eb9b7ee2d2485ec623d",
+    "semantic_hash": "133a9f11e4ce5eb9b7ee2d2485ec623d"
+  },
+  "E:\\busness\\bediine\\src\\pages\\subscription-page\\SubscriptionHelpers.tsx": {
+    "mtime": 1782316427.9845018,
+    "ast_hash": "7cce696a049f5e34ff1ff5779bcd38bb",
+    "semantic_hash": "7cce696a049f5e34ff1ff5779bcd38bb"
+  },
+  "E:\\busness\\bediine\\src\\pages\\subscription-page\\SubscriptionHero.tsx": {
+    "mtime": 1782321433.7813063,
+    "ast_hash": "3ad6ad1c56e1897b52c30ceb32b47b8f",
+    "semantic_hash": "3ad6ad1c56e1897b52c30ceb32b47b8f"
+  },
+  "E:\\busness\\bediine\\src\\pages\\subscription-page\\SubscriptionLandingPage.tsx": {
+    "mtime": 1782410361.4422824,
+    "ast_hash": "4975ce07c0ed0cf1463e29b7e274ad83",
+    "semantic_hash": "4975ce07c0ed0cf1463e29b7e274ad83"
+  },
+  "E:\\busness\\bediine\\src\\pages\\subscription-page\\SubscriptionPlans.tsx": {
+    "mtime": 1782367182.6867952,
+    "ast_hash": "a530a5ac9925c4be62b54138fcb3a53b",
+    "semantic_hash": "a530a5ac9925c4be62b54138fcb3a53b"
+  },
+  "E:\\busness\\bediine\\src\\pages\\subscription-page\\TermsAndConditions.tsx": {
+    "mtime": 1782316427.9876285,
+    "ast_hash": "78d6e828ba46c4af1e5a869fee8ef944",
+    "semantic_hash": "78d6e828ba46c4af1e5a869fee8ef944"
+  },
+  "E:\\busness\\bediine\\src\\pages\\subscription-page\\WinnerReviews.tsx": {
+    "mtime": 1782326740.8195894,
+    "ast_hash": "24d906269ac5f8b274c0c09790a53f9f",
+    "semantic_hash": "24d906269ac5f8b274c0c09790a53f9f"
+  },
+  "E:\\busness\\bediine\\src\\services\\customTourService.ts": {
+    "mtime": 1782052660.4932835,
+    "ast_hash": "9cefc4305159c923c24db2ca83a18b98",
+    "semantic_hash": "9cefc4305159c923c24db2ca83a18b98"
+  },
+  "E:\\busness\\bediine\\src\\services\\demoWalletService.ts": {
+    "mtime": 1782410025.0439532,
+    "ast_hash": "486803ad6f5c34e2c1b8d9d0c293dd7e",
+    "semantic_hash": "486803ad6f5c34e2c1b8d9d0c293dd7e"
+  },
+  "E:\\busness\\bediine\\src\\types.ts": {
+    "mtime": 1782412869.9101584,
+    "ast_hash": "34c5108936310a97cfaa8b6803f1441c",
+    "semantic_hash": "34c5108936310a97cfaa8b6803f1441c"
+  },
+  "E:\\busness\\bediine\\src\\utils\\ambientSoundscapeSynth.ts": {
+    "mtime": 1781585382.4144723,
+    "ast_hash": "f9710a6f9b970802b1b8b03145a487b4",
+    "semantic_hash": "f9710a6f9b970802b1b8b03145a487b4"
+  },
+  "E:\\busness\\bediine\\src\\utils\\cn.ts": {
+    "mtime": 1780144604.2361522,
+    "ast_hash": "d9837f38cc05303254571985e3164050",
+    "semantic_hash": "d9837f38cc05303254571985e3164050"
+  },
+  "E:\\busness\\bediine\\src\\utils\\customTourCalculator.ts": {
+    "mtime": 1782052599.3682861,
+    "ast_hash": "dd876e9378227764c301dc503f534479",
+    "semantic_hash": "dd876e9378227764c301dc503f534479"
+  },
+  "E:\\busness\\bediine\\src\\utils\\customTourValidation.ts": {
+    "mtime": 1782034287.5325847,
+    "ast_hash": "c4b62d7dceedcb18b044051a46be94ec",
+    "semantic_hash": "c4b62d7dceedcb18b044051a46be94ec"
+  },
+  "E:\\busness\\bediine\\src\\utils\\supabaseClient.ts": {
+    "mtime": 1782391328.2086961,
+    "ast_hash": "8de62514d2e638b70fd2b4dec2001d26",
+    "semantic_hash": "8de62514d2e638b70fd2b4dec2001d26"
+  },
+  "E:\\busness\\bediine\\src\\vite-env.d.ts": {
+    "mtime": 1782410408.9067028,
+    "ast_hash": "8e7c39c9c63dade8f5b6ecd1fc60293e",
+    "semantic_hash": "8e7c39c9c63dade8f5b6ecd1fc60293e"
+  },
+  "E:\\busness\\bediine\\tsconfig.json": {
+    "mtime": 1782413137.8220694,
+    "ast_hash": "934a778fadf677e207ffb4b62b6083f6",
+    "semantic_hash": "934a778fadf677e207ffb4b62b6083f6"
+  },
+  "E:\\busness\\bediine\\vercel.json": {
+    "mtime": 1782370670.9899428,
+    "ast_hash": "c4a983872cce1119dbfe0dff4f2870d3",
+    "semantic_hash": "c4a983872cce1119dbfe0dff4f2870d3"
+  },
+  "E:\\busness\\bediine\\vite.config.ts": {
+    "mtime": 1782413169.1642,
+    "ast_hash": "d787d53178bf44dce10356ad32b8e949",
+    "semantic_hash": "d787d53178bf44dce10356ad32b8e949"
+  },
+  "E:\\busness\\bediine\\.codex-doc-review\\BEDUIN_TOUR_AND_TRAVELS_extracted.txt": {
+    "mtime": 1781715378.8496568,
+    "ast_hash": "fd2fd9285cb6e3f10bb1dcd3b9c43fec",
+    "semantic_hash": "fd2fd9285cb6e3f10bb1dcd3b9c43fec"
+  },
+  "E:\\busness\\bediine\\docs\\superpowers\\plans\\2026-06-25-credit-category-locking.md": {
+    "mtime": 1782393734.449958,
+    "ast_hash": "e1d1c4048b22220dd242a29e7a251a1c",
+    "semantic_hash": "e1d1c4048b22220dd242a29e7a251a1c"
+  },
+  "E:\\busness\\bediine\\docs\\superpowers\\specs\\2026-06-25-credit-category-locking-design.md": {
+    "mtime": 1782393498.1512003,
+    "ast_hash": "fd657e43960869993f0fe40baa198080",
+    "semantic_hash": "fd657e43960869993f0fe40baa198080"
+  },
+  "E:\\busness\\bediine\\index.html": {
+    "mtime": 1782321433.770441,
+    "ast_hash": "5c90b055b893c9ed8230afdf3016cf5b",
+    "semantic_hash": "5c90b055b893c9ed8230afdf3016cf5b"
+  },
+  "E:\\busness\\bediine\\.codex-screenshots\\dashboard-bookings-desktop.png": {
+    "mtime": 1781408866.4336667,
+    "ast_hash": "781d2fe0c8c1ba13c16d2abfa616b6d5",
+    "semantic_hash": "781d2fe0c8c1ba13c16d2abfa616b6d5"
+  },
+  "E:\\busness\\bediine\\.codex-screenshots\\dashboard-bookings-scrolled.png": {
+    "mtime": 1781408946.5655143,
+    "ast_hash": "c929c6968d47c08c5d3b6b226767c579",
+    "semantic_hash": "c929c6968d47c08c5d3b6b226767c579"
+  },
+  "E:\\busness\\bediine\\.codex-screenshots\\dashboard-credits-desktop.png": {
+    "mtime": 1781408859.1498785,
+    "ast_hash": "dcdb23807f457675d2f0fdae27ee2fad",
+    "semantic_hash": "dcdb23807f457675d2f0fdae27ee2fad"
+  },
+  "E:\\busness\\bediine\\.codex-screenshots\\dashboard-credits-mobile.png": {
+    "mtime": 1781409019.7555354,
+    "ast_hash": "7c8dc0fe39f1f5804a83c970978d03de",
+    "semantic_hash": "7c8dc0fe39f1f5804a83c970978d03de"
+  },
+  "E:\\busness\\bediine\\.codex-screenshots\\dashboard-credits-scrolled.png": {
+    "mtime": 1781408936.1838539,
+    "ast_hash": "df30166e304baf9a15ed851ef3a2e4ab",
+    "semantic_hash": "df30166e304baf9a15ed851ef3a2e4ab"
+  },
+  "E:\\busness\\bediine\\.codex-screenshots\\dashboard-draws-desktop.png": {
+    "mtime": 1781408862.7675743,
+    "ast_hash": "18b17f3c1870b860c8b7265ffb41af61",
+    "semantic_hash": "18b17f3c1870b860c8b7265ffb41af61"
+  },
+  "E:\\busness\\bediine\\.codex-screenshots\\dashboard-draws-scrolled.png": {
+    "mtime": 1781408940.9639943,
+    "ast_hash": "18760383674714e03a5cdb0fa810a312",
+    "semantic_hash": "18760383674714e03a5cdb0fa810a312"
+  },
+  "E:\\busness\\bediine\\.codex-screenshots\\dashboard-edit-profile-desktop.png": {
+    "mtime": 1781408870.1611798,
+    "ast_hash": "d43116b8a0fc0a63e67fb50e413c0482",
+    "semantic_hash": "d43116b8a0fc0a63e67fb50e413c0482"
+  },
+  "E:\\busness\\bediine\\.codex-screenshots\\dashboard-edit-profile-mobile.png": {
+    "mtime": 1781409011.443882,
+    "ast_hash": "92bbb48f622daf7891037e0cfc64837a",
+    "semantic_hash": "92bbb48f622daf7891037e0cfc64837a"
+  },
+  "E:\\busness\\bediine\\.codex-screenshots\\dashboard-edit-profile-scrolled.png": {
+    "mtime": 1781408951.692759,
+    "ast_hash": "8131494c65831ad68c4d54c189df9fac",
+    "semantic_hash": "8131494c65831ad68c4d54c189df9fac"
+  },
+  "E:\\busness\\bediine\\.codex-screenshots\\dashboard-lucky-status-desktop.png": {
+    "mtime": 1781408873.4286861,
+    "ast_hash": "1196ced669defd7326593f88df5951ab",
+    "semantic_hash": "1196ced669defd7326593f88df5951ab"
+  },
+  "E:\\busness\\bediine\\.codex-screenshots\\dashboard-lucky-status-mobile.png": {
+    "mtime": 1781409015.5787451,
+    "ast_hash": "eb5b1b303a09f5816c6f417cc59bac9a",
+    "semantic_hash": "eb5b1b303a09f5816c6f417cc59bac9a"
+  },
+  "E:\\busness\\bediine\\.codex-screenshots\\dashboard-lucky-status-scrolled.png": {
+    "mtime": 1781408957.7298987,
+    "ast_hash": "45f9d7a60d8eaed9e2b61f109e3e8603",
+    "semantic_hash": "45f9d7a60d8eaed9e2b61f109e3e8603"
+  },
+  "E:\\busness\\bediine\\Initial_Scene_-_2026-06-05_202606052345_frames\\frame_001.jpg": {
+    "mtime": 1780683904.6603396,
+    "ast_hash": "0748856d399b576225c266492584a1d1",
+    "semantic_hash": "0748856d399b576225c266492584a1d1"
+  },
+  "E:\\busness\\bediine\\Initial_Scene_-_2026-06-05_202606052345_frames\\frame_002.jpg": {
+    "mtime": 1780683904.7017462,
+    "ast_hash": "feee4648386f3a76bde8a9364134dbfa",
+    "semantic_hash": "feee4648386f3a76bde8a9364134dbfa"
+  },
+  "E:\\busness\\bediine\\Initial_Scene_-_2026-06-05_202606052345_frames\\frame_003.jpg": {
+    "mtime": 1780683904.7198572,
+    "ast_hash": "7e3ece9f816f71364ad234390ee3bb88",
+    "semantic_hash": "7e3ece9f816f71364ad234390ee3bb88"
+  },
+  "E:\\busness\\bediine\\Initial_Scene_-_2026-06-05_202606052345_frames\\frame_004.jpg": {
+    "mtime": 1780683904.7348468,
+    "ast_hash": "78f88cccae1bd59b4a54d6fe734eeced",
+    "semantic_hash": "78f88cccae1bd59b4a54d6fe734eeced"
+  },
+  "E:\\busness\\bediine\\Initial_Scene_-_2026-06-05_202606052345_frames\\frame_005.jpg": {
+    "mtime": 1780683904.7523627,
+    "ast_hash": "dbceadf986f10470f49b1914b9cda663",
+    "semantic_hash": "dbceadf986f10470f49b1914b9cda663"
+  },
+  "E:\\busness\\bediine\\Initial_Scene_-_2026-06-05_202606052345_frames\\frame_006.jpg": {
+    "mtime": 1780683904.7677257,
+    "ast_hash": "957825a3d9be62a309f365ebfb6a8ab1",
+    "semantic_hash": "957825a3d9be62a309f365ebfb6a8ab1"
+  },
+  "E:\\busness\\bediine\\Initial_Scene_-_2026-06-05_202606052345_frames\\frame_008.jpg": {
+    "mtime": 1780683904.7760744,
+    "ast_hash": "c2d38cfc0bf245e03e867b6729ae1ff0",
+    "semantic_hash": "c2d38cfc0bf245e03e867b6729ae1ff0"
+  },
+  "E:\\busness\\bediine\\Initial_Scene_-_2026-06-05_202606052345_frames\\frame_010.jpg": {
+    "mtime": 1780683904.7939696,
+    "ast_hash": "59023b11214a939306ad18668c75be2f",
+    "semantic_hash": "59023b11214a939306ad18668c75be2f"
+  },
+  "E:\\busness\\bediine\\public\\images\\about_forest_bg.png": {
+    "mtime": 1781850539.8855927,
+    "ast_hash": "5b8b87cdea75e8d64875a814094040ef",
+    "semantic_hash": "5b8b87cdea75e8d64875a814094040ef"
+  },
+  "E:\\busness\\bediine\\public\\images\\about_mission.png": {
+    "mtime": 1780145977.2239678,
+    "ast_hash": "3bf4591a441777e24167b58589345de5",
+    "semantic_hash": "3bf4591a441777e24167b58589345de5"
+  },
+  "E:\\busness\\bediine\\public\\images\\about_promise.png": {
+    "mtime": 1780146013.8771925,
+    "ast_hash": "60eb192624073d9c41d4b22780316fc4",
+    "semantic_hash": "60eb192624073d9c41d4b22780316fc4"
+  },
+  "E:\\busness\\bediine\\public\\images\\about_vision.png": {
+    "mtime": 1780145995.1816633,
+    "ast_hash": "58f848e4d5e823520953709310c8259c",
+    "semantic_hash": "58f848e4d5e823520953709310c8259c"
+  },
+  "E:\\busness\\bediine\\public\\images\\airplane_nobg.png": {
+    "mtime": 1782316427.9310987,
+    "ast_hash": "3a836dc6218edea18ebe1327cd165c8e",
+    "semantic_hash": "3a836dc6218edea18ebe1327cd165c8e"
+  },
+  "E:\\busness\\bediine\\public\\images\\bakkhali_beach.png": {
+    "mtime": 1780196168.0218875,
+    "ast_hash": "9e5d6081ecda9d41fb3f45a02f9512ac",
+    "semantic_hash": "9e5d6081ecda9d41fb3f45a02f9512ac"
+  },
+  "E:\\busness\\bediine\\public\\images\\bakkhali_beach_premium.png": {
+    "mtime": 1780212490.7765737,
+    "ast_hash": "2c6191570e91522eef93d8bf84603b95",
+    "semantic_hash": "2c6191570e91522eef93d8bf84603b95"
+  },
+  "E:\\busness\\bediine\\public\\images\\bali.png": {
+    "mtime": 1780681975.0980802,
+    "ast_hash": "1a2375e0e9ea60ac2d5454cd97ad786c",
+    "semantic_hash": "1a2375e0e9ea60ac2d5454cd97ad786c"
+  },
+  "E:\\busness\\bediine\\public\\images\\barcelona.png": {
+    "mtime": 1781703209.7235672,
+    "ast_hash": "a9c5bfb2005b21cdacb572c2ad5a73da",
+    "semantic_hash": "a9c5bfb2005b21cdacb572c2ad5a73da"
+  },
+  "E:\\busness\\bediine\\public\\images\\barcelona_hotspot.png": {
+    "mtime": 1781713988.8818197,
+    "ast_hash": "ccc2d4c0f36c41c9a2c9cbad688b8ba3",
+    "semantic_hash": "ccc2d4c0f36c41c9a2c9cbad688b8ba3"
+  },
+  "E:\\busness\\bediine\\public\\images\\beduin_travel_hero_1779521651766.png": {
+    "mtime": 1780144603.492836,
+    "ast_hash": "4611c2934de789b784276a69b945f817",
+    "semantic_hash": "4611c2934de789b784276a69b945f817"
+  },
+  "E:\\busness\\bediine\\public\\images\\beduine-floating-plane.png": {
+    "mtime": 1780144603.40074,
+    "ast_hash": "90eeb4802e5afbc8f4cad9d8b28d812b",
+    "semantic_hash": "90eeb4802e5afbc8f4cad9d8b28d812b"
+  },
+  "E:\\busness\\bediine\\public\\images\\beduine_travel_hero_1779521651766.png": {
+    "mtime": 1780144603.4490402,
+    "ast_hash": "4611c2934de789b784276a69b945f817",
+    "semantic_hash": "4611c2934de789b784276a69b945f817"
+  },
+  "E:\\busness\\bediine\\public\\images\\bedune_logo.png": {
+    "mtime": 1781767285.676378,
+    "ast_hash": "f7ff972366dbb61be0f1691e9d8be4a0",
+    "semantic_hash": "f7ff972366dbb61be0f1691e9d8be4a0"
+  },
+  "E:\\busness\\bediine\\public\\images\\bedune_logo_badge.png": {
+    "mtime": 1781767192.1523895,
+    "ast_hash": "6c11878c09f5a859d358a91c19395b9e",
+    "semantic_hash": "6c11878c09f5a859d358a91c19395b9e"
+  },
+  "E:\\busness\\bediine\\public\\images\\bedune_logo_cropped.png": {
+    "mtime": 1781767285.676378,
+    "ast_hash": "f7ff972366dbb61be0f1691e9d8be4a0",
+    "semantic_hash": "f7ff972366dbb61be0f1691e9d8be4a0"
+  },
+  "E:\\busness\\bediine\\public\\images\\bedune_logo_transparent.png": {
+    "mtime": 1781767285.676378,
+    "ast_hash": "f7ff972366dbb61be0f1691e9d8be4a0",
+    "semantic_hash": "f7ff972366dbb61be0f1691e9d8be4a0"
+  },
+  "E:\\busness\\bediine\\public\\images\\book_paid_tour_icon.png": {
+    "mtime": 1781714098.299811,
+    "ast_hash": "2d552a5b94661cbe13d8feeb8599e075",
+    "semantic_hash": "2d552a5b94661cbe13d8feeb8599e075"
+  },
+  "E:\\busness\\bediine\\public\\images\\chatgpt_dashboard_bg.png": {
+    "mtime": 1781693740.6858487,
+    "ast_hash": "ff5ebd61ccb4b5f3629eb0f49ad2ce38",
+    "semantic_hash": "ff5ebd61ccb4b5f3629eb0f49ad2ce38"
+  },
+  "E:\\busness\\bediine\\public\\images\\co_travelers_map.png": {
+    "mtime": 1781410655.6145344,
+    "ast_hash": "57c8aae1977a70300440818635ab323c",
+    "semantic_hash": "57c8aae1977a70300440818635ab323c"
+  },
+  "E:\\busness\\bediine\\public\\images\\credit_card_holographic_1779521713449.png": {
+    "mtime": 1780144603.536883,
+    "ast_hash": "ee553be5fb9475c797e60867e60bd4b8",
+    "semantic_hash": "ee553be5fb9475c797e60867e60bd4b8"
+  },
+  "E:\\busness\\bediine\\public\\images\\darjeeling_hills.png": {
+    "mtime": 1781703584.3492117,
+    "ast_hash": "f72a4532dc047606e19feeb3c56a8964",
+    "semantic_hash": "f72a4532dc047606e19feeb3c56a8964"
+  },
+  "E:\\busness\\bediine\\public\\images\\darjeeling_hills_card.png": {
+    "mtime": 1781714016.2738662,
+    "ast_hash": "5e616c978db20cb3131a4aabc80c9a42",
+    "semantic_hash": "5e616c978db20cb3131a4aabc80c9a42"
+  },
+  "E:\\busness\\bediine\\public\\images\\darjeeling_resort.png": {
+    "mtime": 1781433814.7282615,
+    "ast_hash": "3fc1efc458f5a88189ce854f63f3d6aa",
+    "semantic_hash": "3fc1efc458f5a88189ce854f63f3d6aa"
+  },
+  "E:\\busness\\bediine\\public\\images\\darjeeling_tea_1779521805614.png": {
+    "mtime": 1780144603.580599,
+    "ast_hash": "53e04f47834561c2dd308a019062ee73",
+    "semantic_hash": "53e04f47834561c2dd308a019062ee73"
+  },
+  "E:\\busness\\bediine\\public\\images\\darjeeling_tea_review.png": {
+    "mtime": 1782326677.8551283,
+    "ast_hash": "6f88c44c0f2a83c1bd64a9f68db8c136",
+    "semantic_hash": "6f88c44c0f2a83c1bd64a9f68db8c136"
+  },
+  "E:\\busness\\bediine\\public\\images\\dashboard_beach_cliff.jpg": {
+    "mtime": 1781693771.5954187,
+    "ast_hash": "c14e05d4483d4a516065f5935806476d",
+    "semantic_hash": "c14e05d4483d4a516065f5935806476d"
+  },
+  "E:\\busness\\bediine\\public\\images\\dashboard_beach_cliff.png": {
+    "mtime": 1781693740.6858487,
+    "ast_hash": "ff5ebd61ccb4b5f3629eb0f49ad2ce38",
+    "semantic_hash": "ff5ebd61ccb4b5f3629eb0f49ad2ce38"
+  },
+  "E:\\busness\\bediine\\public\\images\\dashboard_bg.jpg": {
+    "mtime": 1781416484.4101648,
+    "ast_hash": "703433930b42aa95ec057d37a825f5c9",
+    "semantic_hash": "703433930b42aa95ec057d37a825f5c9"
+  },
+  "E:\\busness\\bediine\\public\\images\\dooars_safari.png": {
+    "mtime": 1780196208.785233,
+    "ast_hash": "a9300adf409f49f81c15247a954cdc21",
+    "semantic_hash": "a9300adf409f49f81c15247a954cdc21"
+  },
+  "E:\\busness\\bediine\\public\\images\\dubai_sidebar_banner.png": {
+    "mtime": 1781714125.9992535,
+    "ast_hash": "93c8b3aa08f1a8076f9d3e199fcfd127",
+    "semantic_hash": "93c8b3aa08f1a8076f9d3e199fcfd127"
+  },
+  "E:\\busness\\bediine\\public\\images\\dubai_skyline_1779539448313.png": {
+    "mtime": 1780152456.761105,
+    "ast_hash": "540a3c33e00b4f8c92c9f130c269cfeb",
+    "semantic_hash": "540a3c33e00b4f8c92c9f130c269cfeb"
+  },
+  "E:\\busness\\bediine\\public\\images\\error_traveler.png": {
+    "mtime": 1781617151.927453,
+    "ast_hash": "3ab38047d57ed68e1a29de7c3f913a46",
+    "semantic_hash": "3ab38047d57ed68e1a29de7c3f913a46"
+  },
+  "E:\\busness\\bediine\\public\\images\\europe.png": {
+    "mtime": 1780682013.1875892,
+    "ast_hash": "ccd3d4e4ebe8e89c3a544d95c2aaf9f1",
+    "semantic_hash": "ccd3d4e4ebe8e89c3a544d95c2aaf9f1"
+  },
+  "E:\\busness\\bediine\\public\\images\\goa_beaches.png": {
+    "mtime": 1780145438.0891097,
+    "ast_hash": "b1202c751ae61a89f80de780b57a7603",
+    "semantic_hash": "b1202c751ae61a89f80de780b57a7603"
+  },
+  "E:\\busness\\bediine\\public\\images\\gokarna_beach.png": {
+    "mtime": 1781703628.2725594,
+    "ast_hash": "6ef6b38a4965039437f803c9e0e3e333",
+    "semantic_hash": "6ef6b38a4965039437f803c9e0e3e333"
+  },
+  "E:\\busness\\bediine\\public\\images\\gokarna_beach_card.png": {
+    "mtime": 1781714030.1235702,
+    "ast_hash": "bc395a07be013f40b4919746eaffd7fc",
+    "semantic_hash": "bc395a07be013f40b4919746eaffd7fc"
+  },
+  "E:\\busness\\bediine\\public\\images\\happy_family_travelers.png": {
+    "mtime": 1780665733.362674,
+    "ast_hash": "ddb6aa61fde740c07b2f742123137b3f",
+    "semantic_hash": "ddb6aa61fde740c07b2f742123137b3f"
+  },
+  "E:\\busness\\bediine\\public\\images\\happy_travelers_family_1779521684057.png": {
+    "mtime": 1780144603.6749375,
+    "ast_hash": "7d227196a4e43f12945e82aa33c1acbb",
+    "semantic_hash": "7d227196a4e43f12945e82aa33c1acbb"
+  },
+  "E:\\busness\\bediine\\public\\images\\himachal_hills.png": {
+    "mtime": 1780145419.5546262,
+    "ast_hash": "18d65fcd10d0e18956baaec4774f34a8",
+    "semantic_hash": "18d65fcd10d0e18956baaec4774f34a8"
+  },
+  "E:\\busness\\bediine\\public\\images\\japan.png": {
+    "mtime": 1780682048.3914578,
+    "ast_hash": "188a8106ffe92cb5b3d92fd986ab97bc",
+    "semantic_hash": "188a8106ffe92cb5b3d92fd986ab97bc"
+  },
+  "E:\\busness\\bediine\\public\\images\\kashmir_dal_lake_1779521728036.png": {
+    "mtime": 1780144603.7231772,
+    "ast_hash": "f8091986635b9ca49ad747c16b7d285b",
+    "semantic_hash": "f8091986635b9ca49ad747c16b7d285b"
+  },
+  "E:\\busness\\bediine\\public\\images\\kashmir_lake_review.png": {
+    "mtime": 1782326654.870315,
+    "ast_hash": "9e0fea015a0ef1e824d4d5abefc9aa59",
+    "semantic_hash": "9e0fea015a0ef1e824d4d5abefc9aa59"
+  },
+  "E:\\busness\\bediine\\public\\images\\kashmir_resort.png": {
+    "mtime": 1781433866.54439,
+    "ast_hash": "ed6027a1d73406017db26edaa0fc6abc",
+    "semantic_hash": "ed6027a1d73406017db26edaa0fc6abc"
+  },
+  "E:\\busness\\bediine\\public\\images\\kashmir_valley.png": {
+    "mtime": 1781703473.3512146,
+    "ast_hash": "ce60dd80e3ca38f1b5a69c0961a515b6",
+    "semantic_hash": "ce60dd80e3ca38f1b5a69c0961a515b6"
+  },
+  "E:\\busness\\bediine\\public\\images\\kashmir_valley_card.png": {
+    "mtime": 1781714003.9273958,
+    "ast_hash": "7bcd2bffe053a76272fc88995aed2c67",
+    "semantic_hash": "7bcd2bffe053a76272fc88995aed2c67"
+  },
+  "E:\\busness\\bediine\\public\\images\\kerala_houseboat_1779521772928.png": {
+    "mtime": 1780144603.7729576,
+    "ast_hash": "864e3064c991f344c1df22d99eac815f",
+    "semantic_hash": "864e3064c991f344c1df22d99eac815f"
+  },
+  "E:\\busness\\bediine\\public\\images\\kerala_houseboat_review.png": {
+    "mtime": 1782326722.6871433,
+    "ast_hash": "5f07bd52f3be93bf941dd64a98736dd9",
+    "semantic_hash": "5f07bd52f3be93bf941dd64a98736dd9"
+  },
+  "E:\\busness\\bediine\\public\\images\\login_bg_clouds.png": {
+    "mtime": 1781688771.4700835,
+    "ast_hash": "b0db1d2a23f293ba5174d77550f183b0",
+    "semantic_hash": "b0db1d2a23f293ba5174d77550f183b0"
+  },
+  "E:\\busness\\bediine\\public\\images\\login_suitcase.png": {
+    "mtime": 1781688382.6970913,
+    "ast_hash": "f4e0fc1f286185452941766f05bcde0b",
+    "semantic_hash": "f4e0fc1f286185452941766f05bcde0b"
+  },
+  "E:\\busness\\bediine\\public\\images\\lucky_draw_ticket_1779521667122.png": {
+    "mtime": 1780144603.8181515,
+    "ast_hash": "0d48383309e64b2dfa20f2265ac34955",
+    "semantic_hash": "0d48383309e64b2dfa20f2265ac34955"
+  },
+  "E:\\busness\\bediine\\public\\images\\malaysia.png": {
+    "mtime": 1780681956.3948011,
+    "ast_hash": "28738652de9a5ea28ce510ec5b300add",
+    "semantic_hash": "28738652de9a5ea28ce510ec5b300add"
+  },
+  "E:\\busness\\bediine\\public\\images\\maldives_overwater_1779539482305.png": {
+    "mtime": 1780152488.6526604,
+    "ast_hash": "a8d73a9e4a762a740ba274bd31e80e54",
+    "semantic_hash": "a8d73a9e4a762a740ba274bd31e80e54"
+  },
+  "E:\\busness\\bediine\\public\\images\\maldives_resort.png": {
+    "mtime": 1781433844.108026,
+    "ast_hash": "aa4dfa8b0d5dec5cf2c331320aecf133",
+    "semantic_hash": "aa4dfa8b0d5dec5cf2c331320aecf133"
+  },
+  "E:\\busness\\bediine\\public\\images\\map_3d_frames\\frame_001.jpg": {
+    "mtime": 1780683904.6603396,
+    "ast_hash": "0748856d399b576225c266492584a1d1",
+    "semantic_hash": "0748856d399b576225c266492584a1d1"
+  },
+  "E:\\busness\\bediine\\public\\images\\map_3d_frames\\frame_002.jpg": {
+    "mtime": 1780683904.7017462,
+    "ast_hash": "feee4648386f3a76bde8a9364134dbfa",
+    "semantic_hash": "feee4648386f3a76bde8a9364134dbfa"
+  },
+  "E:\\busness\\bediine\\public\\images\\map_3d_frames\\frame_003.jpg": {
+    "mtime": 1780683904.7198572,
+    "ast_hash": "7e3ece9f816f71364ad234390ee3bb88",
+    "semantic_hash": "7e3ece9f816f71364ad234390ee3bb88"
+  },
+  "E:\\busness\\bediine\\public\\images\\map_3d_frames\\frame_004.jpg": {
+    "mtime": 1780683904.7348468,
+    "ast_hash": "78f88cccae1bd59b4a54d6fe734eeced",
+    "semantic_hash": "78f88cccae1bd59b4a54d6fe734eeced"
+  },
+  "E:\\busness\\bediine\\public\\images\\map_3d_frames\\frame_005.jpg": {
+    "mtime": 1780683904.7523627,
+    "ast_hash": "dbceadf986f10470f49b1914b9cda663",
+    "semantic_hash": "dbceadf986f10470f49b1914b9cda663"
+  },
+  "E:\\busness\\bediine\\public\\images\\map_3d_frames\\frame_006.jpg": {
+    "mtime": 1780683904.7677257,
+    "ast_hash": "957825a3d9be62a309f365ebfb6a8ab1",
+    "semantic_hash": "957825a3d9be62a309f365ebfb6a8ab1"
+  },
+  "E:\\busness\\bediine\\public\\images\\map_3d_frames\\frame_008.jpg": {
+    "mtime": 1780683904.7760744,
+    "ast_hash": "c2d38cfc0bf245e03e867b6729ae1ff0",
+    "semantic_hash": "c2d38cfc0bf245e03e867b6729ae1ff0"
+  },
+  "E:\\busness\\bediine\\public\\images\\map_3d_frames\\frame_010.jpg": {
+    "mtime": 1780683904.7939696,
+    "ast_hash": "59023b11214a939306ad18668c75be2f",
+    "semantic_hash": "59023b11214a939306ad18668c75be2f"
+  },
+  "E:\\busness\\bediine\\public\\images\\media__1779521572563.png": {
+    "mtime": 1780144603.8991652,
+    "ast_hash": "cbd26f63e8fbd5b214a80225200e941b",
+    "semantic_hash": "cbd26f63e8fbd5b214a80225200e941b"
+  },
+  "E:\\busness\\bediine\\public\\images\\mousuni_island.png": {
+    "mtime": 1780196188.046154,
+    "ast_hash": "18f123dbd57ec1422e70badb2adfa74a",
+    "semantic_hash": "18f123dbd57ec1422e70badb2adfa74a"
+  },
+  "E:\\busness\\bediine\\public\\images\\mousuni_island_premium.png": {
+    "mtime": 1780212520.8528993,
+    "ast_hash": "6517e13032852d99e31b2ba43f775fc4",
+    "semantic_hash": "6517e13032852d99e31b2ba43f775fc4"
+  },
+  "E:\\busness\\bediine\\public\\images\\mukutmanipur.png\\mukutmanipur_1780681865269.png": {
+    "mtime": 1780681865.2740111,
+    "ast_hash": "6aaffba1e367c9f7f9c2e5c49f9eadda",
+    "semantic_hash": "6aaffba1e367c9f7f9c2e5c49f9eadda"
+  },
+  "E:\\busness\\bediine\\public\\images\\mukutmanipur_premium.png": {
+    "mtime": 1780681865.2740111,
+    "ast_hash": "6aaffba1e367c9f7f9c2e5c49f9eadda",
+    "semantic_hash": "6aaffba1e367c9f7f9c2e5c49f9eadda"
+  },
+  "E:\\busness\\bediine\\public\\images\\nepal.png": {
+    "mtime": 1780681940.2750971,
+    "ast_hash": "67ee362e7febc9b8778ae7d9dda40417",
+    "semantic_hash": "67ee362e7febc9b8778ae7d9dda40417"
+  },
+  "E:\\busness\\bediine\\public\\images\\office_logo.png": {
+    "mtime": 1780144603.9573371,
+    "ast_hash": "0204e789f5f861015fafb453cb822d23",
+    "semantic_hash": "0204e789f5f861015fafb453cb822d23"
+  },
+  "E:\\busness\\bediine\\public\\images\\office_setup.png": {
+    "mtime": 1780924900.803821,
+    "ast_hash": "daaeab20c777b224d5a5cca8ab94ca25",
+    "semantic_hash": "daaeab20c777b224d5a5cca8ab94ca25"
+  },
+  "E:\\busness\\bediine\\public\\images\\puri_konark.png": {
+    "mtime": 1780196229.0922291,
+    "ast_hash": "4ff1adb7a72b6795ed6a1adde73b0a0d",
+    "semantic_hash": "4ff1adb7a72b6795ed6a1adde73b0a0d"
+  },
+  "E:\\busness\\bediine\\public\\images\\rajasthan_palace_1779521744228.png": {
+    "mtime": 1780144604.0358477,
+    "ast_hash": "d5b774f276f99d63f3504dc5edac8751",
+    "semantic_hash": "d5b774f276f99d63f3504dc5edac8751"
+  },
+  "E:\\busness\\bediine\\public\\images\\selection_support_icon.png": {
+    "mtime": 1781714112.8860998,
+    "ast_hash": "0fe04748fc545ea5925b988f9a605805",
+    "semantic_hash": "0fe04748fc545ea5925b988f9a605805"
+  },
+  "E:\\busness\\bediine\\public\\images\\service_currency.png": {
+    "mtime": 1780679943.4132097,
+    "ast_hash": "5f2ec8bee96fb5b421fce41df78fc77f",
+    "semantic_hash": "5f2ec8bee96fb5b421fce41df78fc77f"
+  },
+  "E:\\busness\\bediine\\public\\images\\service_flights.png": {
+    "mtime": 1780679907.588216,
+    "ast_hash": "dbd19f8e8aa74da60963373bd46f6a2e",
+    "semantic_hash": "dbd19f8e8aa74da60963373bd46f6a2e"
+  },
+  "E:\\busness\\bediine\\public\\images\\service_hotels.png": {
+    "mtime": 1780679869.8780794,
+    "ast_hash": "10f8262c60094ff9c2b7e2f05db544e7",
+    "semantic_hash": "10f8262c60094ff9c2b7e2f05db544e7"
+  },
+  "E:\\busness\\bediine\\public\\images\\service_tours.png": {
+    "mtime": 1780679850.5985105,
+    "ast_hash": "10c9fb89e976869029a52cb8ecc9bec4",
+    "semantic_hash": "10c9fb89e976869029a52cb8ecc9bec4"
+  },
+  "E:\\busness\\bediine\\public\\images\\service_trains.png": {
+    "mtime": 1780679889.7182734,
+    "ast_hash": "acd7439dd5883ea9d1bd91b037fbbe61",
+    "semantic_hash": "acd7439dd5883ea9d1bd91b037fbbe61"
+  },
+  "E:\\busness\\bediine\\public\\images\\service_visas.png": {
+    "mtime": 1780679925.0831597,
+    "ast_hash": "4c84990ac981dd65fab19690d5912f95",
+    "semantic_hash": "4c84990ac981dd65fab19690d5912f95"
+  },
+  "E:\\busness\\bediine\\public\\images\\singapore_skyline_1779539502293.png": {
+    "mtime": 1780152472.0223153,
+    "ast_hash": "e5a9f24b7cfd10349f33be1bba28111c",
+    "semantic_hash": "e5a9f24b7cfd10349f33be1bba28111c"
+  },
+  "E:\\busness\\bediine\\public\\images\\sri_lanka.png": {
+    "mtime": 1780681921.0776043,
+    "ast_hash": "5e6c6247c35213e3af6fdb97bf0b516b",
+    "semantic_hash": "5e6c6247c35213e3af6fdb97bf0b516b"
+  },
+  "E:\\busness\\bediine\\public\\images\\sundarbans_boat_review.png": {
+    "mtime": 1782326700.76533,
+    "ast_hash": "3dcc7effcd31edc965fc478f5d551c09",
+    "semantic_hash": "3dcc7effcd31edc965fc478f5d551c09"
+  },
+  "E:\\busness\\bediine\\public\\images\\sundarbans_forest_card.png": {
+    "mtime": 1781714045.682669,
+    "ast_hash": "49b3aefd30d2666d608d2d8f6260b0fe",
+    "semantic_hash": "49b3aefd30d2666d608d2d8f6260b0fe"
+  },
+  "E:\\busness\\bediine\\public\\images\\sundarbans_mangrove_1779521789593.png": {
+    "mtime": 1780144604.1430674,
+    "ast_hash": "784ff32a0a2b6092372fc10df72f3e22",
+    "semantic_hash": "784ff32a0a2b6092372fc10df72f3e22"
+  },
+  "E:\\busness\\bediine\\public\\images\\sundarbans_mangrove_premium.png": {
+    "mtime": 1780212459.213657,
+    "ast_hash": "c01e6102a84bda93c79d3144ca1d75fa",
+    "semantic_hash": "c01e6102a84bda93c79d3144ca1d75fa"
+  },
+  "E:\\busness\\bediine\\public\\images\\sunderbans_forest.png": {
+    "mtime": 1781703691.574446,
+    "ast_hash": "6d7f4d4e7ab7b0ed0a7783368a5b6e31",
+    "semantic_hash": "6d7f4d4e7ab7b0ed0a7783368a5b6e31"
+  },
+  "E:\\busness\\bediine\\public\\images\\thailand.png": {
+    "mtime": 1780681900.2687514,
+    "ast_hash": "4bb2041b614f66855909d2a416baf3f8",
+    "semantic_hash": "4bb2041b614f66855909d2a416baf3f8"
+  },
+  "E:\\busness\\bediine\\public\\images\\transparency_audit.png": {
+    "mtime": 1780161409.762446,
+    "ast_hash": "10425136d20c9caf1c25180ee7b86b57",
+    "semantic_hash": "10425136d20c9caf1c25180ee7b86b57"
+  },
+  "E:\\busness\\bediine\\public\\images\\transparency_rng.png": {
+    "mtime": 1780161394.2926972,
+    "ast_hash": "805c84559070afd22e57bc47480d6d4b",
+    "semantic_hash": "805c84559070afd22e57bc47480d6d4b"
+  },
+  "E:\\busness\\bediine\\public\\images\\transparency_verification.png": {
+    "mtime": 1780161378.1232903,
+    "ast_hash": "cee57597164dc48f541a02783325d0f0",
+    "semantic_hash": "cee57597164dc48f541a02783325d0f0"
+  },
+  "E:\\busness\\bediine\\public\\images\\transparency_winner.png": {
+    "mtime": 1780161428.4178617,
+    "ast_hash": "620a2164ba080f8dd92fc0cf362daf9d",
+    "semantic_hash": "620a2164ba080f8dd92fc0cf362daf9d"
+  },
+  "E:\\busness\\bediine\\public\\images\\travel_login_bg.jpg": {
+    "mtime": 1781416484.4046538,
+    "ast_hash": "b7390a6b7b5181c20f451a2a4f075b46",
+    "semantic_hash": "b7390a6b7b5181c20f451a2a4f075b46"
+  },
+  "E:\\busness\\bediine\\public\\images\\travel_login_bg.png": {
+    "mtime": 1781264040.8664815,
+    "ast_hash": "1cbde42ae65e3e93547c3dbc360ed608",
+    "semantic_hash": "1cbde42ae65e3e93547c3dbc360ed608"
+  },
+  "E:\\busness\\bediine\\public\\images\\tropical_coast.png": {
+    "mtime": 1780145455.4997213,
+    "ast_hash": "2662a31dfc76af4fee2b7425572e425b",
+    "semantic_hash": "2662a31dfc76af4fee2b7425572e425b"
+  },
+  "E:\\busness\\bediine\\public\\images\\turkey.png": {
+    "mtime": 1780682031.3262012,
+    "ast_hash": "0fbbe9b6405e7bb951d71f64777a0ff5",
+    "semantic_hash": "0fbbe9b6405e7bb951d71f64777a0ff5"
+  },
+  "E:\\busness\\bediine\\public\\images\\vietnam.png": {
+    "mtime": 1780681995.6167905,
+    "ast_hash": "48132cff2d5074361ee30b744600ed0a",
+    "semantic_hash": "48132cff2d5074361ee30b744600ed0a"
+  },
+  "E:\\busness\\bediine\\public\\images\\vizag_araku.png": {
+    "mtime": 1780681882.6300268,
+    "ast_hash": "e3509d952abe9d21c03148fdc56f745a",
+    "semantic_hash": "e3509d952abe9d21c03148fdc56f745a"
+  },
+  "E:\\busness\\bediine\\public\\images\\waterfall_bg.png": {
+    "mtime": 1780195191.3241732,
+    "ast_hash": "9bfb16fc4bf958d76052c59d98afd75c",
+    "semantic_hash": "9bfb16fc4bf958d76052c59d98afd75c"
+  },
+  "E:\\busness\\bediine\\public\\images\\winner_ananya_das.png": {
+    "mtime": 1780145475.6206398,
+    "ast_hash": "8ebc4e0c06da14e072f6810924adabda",
+    "semantic_hash": "8ebc4e0c06da14e072f6810924adabda"
+  },
+  "E:\\busness\\bediine\\public\\images\\winner_arjun_roy.png": {
+    "mtime": 1780145529.1958628,
+    "ast_hash": "43faad9911b398bf5e940b45b65c8c7d",
+    "semantic_hash": "43faad9911b398bf5e940b45b65c8c7d"
+  },
+  "E:\\busness\\bediine\\public\\images\\winner_meera_bose.png": {
+    "mtime": 1780145544.5035937,
+    "ast_hash": "ea11830616db98d08286d49dd62ade0a",
+    "semantic_hash": "ea11830616db98d08286d49dd62ade0a"
+  },
+  "E:\\busness\\bediine\\public\\images\\winner_priya_sen.png": {
+    "mtime": 1780145509.0246258,
+    "ast_hash": "98d50a90971337146362b41a915d722d",
+    "semantic_hash": "98d50a90971337146362b41a915d722d"
+  },
+  "E:\\busness\\bediine\\public\\images\\winner_rajesh_kumar.png": {
+    "mtime": 1780145492.5881543,
+    "ast_hash": "ca86cd36ca6826d3be80531c3565d37a",
+    "semantic_hash": "ca86cd36ca6826d3be80531c3565d37a"
+  },
+  "E:\\busness\\bediine\\public\\images\\winner_subhadeep_ghosh.png": {
+    "mtime": 1780145562.011076,
+    "ast_hash": "b31e58cce5d720ccddfdc6940538ce9d",
+    "semantic_hash": "b31e58cce5d720ccddfdc6940538ce9d"
+  },
+  "E:\\busness\\bediine\\public\\images\\Beduine_Logo_Last_Clean_Sound_Adjusted.mp4": {
+    "mtime": 1780920721.5565221,
+    "ast_hash": "7c03b53c5b52d8dd8e9803b2070bc402",
+    "semantic_hash": "7c03b53c5b52d8dd8e9803b2070bc402"
+  },
+  "E:\\busness\\bediine\\public\\images\\hero_bg_video.mp4": {
+    "mtime": 1780930138.6621196,
+    "ast_hash": "db6cf1a8e85b19e47bab04e57b4f3ae7",
+    "semantic_hash": "db6cf1a8e85b19e47bab04e57b4f3ae7"
+  },
+  "E:\\busness\\bediine\\public\\images\\landing_background_video.mp4": {
+    "mtime": 1782316427.954817,
+    "ast_hash": "0b5d95c3c1d45a306e7c136b3403e20c",
+    "semantic_hash": "0b5d95c3c1d45a306e7c136b3403e20c"
+  },
+  "E:\\busness\\bediine\\src\\utils\\creditHelpers.ts": {
+    "mtime": 1782412885.5638893,
+    "ast_hash": "5fc16cec0af007d26a235e3497657e4f",
+    "semantic_hash": "5fc16cec0af007d26a235e3497657e4f"
+  },
+  "E:\\busness\\bediine\\tests\\utils\\creditHelpers.test.ts": {
+    "mtime": 1782413012.8995478,
+    "ast_hash": "273b27d1f579c11f9951886d63c41cf5",
+    "semantic_hash": "273b27d1f579c11f9951886d63c41cf5"
+  }
+}

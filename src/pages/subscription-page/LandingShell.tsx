@@ -447,7 +447,7 @@ export function Footer({ setView }: FooterProps) {
 
   const legalLinks = [
     { label: 'Privacy Policy', slug: 'privacy-policy' },
-    { label: 'Terms & Conditions', slug: 'terms-and-conditions' },
+    { label: 'Terms & Conditions', slug: 'terms' },
     { label: 'Refund Policy', slug: 'refund-policy' },
     { label: 'Cancellation Policy', slug: 'cancellation-policy' },
     { label: 'Membership Rules', slug: 'membership-rules' },

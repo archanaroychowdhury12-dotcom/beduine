@@ -1,6 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { Crown } from 'lucide-react';
+import { Crown, CheckCircle2, CreditCard } from 'lucide-react';
+import { demoWalletService } from '../../services/demoWalletService';
+import { supabase } from '../../utils/supabaseClient';
+import { getPlanPrice, getPlanName } from '../../data/siteData';
 import { ScrollRoundedSection, ParticleButton } from './SubscriptionHelpers';
 import { SubscriptionHero, TrustStrip } from './SubscriptionHero';
 import { AboutUs, Journey, HowItWorks, Transparency } from './SubscriptionBenefits';
@@ -335,7 +338,201 @@ export function CustomCursor() {
 }
 
 /* ---------- LandingContent Component ---------- */
-export function LandingContent({ onSelectPlan, setView }: { onSelectPlan: (planName: string) => void; setView: (v: any) => void }) {
+export function LandingContent({ 
+  onSelectPlan, 
+  setView, 
+  currentUser, 
+  setCurrentUser: _setCurrentUser 
+}: { 
+  onSelectPlan: (planName: string) => void; 
+  setView: (v: any) => void; 
+  currentUser: any; 
+  setCurrentUser: (user: any) => void;
+}) {
+  const isDemoWalletEnabled = import.meta.env.VITE_ENABLE_DEMO_WALLET === 'true';
+  const isDemoOrAdminUser = currentUser?.is_demo_user || 
+                            currentUser?.email?.includes('demo') || 
+                            currentUser?.email?.includes('test') || 
+                            currentUser?.email?.includes('admin') ||
+                            currentUser?.email?.includes('arunasish');
+  const showDemoWallet = isDemoWalletEnabled && (isDemoOrAdminUser || !currentUser);
+
+  // Selected plan state for testing checkout on this page
+  const [selectedPlanId] = useState<string>('Silver');
+  const [paymentMethod, setPaymentMethod] = useState<'real_payment' | 'demo_wallet'>(
+    isDemoWalletEnabled ? 'demo_wallet' : 'real_payment'
+  );
+  const [checkoutLoading, setCheckoutLoading] = useState(false);
+  const [checkoutSuccess, setCheckoutSuccess] = useState<any | null>(null);
+
+  // Sync demo wallet states
+  const [demoWalletBalance, setDemoWalletBalance] = useState<number>(() => currentUser?.demo_wallet_balance ?? 0);
+
+  useEffect(() => {
+    setDemoWalletBalance(currentUser?.demo_wallet_balance ?? 0);
+  }, [currentUser]);
+
+  useEffect(() => {
+    const handleBalanceChanged = (e: CustomEvent) => {
+      setDemoWalletBalance(e.detail.balance);
+    };
+    window.addEventListener('demoBalanceChanged', handleBalanceChanged as EventListener);
+    return () => {
+      window.removeEventListener('demoBalanceChanged', handleBalanceChanged as EventListener);
+    };
+  }, []);
+
+  const handleCheckout = async () => {
+    if (!currentUser) {
+      alert("Please login or register to test checkout flow.");
+      setView('login');
+      return;
+    }
+    setCheckoutLoading(true);
+    try {
+      const res = await demoWalletService.checkoutSubscription(currentUser.id, selectedPlanId, paymentMethod);
+      setCheckoutLoading(false);
+      if (res.success) {
+        setCheckoutSuccess(res);
+        if (res.user) {
+          _setCurrentUser(res.user);
+          await supabase.auth.updateUser({
+            data: res.user.user_metadata
+          });
+        }
+        alert(res.message || "Demo payment successful. Subscription activated for testing.");
+      } else {
+        alert(res.message);
+      }
+    } catch (e: any) {
+      setCheckoutLoading(false);
+      alert(e.message || 'Checkout failed');
+    }
+  };
+
+  const isSufficient = demoWalletBalance >= (getPlanPrice(selectedPlanId) || 0);
+
+  const checkoutPanel = (
+    checkoutSuccess ? (
+      <div className="bg-slate-900/90 border border-slate-800 shadow-xl rounded-[28px] p-6 text-center space-y-5 text-white backdrop-blur-md">
+        <div className="w-12 h-12 rounded-full bg-emerald-500/10 text-emerald-400 flex items-center justify-center mx-auto shadow-md border border-emerald-500/20">
+          <CheckCircle2 className="w-6 h-6" />
+        </div>
+        <div>
+          <h2 className="text-base font-black text-white">Demo Payment Successful</h2>
+          <p className="text-[10px] text-slate-350 mt-1.5 font-bold">Demo payment successful. Subscription activated for testing.</p>
+        </div>
+        <div className="p-3.5 rounded-xl bg-white/5 border border-white/10 text-left space-y-1.5 text-[10px] font-mono text-slate-300">
+          <div>Plan: <strong className="text-white">{getPlanName(selectedPlanId)}</strong></div>
+          <div>Price: <strong className="text-white">₹{getPlanPrice(selectedPlanId)}</strong></div>
+          <div>Payment: <strong className="text-emerald-400 uppercase">{paymentMethod.replace('_', ' ')}</strong></div>
+        </div>
+        <button
+          onClick={() => {
+            setCheckoutSuccess(null);
+            setView('dashboard');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          className="px-4 py-2 w-full bg-emerald-500 hover:bg-emerald-600 text-slate-900 font-bold text-xs uppercase tracking-wider rounded-xl transition-all shadow-md cursor-pointer border-none"
+        >
+          Go to Dashboard
+        </button>
+      </div>
+    ) : (
+      <div className="bg-slate-900/90 border border-slate-800 shadow-xl rounded-[28px] p-6 text-white space-y-4 text-left backdrop-blur-md">
+        <div>
+          <h3 className="text-sm font-bold text-white uppercase tracking-wide flex items-center gap-2">
+            <CreditCard className="w-5 h-5 text-indigo-400" /> Subscription Checkout
+          </h3>
+          <p className="text-[10px] text-slate-400 mt-0.5">Test payment activation for the selected plan</p>
+        </div>
+
+        <div className="p-3.5 rounded-xl bg-white/5 border border-white/10 space-y-2 text-[10px]">
+          <div className="flex justify-between font-bold text-slate-300">
+            <span>Selected Plan Price:</span>
+            <span className="text-[#FF6B6B] uppercase font-black">{getPlanName(selectedPlanId) || selectedPlanId}</span>
+          </div>
+          <div className="flex justify-between font-bold text-slate-350">
+            <span>Required Amount:</span>
+            <span className="text-white font-extrabold">₹{getPlanPrice(selectedPlanId)}</span>
+          </div>
+          <div className="flex justify-between font-bold text-slate-350 border-t border-white/10 pt-2">
+            <span>Current Demo Wallet Balance:</span>
+            <span className={isSufficient ? 'text-emerald-400 font-extrabold' : 'text-red-400 font-extrabold'}>₹{demoWalletBalance}</span>
+          </div>
+          <div className="pt-1.5 text-center">
+            {isSufficient ? (
+              <span className="inline-block px-2.5 py-0.5 rounded-full text-[8.5px] font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 uppercase tracking-wide">
+                ✓ Balance Sufficient
+              </span>
+            ) : (
+              <span className="inline-block px-2 py-1 rounded-lg text-[8.5px] font-bold text-red-400 bg-red-500/10 border border-red-500/20 uppercase tracking-wide leading-relaxed">
+                ✗ Insufficient demo balance. Please add demo balance to test this subscription.
+              </span>
+            )}
+          </div>
+        </div>
+
+        {/* Payment Method Selector */}
+        <div className="space-y-2.5">
+          <span className="block text-[9px] uppercase font-mono text-slate-400 tracking-wider font-bold">Choose Payment Method</span>
+          <div className="grid grid-cols-1 gap-2">
+            <label
+              className={`flex items-center gap-2.5 p-2.5 rounded-lg border-2 transition-all cursor-pointer bg-white/5 ${
+                paymentMethod === 'real_payment' ? 'border-[#FF6B6B] bg-orange-500/5' : 'border-white/10 hover:border-white/20'
+              }`}
+            >
+              <input
+                type="radio"
+                name="payment-landing"
+                checked={paymentMethod === 'real_payment'}
+                onChange={() => setPaymentMethod('real_payment')}
+                className="accent-[#FF6B6B]"
+              />
+              <div>
+                <span className="text-[10px] font-bold text-white block">Real Payment</span>
+                <span className="text-[8.5px] text-slate-400 block mt-0.5">Simulate payment gateway purchase</span>
+              </div>
+            </label>
+
+            <label
+              className={`flex items-center gap-2.5 p-2.5 rounded-lg border-2 transition-all cursor-pointer bg-white/5 ${
+                paymentMethod === 'demo_wallet' ? 'border-[#00D4F5] bg-sky-500/5' : 'border-white/10 hover:border-white/20'
+              }`}
+            >
+              <input
+                type="radio"
+                name="payment-landing"
+                checked={paymentMethod === 'demo_wallet'}
+                onChange={() => setPaymentMethod('demo_wallet')}
+                className="accent-[#00D4F5]"
+              />
+              <div>
+                <span className="text-[10px] font-bold text-white block">Demo Wallet Payment</span>
+                <span className="text-[8.5px] text-slate-400 block mt-0.5">Deduct from ₹{demoWalletBalance} Test Balance</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        {/* Checkout Button */}
+        <button
+          onClick={handleCheckout}
+          disabled={checkoutLoading || (paymentMethod === 'demo_wallet' && !isSufficient)}
+          className={`w-full py-2.5 text-[10px] font-bold uppercase tracking-wider text-white rounded-full transition-all cursor-pointer shadow-lg border-none ${
+            paymentMethod === 'demo_wallet' && !isSufficient
+              ? 'bg-slate-800 text-slate-500 cursor-not-allowed shadow-none'
+              : paymentMethod === 'demo_wallet'
+                ? 'bg-indigo-650 hover:bg-indigo-700 shadow-indigo-500/25'
+                : 'bg-gradient-to-r from-[#FF6B6B] to-[#8B5CF6] hover:from-[#FF8E53] hover:to-[#8B5CF6] shadow-rose-500/25'
+          }`}
+        >
+          {checkoutLoading ? 'Processing Checkout...' : `Pay ₹${getPlanPrice(selectedPlanId)} & Activate`}
+        </button>
+      </div>
+    )
+  );
+
   return (
     <>
       <SubscriptionHero setView={setView} />
@@ -380,8 +577,37 @@ export function LandingContent({ onSelectPlan, setView }: { onSelectPlan: (planN
           <ScrollRoundedSection><AboutUs /></ScrollRoundedSection>
           <ScrollRoundedSection><Journey /></ScrollRoundedSection>
           <ScrollRoundedSection><HowItWorks /></ScrollRoundedSection>
-          <ScrollRoundedSection><Plans onSelectPlan={onSelectPlan} /></ScrollRoundedSection>
-          <ScrollRoundedSection><InternationalPlans onSelectPlan={onSelectPlan} /></ScrollRoundedSection>
+
+          {showDemoWallet ? (
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full space-y-12">
+              <ScrollRoundedSection>
+                <Plans 
+                  onSelectPlan={onSelectPlan} 
+                  selectedPlanId={selectedPlanId} 
+                  showDemoWallet={showDemoWallet} 
+                />
+              </ScrollRoundedSection>
+              <ScrollRoundedSection>
+                <InternationalPlans 
+                  onSelectPlan={onSelectPlan} 
+                  selectedPlanId={selectedPlanId} 
+                  showDemoWallet={showDemoWallet} 
+                />
+              </ScrollRoundedSection>
+
+              {selectedPlanId && (
+                <div className="max-w-md mx-auto pt-4 pb-8">
+                  {checkoutPanel}
+                </div>
+              )}
+            </div>
+          ) : (
+            <>
+              <ScrollRoundedSection><Plans onSelectPlan={onSelectPlan} /></ScrollRoundedSection>
+              <ScrollRoundedSection><InternationalPlans onSelectPlan={onSelectPlan} /></ScrollRoundedSection>
+            </>
+          )}
+
           <ScrollRoundedSection><TravelRewardSystem /></ScrollRoundedSection>
           <ScrollRoundedSection><DiscountCreditsSection /></ScrollRoundedSection>
           <ScrollRoundedSection><NonWinnerGuarantee /></ScrollRoundedSection>

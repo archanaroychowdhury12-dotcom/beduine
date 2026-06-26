@@ -7,33 +7,26 @@ import {
   ChevronRight, User, Bell, ChevronLeft,
   LayoutDashboard, ShieldCheck, Tag, Route, Share2, Phone,
   MessageCircle, Trash2, Copy, FileText, CheckCircle2, Clock,
-  AlertTriangle, Lock, Unlock, RefreshCw, UserPlus, Download, Award
+  AlertTriangle, Lock, Unlock, RefreshCw, UserPlus, Download
 } from 'lucide-react';
 import { customTourService } from './services/customTourService';
 import { CustomTourForm } from './pages/main-website-tour-page/custom-tour/CustomTourForm';
 import { CustomTourDetailPanel } from './pages/main-website-tour-page/custom-tour/CustomTourDetailPanel';
-import { CustomTourRequest } from './types';
+import { CustomTourRequest, CreditLedgerEntry } from './types';
 import { supabase } from './utils/supabaseClient';
-import { demoWalletService, DemoTransaction } from './services/demoWalletService';
+import { demoWalletService } from './services/demoWalletService';
+import { getPlanPrice, getPlanCredits, getPlanCreditValue } from './data/siteData';
+import { getAvailableCredits } from './utils/creditHelpers';
 
 interface DashboardPageProps {
   user: any;
   onLogout: () => void;
   onBookPaidTour?: () => void;
   onBack?: () => void;
+  onGoToAdmin?: () => void;
 }
 
-// Immutable Credit Ledger Entry interface
-interface CreditLedgerEntry {
-  id: string;
-  date: string;
-  type: 'issued' | 'reserved' | 'redeemed' | 'reversed' | 'expired' | 'admin_adjustment';
-  creditType: 'lucky_draw' | 'discount';
-  amount: number;
-  reason: string;
-  bookingRef?: string;
-  adminRef?: string;
-}
+// CreditLedgerEntry is now imported from './types'
 
 const DEFAULT_DASHBOARD_BG = '/images/chatgpt_dashboard_bg.png';
 const DASHBOARD_BG_STORAGE_KEY = 'beduine_dashboard_bg_v2';
@@ -287,12 +280,12 @@ const generateRandomToken = () => {
   return token;
 };
 
-export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack }: DashboardPageProps) {
-  // Navigation states - supports 11 tabs as requested, plus admin control
+export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack, onGoToAdmin }: DashboardPageProps) {
+  // Navigation states - supports 11 tabs as requested
   const [activeTab, setActiveTab] = useState<
     'overview' | 'subscription' | 'weekly-participation' | 'credits' |
     'coupons' | 'bookings' | 'custom-tours' | 'referrals' |
-    'notifications' | 'support' | 'profile' | 'admin-panel'
+    'notifications' | 'support' | 'profile'
   >('overview');
 
   // Profile states
@@ -329,24 +322,20 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack }
 
   // Subscription states
   const [activePlan, setActivePlan] = useState<string | null>(() => user?.planName || null);
-  const [activePlanPrice, setActivePlanPrice] = useState<string | null>(() => user?.planPrice || null);
+  const [_activePlanPrice, setActivePlanPrice] = useState<string | null>(() => user?.planPrice || null);
   const [activePlanType, setActivePlanType] = useState<string | null>(() => user?.planType || null);
-  const [subscriptionStatus, setSubscriptionStatus] = useState<string>(() => user?.subscriptionStatus || 'inactive');
-  const [realWalletBalance, setRealWalletBalance] = useState<number>(() => user?.real_wallet_balance ?? 0);
+  const [_subscriptionStatus, setSubscriptionStatus] = useState<string>(() => user?.subscriptionStatus || 'inactive');
+  const [_realWalletBalance, setRealWalletBalance] = useState<number>(() => user?.real_wallet_balance ?? 0);
   const [demoWalletBalance, setDemoWalletBalance] = useState<number>(() => user?.demo_wallet_balance ?? 0);
-  const [demoTransactions, setDemoTransactions] = useState<any[]>(() => user?.demo_transactions || []);
+  const [_demoTransactions, setDemoTransactions] = useState<any[]>(() => user?.demo_transactions || []);
 
   // Checkout flow states
   const [selectedPlanId, setSelectedPlanId] = useState<string>('Silver');
-  const [paymentMethod, setPaymentMethod] = useState<'real_payment' | 'demo_wallet'>('real_payment');
+  const [paymentMethod, setPaymentMethod] = useState<'real_payment' | 'demo_wallet'>(
+    isDemoWalletEnabled ? 'demo_wallet' : 'real_payment'
+  );
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const [checkoutSuccess, setCheckoutSuccess] = useState<any | null>(null);
-
-  // Admin panel state
-  const [adminUsers, setAdminUsers] = useState<any[]>([]);
-  const [selectedAdminUser, setSelectedAdminUser] = useState<any | null>(null);
-  const [adminCustomAmount, setAdminCustomAmount] = useState<string>('');
-  const [adminFilter, setAdminFilter] = useState<'all' | 'real' | 'demo'>('all');
 
   // Sync React state if user prop changes
   useEffect(() => {
@@ -358,6 +347,16 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack }
     setDemoWalletBalance(user?.demo_wallet_balance ?? 0);
     setDemoTransactions(user?.demo_transactions || []);
   }, [user]);
+
+  useEffect(() => {
+    const handleBalanceChanged = (e: CustomEvent) => {
+      setDemoWalletBalance(e.detail.balance);
+    };
+    window.addEventListener('demoBalanceChanged', handleBalanceChanged as EventListener);
+    return () => {
+      window.removeEventListener('demoBalanceChanged', handleBalanceChanged as EventListener);
+    };
+  }, []);
 
   // Derived plan states
   const planName = activePlan;
@@ -372,7 +371,8 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack }
     setLedger(user?.ledger || []);
   }, [user?.ledger]);
 
-  const handleAddDemoBalance = async (amount: number) => {
+  /*
+  const _handleAddDemoBalance = async (amount: number) => {
     if (amount <= 0) return;
     const res = await demoWalletService.addDemoBalance(user.id, amount);
     if (res.success) {
@@ -391,6 +391,7 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack }
       alert(res.message);
     }
   };
+  */
 
   const handleCheckout = async () => {
     setCheckoutLoading(true);
@@ -419,125 +420,6 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack }
       setCheckoutLoading(false);
       alert(e.message || 'Checkout failed');
     }
-  };
-
-  // Sync users list when admin tab opens
-  useEffect(() => {
-    if (activeTab === 'admin-panel') {
-      const auth = (supabase.auth as any);
-      if (auth?.getUsersList) {
-        setAdminUsers(auth.getUsersList());
-      }
-    }
-  }, [activeTab]);
-
-  const handleResetSelectedDemoUser = async (userToReset: any) => {
-    const res = await demoWalletService.resetDemoAccount(userToReset.id);
-    if (res.success) {
-      const auth = (supabase.auth as any);
-      const updatedList = auth.getUsersList();
-      setAdminUsers(updatedList);
-      if (selectedAdminUser && selectedAdminUser.id === userToReset.id) {
-        setSelectedAdminUser(updatedList.find((u: any) => u.id === userToReset.id) || null);
-      }
-      alert(`Demo user ${userToReset.email} reset successfully.`);
-    } else {
-      alert(res.message);
-    }
-  };
-
-  const handleResetAllDemoUsers = async () => {
-    if (!window.confirm("Are you sure you want to reset all user accounts to a zero-state?")) return;
-    const auth = (supabase.auth as any);
-    auth.resetAllAccounts();
-    const updatedList = auth.getUsersList();
-    setAdminUsers(updatedList);
-    setSelectedAdminUser(null);
-    alert("All user accounts have been reset to ₹0 balance, null plans, and zero-credits successfully.");
-  };
-
-  const handleAdminAddBalance = async () => {
-    if (!selectedAdminUser) return;
-    const amt = parseFloat(adminCustomAmount);
-    if (isNaN(amt) || amt <= 0) {
-      alert("Please enter a valid amount.");
-      return;
-    }
-    const res = await demoWalletService.addDemoBalance(selectedAdminUser.id, amt);
-    if (res.success) {
-      const auth = (supabase.auth as any);
-      const updatedList = auth.getUsersList();
-      setAdminUsers(updatedList);
-      setSelectedAdminUser(updatedList.find((u: any) => u.id === selectedAdminUser.id) || null);
-      setAdminCustomAmount('');
-      alert(res.message);
-    } else {
-      alert(res.message);
-    }
-  };
-
-  const handleAdminRemoveBalance = async () => {
-    if (!selectedAdminUser) return;
-    const auth = (supabase.auth as any);
-    const users = auth.getUsersList();
-    const idx = users.findIndex((u: any) => u.id === selectedAdminUser.id);
-    if (idx === -1) return;
-    
-    const userToModify = users[idx];
-    const currentBalance = userToModify.user_metadata?.demo_wallet_balance ?? 0;
-    
-    const amt = parseFloat(adminCustomAmount);
-    let newBalance = 0;
-    let reason = "Removed demo balance by admin";
-    
-    if (!isNaN(amt) && amt > 0) {
-      newBalance = Math.max(0, currentBalance - amt);
-      reason = `Deducted test balance: -₹${amt} by admin`;
-    }
-    
-    const newTxn = {
-      id: `DEMO-TXN-${Math.floor(100000 + Math.random() * 900000)}`,
-      userId: selectedAdminUser.id,
-      amount: newBalance - currentBalance,
-      transaction_type: 'debit' as const,
-      wallet_type: 'demo' as const,
-      payment_type: 'demo_wallet' as const,
-      reason,
-      status: 'success' as const,
-      created_at: new Date().toISOString()
-    };
-    
-    const demoTransactions = userToModify.user_metadata?.demo_transactions || [];
-    demoTransactions.unshift(newTxn);
-    
-    userToModify.user_metadata = {
-      ...userToModify.user_metadata,
-      demo_wallet_balance: newBalance,
-      demo_transactions
-    };
-    
-    users[idx] = userToModify;
-    auth.saveUsersList(users);
-    
-    setAdminUsers(users);
-    setSelectedAdminUser(userToModify);
-    setAdminCustomAmount('');
-    alert(`Demo balance updated to ₹${newBalance} for ${userToModify.email}.`);
-  };
-
-  const getAllTransactions = () => {
-    const list: any[] = [];
-    adminUsers.forEach(u => {
-      const realTxns = u.user_metadata?.real_transactions || [];
-      const demoTxns = u.user_metadata?.demo_transactions || [];
-      realTxns.forEach((t: any) => {
-        list.push({ ...t, email: u.email, wallet_type: 'real' });
-      });
-      demoTxns.forEach((t: any) => {
-        list.push({ ...t, email: u.email, wallet_type: 'demo' });
-      });
-    });
-    return list.sort((a, b) => new Date(b.created_at || b.date).getTime() - new Date(a.created_at || a.date).getTime());
   };
 
   // Track if current week's participation activated manually by customer
@@ -694,7 +576,8 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack }
     setEditDob(profileDob);
   }, [profileName, profileEmail, profileMobile, profileAddress, profileCity, profileDob]);
 
-  const loadDemoBalance = () => {
+  /*
+  const _loadDemoBalance = () => {
     const newEntry: CreditLedgerEntry = {
       id: `TXN-DC-${Math.floor(100000 + Math.random() * 900000)}`,
       date: new Date().toLocaleDateString('en-US', {
@@ -707,18 +590,26 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack }
       type: 'issued',
       creditType: 'discount',
       amount: 10,
-      reason: 'Demo / testing balance loaded by user'
+      reason: 'Demo / testing balance loaded by user',
+      creditCategory: 'domestic',
+      creditValue: 500,
+      usableFor: 'domestic_only'
     };
     setLedger(prev => [...prev, newEntry]);
-    alert('₹5,000 Demo Balance has been added to your wallet! You now have 10 additional ₹500 discount vouchers.');
+    alert('₹5,000 Demo Balance has been added to your wallet! You now have 10 additional ₹500 domestic discount vouchers.');
   };
+  */
 
   // Credit calculation functions
-  const availableDiscountCredits = ledger
-    .filter(x => x.creditType === 'discount')
-    .reduce((sum, item) => sum + item.amount, 0);
+  const domesticDiscountCredits = getAvailableCredits(ledger, 'domestic');
+  const internationalDiscountCredits = getAvailableCredits(ledger, 'international');
 
-  const discountCreditBalance = availableDiscountCredits * 500;
+  const domesticDiscountValue = domesticDiscountCredits * 500;
+  const internationalDiscountValue = internationalDiscountCredits * 5000;
+
+  // Combined discount credit calculations (used in dashboard overview & credits tab)
+  const availableDiscountCredits = domesticDiscountCredits + internationalDiscountCredits;
+  const discountCreditBalance = domesticDiscountValue + internationalDiscountValue;
 
   const availableLuckyDrawCredits = ledger
     .filter(x => x.creditType === 'lucky_draw')
@@ -731,7 +622,10 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack }
     amount: number,
     reason: string,
     bookingRef?: string,
-    adminRef?: string
+    adminRef?: string,
+    creditCategory?: 'domestic' | 'international' | 'travel_reward',
+    creditValue?: number,
+    usableFor?: 'domestic_only' | 'international_only' | 'lucky_draw'
   ) => {
     const newEntry: CreditLedgerEntry = {
       id: `TXN-${creditType === 'lucky_draw' ? 'TRC' : 'DC'}-${Math.floor(100000 + Math.random() * 900000)}`,
@@ -747,7 +641,10 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack }
       amount,
       reason,
       bookingRef,
-      adminRef
+      adminRef,
+      creditCategory: creditCategory || 'domestic',
+      creditValue: creditValue ?? 500,
+      usableFor: usableFor || 'domestic_only'
     };
     setLedger(prev => [newEntry, ...prev]);
   };
@@ -1172,7 +1069,12 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack }
       'redeemed',
       'lucky_draw',
       -1,
-      'Weekly participation activated for WK-23 draw cycle'
+      'Weekly participation activated for WK-23 draw cycle',
+      undefined,
+      undefined,
+      'travel_reward',
+      1,
+      'lucky_draw'
     );
     // Log system notification
     const newNotif = {
@@ -1199,19 +1101,23 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack }
         'discount',
         1,
         'Discount credit reinstated on booking cancellation',
-        'BDN-PURI-901B'
+        'BDN-PURI-901B',
+        undefined,
+        'domestic',
+        500,
+        'domestic_only'
       );
       // Log system notification
       const newNotif = {
         id: Date.now(),
         type: 'billing',
         title: 'Booking Cancelled & Credit Reinstated',
-        message: '₹500 Discount Credit returned to your wallet. Transaction log created.',
+        message: '₹500 Domestic Discount Credit returned to your wallet. Transaction log created.',
         time: 'Just now',
         read: false
       };
       setNotifications([newNotif, ...notifications]);
-      alert('Booking cancelled. ₹500 Discount Credit has been reinstated.');
+      alert('Booking cancelled. ₹500 Domestic Discount Credit has been reinstated.');
     }
   };
 
@@ -1302,9 +1208,7 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack }
     { id: 'profile', label: 'Profile', icon: User },
   ];
 
-  if (showDemoWallet) {
-    sidebarItems.push({ id: 'admin-panel', label: 'Admin Control', icon: ShieldCheck });
-  }
+  // Admin Command Center is now rendered separately in the sidebar layout instead of a tab
 
   /* ==================== TAB RENDERERS ==================== */
 
@@ -1320,7 +1224,6 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack }
 
         {/* 9 overview grid status cards as requested */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          
           {/* Card 1: Active Plan */}
           <div className="bg-white border border-slate-100 shadow-sm rounded-2xl p-5 text-left relative overflow-hidden group hover:shadow-md transition-shadow">
             <div className="flex justify-between items-start mb-3">
@@ -1329,8 +1232,12 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack }
                 <Crown className="w-4.5 h-4.5 text-[#FF6B6B]" />
               </div>
             </div>
-            <div className="text-xl font-black text-slate-800 leading-tight uppercase">{planName}</div>
-            <div className="text-[10px] text-slate-400 font-bold uppercase mt-1 tracking-wider">{planType} Membership</div>
+            <div className="text-xl font-black text-slate-800 leading-tight uppercase">
+              {planName || "No active subscription yet."}
+            </div>
+            <div className="text-[10px] text-slate-400 font-bold uppercase mt-1 tracking-wider">
+              {planName ? `${planType} Membership` : "Inactive"}
+            </div>
           </div>
 
           {/* Card 2: Subscription Validity */}
@@ -1341,11 +1248,17 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack }
                 <Calendar className="w-4.5 h-4.5 text-emerald-500" />
               </div>
             </div>
-            <div className="text-[11px] font-bold text-slate-700 leading-normal">
-              <div>Start: <strong className="text-slate-900">June 20, 2026</strong></div>
-              <div className="mt-0.5">Expiry: <strong className="text-[#FF6B6B]">June 20, 2027</strong></div>
-            </div>
-            <div className="text-[9px] text-emerald-600 font-bold uppercase mt-1 tracking-wider">Annual Renewal</div>
+            {planName ? (
+              <>
+                <div className="text-[11px] font-bold text-slate-700 leading-normal">
+                  <div>Start: <strong className="text-slate-900">June 20, 2026</strong></div>
+                  <div className="mt-0.5">Expiry: <strong className="text-[#FF6B6B]">June 20, 2027</strong></div>
+                </div>
+                <div className="text-[9px] text-emerald-600 font-bold uppercase mt-1 tracking-wider">Annual Renewal</div>
+              </>
+            ) : (
+              <div className="text-sm font-bold text-slate-755 leading-tight mt-1">No active subscription yet.</div>
+            )}
           </div>
 
           {/* Card 3: Membership Status */}
@@ -1356,10 +1269,21 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack }
                 <Shield className="w-4.5 h-4.5 text-[#00D4F5]" />
               </div>
             </div>
-            <div className="text-lg font-black text-slate-800 flex items-center gap-1.5 mt-1">
-              <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" /> Verified Active
-            </div>
-            <div className="text-[9px] text-slate-400 font-bold uppercase tracking-wider mt-1.5 font-mono">ID: {memberId}</div>
+            {planName ? (
+              <>
+                <div className="text-lg font-black text-slate-800 flex items-center gap-1.5 mt-1">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" /> Verified Active
+                </div>
+                <div className="text-[9px] text-slate-400 font-bold uppercase tracking-wider mt-1.5 font-mono">ID: {memberId}</div>
+              </>
+            ) : (
+              <>
+                <div className="text-lg font-black text-slate-800 flex items-center gap-1.5 mt-1">
+                  Inactive
+                </div>
+                <div className="text-[9px] text-slate-400 font-bold uppercase tracking-wider mt-1.5 font-mono">ID: Inactive</div>
+              </>
+            )}
           </div>
 
           {/* Card 4: Weekly Participation Status */}
@@ -1370,7 +1294,9 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack }
                 <Sparkles className="w-4.5 h-4.5 text-purple-500" />
               </div>
             </div>
-            {isWeeklyActivated ? (
+            {!planName || availableLuckyDrawCredits === 0 ? (
+              <div className="text-sm font-bold text-slate-700 leading-tight mt-1">No Travel Reward Credit available.</div>
+            ) : isWeeklyActivated ? (
               <>
                 <div className="text-base font-black text-emerald-600 flex items-center gap-1.5 mt-1">
                   <CheckCircle2 className="w-4.5 h-4.5 text-emerald-500 shrink-0" /> WK-23 Locked
@@ -1404,10 +1330,14 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack }
                 <CreditCard className="w-4.5 h-4.5 text-indigo-500" />
               </div>
             </div>
-            <div className="text-xl font-black text-slate-800 leading-tight">₹{discountCreditBalance}</div>
-            <div className="text-[9.5px] text-indigo-500 font-bold mt-1 uppercase tracking-wider font-mono">
-              {availableDiscountCredits} x ₹500 Vouchers available
+            <div className="text-xl font-black text-slate-800 leading-tight">
+              {availableDiscountCredits > 0 ? `₹${discountCreditBalance.toLocaleString('en-IN')}` : "No Discount Credits available."}
             </div>
+            {availableDiscountCredits > 0 ? (
+              <div className="text-[9.5px] text-indigo-500 font-bold mt-1 uppercase tracking-wider font-mono">
+                {domesticDiscountCredits} Dom (₹500) & {internationalDiscountCredits} Intl (₹5,000) active
+              </div>
+            ) : null}
           </div>
 
           {/* Card 6: Pending Bookings */}
@@ -1517,87 +1447,6 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack }
     
     const currentPlanDetails = activePlan ? (plansInfo[activePlan] || { price: '₹499', period: 'Annual', maxSelectedBenefit: '₹3,000' }) : null;
 
-    const demoWalletCard = (
-      <div className="bg-slate-900 border border-slate-850 shadow-xl rounded-[28px] p-6 text-white space-y-4">
-        <div className="flex justify-between items-start">
-          <div>
-            <h3 className="text-sm font-bold text-white uppercase tracking-wide flex items-center gap-2">
-              <ShieldCheck className="w-5 h-5 text-[#00D4F5]" /> Demo Wallet
-            </h3>
-            <p className="text-xs text-slate-400 mt-0.5 font-bold">For testing subscription purchase flow only</p>
-          </div>
-        </div>
-
-        <div className="bg-gradient-to-r from-[#00b4d8] to-[#0077b6] rounded-[22px] p-6 text-center text-white shadow-md">
-          <span className="text-[10px] uppercase tracking-wider font-mono block text-white/80 font-bold">DEMO BALANCE (TEST ONLY)</span>
-          <span className="text-4xl font-black block mt-1 text-white">₹{demoWalletBalance} Test Balance</span>
-          <span className="text-[9.5px] bg-white/25 px-2.5 py-0.5 rounded-full mt-2 inline-block font-mono tracking-wide uppercase font-bold text-white/90">Not Real Money</span>
-        </div>
-
-        <div className="space-y-3">
-          <span className="block text-[10px] uppercase font-mono text-slate-400 tracking-wider font-bold">Top-up Preset Amount</span>
-          <div className="grid grid-cols-3 gap-2">
-            {[499, 799, 1499, 4999, 7999, 14999].map(amount => (
-              <button
-                key={amount}
-                onClick={() => handleAddDemoBalance(amount)}
-                className="py-1.5 bg-white/10 hover:bg-white/20 text-white font-bold text-[10px] rounded-lg transition-colors border-none cursor-pointer"
-              >
-                +₹{amount}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="pt-2 flex gap-2">
-          <input
-            type="number"
-            id="custom-demo-amount-input-sub"
-            placeholder="Custom Demo Amount"
-            className="px-3 py-1.5 rounded-lg bg-white/10 border border-white/20 text-white text-xs outline-none focus:border-[#00D4F5] transition-colors shrink min-w-0"
-          />
-          <button
-            onClick={() => {
-              const input = document.getElementById('custom-demo-amount-input-sub') as HTMLInputElement;
-              const val = parseFloat(input?.value || '0');
-              if (val > 0) {
-                handleAddDemoBalance(val);
-                if (input) input.value = '';
-              } else {
-                alert("Please enter a valid amount");
-              }
-            }}
-            className="px-3 py-1.5 bg-[#00D4F5] hover:bg-[#00B4D8] text-slate-900 font-bold text-xs rounded-lg transition-colors border-none cursor-pointer shrink-0"
-          >
-            Add Custom
-          </button>
-        </div>
-
-        {demoTransactions && demoTransactions.length > 0 && (
-          <div className="pt-3 border-t border-white/10 space-y-2 text-left">
-            <span className="block text-[9px] uppercase font-mono text-slate-400 tracking-wider font-bold">Demo Transaction Logs</span>
-            <div className="space-y-1.5 max-h-[140px] overflow-y-auto pr-1 scrollbar-thin">
-              {demoTransactions.map((tx: any) => (
-                <div key={tx.id || tx.date + tx.amount} className="flex justify-between items-center text-[10px] text-slate-300 bg-white/5 p-2 rounded-lg border border-white/5">
-                  <div className="text-left">
-                    <span className="font-bold text-white block">{tx.type}</span>
-                    <span className="text-[8.5px] text-slate-400">{tx.date}</span>
-                  </div>
-                  <span className={`font-mono font-bold ${tx.amount > 0 ? 'text-[#00D4F5]' : 'text-red-400'}`}>
-                    {tx.amount > 0 ? `+₹${tx.amount}` : `-₹${Math.abs(tx.amount)}`}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        <div className="p-2.5 bg-white/5 border border-white/10 rounded-xl text-[10px] text-slate-350 leading-relaxed font-medium">
-          Use this balance only for testing subscription flow. This is not real money.
-        </div>
-      </div>
-    );
-
     if (!activePlan) {
       if (checkoutSuccess) {
         const source = checkoutSuccess.user.user_metadata.subscription_source;
@@ -1620,7 +1469,7 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack }
             <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100 text-left space-y-2.5 text-xs font-mono text-slate-600">
               <div>Plan Name: <strong className="text-slate-850">{checkoutSuccess.user.user_metadata.planName}</strong></div>
               <div>Price Charged: <strong className="text-slate-850">{checkoutSuccess.user.user_metadata.planPrice}</strong></div>
-              <div>Credits Issued: <strong className="text-slate-850">{PLAN_CREDITS[selectedPlanId]} Vouchers (₹500 value each)</strong></div>
+              <div>Credits Issued: <strong className="text-slate-850">{getPlanCredits(selectedPlanId)} Vouchers (₹{getPlanCreditValue(selectedPlanId).toLocaleString('en-IN')} value each)</strong></div>
               <div>Payment Mode: <strong className="text-indigo-600 uppercase">{paymentMethod.replace('_', ' ')}</strong></div>
             </div>
 
@@ -1637,169 +1486,6 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack }
         );
       }
 
-      if (showDemoWallet) {
-        return (
-          <div className="space-y-6 text-left">
-            <div>
-              <span className="text-[10px] font-black uppercase tracking-widest text-[#FF6B6B] font-mono block">Join Beduine Membership</span>
-              <h1 className="text-slate-800 font-serif text-3xl font-black mt-1 leading-tight">Guaranteed Discount Credits &amp; Travel Draw</h1>
-            </div>
-
-            <div className="grid lg:grid-cols-3 gap-6 items-start">
-              <div className="lg:col-span-2 bg-white border border-slate-100 shadow-[0_8px_30px_rgba(16,35,63,0.03)] rounded-[28px] p-5 sm:p-7 space-y-6">
-                <div>
-                  <h2 className="text-base font-black flex items-center gap-2 text-slate-800 uppercase tracking-wide">
-                    <ShieldCheck className="w-5 h-5 text-[#FF6B6B]" /> Join Beduine Membership
-                  </h2>
-                  <p className="text-xs text-slate-400">Choose a travel subscription plan to start your journey with guaranteed discount credits and weekly travel draw entries.</p>
-                </div>
-
-                <div className="grid sm:grid-cols-2 gap-4">
-                  {/* Domestic Section */}
-                  <div className="space-y-3">
-                    <span className="block text-[10px] uppercase font-mono text-slate-400 tracking-wider font-bold">🇮🇳 Domestic Annual Plans</span>
-                    <div className="space-y-2.5">
-                      {[
-                        { id: 'Silver', name: 'Silver Domestic', price: '₹499', credits: 1 },
-                        { id: 'Gold', name: 'Gold Domestic', price: '₹799', credits: 2 },
-                        { id: 'Platinum', name: 'Platinum Domestic', price: '₹1,499', credits: 4 }
-                      ].map(p => (
-                        <label
-                          key={p.id}
-                          className={`flex items-center justify-between p-4 rounded-2xl border-2 transition-all cursor-pointer ${
-                            selectedPlanId === p.id 
-                              ? 'border-[#FF6B6B] bg-orange-50/20' 
-                              : 'border-slate-100 hover:border-slate-200 bg-white shadow-sm'
-                          }`}
-                        >
-                          <div className="flex items-center gap-3">
-                            <input
-                              type="radio"
-                              name="plan"
-                              checked={selectedPlanId === p.id}
-                              onChange={() => setSelectedPlanId(p.id)}
-                              className="accent-[#FF6B6B]"
-                            />
-                            <div>
-                              <span className="text-xs font-bold text-slate-800 block">{p.name}</span>
-                              <span className="text-[10px] text-slate-400 font-bold">{p.credits} Voucher{p.credits > 1 ? 's' : ''} issued</span>
-                            </div>
-                          </div>
-                          <span className="text-sm font-black text-[#FF6B6B]">{p.price}</span>
-                        </label>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* International Section */}
-                  <div className="space-y-3">
-                    <span className="block text-[10px] uppercase font-mono text-slate-400 tracking-wider font-bold">🌐 International Annual Plans</span>
-                    <div className="space-y-2.5">
-                      {[
-                        { id: 'Silver_Int', name: 'Silver International', price: '₹4,999', credits: 5 },
-                        { id: 'Gold_Int', name: 'Gold International', price: '₹7,999', credits: 8 },
-                        { id: 'Platinum_Int', name: 'Platinum International', price: '₹14,999', credits: 15 }
-                      ].map(p => (
-                        <label
-                          key={p.id}
-                          className={`flex items-center justify-between p-4 rounded-2xl border-2 transition-all cursor-pointer ${
-                            selectedPlanId === p.id 
-                              ? 'border-[#FF6B6B] bg-orange-50/20' 
-                              : 'border-slate-100 hover:border-slate-200 bg-white shadow-sm'
-                          }`}
-                        >
-                          <div className="flex items-center gap-3">
-                            <input
-                              type="radio"
-                              name="plan"
-                              checked={selectedPlanId === p.id}
-                              onChange={() => setSelectedPlanId(p.id)}
-                              className="accent-[#FF6B6B]"
-                            />
-                            <div>
-                              <span className="text-xs font-bold text-slate-800 block">{p.name}</span>
-                              <span className="text-[10px] text-slate-400 font-bold">{p.credits} Voucher{p.credits > 1 ? 's' : ''} issued</span>
-                            </div>
-                          </div>
-                          <span className="text-sm font-black text-[#FF6B6B]">{p.price}</span>
-                        </label>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Payment Method Selector */}
-                <div className="pt-4 border-t border-slate-150 space-y-3">
-                  <span className="block text-[10px] uppercase font-mono text-slate-400 tracking-wider font-bold">Choose Payment Method</span>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <label
-                      className={`flex items-center gap-3 p-4 rounded-2xl border-2 transition-all cursor-pointer bg-white shadow-sm ${
-                        paymentMethod === 'real_payment' ? 'border-[#FF6B6B] bg-orange-50/10' : 'border-slate-100 hover:border-slate-200'
-                      }`}
-                    >
-                      <input
-                        type="radio"
-                        name="payment"
-                        checked={paymentMethod === 'real_payment'}
-                        onChange={() => setPaymentMethod('real_payment')}
-                        className="accent-[#FF6B6B]"
-                      />
-                      <div>
-                        <span className="text-xs font-bold text-slate-800 block">Real Payment</span>
-                        <span className="text-[9.5px] text-slate-400 font-medium">Use credit card / UPI gateway</span>
-                      </div>
-                    </label>
-
-                    <label
-                      className={`flex items-center gap-3 p-4 rounded-2xl border-2 transition-all cursor-pointer bg-white shadow-sm ${
-                        paymentMethod === 'demo_wallet' ? 'border-indigo-650 bg-indigo-50/5' : 'border-slate-100 hover:border-slate-200'
-                      }`}
-                    >
-                      <input
-                        type="radio"
-                        name="payment"
-                        checked={paymentMethod === 'demo_wallet'}
-                        onChange={() => setPaymentMethod('demo_wallet')}
-                        className="accent-indigo-600"
-                      />
-                      <div>
-                        <span className="text-xs font-bold text-slate-800 block">Demo Wallet Payment</span>
-                        <span className="text-[9.5px] text-indigo-500 font-bold">Simulate using ₹{demoWalletBalance} Test Balance</span>
-                      </div>
-                    </label>
-                  </div>
-                </div>
-
-                {/* Checkout Action */}
-                <div className="pt-4 border-t border-slate-150 flex flex-col sm:flex-row justify-between items-center gap-4">
-                  <div className="text-left">
-                    <span className="text-[9.5px] uppercase font-mono text-slate-400 font-bold block">Selected Plan Total Due</span>
-                    <span className="text-2xl font-black text-slate-800">
-                      ₹{PLAN_PRICES[selectedPlanId]}
-                    </span>
-                  </div>
-
-                  <button
-                    onClick={handleCheckout}
-                    disabled={checkoutLoading}
-                    className={`px-8 py-3.5 text-xs font-bold uppercase tracking-wider text-white rounded-full transition-all cursor-pointer shadow-lg border-none ${
-                      paymentMethod === 'demo_wallet'
-                        ? 'bg-indigo-650 hover:bg-indigo-700 shadow-indigo-100'
-                        : 'bg-gradient-to-r from-[#FF6B6B] to-[#8B5CF6] hover:from-[#FF8E53] hover:to-[#8B5CF6] shadow-rose-200'
-                    }`}
-                  >
-                    {checkoutLoading ? 'Processing Checkout...' : `Pay ₹${PLAN_PRICES[selectedPlanId]} & Activate`}
-                  </button>
-                </div>
-              </div>
-
-              <div className="lg:col-span-1">
-                {demoWalletCard}
-              </div>
-            </div>
-          </div>
-        );
-      }
 
       return (
         <div className="bg-white border border-slate-100 shadow-[0_8px_30px_rgba(16,35,63,0.03)] rounded-[28px] p-5 sm:p-7 text-left space-y-6">
@@ -1852,9 +1538,9 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack }
               <span className="block text-[10px] uppercase font-mono text-slate-400 tracking-wider font-bold">🌐 International Annual Plans</span>
               <div className="space-y-2.5">
                 {[
-                  { id: 'Silver_Int', name: 'Silver International', price: '₹4,999', credits: 5 },
-                  { id: 'Gold_Int', name: 'Gold International', price: '₹7,999', credits: 8 },
-                  { id: 'Platinum_Int', name: 'Platinum International', price: '₹14,999', credits: 15 }
+                  { id: 'Silver_Int', name: 'Silver International', price: '₹4,999', credits: 1 },
+                  { id: 'Gold_Int', name: 'Gold International', price: '₹7,999', credits: 2 },
+                  { id: 'Platinum_Int', name: 'Platinum International', price: '₹14,999', credits: 4 }
                 ].map(p => (
                   <label
                     key={p.id}
@@ -1905,174 +1591,68 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack }
                   <span className="text-[9.5px] text-slate-400 font-medium">Use credit card / UPI gateway</span>
                 </div>
               </label>
+
+              {showDemoWallet && (
+                <label
+                  className={`flex items-center gap-3 p-4 rounded-2xl border-2 transition-all cursor-pointer bg-white shadow-sm ${
+                    paymentMethod === 'demo_wallet' ? 'border-[#00D4F5] bg-sky-500/5' : 'border-slate-100 hover:border-slate-200'
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    name="payment"
+                    checked={paymentMethod === 'demo_wallet'}
+                    onChange={() => setPaymentMethod('demo_wallet')}
+                    className="accent-[#00D4F5]"
+                  />
+                  <div>
+                    <span className="text-xs font-bold text-slate-800 block">Demo Wallet Payment</span>
+                    <span className="text-[9.5px] text-slate-400 font-medium">Deduct from ₹{demoWalletBalance.toLocaleString('en-IN')} Test Balance</span>
+                  </div>
+                </label>
+              )}
             </div>
           </div>
 
           {/* Checkout Action */}
-          <div className="pt-4 border-t border-slate-150 flex flex-col sm:flex-row justify-between items-center gap-4">
-            <div className="text-left">
-              <span className="text-[9.5px] uppercase font-mono text-slate-400 font-bold block">Selected Plan Total Due</span>
-              <span className="text-2xl font-black text-slate-800">
-                ₹{PLAN_PRICES[selectedPlanId]}
-              </span>
-            </div>
-
-            <button
-              onClick={handleCheckout}
-              disabled={checkoutLoading}
-              className="px-8 py-3.5 text-xs font-bold uppercase tracking-wider text-white rounded-full bg-gradient-to-r from-[#FF6B6B] to-[#8B5CF6] hover:from-[#FF8E53] hover:to-[#8B5CF6] shadow-lg shadow-rose-200 border-none transition-all cursor-pointer"
-            >
-              {checkoutLoading ? 'Processing Checkout...' : `Pay ₹${PLAN_PRICES[selectedPlanId]} & Activate`}
-            </button>
-          </div>
-        </div>
-      );
-    }
-
-    if (showDemoWallet) {
-      return (
-        <div className="space-y-6 text-left">
-          <div>
-            <span className="text-[10px] font-black uppercase tracking-widest text-[#FF6B6B] font-mono block">My Subscription Details</span>
-            <h1 className="text-slate-800 font-serif text-3xl font-black mt-1 leading-tight">Manage Membership &amp; Testing</h1>
-          </div>
-
-          <div className="grid lg:grid-cols-3 gap-6 items-start">
-            <div className="lg:col-span-2 bg-white border border-slate-100 shadow-[0_8px_30px_rgba(16,35,63,0.03)] rounded-[28px] p-5 sm:p-7 space-y-6">
-              <div className="flex justify-between items-center">
-                <div>
-                  <h2 className="text-base font-black flex items-center gap-2 text-slate-800 uppercase tracking-wide">
-                    <ShieldCheck className="w-5 h-5 text-[#FF6B6B]" /> My Subscription Details
-                  </h2>
-                  <p className="text-xs text-slate-400">Manage your Beduine membership plans and invoice downloads</p>
-                </div>
-                <span className="bg-emerald-500 text-white px-3.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider flex items-center gap-1">
-                  {user?.subscription_source === 'demo' ? 'Test Active' : 'Active'}
-                </span>
-              </div>
-
-              {/* Visual Premium Holographic Membership Card */}
-              <div className="bg-gradient-to-br from-[#0b130f] via-slate-900 to-[#1E3147] rounded-[24px] p-6 text-white relative overflow-hidden border border-white/5 shadow-lg group">
-                <div className="absolute top-0 right-0 w-48 h-full bg-gradient-to-l from-white/5 to-transparent skew-x-12 pointer-events-none" />
-                <div className="flex justify-between items-start">
-                  <div>
-                    <div className="flex items-center gap-2.5">
-                      <Crown className="w-5 h-5 text-gold-accent animate-pulse" />
-                      <span className="text-[10px] uppercase font-bold tracking-widest text-[#00D4F5] font-mono">
-                        {user?.subscription_source === 'demo' ? 'BEDUINE TEST MEMBER CARD' : 'BEDUINE MEMBER CARD'}
+          {(() => {
+            const isSufficient = demoWalletBalance >= (getPlanPrice(selectedPlanId) || 0);
+            return (
+              <div className="pt-4 border-t border-slate-150 flex flex-col sm:flex-row justify-between items-center gap-4">
+                <div className="text-left">
+                  <span className="text-[9.5px] uppercase font-mono text-slate-400 font-bold block">Selected Plan Total Due</span>
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-2xl font-black text-slate-800">
+                      ₹{getPlanPrice(selectedPlanId)}
+                    </span>
+                    {paymentMethod === 'demo_wallet' && (
+                      <span className={`text-[10px] font-bold ${isSufficient ? 'text-emerald-605' : 'text-red-505'}`}>
+                        ({isSufficient ? '✓ Balance Sufficient' : '✗ Insufficient Demo Balance'})
                       </span>
-                    </div>
-                    <div className="text-3xl font-black tracking-wide uppercase mt-4">
-                      {planName}
-                      {user?.subscription_source === 'demo' && <span className="text-xs text-amber-500 font-bold block normal-case font-sans tracking-normal mt-0.5">Demo Subscription</span>}
-                    </div>
-                    <div className="text-[11px] text-white/60 font-mono tracking-widest uppercase mt-0.5">{planType} Membership Tier</div>
-                  </div>
-                  <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center p-2.5">
-                    <img src="/images/bedune_logo_transparent.png" alt="Beduine" className="w-full h-full object-contain brightness-200" />
+                    )}
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4 mt-8 pt-4 border-t border-white/10 text-xs font-mono">
-                  <div>
-                    <span className="block text-[8px] text-white/40 uppercase tracking-wider">MEMBER ID</span>
-                    <span className="font-bold tracking-wider">{memberId}</span>
-                  </div>
-                  <div className="text-right">
-                    <span className="block text-[8px] text-white/40 uppercase tracking-wider">EXPIRY DATE</span>
-                    <span className="font-bold text-[#FF6B6B] tracking-wider">June 20, 2027</span>
-                  </div>
-                </div>
+                <button
+                  onClick={handleCheckout}
+                  disabled={checkoutLoading || (paymentMethod === 'demo_wallet' && !isSufficient)}
+                  className={`px-8 py-3.5 text-xs font-bold uppercase tracking-wider text-white rounded-full shadow-lg border-none transition-all cursor-pointer ${
+                    paymentMethod === 'demo_wallet' && !isSufficient
+                      ? 'bg-slate-200 text-slate-400 cursor-not-allowed shadow-none'
+                      : paymentMethod === 'demo_wallet'
+                        ? 'bg-indigo-600 hover:bg-indigo-700 shadow-indigo-200'
+                        : 'bg-gradient-to-r from-[#FF6B6B] to-[#8B5CF6] hover:from-[#FF8E53] hover:to-[#8B5CF6] shadow-rose-200'
+                  }`}
+                >
+                  {checkoutLoading ? 'Processing Checkout...' : `Pay ₹${getPlanPrice(selectedPlanId)} & Activate`}
+                </button>
               </div>
-
-              {/* Plan Specs Table */}
-              <div className="grid sm:grid-cols-3 gap-4 pt-4">
-                <div className="p-4 rounded-xl border border-slate-100 bg-slate-50/50">
-                  <span className="text-[9px] uppercase tracking-wider font-bold text-slate-400 font-mono">RECURRING PRICE</span>
-                  <span className="block text-lg font-black text-slate-800 mt-1">{currentPlanDetails ? currentPlanDetails.price : '₹0'} / {currentPlanDetails ? currentPlanDetails.period : 'Annual'}</span>
-                </div>
-                <div className="p-4 rounded-xl border border-slate-100 bg-slate-50/50">
-                  <span className="text-[9px] uppercase tracking-wider font-bold text-slate-400 font-mono">MAX TOUR BENEFITS</span>
-                  <span className="block text-lg font-black text-slate-800 mt-1">Up to {currentPlanDetails ? currentPlanDetails.maxSelectedBenefit : '₹0'}</span>
-                </div>
-                <div className="p-4 rounded-xl border border-slate-100 bg-slate-50/50">
-                  <span className="text-[9px] uppercase tracking-wider font-bold text-slate-400 font-mono">NEXT SELECTION DATE</span>
-                  <span className="block text-lg font-black text-slate-800 mt-1">Next Sunday</span>
-                </div>
-              </div>
-
-              {/* Benefits Checklist */}
-              <div className="pt-4 space-y-3">
-                <h3 className="text-xs font-bold text-slate-700 uppercase tracking-wider">Membership Benefits Checklist</h3>
-                <div className="grid sm:grid-cols-2 gap-3.5 text-xs text-slate-650 font-medium">
-                  <div className="flex items-center gap-2.5">
-                    <CheckCircle2 className="w-4.5 h-4.5 text-emerald-500" />
-                    <span>1 weekly selection entry included</span>
-                  </div>
-                  <div className="flex items-center gap-2.5">
-                    <CheckCircle2 className="w-4.5 h-4.5 text-emerald-500" />
-                    <span>{voucherCount} x ₹500 discount vouchers issued</span>
-                  </div>
-                  <div className="flex items-center gap-2.5">
-                    <CheckCircle2 className="w-4.5 h-4.5 text-emerald-500" />
-                    <span>Up to 10% off on all paid tour requests</span>
-                  </div>
-                  <div className="flex items-center gap-2.5">
-                    <CheckCircle2 className="w-4.5 h-4.5 text-emerald-500" />
-                    <span>Dedicated tour manager call assistance</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Billing Invoice history log */}
-              <div className="pt-6 border-t border-slate-100 space-y-4">
-                <h3 className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-2">
-                  <FileText className="w-4 h-4 text-slate-450" /> Billing Invoice Records
-                </h3>
-                <div className="overflow-x-auto">
-                  <table className="w-full text-left text-xs border-collapse">
-                    <thead>
-                      <tr className="border-b text-slate-400 font-bold uppercase tracking-wider">
-                        <th className="py-2.5">Date</th>
-                        <th className="py-2.5">Invoice ID</th>
-                        <th className="py-2.5">Plan Purchased</th>
-                        <th className="py-2.5">Amount</th>
-                        <th className="py-2.5">Status</th>
-                        <th className="py-2.5 text-right">Receipt</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-slate-100 text-slate-650 font-medium">
-                      <tr>
-                        <td className="py-3 font-bold">June 20, 2026</td>
-                        <td className="py-3 font-mono">BDN-INV-7812A</td>
-                        <td className="py-3 font-bold">{planName}</td>
-                        <td className="py-3 font-black text-slate-800">{currentPlanDetails ? currentPlanDetails.price : '₹0'}</td>
-                        <td className="py-3">
-                          <span className={`px-2.5 py-0.5 rounded-full text-[9px] font-bold border uppercase ${
-                            user?.subscription_source === 'demo' 
-                              ? 'bg-amber-50 text-amber-600 border border-amber-100'
-                              : 'bg-emerald-50 text-emerald-600 border border-emerald-100'
-                          }`}>
-                            {user?.subscription_source === 'demo' ? 'Demo Paid' : 'Paid'}
-                          </span>
-                        </td>
-                        <td className="py-3 text-right">
-                          <button className="text-[10px] font-bold text-[#00D4F5] hover:underline cursor-pointer border-none bg-transparent">Download PDF</button>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-
-            <div className="lg:col-span-1">
-              {demoWalletCard}
-            </div>
-          </div>
+            );
+          })()}
         </div>
       );
     }
+
 
     return (
       <div className="bg-white border border-slate-100 shadow-[0_8px_30px_rgba(16,35,63,0.03)] rounded-[28px] p-5 sm:p-7 text-left space-y-6">
@@ -2179,24 +1759,32 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack }
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 text-slate-650 font-medium">
-                <tr>
-                  <td className="py-3 font-bold">June 20, 2026</td>
-                  <td className="py-3 font-mono">BDN-INV-7812A</td>
-                  <td className="py-3 font-bold">{planName}</td>
-                  <td className="py-3 font-black text-slate-800">{currentPlanDetails ? currentPlanDetails.price : '₹0'}</td>
-                  <td className="py-3">
-                    <span className={`px-2.5 py-0.5 rounded-full text-[9px] font-bold border uppercase ${
-                      user?.subscription_source === 'demo' 
-                        ? 'bg-amber-50 text-amber-600 border border-amber-100'
-                        : 'bg-emerald-50 text-emerald-600 border border-emerald-100'
-                    }`}>
-                      {user?.subscription_source === 'demo' ? 'Demo Paid' : 'Paid'}
-                    </span>
-                  </td>
-                  <td className="py-3 text-right">
-                    <button className="text-[10px] font-bold text-[#00D4F5] hover:underline cursor-pointer border-none bg-transparent">Download PDF</button>
-                  </td>
-                </tr>
+                {planName ? (
+                  <tr>
+                    <td className="py-3 font-bold">June 20, 2026</td>
+                    <td className="py-3 font-mono">BDN-INV-7812A</td>
+                    <td className="py-3 font-bold">{planName}</td>
+                    <td className="py-3 font-black text-slate-800">{currentPlanDetails ? currentPlanDetails.price : '₹0'}</td>
+                    <td className="py-3">
+                      <span className={`px-2.5 py-0.5 rounded-full text-[9px] font-bold border uppercase ${
+                        user?.subscription_source === 'demo' 
+                          ? 'bg-amber-50 text-amber-600 border border-amber-100'
+                          : 'bg-emerald-50 text-emerald-600 border border-emerald-100'
+                      }`}>
+                        {user?.subscription_source === 'demo' ? 'Demo Paid' : 'Paid'}
+                      </span>
+                    </td>
+                    <td className="py-3 text-right">
+                      <button className="text-[10px] font-bold text-[#00D4F5] hover:underline cursor-pointer border-none bg-transparent">Download PDF</button>
+                    </td>
+                  </tr>
+                ) : (
+                  <tr>
+                    <td colSpan={6} className="py-6 text-center text-slate-400 font-bold">
+                      No subscription payment found.
+                    </td>
+                  </tr>
+                )}
               </tbody>
             </table>
           </div>
@@ -2267,7 +1855,11 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack }
           <div className="rounded-2xl border border-slate-150 p-5 bg-slate-50/50 flex flex-col justify-between text-left">
             <div>
               <span className="text-[9px] text-slate-400 uppercase font-mono tracking-wider block font-bold">WEEKLY TRAVEL REWARD TOKEN</span>
-              {isWeeklyActivated ? (
+              {availableLuckyDrawCredits === 0 ? (
+                <div className="text-sm font-bold text-slate-700 leading-tight mt-2">
+                  No Travel Reward Credit available.
+                </div>
+              ) : isWeeklyActivated ? (
                 <>
                   <span className="text-2xl font-black mt-1.5 block text-emerald-600 flex items-center gap-1">
                     <Check className="w-6 h-6 text-emerald-500" strokeWidth={3} /> WK-23 Activated
@@ -2276,7 +1868,7 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack }
                 </>
               ) : (
                 <>
-                  <span className="text-3xl font-black tracking-widest font-mono mt-1.5 block text-[#00D4F5]">{availableLuckyDrawCredits > 0 ? 'TRC-828253' : 'N/A'}</span>
+                  <span className="text-3xl font-black tracking-widest font-mono mt-1.5 block text-[#00D4F5]">TRC-828253</span>
                   <div className="mt-3.5 text-xs font-semibold text-slate-650 leading-relaxed">
                     You have <strong className="text-slate-800">1 TRC participation token</strong> available. You must manually activate it before Sunday 8:00 PM cut-off.
                   </div>
@@ -2893,11 +2485,11 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack }
     return (
       <div className="space-y-6 text-left">
         <div>
-          <span className="text-[10px] font-black uppercase tracking-widest text-[#FF6B6B] font-mono block">Billing &amp; Wallets</span>
-          <h1 className="text-slate-800 font-serif text-3xl font-black mt-1 leading-tight">My Wallet &amp; Discount Vouchers</h1>
+          <span className="text-[10px] font-black uppercase tracking-widest text-[#FF6B6B] font-mono block">Billing &amp; Credits</span>
+          <h1 className="text-slate-800 font-serif text-3xl font-black mt-1 leading-tight">My Discount Vouchers &amp; Credits</h1>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="max-w-xl">
           {/* Card 2: Discount Credits Wallet */}
           <div className="bg-white border border-slate-100 shadow-[0_8px_30px_rgba(16,35,63,0.03)] rounded-[28px] p-6 space-y-4">
             <div className="flex justify-between items-start">
@@ -2912,38 +2504,15 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack }
             <div className="bg-gradient-to-r from-red-400 to-[#FF8E53] rounded-[22px] p-6 text-center text-white shadow-md">
               <span className="text-[10px] uppercase tracking-wider font-mono block text-white/80 font-bold">AVAILABLE DISCOUNT VALUE</span>
               <span className="text-4xl font-black block mt-1 text-white">
-                {availableDiscountCredits > 0 ? `₹${discountCreditBalance}` : 'No Discount Credits available.'}
+                {availableDiscountCredits > 0 ? `₹${discountCreditBalance.toLocaleString('en-IN')}` : 'No Discount Credits available.'}
               </span>
               <span className="text-xs text-white/90 mt-1 block font-medium">
-                {availableDiscountCredits > 0 ? `${availableDiscountCredits} x ₹500 discount vouchers` : '0 vouchers active'}
+                {availableDiscountCredits > 0 ? `${domesticDiscountCredits} Domestic (₹500) & ${internationalDiscountCredits} International (₹5,000) active` : '0 vouchers active'}
               </span>
             </div>
 
             <div className="text-[11px] text-slate-500 font-medium">
               Source: <strong className="text-slate-700 capitalize">{activePlan ? `${user?.subscription_source || 'Real'} subscription` : 'No subscription active'}</strong>
-            </div>
-          </div>
-
-          {/* Card 3: Real Wallet & Payments */}
-          <div className="bg-white border border-slate-100 shadow-[0_8px_30px_rgba(16,35,63,0.03)] rounded-[28px] p-6 space-y-4">
-            <div className="flex justify-between items-start">
-              <div>
-                <h3 className="text-sm font-bold text-slate-800 uppercase tracking-wide flex items-center gap-2">
-                  <CreditCard className="w-5 h-5 text-indigo-500" /> Real Wallet &amp; Payments
-                </h3>
-                <p className="text-xs text-slate-400 mt-0.5">Your real billing account and wallet transactions</p>
-              </div>
-            </div>
-            <div className="p-5 rounded-2xl bg-slate-50 border border-slate-100 text-center">
-              <span className="text-[10px] uppercase font-mono tracking-wider text-slate-400 font-bold block">Available Real Balance</span>
-              <span className="text-3xl font-black text-slate-800 block mt-1">₹{realWalletBalance}</span>
-              <span className="text-xs text-slate-400 mt-1 block font-bold">Wallet balance: ₹0</span>
-            </div>
-            <div className="pt-2">
-              <span className="block text-[10px] uppercase font-mono text-slate-400 tracking-wider font-bold mb-2">Real Payment History</span>
-              <div className="text-center py-6 border border-dashed border-slate-200 rounded-xl text-xs text-slate-400 font-bold">
-                No real payments recorded.
-              </div>
             </div>
           </div>
         </div>
@@ -2957,28 +2526,40 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack }
             </div>
           ) : (
             <div className="grid sm:grid-cols-2 gap-4">
-              {Array.from({ length: availableDiscountCredits }).map((_, idx) => (
-                <div key={idx} className="rounded-2xl border-2 border-dashed border-slate-200 p-5 relative overflow-hidden bg-white shadow-sm hover:shadow-md transition-all duration-300">
-                  <div className="absolute -left-2 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-slate-50 border-r border-slate-200" />
-                  <div className="absolute -right-2 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-slate-50 border-l border-slate-200" />
+              {(() => {
+                const activeVouchersList: { category: 'domestic' | 'international'; value: number; code: string }[] = [];
+                for (let i = 0; i < domesticDiscountCredits; i++) {
+                  activeVouchersList.push({ category: 'domestic', value: 500, code: `BDN-DOM-${i + 101}` });
+                }
+                for (let i = 0; i < internationalDiscountCredits; i++) {
+                  activeVouchersList.push({ category: 'international', value: 5000, code: `BDN-INTL-${i + 101}` });
+                }
+                return activeVouchersList.map((voucher, idx) => (
+                  <div key={idx} className="rounded-2xl border-2 border-dashed border-slate-200 p-5 relative overflow-hidden bg-white shadow-sm hover:shadow-md transition-all duration-300">
+                    <div className="absolute -left-2 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-slate-50 border-r border-slate-200" />
+                    <div className="absolute -right-2 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-slate-50 border-l border-slate-200" />
 
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[9px] font-bold text-white bg-gradient-to-r from-[#FF6B6B] to-[#FF8E53]">
-                        <Zap className="w-2.5 h-2.5" /> ACTIVE
-                      </span>
-                      <div className="text-xl font-black text-slate-850 mt-2">₹500 Credit Voucher</div>
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[9px] font-bold text-white bg-gradient-to-r from-[#FF6B6B] to-[#FF8E53]">
+                          <Zap className="w-2.5 h-2.5" /> ACTIVE
+                        </span>
+                        <div className="text-xl font-black text-slate-850 mt-2">₹{voucher.value.toLocaleString('en-IN')} Credit Voucher</div>
+                        <span className="text-[10px] text-slate-500 block font-semibold uppercase tracking-wider mt-0.5">
+                          {voucher.category === 'international' ? 'International bookings only' : 'Domestic bookings only'}
+                        </span>
+                      </div>
+                      <div className="w-9 h-9 rounded-xl flex items-center justify-center bg-indigo-50 text-indigo-500">
+                        <Gift className="w-4.5 h-4.5" />
+                      </div>
                     </div>
-                    <div className="w-9 h-9 rounded-xl flex items-center justify-center bg-rose-50 text-[#FF6B6B]">
-                      <Gift className="w-4.5 h-4.5" />
+                    <div className="mt-4 pt-3 border-t border-dashed border-slate-200 flex justify-between items-center text-xs">
+                      <span className="text-slate-400">Voucher Code: <strong className="font-mono text-slate-650 font-bold">{voucher.code}</strong></span>
+                      <span className="font-bold text-emerald-500 flex items-center gap-1"><Check className="w-3.5 h-3.5" strokeWidth={3} /> Unused</span>
                     </div>
                   </div>
-                  <div className="mt-4 pt-3 border-t border-dashed border-slate-200 flex justify-between items-center text-xs">
-                    <span className="text-slate-400">Voucher Code: <strong className="font-mono text-slate-650 font-bold">BDN-CRED-{idx + 1}04</strong></span>
-                    <span className="font-bold text-emerald-500 flex items-center gap-1"><Check className="w-3.5 h-3.5" strokeWidth={3} /> Unused</span>
-                  </div>
-                </div>
-              ))}
+                ));
+              })()}
             </div>
           )}
         </div>
@@ -3027,8 +2608,23 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack }
                     </td>
                     <td className="py-3 leading-normal">
                       <div>{item.reason}</div>
-                      {item.bookingRef && <div className="text-[9px] text-[#00D4F5] font-mono mt-0.5">Booking Ref: {item.bookingRef}</div>}
-                      {item.adminRef && <div className="text-[9px] text-[#FF6B6B] font-mono mt-0.5">Admin Ref: {item.adminRef}</div>}
+                      <div className="flex flex-wrap gap-x-2.5 gap-y-0.5 mt-1 text-[10px] font-semibold">
+                        {item.creditCategory && (
+                          <span className={`capitalize ${
+                            item.creditCategory === 'international' ? 'text-indigo-600' :
+                            item.creditCategory === 'domestic' ? 'text-emerald-600' : 'text-slate-500'
+                          }`}>
+                            Category: {item.creditCategory}
+                          </span>
+                        )}
+                        {item.creditValue && (
+                          <span className="text-slate-500">
+                            (Value: ₹{item.creditValue.toLocaleString('en-IN')})
+                          </span>
+                        )}
+                      </div>
+                      {item.bookingRef && <div className="text-[9px] text-sky-500 font-mono mt-0.5 font-bold">Booking Ref: {item.bookingRef}</div>}
+                      {item.adminRef && <div className="text-[9px] text-rose-500 font-mono mt-0.5 font-bold">Admin Ref: {item.adminRef}</div>}
                     </td>
                   </tr>
                 ))}
@@ -3790,280 +3386,6 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack }
     );
   };
 
-  // 12. ADMIN CONTROL PANEL
-  const renderAdminPanel = () => {
-    const allUsersList = adminUsers;
-    const transactionsList = getAllTransactions();
-    const PLAN_CREDITS: Record<string, number> = {
-      'Silver': 1,
-      'Gold': 2,
-      'Platinum': 4,
-      'Silver_Int': 5,
-      'Gold_Int': 8,
-      'Platinum_Int': 15
-    };
-    
-    // Calculate revenues: real payments vs demo payments
-    const realRevenue = adminUsers
-      .filter(u => u.user_metadata?.subscriptionStatus === 'active' && u.user_metadata?.subscription_source === 'real')
-      .reduce((sum, u) => {
-        const priceStr = u.user_metadata?.planPrice || '₹0';
-        const priceVal = parseInt(priceStr.replace(/[^0-9]/g, '')) || 0;
-        return sum + priceVal;
-      }, 0);
-
-    const demoRevenue = adminUsers
-      .filter(u => u.user_metadata?.subscriptionStatus === 'active' && u.user_metadata?.subscription_source === 'demo')
-      .reduce((sum, u) => {
-        const priceStr = u.user_metadata?.planPrice || '₹0';
-        const priceVal = parseInt(priceStr.replace(/[^0-9]/g, '')) || 0;
-        return sum + priceVal;
-      }, 0);
-
-    return (
-      <div className="bg-white border border-slate-100 shadow-[0_8px_30px_rgba(16,35,63,0.03)] rounded-[28px] p-5 sm:p-7 text-left space-y-6">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-150 pb-5">
-          <div>
-            <h2 className="text-base font-black flex items-center gap-2 text-slate-800 uppercase tracking-wide">
-              <ShieldCheck className="w-5 h-5 text-indigo-600" /> Admin Control Panel
-            </h2>
-            <p className="text-xs text-slate-400">Exclusively for admin/testers to manage test users, demo wallets, and analytics</p>
-          </div>
-          <button
-            onClick={handleResetAllDemoUsers}
-            className="px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider text-white bg-red-505 bg-rose-500 hover:bg-rose-600 transition-colors border-none cursor-pointer flex items-center gap-1.5 shadow-md shadow-red-100"
-          >
-            <Trash2 className="w-4 h-4" /> Reset All Accounts
-          </button>
-        </div>
-
-        {/* Analytics Section */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className="p-5 rounded-2xl bg-emerald-50 border border-emerald-100">
-            <span className="text-[10px] uppercase font-mono tracking-wider text-emerald-600 font-bold block">Verified Real Revenue</span>
-            <span className="text-3xl font-black text-emerald-800 block mt-1">₹{realRevenue}</span>
-            <span className="text-[10px] text-emerald-500 font-medium block mt-1.5">★ Excludes all demo/test transactions</span>
-          </div>
-          <div className="p-5 rounded-2xl bg-indigo-50 border border-indigo-100">
-            <span className="text-[10px] uppercase font-mono tracking-wider text-indigo-600 font-bold block">Demo Wallet Subscriptions</span>
-            <span className="text-3xl font-black text-indigo-800 block mt-1">₹{demoRevenue}</span>
-            <span className="text-[10px] text-indigo-500 font-medium block mt-1.5 font-bold">⚙ Simulated testing value only</span>
-          </div>
-        </div>
-
-        <div className="grid lg:grid-cols-12 gap-6 items-start">
-          {/* Mock Users Table */}
-          <div className="lg:col-span-8 space-y-4">
-            <h3 className="text-xs font-bold text-slate-700 uppercase tracking-wider">User Directory ({allUsersList.length})</h3>
-            <div className="overflow-x-auto border border-slate-100 rounded-2xl">
-              <table className="w-full text-left text-xs border-collapse">
-                <thead>
-                  <tr className="border-b bg-slate-50 text-slate-450 font-bold uppercase tracking-wider">
-                    <th className="p-3">Email / Name</th>
-                    <th className="p-3">Role / Status</th>
-                    <th className="p-3">Active Subscription</th>
-                    <th className="p-3">Demo Wallet</th>
-                    <th className="p-3 text-right">Actions</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100 text-slate-650 font-medium">
-                  {allUsersList.map((u: any) => {
-                    const email = u.email || '';
-                    const isDemo = u.user_metadata?.is_demo_user || email.includes('demo') || email.includes('test') || email.includes('admin');
-                    const isActive = u.user_metadata?.subscriptionStatus === 'active';
-                    const plan = u.user_metadata?.planName || 'None';
-                    const source = u.user_metadata?.subscription_source || '';
-                    
-                    return (
-                      <tr 
-                        key={u.id} 
-                        className={`hover:bg-slate-50/50 transition-colors cursor-pointer ${
-                          selectedAdminUser?.id === u.id ? 'bg-indigo-50/30' : ''
-                        }`}
-                        onClick={() => setSelectedAdminUser(u)}
-                      >
-                        <td className="p-3">
-                          <div className="font-bold text-slate-800">{u.user_metadata?.full_name || 'No Name'}</div>
-                          <div className="text-slate-450 font-mono text-[10px]">{email}</div>
-                        </td>
-                        <td className="p-3">
-                          <div className="flex flex-col gap-1 items-start">
-                            <span className={`px-2 py-0.5 rounded-full text-[9px] font-bold uppercase ${
-                              isDemo ? 'bg-indigo-50 text-indigo-600 border border-indigo-100' : 'bg-slate-100 text-slate-600 border border-slate-200'
-                            }`}>
-                              {isDemo ? 'Tester / Demo' : 'Real Customer'}
-                            </span>
-                          </div>
-                        </td>
-                        <td className="p-3">
-                          {isActive ? (
-                            <div>
-                              <span className="text-slate-800 font-bold block">{plan}</span>
-                              <span className={`text-[8.5px] uppercase font-mono tracking-wider font-bold ${
-                                source === 'demo' ? 'text-amber-500' : 'text-emerald-500'
-                              }`}>
-                                {source === 'demo' ? 'Test Subscription' : 'Real Paid'}
-                              </span>
-                            </div>
-                          ) : (
-                            <span className="text-slate-400 italic">No Subscription</span>
-                          )}
-                        </td>
-                        <td className="p-3 font-mono font-bold text-slate-800">
-                          ₹{u.user_metadata?.demo_wallet_balance ?? 0}
-                        </td>
-                        <td className="p-3 text-right" onClick={(e) => e.stopPropagation()}>
-                          <div className="flex justify-end gap-2">
-                            <button
-                              onClick={() => setSelectedAdminUser(u)}
-                              className="px-2.5 py-1 text-[10px] font-bold text-indigo-650 hover:bg-indigo-50 rounded-lg cursor-pointer border-none bg-transparent"
-                            >
-                              Manage
-                            </button>
-                            {isDemo && (
-                              <button
-                                onClick={() => handleResetSelectedDemoUser(u)}
-                                className="px-2.5 py-1 text-[10px] font-bold text-rose-500 hover:bg-rose-50 rounded-lg cursor-pointer border-none bg-transparent"
-                              >
-                                Reset
-                              </button>
-                            )}
-                          </div>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          {/* User Controls Panel */}
-          <div className="lg:col-span-4 space-y-4">
-            <h3 className="text-xs font-bold text-slate-700 uppercase tracking-wider">User Wallet Management</h3>
-            {selectedAdminUser ? (
-              <div className="bg-slate-50 border border-slate-150 rounded-2xl p-5 space-y-4">
-                <div>
-                  <span className="text-[10px] uppercase font-mono tracking-wider text-slate-400 font-bold block">Selected User</span>
-                  <div className="text-sm font-black text-slate-855 mt-1">{selectedAdminUser.user_metadata?.full_name || 'No Name'}</div>
-                  <div className="text-xs font-mono text-slate-500 mt-0.5">{selectedAdminUser.email}</div>
-                </div>
-
-                <div className="p-4 rounded-xl bg-white border border-slate-200">
-                  <span className="text-[9px] uppercase font-mono tracking-wider text-slate-450 font-bold block">Current Demo Balance</span>
-                  <span className="text-lg font-black text-slate-800 mt-1 block">₹{selectedAdminUser.user_metadata?.demo_wallet_balance ?? 0} Test Balance</span>
-                </div>
-
-                <div className="space-y-2">
-                  <label className="block text-[10px] font-bold text-slate-400 uppercase">Amount (₹)</label>
-                  <input
-                    type="number"
-                    value={adminCustomAmount}
-                    onChange={(e) => setAdminCustomAmount(e.target.value)}
-                    placeholder="e.g. 500"
-                    className="w-full px-3 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-800 text-xs outline-none focus:border-indigo-500 transition-colors"
-                  />
-                  <div className="grid grid-cols-2 gap-2.5 pt-2">
-                    <button
-                      onClick={handleAdminAddBalance}
-                      className="w-full py-2.5 bg-indigo-650 hover:bg-indigo-700 text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-colors border-none cursor-pointer"
-                    >
-                      Add Demo Funds
-                    </button>
-                    <button
-                      onClick={handleAdminRemoveBalance}
-                      className="w-full py-2.5 bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-colors border-none cursor-pointer"
-                    >
-                      Remove Funds
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div className="bg-slate-50 border border-dashed border-slate-200 rounded-2xl p-8 text-center text-xs text-slate-400 font-bold">
-                Select a user from the directory to manage their wallet balances.
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Transaction log filters */}
-        <div className="pt-6 border-t border-slate-150 space-y-4">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-            <h3 className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-2">
-              <FileText className="w-4 h-4 text-slate-400" /> Subscription &amp; Wallet Transactions
-            </h3>
-            <div className="flex gap-2">
-              {(['all', 'real', 'demo'] as const).map(f => (
-                <button
-                  key={f}
-                  onClick={() => setAdminFilter(f)}
-                  className={`px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer border-none ${
-                    adminFilter === f 
-                      ? 'bg-indigo-650 text-white shadow-sm' 
-                      : 'bg-slate-100 hover:bg-slate-150 text-slate-500'
-                  }`}
-                >
-                  {f === 'all' ? 'All Payments' : f === 'real' ? 'Real Payments' : 'Demo Payments'}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div className="overflow-x-auto rounded-2xl border border-slate-105 border-slate-100">
-            <table className="w-full text-left text-xs border-collapse">
-              <thead>
-                <tr className="border-b bg-slate-50 text-slate-400 font-bold uppercase tracking-wider">
-                  <th className="p-3">User Email</th>
-                  <th className="p-3">Date / Time</th>
-                  <th className="p-3">Transaction ID</th>
-                  <th className="p-3">Payment Source</th>
-                  <th className="p-3 text-center">Amount</th>
-                  <th className="p-3">Reason / Details</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100 text-slate-650 font-medium">
-                {transactionsList.filter((t: any) => {
-                  if (adminFilter === 'real') return t.wallet_type === 'real' || t.payment_type === 'real_payment';
-                  if (adminFilter === 'demo') return t.wallet_type === 'demo' || t.payment_type === 'demo_wallet';
-                  return true;
-                }).slice(0, 30).map((t: any) => (
-                  <tr key={t.id} className="hover:bg-slate-50/50 transition-colors">
-                    <td className="p-3 font-semibold text-slate-800">{t.email}</td>
-                    <td className="p-3">{new Date(t.created_at || t.date).toLocaleString('en-IN')}</td>
-                    <td className="p-3 font-mono font-bold text-slate-500">{t.id}</td>
-                    <td className="p-3">
-                      <span className={`px-2 py-0.5 rounded-full text-[9px] font-black uppercase ${
-                        t.wallet_type === 'demo' || t.payment_type === 'demo_wallet' 
-                          ? 'bg-amber-50 text-amber-600 border border-amber-100' 
-                          : 'bg-emerald-50 text-emerald-600 border border-emerald-100'
-                      }`}>
-                        {t.wallet_type === 'demo' || t.payment_type === 'demo_wallet' ? 'Demo Balance' : 'Real Money'}
-                      </span>
-                    </td>
-                    <td className={`p-3 text-center font-black ${t.amount > 0 ? 'text-emerald-500' : 'text-rose-500'}`}>
-                      {t.amount > 0 ? `+₹${t.amount}` : `-₹${Math.abs(t.amount)}`}
-                    </td>
-                    <td className="p-3 leading-normal">{t.reason}</td>
-                  </tr>
-                ))}
-                {transactionsList.filter((t: any) => {
-                  if (adminFilter === 'real') return t.wallet_type === 'real' || t.payment_type === 'real_payment';
-                  if (adminFilter === 'demo') return t.wallet_type === 'demo' || t.payment_type === 'demo_wallet';
-                  return true;
-                }).length === 0 && (
-                  <tr>
-                    <td colSpan={6} className="text-center py-6 text-slate-400 italic">No transactions match the selected filter.</td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    );
-  };
-
   return (
     <div 
       className="min-h-screen pt-2 lg:pt-3 pb-10 relative overflow-x-hidden"
@@ -4138,6 +3460,17 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack }
               </div>
             </div>
 
+            {/* Admin Command Center Link */}
+            {showDemoWallet && onGoToAdmin && (
+              <button
+                onClick={onGoToAdmin}
+                className="w-full mb-4 px-4 py-3 rounded-xl flex items-center gap-3 cursor-pointer transition-all duration-200 border-none text-[13.5px] font-black bg-indigo-600 text-white hover:bg-indigo-700 shadow-md shadow-indigo-100"
+              >
+                <ShieldCheck className="w-4 h-4 text-white" />
+                <span>Admin Command Center</span>
+              </button>
+            )}
+
             {/* Menu Header category */}
             <div className="text-[9.5px] font-black text-slate-400 uppercase tracking-widest px-4 mb-2 font-mono">
               Dashboard Menu
@@ -4183,6 +3516,15 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack }
 
           {/* ==================== MOBILE MENU OPTIONS HORIZONTAL SCROLLABLE BAR ==================== */}
           <div className="lg:hidden flex gap-2 overflow-x-auto pb-3 mb-4 px-1 scrollbar-hide">
+            {showDemoWallet && onGoToAdmin && (
+              <button
+                onClick={onGoToAdmin}
+                className="whitespace-nowrap px-4 py-2.5 rounded-xl flex items-center gap-2 cursor-pointer transition-all text-xs font-black border-none shadow-sm text-white bg-indigo-600 hover:bg-indigo-700"
+              >
+                <ShieldCheck className="w-3.5 h-3.5" />
+                <span>Admin Panel</span>
+              </button>
+            )}
             {sidebarItems.map((item) => {
               const Icon = item.icon;
               const isActive = activeTab === item.id;
@@ -4238,7 +3580,6 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack }
                 {activeTab === 'notifications' && renderNotificationsTab()}
                 {activeTab === 'support' && renderSupport()}
                 {activeTab === 'profile' && renderProfile()}
-                {activeTab === 'admin-panel' && renderAdminPanel()}
               </motion.div>
             </AnimatePresence>
           </motion.main>

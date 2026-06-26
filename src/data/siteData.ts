@@ -16,6 +16,7 @@ import {
   Ticket,
   Train,
 } from 'lucide-react';
+import type { PlanData } from '../types';
 
 export const NAV = [
   { id: 'about', label: 'About', icon: Compass },
@@ -43,7 +44,7 @@ export const PLANS = [
     image: '/images/sundarbans_mangrove_1779521789593.png',
     imageLabel: 'Sundarbans - Boat Safari',
     destinations: ['Sundarban', 'Digha', 'Mousuni Island', 'Purulia'],
-    benefits: ['1 Weekly Promotional Draw entry', 'Eligible for promotional winner benefits', '₹500 discount credit if not selected', 'Up to 5% off on paid domestic tours', '12-month subscription validity', '18+ Membership Only'],
+    benefits: ['1 Travel Reward Credit (TRC)', 'Eligible for weekly lucky draw', '1 Domestic Discount Credit (₹500)', 'Up to 5% off on paid domestic tours', '12-month subscription validity', '18+ Membership Only'],
   },
   {
     name: 'Gold', price: 799, tagline: 'Balanced Choice', icon: Award,
@@ -53,7 +54,7 @@ export const PLANS = [
     image: '/images/darjeeling_tea_1779521805614.png',
     imageLabel: 'Darjeeling - Tea Gardens',
     destinations: ['Darjeeling', 'Dooars', 'Puri', 'Daring Bari'],
-    benefits: ['1 Weekly Promotional Draw entry', 'Eligible for promotional winner benefits', '₹1,000 discount credits if not selected', 'Up to 7% off on paid domestic tours', 'One-time family name change allowed', '18+ Membership Only'],
+    benefits: ['1 Travel Reward Credit (TRC)', 'Eligible for weekly lucky draw', '2 Domestic Discount Credits (₹1,000)', 'Up to 7% off on paid domestic tours', 'One-time family name change allowed', '18+ Membership Only'],
   },
   {
     name: 'Platinum', price: 1499, tagline: 'Premium Experience', icon: Crown,
@@ -66,9 +67,9 @@ export const PLANS = [
     imageLabel: 'Kashmir - Dal Lake',
     destinations: ['Kashmir', 'Goa', 'Sikkim', 'Himachal (Shimla+Manali)'],
     benefits: [
-      '1 Weekly Promotional Draw entry',
-      'Eligible for promotional winner benefits',
-      '₹2,000 discount credits if not selected',
+      '1 Travel Reward Credit (TRC)',
+      'Eligible for weekly lucky draw',
+      '4 Domestic Discount Credits (₹2,000)',
       'Up to 10% off on paid domestic tours',
       'Two family name changes allowed',
       '18+ Membership Only'
@@ -80,32 +81,32 @@ export const INTL_PLANS = [
   {
     name: 'Silver', price: 4999, tagline: 'International Starter', icon: Globe,
     color: 'from-sky-400 to-blue-600', glow: 'blue',
-    tourValue: 25000, duration: '3N / 4D', discountCredits: 10, discountValue: 5000,
+    tourValue: 25000, duration: '3N / 4D', discountCredits: 1, discountValue: 5000,
     paidDiscount: 'Up to 5% off', insurance: '50% off', nameChange: 'One time',
     image: '/images/nepal.png',
     imageLabel: 'Nepal - Valley & Peaks',
     destinations: ['Nepal', 'Bhutan'],
-    benefits: ['1 Weekly Promotional Draw entry', 'Winner tour value up to ₹25,000 (3N/4D)', '₹5,000 discount credits if not selected', 'Up to 5% off on paid international tours', 'One-time family name change allowed', '18+ Membership Only'],
+    benefits: ['1 Travel Reward Credit (TRC)', 'Eligible for weekly lucky draw', '1 International Discount Credit (₹5,000)', 'Up to 5% off on paid international tours', 'One-time family name change allowed', '18+ Membership Only'],
   },
   {
     name: 'Gold', price: 7999, tagline: 'Premium Explorer', icon: Plane,
     color: 'from-emerald-400 to-teal-600', glow: 'teal',
-    featured: true, tourValue: 50000, duration: '4N / 5D', discountCredits: 20, discountValue: 10000,
+    featured: true, tourValue: 50000, duration: '4N / 5D', discountCredits: 2, discountValue: 10000,
     paidDiscount: 'Up to 7% off', insurance: 'Included free', nameChange: 'Two times',
     image: '/images/thailand.png',
     imageLabel: 'Thailand - Temples & Beaches',
     destinations: ['Thailand', 'Bali (Indonesia)'],
-    benefits: ['1 Weekly Promotional Draw entry', 'Winner tour value up to ₹50,000 (4N/5D)', '₹10,000 discount credits if not selected', 'Up to 7% off on paid international tours', 'Two family name changes allowed', '18+ Membership Only'],
+    benefits: ['1 Travel Reward Credit (TRC)', 'Eligible for weekly lucky draw', '2 International Discount Credits (₹10,000)', 'Up to 7% off on paid international tours', 'Two family name changes allowed', '18+ Membership Only'],
   },
   {
     name: 'Platinum', price: 14999, tagline: 'Ultimate World Pass', icon: Rocket,
     color: 'from-cyan via-cyan-bright to-cyan-deep', glow: 'cyan',
-    tourValue: 100000, duration: '5N / 6D', discountCredits: 40, discountValue: 20000,
+    tourValue: 100000, duration: '5N / 6D', discountCredits: 4, discountValue: 20000,
     paidDiscount: 'Up to 10% off', insurance: 'Included free', nameChange: 'Unlimited',
     image: '/images/vietnam.png',
     imageLabel: 'Vietnam - Bays & Cities',
     destinations: ['Dubai', 'Vietnam'],
-    benefits: ['1 Weekly Promotional Draw entry', 'Winner tour value up to ₹1,00,000 (5N/6D)', '₹20,000 discount credits if not selected', 'Up to 10% off on paid international tours', 'Unlimited name changes allowed', '18+ Membership Only'],
+    benefits: ['1 Travel Reward Credit (TRC)', 'Eligible for weekly lucky draw', '4 International Discount Credits (₹20,000)', 'Up to 10% off on paid international tours', 'Unlimited name changes allowed', '18+ Membership Only'],
   },
 ];
 
@@ -267,4 +268,26 @@ export function getPlanDetails(planName: string) {
   }
   return null;
 }
+
+// ============================================================
+// CENTRALIZED PLAN CONSTANTS — Single Source of Truth
+// All plan-related lookups (prices, credits, names, categories)
+// MUST use these exports. Do NOT duplicate plan data elsewhere.
+// ============================================================
+
+export const ALL_PLANS: Record<string, PlanData> = {
+  'Silver':       { name: 'Silver Domestic',       price: 499,   credits: 1, category: 'domestic',      creditValue: 500,  usableFor: 'domestic_only' },
+  'Gold':         { name: 'Gold Domestic',          price: 799,   credits: 2, category: 'domestic',      creditValue: 500,  usableFor: 'domestic_only' },
+  'Platinum':     { name: 'Platinum Domestic',      price: 1499,  credits: 4, category: 'domestic',      creditValue: 500,  usableFor: 'domestic_only' },
+  'Silver_Int':   { name: 'Silver International',   price: 4999,  credits: 1, category: 'international', creditValue: 5000, usableFor: 'international_only' },
+  'Gold_Int':     { name: 'Gold International',     price: 7999,  credits: 2, category: 'international', creditValue: 5000, usableFor: 'international_only' },
+  'Platinum_Int': { name: 'Platinum International',  price: 14999, credits: 4, category: 'international', creditValue: 5000, usableFor: 'international_only' },
+};
+
+export const getPlanPrice = (planId: string): number => ALL_PLANS[planId]?.price ?? 0;
+export const getPlanCredits = (planId: string): number => ALL_PLANS[planId]?.credits ?? 0;
+export const getPlanName = (planId: string): string => ALL_PLANS[planId]?.name ?? 'Unknown';
+export const getPlanCategory = (planId: string): 'domestic' | 'international' => ALL_PLANS[planId]?.category ?? 'domestic';
+export const getPlanCreditValue = (planId: string): number => ALL_PLANS[planId]?.creditValue ?? 500;
+export const getPlanUsableFor = (planId: string): 'domestic_only' | 'international_only' => ALL_PLANS[planId]?.usableFor ?? 'domestic_only';
 

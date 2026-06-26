@@ -61,7 +61,7 @@ function AIIcon({ type }: { type: string }) {
 }
 
 /* ---------- PlanCard Component ---------- */
-function PlanCard({ plan, index, onSelectPlan }: { plan: typeof PLANS[number]; index: number; onSelectPlan: (planName: string) => void }) {
+function PlanCard({ plan, index, onSelectPlan, selectedPlanId, showDemoWallet }: { plan: typeof PLANS[number]; index: number; onSelectPlan: (planName: string) => void; selectedPlanId?: string; showDemoWallet?: boolean }) {
   const [hovered, setHovered] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
   const [imgStyle, setImgStyle] = useState<React.CSSProperties>({});
@@ -75,12 +75,18 @@ function PlanCard({ plan, index, onSelectPlan }: { plan: typeof PLANS[number]; i
   };
   const onLeave = () => setImgStyle({ transform: 'scale(1) translate(0,0)' });
   const creditValue = plan.discountValue.toLocaleString('en-IN');
-  const isComingSoon = plan.name !== 'Silver';
+  const isComingSoon = plan.name !== 'Silver' && !showDemoWallet;
 
   return (
     <Reveal delay={index * 0.1}>
       <TiltCard intensity={6}>
-        <div ref={cardRef} onMouseMove={onMove} onMouseEnter={() => setHovered(true)} onMouseLeave={() => { setHovered(false); onLeave(); }} className={`relative rounded-3xl overflow-hidden h-full transition-all duration-500 tilt-inner bg-gradient-to-b from-slate-950 to-slate-900 border ${plan.featured ? 'border-2 border-neon-gold/80 shadow-2xl shadow-neon-gold/10' : 'border-slate-800/80 hover:border-cyan/50 hover:shadow-2xl hover:shadow-cyan/5'}`}>
+        <div ref={cardRef} onMouseMove={onMove} onMouseEnter={() => setHovered(true)} onMouseLeave={() => { setHovered(false); onLeave(); }} className={`relative rounded-3xl overflow-hidden h-full transition-all duration-500 tilt-inner bg-gradient-to-b from-slate-950 to-slate-900 border ${
+          selectedPlanId === plan.name
+            ? 'border-4 border-[#FF6B6B] shadow-2xl shadow-rose-500/20'
+            : plan.featured
+              ? 'border-2 border-neon-gold/80 shadow-2xl shadow-neon-gold/10'
+              : 'border-slate-800/80 hover:border-cyan/50 hover:shadow-2xl hover:shadow-cyan/5'
+        }`}>
           {plan.featured && !isComingSoon && <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-neon-gold via-cyan to-neon-gold z-10" />}
           {plan.featured && !isComingSoon && <div className="absolute top-5 right-5 z-20 px-3 py-1 rounded-full bg-gradient-to-r from-neon-gold to-gold text-cosmos text-[10px] font-bold uppercase tracking-widest flex items-center gap-1 shadow-lg"><Crown className="w-3 h-3 fill-current" /> Premium Choice</div>}
           {isComingSoon && <div className="absolute top-5 right-5 z-20 px-3 py-1 rounded-full bg-red-500/20 border border-red-500/30 text-red-300 text-[10px] font-bold uppercase tracking-widest shadow-lg backdrop-blur-md">Coming Soon</div>}
@@ -144,10 +150,10 @@ function PlanCard({ plan, index, onSelectPlan }: { plan: typeof PLANS[number]; i
             ) : (
               <ParticleButton
                 onClick={() => onSelectPlan(plan.name)}
-                variant={plan.featured ? 'gold' : 'cyan'}
+                variant={selectedPlanId === plan.name ? 'gold' : plan.featured ? 'gold' : 'cyan'}
                 className="block text-center w-full py-3.5 rounded-full font-bold"
               >
-                {`Subscribe ${plan.name}`}
+                {selectedPlanId === plan.name ? `Selected ${plan.name}` : `Subscribe ${plan.name}`}
               </ParticleButton>
             )}
             <div className="text-center text-[11px] text-slate-400 font-bold mt-3 font-mono">// 12-mo validity - pickup included</div>
@@ -159,7 +165,7 @@ function PlanCard({ plan, index, onSelectPlan }: { plan: typeof PLANS[number]; i
 }
 
 /* ---------- IntlPlanCard Component ---------- */
-function IntlPlanCard({ plan, index }: { plan: typeof INTL_PLANS[number]; index: number; onSelectPlan?: (planName: string) => void }) {
+function IntlPlanCard({ plan, index, onSelectPlan, selectedPlanId, showDemoWallet }: { plan: typeof INTL_PLANS[number]; index: number; onSelectPlan?: (planName: string) => void; selectedPlanId?: string; showDemoWallet?: boolean }) {
   const [hovered, setHovered] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
   const [imgStyle, setImgStyle] = useState<React.CSSProperties>({});
@@ -176,9 +182,15 @@ function IntlPlanCard({ plan, index }: { plan: typeof INTL_PLANS[number]; index:
   return (
     <Reveal delay={index * 0.1}>
       <TiltCard intensity={6}>
-        <div ref={cardRef} onMouseMove={onMove} onMouseEnter={() => setHovered(true)} onMouseLeave={() => { setHovered(false); onLeave(); }} className={`relative rounded-3xl overflow-hidden h-full transition-all duration-500 tilt-inner bg-gradient-to-b from-slate-950 to-slate-900 border ${plan.featured ? 'border-2 border-emerald-400/80 shadow-2xl shadow-cyan/10' : 'border-slate-800/80 hover:border-cyan/50 hover:shadow-2xl hover:shadow-cyan/5'}`}>
+        <div ref={cardRef} onMouseMove={onMove} onMouseEnter={() => setHovered(true)} onMouseLeave={() => { setHovered(false); onLeave(); }} className={`relative rounded-3xl overflow-hidden h-full transition-all duration-500 tilt-inner bg-gradient-to-b from-slate-950 to-slate-900 border ${
+          selectedPlanId === `${plan.name}_Int`
+            ? 'border-4 border-[#FF6B6B] shadow-2xl shadow-rose-500/20'
+            : plan.featured
+              ? 'border-2 border-emerald-400/80 shadow-2xl shadow-cyan/10'
+              : 'border-slate-800/80 hover:border-cyan/50 hover:shadow-2xl hover:shadow-cyan/5'
+        }`}>
           {plan.featured && <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-emerald-400 via-cyan to-emerald-400 z-10" />}
-          <div className="absolute top-5 right-5 z-20 px-3 py-1 rounded-full bg-red-500/20 border border-red-500/30 text-red-300 text-[10px] font-bold uppercase tracking-widest shadow-lg backdrop-blur-md">Coming Soon</div>
+          {!showDemoWallet && <div className="absolute top-5 right-5 z-20 px-3 py-1 rounded-full bg-red-500/20 border border-red-500/30 text-red-300 text-[10px] font-bold uppercase tracking-widest shadow-lg backdrop-blur-md">Coming Soon</div>}
 
           <div className="relative h-48 overflow-hidden bg-slate-950">
             <div className={`tilt-img absolute inset-0 bg-cover bg-center transition-all duration-700 ${hovered ? 'opacity-100 scale-105' : 'opacity-80'}`} style={{ ...imgStyle, backgroundImage: `url(${plan.image})` }} />
@@ -229,12 +241,22 @@ function IntlPlanCard({ plan, index }: { plan: typeof INTL_PLANS[number]; index:
           </div>
 
           <div className="p-7 pt-0">
-            <button
-              disabled
-              className="block text-center w-full py-3.5 rounded-full font-bold bg-white/5 border border-white/10 text-slate-500 text-sm cursor-not-allowed"
-            >
-              Coming Soon
-            </button>
+            {showDemoWallet && onSelectPlan ? (
+              <ParticleButton
+                onClick={() => onSelectPlan(`${plan.name}_Int`)}
+                variant={selectedPlanId === `${plan.name}_Int` ? 'gold' : plan.featured ? 'gold' : 'cyan'}
+                className="block text-center w-full py-3.5 rounded-full font-bold"
+              >
+                {selectedPlanId === `${plan.name}_Int` ? `Selected ${plan.name} Int` : `Subscribe ${plan.name} Int`}
+              </ParticleButton>
+            ) : (
+              <button
+                disabled
+                className="block text-center w-full py-3.5 rounded-full font-bold bg-white/5 border border-white/10 text-slate-500 text-sm cursor-not-allowed"
+              >
+                Coming Soon
+              </button>
+            )}
             <div className="text-center text-[11px] text-slate-400 font-bold mt-3 font-mono">// 12-mo validity - visa assist included</div>
           </div>
         </div>
@@ -244,7 +266,7 @@ function IntlPlanCard({ plan, index }: { plan: typeof INTL_PLANS[number]; index:
 }
 
 /* ---------- Domestic Plans Wrapper ---------- */
-export function Plans({ onSelectPlan }: { onSelectPlan: (planName: string) => void }) {
+export function Plans({ onSelectPlan, selectedPlanId, showDemoWallet }: { onSelectPlan: (planName: string) => void; selectedPlanId?: string; showDemoWallet?: boolean }) {
   return (
     <section id="plans" className="relative py-14 lg:py-20 overflow-hidden">
       <div className="relative max-w-7xl mx-auto px-5 lg:px-8 z-10">
@@ -287,7 +309,7 @@ export function Plans({ onSelectPlan }: { onSelectPlan: (planName: string) => vo
 
         <div className="grid md:grid-cols-3 gap-6 lg:gap-7 items-stretch">
           {PLANS.map((p, i) => (
-            <PlanCard key={p.name} plan={p} index={i} onSelectPlan={onSelectPlan} />
+            <PlanCard key={p.name} plan={p} index={i} onSelectPlan={onSelectPlan} selectedPlanId={selectedPlanId} showDemoWallet={showDemoWallet} />
           ))}
         </div>
 
@@ -310,7 +332,7 @@ export function Plans({ onSelectPlan }: { onSelectPlan: (planName: string) => vo
 }
 
 /* ---------- International Plans Wrapper ---------- */
-export function InternationalPlans({ onSelectPlan }: { onSelectPlan: (planName: string) => void }) {
+export function InternationalPlans({ onSelectPlan, selectedPlanId, showDemoWallet }: { onSelectPlan: (planName: string) => void; selectedPlanId?: string; showDemoWallet?: boolean }) {
   return (
     <section id="intl-plans" className="relative py-14 lg:py-20 overflow-hidden">
       <div className="relative max-w-7xl mx-auto px-5 lg:px-8 z-10">
@@ -327,7 +349,7 @@ export function InternationalPlans({ onSelectPlan }: { onSelectPlan: (planName: 
         </Reveal>
         <div className="grid md:grid-cols-3 gap-6 lg:gap-7 items-stretch">
           {INTL_PLANS.map((p, i) => (
-            <IntlPlanCard key={p.name} plan={p} index={i} onSelectPlan={onSelectPlan} />
+            <IntlPlanCard key={p.name} plan={p} index={i} onSelectPlan={onSelectPlan} selectedPlanId={selectedPlanId} showDemoWallet={showDemoWallet} />
           ))}
         </div>
 

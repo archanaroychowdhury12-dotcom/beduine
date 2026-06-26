@@ -80,7 +80,7 @@ class MockAuth {
       const allUsers = this.getUsers();
       const updated = allUsers.map(u => {
         const email = u.email || '';
-        const isDemo = u.user_metadata?.is_demo_user || email.includes('demo') || email.includes('test') || email.includes('admin');
+        const isDemo = u.user_metadata?.is_demo_user || email.includes('demo') || email.includes('test') || email.includes('admin') || email.includes('arunasish');
         if (isDemo) {
           return {
             ...u,
@@ -109,7 +109,7 @@ class MockAuth {
       
       if (this.currentSession?.user) {
         const curEmail = this.currentSession.user.email || '';
-        const isDemo = this.currentSession.user.user_metadata?.is_demo_user || curEmail.includes('demo') || curEmail.includes('test') || curEmail.includes('admin');
+        const isDemo = this.currentSession.user.user_metadata?.is_demo_user || curEmail.includes('demo') || curEmail.includes('test') || curEmail.includes('admin') || curEmail.includes('arunasish');
         if (isDemo) {
           this.currentSession.user = updated.find(u => u.id === this.currentSession.user.id) || this.currentSession.user;
           this.saveSession(this.currentSession);
@@ -118,18 +118,40 @@ class MockAuth {
     }
 
     // 4. One-time reset of ALL user accounts (real + demo) to 0/inactive state as requested
-    const initializedAllReset = localStorage.getItem('beduine_all_reset_v5');
+    const initializedAllReset = localStorage.getItem('beduine_all_reset_v7');
     if (!initializedAllReset) {
+      // Clear legacy local storage keys
+      const keysToClear = [
+        'activePlan', 'currentPlan', 'purchasedPlan', 'activeSubscription', 
+        'subscriptionStatus', 'discountCredits', 'trc', 'luckyDrawCredit', 
+        'travelRewardCredit', 'demoSubscriptionActive', 'membershipActive', 'hasPurchased'
+      ];
+      keysToClear.forEach(k => {
+        try {
+          localStorage.removeItem(k);
+        } catch (e) {
+          console.error(e);
+        }
+      });
+
       const allUsers = this.getUsers();
       const updated = allUsers.map(u => {
+        const cleanMetadata = { ...u.user_metadata };
+        keysToClear.forEach(k => {
+          delete cleanMetadata[k];
+        });
+
         return {
           ...u,
           user_metadata: {
-            ...u.user_metadata,
+            ...cleanMetadata,
             planName: null,
             planPrice: null,
             planType: null,
             subscriptionStatus: 'inactive',
+            subscription_source: null,
+            payment_type: null,
+            subscription_payment_record: null,
             real_wallet_balance: 0,
             demo_wallet_balance: 0,
             discount_credits: 0,
@@ -143,10 +165,37 @@ class MockAuth {
         };
       });
       this.saveUsers(updated);
-      localStorage.setItem('beduine_all_reset_v5', 'true');
+      localStorage.setItem('beduine_all_reset_v7', 'true');
       
       if (this.currentSession?.user) {
-        this.currentSession.user = updated.find(u => u.id === this.currentSession.user.id) || this.currentSession.user;
+        const curId = this.currentSession.user.id;
+        const matchedUser = updated.find(u => u.id === curId);
+        if (matchedUser) {
+          this.currentSession.user = matchedUser;
+        } else {
+          this.currentSession.user = {
+            ...this.currentSession.user,
+            user_metadata: {
+              ...this.currentSession.user.user_metadata,
+              planName: null,
+              planPrice: null,
+              planType: null,
+              subscriptionStatus: 'inactive',
+              subscription_source: null,
+              payment_type: null,
+              subscription_payment_record: null,
+              real_wallet_balance: 0,
+              demo_wallet_balance: 0,
+              discount_credits: 0,
+              weekly_eligible_entry_count: 0,
+              used_credits: 0,
+              pending_credits: 0,
+              selected_member_benefit_status: 'none',
+              ledger: [],
+              demo_transactions: []
+            }
+          };
+        }
         this.saveSession(this.currentSession);
       }
     }
@@ -213,6 +262,7 @@ class MockAuth {
       planPrice: null,
       planType: null,
       subscriptionStatus: 'inactive',
+      subscription_payment_record: null,
       real_wallet_balance: 0,
       demo_wallet_balance: 0,
       discount_credits: 0,
@@ -222,7 +272,7 @@ class MockAuth {
       selected_member_benefit_status: 'none',
       ledger: [],
       demo_transactions: [],
-      is_demo_user: email.includes('demo') || email.includes('test') || email.includes('admin'),
+      is_demo_user: email.includes('demo') || email.includes('test') || email.includes('admin') || email.includes('arunasish'),
       ...(options?.data || {})
     };
 
@@ -231,6 +281,7 @@ class MockAuth {
     initialMetadata.planPrice = null;
     initialMetadata.planType = null;
     initialMetadata.subscriptionStatus = 'inactive';
+    initialMetadata.subscription_payment_record = null;
     initialMetadata.real_wallet_balance = 0;
     initialMetadata.demo_wallet_balance = 0;
     initialMetadata.discount_credits = 0;
@@ -282,6 +333,7 @@ class MockAuth {
           planPrice: null,
           planType: null,
           subscriptionStatus: 'inactive',
+          subscription_payment_record: null,
           real_wallet_balance: 0,
           demo_wallet_balance: 0,
           discount_credits: 0,
@@ -291,7 +343,7 @@ class MockAuth {
           selected_member_benefit_status: 'none',
           ledger: [],
           demo_transactions: [],
-          is_demo_user: email.includes('demo') || email.includes('test') || email.includes('admin'),
+          is_demo_user: email.includes('demo') || email.includes('test') || email.includes('admin') || email.includes('arunasish'),
           dob: '1995-01-01',
           preferredLanguage: 'English',
           dietaryPreferences: 'None',
@@ -342,6 +394,7 @@ class MockAuth {
           planPrice: null,
           planType: null,
           subscriptionStatus: 'inactive',
+          subscription_payment_record: null,
           real_wallet_balance: 0,
           demo_wallet_balance: 0,
           discount_credits: 0,

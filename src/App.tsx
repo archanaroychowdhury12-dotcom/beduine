@@ -12,6 +12,7 @@ import { TermsAndConditions } from './pages/subscription-page/TermsAndConditions
 const LoginPage = lazy(() => import('./LoginPage'));
 const RegistrationPage = lazy(() => import('./RegistrationPage'));
 const DashboardPage = lazy(() => import('./DashboardPage'));
+const AdminPage = lazy(() => import('./AdminPage'));
 const ErrorPage = lazy(() => import('./ErrorPage'));
 const PaidTourPage = lazy(() => import('./pages/main-website-tour-page/MainWebsiteTourPage'));
 const VerifyCouponPage = lazy(() => import('./components/VerifyCouponPage'));
@@ -28,6 +29,7 @@ const AffiliateAgentPolicyPage = lazy(() => import('./app/affiliate-agent-policy
 const GrievanceRedressalPage = lazy(() => import('./app/grievance-redressal/page'));
 
 import { CookieConsentBanner, CookieModalTrigger } from './components/legal/CookieConsentBanner';
+import { DemoBanner } from './components/demo/DemoBanner';
 import { supabase } from './utils/supabaseClient';
 
 const mapSupabaseUser = (supabaseUser: any) => {
@@ -79,13 +81,16 @@ const mapSupabaseUser = (supabaseUser: any) => {
     }
   }
 
-  const planName = supabaseUser.user_metadata?.planName || null;
-  const planPrice = supabaseUser.user_metadata?.planPrice || null;
-  const planType = supabaseUser.user_metadata?.planType || null;
-  const subscriptionStatus = supabaseUser.user_metadata?.subscriptionStatus || 'inactive';
+  const record = supabaseUser.user_metadata?.subscription_payment_record;
+  const hasActiveRecord = record && record.transaction_id && record.payment_status === 'success';
+
+  const planName = hasActiveRecord ? record.planName : null;
+  const planPrice = hasActiveRecord ? record.planPrice : null;
+  const planType = hasActiveRecord ? record.planType : null;
+  const subscriptionStatus = hasActiveRecord ? 'active' : 'inactive';
   const real_wallet_balance = supabaseUser.user_metadata?.real_wallet_balance ?? 0;
   const demo_wallet_balance = supabaseUser.user_metadata?.demo_wallet_balance ?? 0;
-  const is_demo_user = supabaseUser.user_metadata?.is_demo_user ?? (email.includes('demo') || email.includes('test') || email.includes('admin'));
+  const is_demo_user = supabaseUser.user_metadata?.is_demo_user ?? (email.includes('demo') || email.includes('test') || email.includes('admin') || email.includes('arunasish'));
   const ledger = supabaseUser.user_metadata?.ledger || [];
   const demo_transactions = supabaseUser.user_metadata?.demo_transactions || [];
 
@@ -103,6 +108,7 @@ const mapSupabaseUser = (supabaseUser: any) => {
   }
 
   return {
+    id: supabaseUser.id,
     fullName,
     email,
     mobile,
@@ -117,6 +123,8 @@ const mapSupabaseUser = (supabaseUser: any) => {
     is_demo_user,
     ledger,
     demo_transactions,
+    subscription_payment_record: record || null,
+    subscription_source: hasActiveRecord ? (record.subscription_source || supabaseUser.user_metadata?.subscription_source) : null,
     color,
     glow,
     drawToken: `LDC-${Math.floor(100000 + Math.random() * 900000)}`,
@@ -139,7 +147,8 @@ export default function App() {
     'landing' | 'login' | 'register' | 'terms' | 'dashboard' | 'paid-tour' | 'error' |
     'legal' | 'privacy-policy' | 'terms-and-conditions' | 'refund-policy' |
     'cancellation-policy' | 'membership-rules' | 'website-disclaimer' |
-    'cookie-policy' | 'affiliate-agent-policy' | 'grievance-redressal' | 'verify-coupon'
+    'cookie-policy' | 'affiliate-agent-policy' | 'grievance-redressal' | 'verify-coupon' |
+    'admin'
   >('landing');
   const [currentUser, setCurrentUser] = useState<any | null>(null);
   const [selectedPlanName, setSelectedPlanName] = useState<string>('Silver');
@@ -157,25 +166,38 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
 
+  const checkPendingPlanAndRedirect = useCallback(() => {
+    const storedPending = sessionStorage.getItem('pendingPlanName') || pendingPlan;
+    if (storedPending) {
+      setSelectedPlanName(storedPending);
+      handleSetView('register');
+      setPendingPlan(null);
+      sessionStorage.removeItem('pendingPlanName');
+      return true;
+    }
+    return false;
+  }, [pendingPlan, handleSetView]);
+
   // Supabase Auth listener
   useEffect(() => {
-    const checkPendingPlanAndRedirect = () => {
+    const checkPendingPlanAndRedirectLocally = () => {
       const storedPending = sessionStorage.getItem('pendingPlanName');
       if (storedPending) {
         setSelectedPlanName(storedPending);
         handleSetView('register');
         sessionStorage.removeItem('pendingPlanName');
-      } else {
-        handleSetView('dashboard');
+        return true;
       }
+      return false;
     };
 
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session?.user) {
         const mapped = mapSupabaseUser(session.user);
         setCurrentUser(mapped);
-        if (window.location.pathname === '/login') {
-          checkPendingPlanAndRedirect();
+        const redirected = checkPendingPlanAndRedirectLocally();
+        if (!redirected && window.location.pathname === '/login') {
+          handleSetView('dashboard');
         }
       }
     });
@@ -185,8 +207,9 @@ export default function App() {
         const mapped = mapSupabaseUser(session.user);
         setCurrentUser(mapped);
         if (event === 'SIGNED_IN') {
-          if (window.location.pathname === '/login' || window.location.pathname === '/register') {
-            checkPendingPlanAndRedirect();
+          const redirected = checkPendingPlanAndRedirectLocally();
+          if (!redirected && (window.location.pathname === '/login' || window.location.pathname === '/register')) {
+            handleSetView('dashboard');
           }
         }
       } else {
@@ -220,7 +243,8 @@ export default function App() {
         'landing', 'login', 'register', 'terms', 'dashboard', 'paid-tour', 'error',
         'legal', 'privacy-policy', 'terms-and-conditions', 'refund-policy',
         'cancellation-policy', 'membership-rules', 'website-disclaimer',
-        'cookie-policy', 'affiliate-agent-policy', 'grievance-redressal', 'verify-coupon'
+        'cookie-policy', 'affiliate-agent-policy', 'grievance-redressal', 'verify-coupon',
+        'admin'
       ];
       const isPolicyPath = [
         'terms', 'legal', 'privacy-policy', 'terms-and-conditions', 'refund-policy',
@@ -261,10 +285,19 @@ export default function App() {
     };
   }, [introComplete, view]);
 
+  const isDemoWalletEnabled = import.meta.env.VITE_ENABLE_DEMO_WALLET === 'true';
+  const isDemoOrAdminUser = currentUser?.is_demo_user || 
+                            currentUser?.email?.includes('demo') || 
+                            currentUser?.email?.includes('test') || 
+                            currentUser?.email?.includes('admin') ||
+                            currentUser?.email?.includes('arunasish');
+  const showDemoBanner = isDemoWalletEnabled && (!currentUser || isDemoOrAdminUser);
+
   return (
-    <div className="min-h-screen bg-cosmos text-ink relative">
+    <div className={`min-h-screen bg-cosmos text-ink relative ${showDemoBanner ? 'pt-9' : ''}`}>
+      <DemoBanner currentUser={currentUser} />
       {/* Intro animation completely bypassed */}
-      
+
       {introComplete && view !== 'paid-tour' && <CustomCursor />}
 
       {/* Main page content container - invisible during intro to prevent menu leak, then fades in beautifully */}
@@ -284,7 +317,7 @@ export default function App() {
         <main className="relative z-10 flex flex-col gap-0">
           <Suspense fallback={<RouteFallback />}>
           {view === 'landing' ? (
-            <LandingContent onSelectPlan={handleSelectPlan} setView={handleSetView} />
+            <LandingContent onSelectPlan={handleSelectPlan} setView={handleSetView} currentUser={currentUser} setCurrentUser={setCurrentUser} />
           ) : view === 'login' ? (
             <LoginPage 
               initialMode={loginInitialMode}
@@ -300,13 +333,8 @@ export default function App() {
               onLoginSuccess={(rawUser) => {
                 const mapped = mapSupabaseUser(rawUser);
                 setCurrentUser(mapped);
-                const storedPending = sessionStorage.getItem('pendingPlanName') || pendingPlan;
-                if (storedPending) {
-                  setSelectedPlanName(storedPending);
-                  handleSetView('register');
-                  setPendingPlan(null);
-                  sessionStorage.removeItem('pendingPlanName');
-                } else {
+                const redirected = checkPendingPlanAndRedirect();
+                if (!redirected) {
                   handleSetView('dashboard');
                 }
                 window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -349,6 +377,23 @@ export default function App() {
                 handleSetView('landing');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
+              onGoToAdmin={() => {
+                handleSetView('admin');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+            />
+          ) : view === 'admin' ? (
+            <AdminPage
+              user={currentUser}
+              onBack={() => {
+                handleSetView('dashboard');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              onLogout={() => {
+                setCurrentUser(null);
+                handleSetView('landing');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
             />
           ) : view === 'paid-tour' ? (
             <PaidTourPage
@@ -356,20 +401,25 @@ export default function App() {
               setCurrentUser={setCurrentUser}
               onNavigate={(v) => handleSetView(v as any)}
             />
-          ) : view === 'terms' ? (
-            <div className="pt-24 lg:pt-32 pb-16 min-h-[70vh] flex flex-col items-center">
-              <div className="max-w-4xl w-full px-5">
+          ) : (view === 'terms' || view === 'terms-and-conditions') ? (
+            <div className="relative min-h-screen bg-[#030C15] pt-24 lg:pt-32 pb-16 px-4 sm:px-6 lg:px-8 text-white flex flex-col items-center">
+              {/* Background Graphic elements matching Beduine dashboard styles */}
+              <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none no-print">
+                <div className="absolute top-10 left-1/4 w-[40rem] h-[40rem] rounded-full bg-gradient-to-br from-cyan/10 via-cyan/5 to-transparent blur-[80px]" />
+                <div className="absolute bottom-10 right-1/4 w-[40rem] h-[40rem] rounded-full bg-gradient-to-tr from-rose-500/5 via-amber-500/5 to-transparent blur-[80px]" />
+              </div>
+              <div className="max-w-4xl w-full px-5 relative z-10 mx-auto">
                 <button
                   onClick={() => {
                     handleSetView('landing');
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                   }}
-                  className="mb-8 inline-flex items-center gap-2 text-sm text-[#0096C7] hover:text-[#00B4D8] font-bold transition-all focus:outline-none"
+                  className="mb-8 inline-flex items-center gap-2 text-sm text-[#0096C7] hover:text-[#00B4D8] font-bold transition-all focus:outline-none cursor-pointer border-none bg-transparent"
                 >
                   <ArrowRight className="w-4 h-4 rotate-180" /> Back to Home
                 </button>
-                <div className="glass rounded-3xl p-6 lg:p-12 border border-slate-line/80 shadow-2xl relative overflow-hidden">
-                  <div className="absolute top-0 right-0 w-72 h-72 bg-gradient-to-br from-cyan/10 to-transparent rounded-full blur-3xl pointer-events-none" />
+                <div className="rounded-3xl p-6 lg:p-12 border border-white/10 shadow-2xl relative overflow-hidden bg-slate-950/60 backdrop-blur-xl">
+                  <div className="absolute top-0 right-0 w-72 h-72 bg-gradient-to-br from-cyan/10 to-transparent rounded-full blur-3xl pointer-events-none animate-pulse" />
                   <div className="absolute bottom-0 left-0 w-72 h-72 bg-gradient-to-tr from-neon-gold/5 to-transparent rounded-full blur-3xl pointer-events-none" />
                   <TermsAndConditions />
                 </div>
@@ -379,7 +429,7 @@ export default function App() {
                       handleSetView('landing');
                       window.scrollTo({ top: 0, behavior: 'smooth' });
                     }}
-                    className="glow-cta px-8 py-3 rounded-full font-bold text-sm hover:scale-105 transition-transform inline-flex items-center gap-2"
+                    className="glow-cta px-8 py-3 rounded-full font-bold text-sm hover:scale-105 transition-transform inline-flex items-center gap-2 cursor-pointer border-none text-slate-900 bg-amber-400 hover:bg-amber-300"
                   >
                     Agree & Return Home <Check className="w-4 h-4" />
                   </button>
@@ -390,8 +440,6 @@ export default function App() {
             <LegalCenterPage onNavigate={handleSetView} />
           ) : view === 'privacy-policy' ? (
             <PrivacyPolicyPage onNavigate={handleSetView} />
-          ) : view === 'terms-and-conditions' ? (
-            <TermsAndConditionsPage onNavigate={handleSetView} />
           ) : view === 'refund-policy' ? (
             <RefundPolicyPage onNavigate={handleSetView} />
           ) : view === 'cancellation-policy' ? (

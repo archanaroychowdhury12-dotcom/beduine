@@ -1,4 +1,5 @@
 import { supabase } from '../utils/supabaseClient';
+import { ALL_PLANS } from '../data/siteData';
 
 export interface DemoTransaction {
   id: string;
@@ -18,45 +19,13 @@ export interface CheckoutResult {
   user?: any;
 }
 
-const PLAN_CREDITS: Record<string, number> = {
-  'Silver': 1,
-  'Gold': 2,
-  'Platinum': 4,
-  'Silver_Int': 5,
-  'Gold_Int': 8,
-  'Platinum_Int': 15
-};
-
-const PLAN_PRICES: Record<string, number> = {
-  'Silver': 499,
-  'Gold': 799,
-  'Platinum': 1499,
-  'Silver_Int': 4999,
-  'Gold_Int': 7999,
-  'Platinum_Int': 14999
-};
-
-const PLAN_NAMES: Record<string, string> = {
-  'Silver': 'Silver Domestic',
-  'Gold': 'Gold Domestic',
-  'Platinum': 'Platinum Domestic',
-  'Silver_Int': 'Silver International',
-  'Gold_Int': 'Gold International',
-  'Platinum_Int': 'Platinum International'
-};
-
-const PLAN_TYPES: Record<string, string> = {
-  'Silver': 'domestic',
-  'Gold': 'domestic',
-  'Platinum': 'domestic',
-  'Silver_Int': 'international',
-  'Gold_Int': 'international',
-  'Platinum_Int': 'international'
-};
-
 export const demoWalletService = {
   // POST /api/demo-wallet/add
   async addDemoBalance(userId: string, amount: number): Promise<{ success: boolean; balance: number; message: string }> {
+    const isDemoWalletEnabled = import.meta.env.VITE_ENABLE_DEMO_WALLET === 'true';
+    if (!isDemoWalletEnabled) {
+      return { success: false, balance: 0, message: 'Demo Wallet is disabled in this environment.' };
+    }
     // Simulate API delay
     await new Promise((resolve) => setTimeout(resolve, 300));
 
@@ -91,7 +60,7 @@ export const demoWalletService = {
     user.user_metadata = {
       ...user.user_metadata,
       demo_wallet_balance: newBalance,
-      demo_transactions
+      demo_transactions: demoTransactions
     };
 
     users[userIndex] = user;
@@ -102,6 +71,10 @@ export const demoWalletService = {
 
   // POST /api/demo-wallet/reset
   async resetDemoAccount(userId: string): Promise<{ success: boolean; message: string }> {
+    const isDemoWalletEnabled = import.meta.env.VITE_ENABLE_DEMO_WALLET === 'true';
+    if (!isDemoWalletEnabled) {
+      return { success: false, message: 'Demo Wallet is disabled in this environment.' };
+    }
     await new Promise((resolve) => setTimeout(resolve, 300));
 
     const auth = (supabase.auth as any);
@@ -149,16 +122,22 @@ export const demoWalletService = {
     }
 
     const user = users[userIndex];
-    const planPrice = PLAN_PRICES[planId];
-    const planName = PLAN_NAMES[planId];
-    const planType = PLAN_TYPES[planId];
-    const creditsToIssue = PLAN_CREDITS[planId];
+    const plan = ALL_PLANS[planId];
 
-    if (!planPrice || !planName) {
+    if (!plan) {
       return { success: false, message: 'Invalid plan selected' };
     }
 
+    const planPrice = plan.price;
+    const planName = plan.name;
+    const planType = plan.category;
+    const creditsToIssue = plan.credits;
+
     if (paymentMethod === 'demo_wallet') {
+      const isDemoWalletEnabled = import.meta.env.VITE_ENABLE_DEMO_WALLET === 'true';
+      if (!isDemoWalletEnabled) {
+        return { success: false, message: 'Demo Wallet payment is disabled in this environment.' };
+      }
       const demoBalance = user.user_metadata?.demo_wallet_balance ?? 0;
       if (demoBalance < planPrice) {
         return { success: false, message: 'You do not have enough demo balance to test this subscription.' };
@@ -190,6 +169,11 @@ export const demoWalletService = {
         year: 'numeric'
       });
 
+      const isInternational = planType === 'international';
+      const creditCategory = isInternational ? 'international' : 'domestic';
+      const creditValue = isInternational ? 5000 : 500;
+      const usableFor = isInternational ? 'international_only' : 'domestic_only';
+
       const currentLedger = user.user_metadata?.ledger || [];
       const newLedgerEntries = [
         {
@@ -199,7 +183,10 @@ export const demoWalletService = {
           creditType: 'lucky_draw' as const,
           amount: 1,
           reason: 'Subscription activation entitlement token',
-          source: 'demo'
+          source: 'demo',
+          creditCategory: 'travel_reward',
+          creditValue: 1,
+          usableFor: 'lucky_draw'
         },
         {
           id: `TXN-DC-${Math.floor(100000 + Math.random() * 900000)}`,
@@ -207,14 +194,29 @@ export const demoWalletService = {
           type: 'issued' as const,
           creditType: 'discount' as const,
           amount: creditsToIssue,
-          reason: `Subscription signup reward - ${creditsToIssue} Discount Vouchers issued`,
-          source: 'demo'
+          reason: `Subscription signup reward - ${creditsToIssue} ${creditCategory} Discount Credits issued`,
+          source: 'demo',
+          creditCategory,
+          creditValue,
+          usableFor
         }
       ];
 
       const updatedLedger = [...currentLedger, ...newLedgerEntries];
 
-      // Update user metadata
+      // Update user metadata with successful payment record
+      const demoRecordId = `TXN-DEMO-${Math.floor(100000 + Math.random() * 900000)}`;
+      const demo_subscription_payment_record = {
+        transaction_id: demoRecordId,
+        payment_status: 'success',
+        planName,
+        planPrice: `₹${planPrice}`,
+        planType,
+        subscription_source: 'demo',
+        payment_type: 'demo_wallet',
+        activated_at: new Date().toISOString()
+      };
+
       user.user_metadata = {
         ...user.user_metadata,
         planName,
@@ -223,8 +225,9 @@ export const demoWalletService = {
         subscriptionStatus: 'active',
         subscription_source: 'demo',
         payment_type: 'demo_wallet',
+        subscription_payment_record: demo_subscription_payment_record,
         demo_wallet_balance: newDemoBalance,
-        demo_transactions,
+        demo_transactions: demoTransactions,
         ledger: updatedLedger,
         discount_credits: (user.user_metadata?.discount_credits ?? 0) + creditsToIssue,
         weekly_eligible_entry_count: 1,
@@ -244,6 +247,11 @@ export const demoWalletService = {
         year: 'numeric'
       });
 
+      const isInternational = planType === 'international';
+      const creditCategory = isInternational ? 'international' : 'domestic';
+      const creditValue = isInternational ? 5000 : 500;
+      const usableFor = isInternational ? 'international_only' : 'domestic_only';
+
       const newLedgerEntries = [
         {
           id: `TXN-TRC-${Math.floor(100000 + Math.random() * 900000)}`,
@@ -252,7 +260,10 @@ export const demoWalletService = {
           creditType: 'lucky_draw' as const,
           amount: 1,
           reason: 'Subscription activation entitlement token',
-          source: 'real'
+          source: 'real',
+          creditCategory: 'travel_reward',
+          creditValue: 1,
+          usableFor: 'lucky_draw'
         },
         {
           id: `TXN-DC-${Math.floor(100000 + Math.random() * 900000)}`,
@@ -260,12 +271,27 @@ export const demoWalletService = {
           type: 'issued' as const,
           creditType: 'discount' as const,
           amount: creditsToIssue,
-          reason: `Subscription signup reward - ${creditsToIssue} Discount Vouchers issued`,
-          source: 'real'
+          reason: `Subscription signup reward - ${creditsToIssue} ${creditCategory} Discount Credits issued`,
+          source: 'real',
+          creditCategory,
+          creditValue,
+          usableFor
         }
       ];
 
       const updatedLedger = [...currentLedger, ...newLedgerEntries];
+
+      const realRecordId = `TXN-REAL-${Math.floor(100000 + Math.random() * 900000)}`;
+      const real_subscription_payment_record = {
+        transaction_id: realRecordId,
+        payment_status: 'success',
+        planName,
+        planPrice: `₹${planPrice}`,
+        planType,
+        subscription_source: 'real',
+        payment_type: 'real_payment',
+        activated_at: new Date().toISOString()
+      };
 
       user.user_metadata = {
         ...user.user_metadata,
@@ -275,6 +301,7 @@ export const demoWalletService = {
         subscriptionStatus: 'active',
         subscription_source: 'real',
         payment_type: 'real_payment',
+        subscription_payment_record: real_subscription_payment_record,
         ledger: updatedLedger,
         discount_credits: (user.user_metadata?.discount_credits ?? 0) + creditsToIssue,
         weekly_eligible_entry_count: 1,

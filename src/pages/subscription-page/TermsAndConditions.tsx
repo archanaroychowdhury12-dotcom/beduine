@@ -1,10 +1,7 @@
-import { useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
-import { ChevronRight, Shield } from 'lucide-react';
+import { Shield } from 'lucide-react';
 import { Reveal } from './SubscriptionHelpers';
 
 export function TermsAndConditions() {
-  const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   const sections = [
     {
@@ -144,10 +141,10 @@ Platinum Plan (4 DC):
             <div className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.3em] neon-gold font-semibold mb-4">
               <div className="w-8 h-px bg-neon-gold" /> Legal & Policy <div className="w-8 h-px bg-neon-gold" />
             </div>
-            <h2 className="font-display text-4xl lg:text-5xl font-bold text-ink leading-tight">
+            <h2 className="font-display text-4xl lg:text-5xl font-bold text-white leading-tight">
               Terms & Conditions
             </h2>
-            <p className="mt-4 text-ink/70 text-sm max-w-2xl mx-auto font-mono">
+            <p className="mt-4 text-slate-400 text-sm max-w-2xl mx-auto font-mono">
               "Choose Your Plan. Try Your Luck. Travel Beyond Limits."
             </p>
           </div>
@@ -163,36 +160,18 @@ Platinum Plan (4 DC):
           </div>
         </Reveal>
 
-        {/* Accordion List */}
-        <div className="space-y-3">
+        {/* Terms List - Direct display without accordion */}
+        <div className="space-y-6">
           {sections.map((sec, index) => {
-            const isOpen = activeIndex === index;
             return (
               <Reveal key={sec.id} delay={index * 0.05}>
-                <div className="glass rounded-2xl border border-slate-line/80 overflow-hidden hover:neon-border-gold transition-all">
-                  <button
-                    onClick={() => setActiveIndex(isOpen ? null : index)}
-                    className="w-full flex items-center justify-between p-5 text-left font-display font-bold text-ink select-none outline-none focus:bg-white/10 cursor-pointer border-none bg-transparent"
-                    aria-expanded={isOpen}
-                  >
-                    <span>{sec.title}</span>
-                    <ChevronRight className={`w-4 h-4 text-[#0096C7] transition-transform ${isOpen ? 'rotate-90' : ''}`} />
-                  </button>
-                  <AnimatePresence initial={false}>
-                    {isOpen && (
-                      <motion.div
-                        initial={{ height: 0 }}
-                        animate={{ height: 'auto' }}
-                        exit={{ height: 0 }}
-                        transition={{ duration: 0.3, ease: 'easeInOut' }}
-                        className="overflow-hidden"
-                      >
-                        <div className="p-5 pt-0 border-t border-slate-line/50 text-ink/80 text-sm leading-relaxed whitespace-pre-line">
-                          {sec.content}
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
+                <div className="rounded-2xl border border-white/10 bg-slate-900/40 p-6 text-left space-y-3 hover:border-amber-500/20 transition-colors">
+                  <h3 className="font-display font-bold text-base text-white border-b border-white/10 pb-2">
+                    {sec.title}
+                  </h3>
+                  <div className="text-slate-300 text-sm leading-relaxed whitespace-pre-line pt-1">
+                    {sec.content}
+                  </div>
                 </div>
               </Reveal>
             );
@@ -201,7 +180,7 @@ Platinum Plan (4 DC):
 
         {/* Subject to policy banner */}
         <Reveal>
-          <div className="mt-8 text-center text-xs text-ink/50 leading-relaxed font-mono">
+          <div className="mt-8 text-center text-xs text-slate-500 leading-relaxed font-mono">
             * Official Disclaimer: Beduin Tour & Travels reserves the right to modify tour destinations, schedules, benefits, offers, and operational policies whenever necessary for business, operational, safety, legal, or logistical reasons. All decisions taken by the Company in such matters shall be considered final and binding.
             <br />
             <span className="mt-2 block font-bold text-[#0096C7] text-sm font-display">"Safar Jo Yaad Rahe."</span>
