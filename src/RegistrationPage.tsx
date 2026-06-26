@@ -27,7 +27,7 @@ const ALL_PLANS = [
     glow: 'rgba(148, 163, 184, 0.4)',
     icon: Star,
     benefits: [
-      '1 weekly eligible entry during subscription',
+      '1 TRC (Travel Reward Credit) for weekly reward participation',
       'Selected member tour benefit up to ₹3,000 (2N/3D)',
       '1 x 500-value Discount Credit issued once per subscription',
       'Up to 5% off on other paid tours',
@@ -43,7 +43,7 @@ const ALL_PLANS = [
     glow: 'rgba(16, 185, 129, 0.4)',
     icon: Award,
     benefits: [
-      '1 weekly eligible entry during subscription',
+      '1 TRC (Travel Reward Credit) for weekly reward participation',
       'Selected member tour benefit up to ₹5,000 (2N/3D)',
       '2 x 500-value Discount Credits issued once per subscription',
       'Up to 7% off on other paid tours',
@@ -59,7 +59,7 @@ const ALL_PLANS = [
     glow: 'rgba(245, 158, 11, 0.4)',
     icon: Crown,
     benefits: [
-      '1 weekly eligible entry during subscription',
+      '1 TRC (Travel Reward Credit) for weekly reward participation',
       'Selected member tour benefit up to ₹10,000 (3N/4D)',
       '4 x 500-value Discount Credits issued once per subscription',
       'Up to 10% off on other paid tours',
@@ -75,9 +75,9 @@ const ALL_PLANS = [
     glow: 'rgba(59, 130, 246, 0.4)',
     icon: Star,
     benefits: [
-      '1 weekly eligible entry during subscription',
+      '1 TRC (Travel Reward Credit) for weekly reward participation',
       'Selected member tour benefit up to ₹25,000 (3N/4D)',
-      '10 x 500-value Discount Credits issued once per subscription',
+      '1 x ₹5,000 International Discount Credit issued once per subscription',
       'Up to 5% off on other paid tours',
       'Name change – One time allowed',
       'Visa assistance included'
@@ -92,9 +92,9 @@ const ALL_PLANS = [
     glow: 'rgba(20, 184, 166, 0.4)',
     icon: Award,
     benefits: [
-      '1 weekly eligible entry during subscription',
+      '1 TRC (Travel Reward Credit) for weekly reward participation',
       'Selected member tour benefit up to ₹50,000 (4N/5D)',
-      '20 x 500-value Discount Credits issued once per subscription',
+      '2 x ₹5,000 International Discount Credits issued once per subscription',
       'Up to 7% off on other paid tours',
       'Name change – Two times allowed',
       'Visa assistance + Airport lounge access'
@@ -109,9 +109,9 @@ const ALL_PLANS = [
     glow: 'rgba(6, 182, 212, 0.4)',
     icon: Crown,
     benefits: [
-      '1 weekly eligible entry during subscription',
+      '1 TRC (Travel Reward Credit) for weekly reward participation',
       'Selected member tour benefit up to ₹1,00,000 (5N/6D)',
-      '40 x 500-value Discount Credits issued once per subscription',
+      '4 x ₹5,000 International Discount Credits issued once per subscription',
       'Up to 10% off on other paid tours',
       'Name change – Unlimited allowed',
       'Full visa processing + lounge access',
@@ -258,7 +258,7 @@ export default function RegistrationPage({ initialPlanName, onBack, prefilledDat
 *Member ID:* ${receipt.memberId}
 *Plan Chosen:* ${receipt.planName} (${receipt.planPrice})
 *Registration Date:* ${receipt.date}
-*Weekly Entry Token:* ${receipt.drawToken}
+*TRC (Travel Reward Credit) Token:* ${receipt.drawToken}
 
 *MEMBER DETAILS:*
 - *Name:* ${receipt.fullName}
@@ -309,7 +309,7 @@ _I confirm my registration and age eligibility (18+). Please guide me on payment
                 Welcome to <span className="text-[#FF6B6B] font-black">Beduine</span>
               </>
             }
-            description="Create your membership account to receive weekly eligible entry access, fixed travel Discount Credits, and curated destination benefits."
+            description="Create your membership account to receive TRC (Travel Reward Credit) tokens for weekly reward participation, fixed travel Discount Credits, and curated destination benefits."
             buttonText="Create Your Account"
             onButtonClick={() => setShowWelcome(false)}
             secondaryActionText="Already have an account? Login Here"
@@ -424,12 +424,12 @@ _I confirm my registration and age eligibility (18+). Please guide me on payment
 
             <div className="md:col-span-4 pt-6 md:pt-0 md:pl-8 flex flex-col justify-between items-center text-center">
               <div className="w-full">
-                <span className="block text-[9px] uppercase tracking-wider text-slate-400 font-mono mb-2 font-bold">Weekly Entry Token</span>
+                <span className="block text-[9px] uppercase tracking-wider text-slate-400 font-mono mb-2 font-bold">TRC (Travel Reward Credit) Token</span>
                 <div className="py-2.5 px-4 bg-rose-50/50 border border-dashed border-[#FF6B6B]/40 rounded-xl inline-block font-mono text-sm font-bold tracking-widest text-[#FF6B6B] shadow-inner">
                   {receipt.drawToken}
                 </div>
                 <div className="text-[9px] text-amber-500 mt-2 font-bold">
-                  ★ Weekly Sunday Entry Active ★
+                  ★ TRC Active for Weekly Selection ★
                 </div>
               </div>
 

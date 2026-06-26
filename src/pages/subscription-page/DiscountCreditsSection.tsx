@@ -14,21 +14,26 @@ export function DiscountCreditsSection() {
       rule: '1 Credit = 1 Entry in the weekly Travel Reward selection',
       details: ['Automatically added upon payment verification', 'Used every Sunday to activate draw entry', 'Ticket ID confirmed and locked for that week', 'No extra credits can be purchased - fair chance for all'] },
     { type: 'DC', name: 'Discount Credits', icon: CreditCard, accent: 'teal',
-      desc: 'These act as the protective floor for non-winners. If a user does not win, these credits allow them to claim a flat ₹500 off per tour booking.',
+      desc: 'These act as the protective floor for non-winners. If a user does not win, these credits allow them to claim a flat discount off per tour booking.',
       rule: '1 Tour Booking = 1 Discount Credit applied',
-      details: ['Domestic: ₹500 discount per credit (Up to ₹2,000 safety floor)', 'International: ₹500 discount per credit (Up to ₹20,000 safety floor)', 'Credits valid for 12 months (up to subscription expiry)', 'Credits visible on your digital dashboard'] },
+      details: [
+        'Domestic members receive ₹500-value Domestic Discount Credits.',
+        'International members receive ₹5,000-value International Discount Credits.',
+        'Domestic and International credits cannot be cross-used.',
+        'Credits valid for 12 months (up to subscription expiry)'
+      ] },
   ];
 
   const domesticCredits = [
-    { plan: 'Silver', price: '₹499', ldc: '1', dc: '₹500', total: '₹500', color: 'from-slate-500 to-slate-700', image: '/images/sundarbans_mangrove_1779521789593.png' },
-    { plan: 'Gold', price: '₹799', ldc: '1', dc: '₹1,000', total: '₹1,000', color: 'from-teal-400 to-emerald-600', image: '/images/darjeeling_tea_1779521805614.png' },
-    { plan: 'Platinum', price: '₹1,499', ldc: '1', dc: '₹2,000', total: '₹2,000', color: 'from-neon-gold to-gold-deep', image: '/images/kashmir_dal_lake_1779521728036.png' },
+    { plan: 'Silver', price: '₹499', ldc: '1', dc: '1 × ₹500', total: '₹500', color: 'from-slate-500 to-slate-700', image: '/images/sundarbans_mangrove_1779521789593.png' },
+    { plan: 'Gold', price: '₹799', ldc: '1', dc: '2 × ₹500', total: '₹1,000', color: 'from-teal-400 to-emerald-600', image: '/images/darjeeling_tea_1779521805614.png' },
+    { plan: 'Platinum', price: '₹1,499', ldc: '1', dc: '4 × ₹500', total: '₹2,000', color: 'from-neon-gold to-gold-deep', image: '/images/kashmir_dal_lake_1779521728036.png' },
   ];
 
   const intlCredits = [
-    { plan: 'Silver', price: '₹4,999', ldc: '1', dc: '₹5,000', total: '₹5,000', color: 'from-sky-400 to-blue-600', image: '/images/nepal.png' },
-    { plan: 'Gold', price: '₹7,999', ldc: '1', dc: '₹10,000', total: '₹10,000', color: 'from-emerald-400 to-teal-600', image: '/images/thailand.png' },
-    { plan: 'Platinum', price: '₹14,999', ldc: '1', dc: '₹20,000', total: '₹20,000', color: 'from-cyan via-cyan-bright to-cyan-deep', image: '/images/vietnam.png' },
+    { plan: 'Silver', price: '₹4,999', ldc: '1', dc: '1 × ₹5,000', total: '₹5,000', color: 'from-sky-400 to-blue-600', image: '/images/nepal.png' },
+    { plan: 'Gold', price: '₹7,999', ldc: '1', dc: '2 × ₹5,000', total: '₹10,000', color: 'from-emerald-400 to-teal-600', image: '/images/thailand.png' },
+    { plan: 'Platinum', price: '₹14,999', ldc: '1', dc: '4 × ₹5,000', total: '₹20,000', color: 'from-cyan via-cyan-bright to-cyan-deep', image: '/images/vietnam.png' },
   ];
 
   const currentCredits = activeTab === 'domestic' ? domesticCredits : intlCredits;

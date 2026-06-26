@@ -607,6 +607,23 @@ export function Footer({ setView }: FooterProps) {
             <span className="text-[10px] text-amber-500/80 font-semibold">
               ⚠️ 18+ Membership Required. Beduine operates a travel membership & reward program. All benefits, discounts, and travel services are subject to company policies and terms.
             </span>
+            <div className="mt-3.5 flex flex-wrap justify-center items-center gap-x-3 gap-y-1.5 text-[11px] font-sans text-cyan">
+              <a href="/terms" onClick={(e) => handleLinkClick(e, 'terms')} className="hover:text-white transition-all underline">Terms & Conditions</a>
+              <span className="text-slate-800">•</span>
+              <a href="/privacy-policy" onClick={(e) => handleLinkClick(e, 'privacy-policy')} className="hover:text-white transition-all underline">Privacy Policy</a>
+              <span className="text-slate-800">•</span>
+              <a href="/refund-policy" onClick={(e) => handleLinkClick(e, 'refund-policy')} className="hover:text-white transition-all underline">Refund Policy</a>
+              <span className="text-slate-800">•</span>
+              <a href="/cancellation-policy" onClick={(e) => handleLinkClick(e, 'cancellation-policy')} className="hover:text-white transition-all underline">Cancellation Policy</a>
+              <span className="text-slate-800">•</span>
+              <a href="/membership-rules" onClick={(e) => handleLinkClick(e, 'membership-rules')} className="hover:text-white transition-all underline">Membership Rules</a>
+              <span className="text-slate-800">•</span>
+              <a href="/website-disclaimer" onClick={(e) => handleLinkClick(e, 'website-disclaimer')} className="hover:text-white transition-all underline">Website Disclaimer</a>
+              <span className="text-slate-800">•</span>
+              <a href="/cookie-policy" onClick={(e) => handleLinkClick(e, 'cookie-policy')} className="hover:text-white transition-all underline">Cookie Policy</a>
+              <span className="text-slate-800">•</span>
+              <a href="/affiliate-agent-policy" onClick={(e) => handleLinkClick(e, 'affiliate-agent-policy')} className="hover:text-white transition-all underline">Affiliate / Agent Partner Policy</a>
+            </div>
           </div>
           <div className="mt-3 flex flex-wrap justify-center gap-x-4 gap-y-1 text-[10px] text-[#AFC0CA]/35 font-mono">
             <span>Secure Payment</span>

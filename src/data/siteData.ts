@@ -44,7 +44,7 @@ export const PLANS = [
     image: '/images/sundarbans_mangrove_1779521789593.png',
     imageLabel: 'Sundarbans - Boat Safari',
     destinations: ['Sundarban', 'Digha', 'Mousuni Island', 'Purulia'],
-    benefits: ['1 Travel Reward Credit (TRC)', 'Eligible for weekly lucky draw', '1 Domestic Discount Credit (₹500)', 'Up to 5% off on paid domestic tours', '12-month subscription validity', '18+ Membership Only'],
+    benefits: ['1 Travel Reward Credit (TRC)', 'Eligible for weekly reward selection', '1 Domestic Discount Credit (₹500)', 'Up to 5% off on paid domestic tours', '12-month subscription validity', '18+ Membership Only'],
   },
   {
     name: 'Gold', price: 799, tagline: 'Balanced Choice', icon: Award,
@@ -54,7 +54,7 @@ export const PLANS = [
     image: '/images/darjeeling_tea_1779521805614.png',
     imageLabel: 'Darjeeling - Tea Gardens',
     destinations: ['Darjeeling', 'Dooars', 'Puri', 'Daring Bari'],
-    benefits: ['1 Travel Reward Credit (TRC)', 'Eligible for weekly lucky draw', '2 Domestic Discount Credits (₹1,000)', 'Up to 7% off on paid domestic tours', 'One-time family name change allowed', '18+ Membership Only'],
+    benefits: ['1 Travel Reward Credit (TRC)', 'Eligible for weekly reward selection', '2 Domestic Discount Credits (₹1,000)', 'Up to 7% off on paid domestic tours', 'One-time family name change allowed', '18+ Membership Only'],
   },
   {
     name: 'Platinum', price: 1499, tagline: 'Premium Experience', icon: Crown,
@@ -68,7 +68,7 @@ export const PLANS = [
     destinations: ['Kashmir', 'Goa', 'Sikkim', 'Himachal (Shimla+Manali)'],
     benefits: [
       '1 Travel Reward Credit (TRC)',
-      'Eligible for weekly lucky draw',
+      'Eligible for weekly reward selection',
       '4 Domestic Discount Credits (₹2,000)',
       'Up to 10% off on paid domestic tours',
       'Two family name changes allowed',
@@ -86,7 +86,7 @@ export const INTL_PLANS = [
     image: '/images/nepal.png',
     imageLabel: 'Nepal - Valley & Peaks',
     destinations: ['Nepal', 'Bhutan'],
-    benefits: ['1 Travel Reward Credit (TRC)', 'Eligible for weekly lucky draw', '1 International Discount Credit (₹5,000)', 'Up to 5% off on paid international tours', 'One-time family name change allowed', '18+ Membership Only'],
+    benefits: ['1 Travel Reward Credit (TRC)', 'Eligible for weekly reward selection', '1 International Discount Credit (₹5,000)', 'Up to 5% off on paid international tours', 'One-time family name change allowed', '18+ Membership Only'],
   },
   {
     name: 'Gold', price: 7999, tagline: 'Premium Explorer', icon: Plane,
@@ -96,7 +96,7 @@ export const INTL_PLANS = [
     image: '/images/thailand.png',
     imageLabel: 'Thailand - Temples & Beaches',
     destinations: ['Thailand', 'Bali (Indonesia)'],
-    benefits: ['1 Travel Reward Credit (TRC)', 'Eligible for weekly lucky draw', '2 International Discount Credits (₹10,000)', 'Up to 7% off on paid international tours', 'Two family name changes allowed', '18+ Membership Only'],
+    benefits: ['1 Travel Reward Credit (TRC)', 'Eligible for weekly reward selection', '2 International Discount Credits (₹10,000)', 'Up to 7% off on paid international tours', 'Two family name changes allowed', '18+ Membership Only'],
   },
   {
     name: 'Platinum', price: 14999, tagline: 'Ultimate World Pass', icon: Rocket,
@@ -106,7 +106,7 @@ export const INTL_PLANS = [
     image: '/images/vietnam.png',
     imageLabel: 'Vietnam - Bays & Cities',
     destinations: ['Dubai', 'Vietnam'],
-    benefits: ['1 Travel Reward Credit (TRC)', 'Eligible for weekly lucky draw', '4 International Discount Credits (₹20,000)', 'Up to 10% off on paid international tours', 'Unlimited name changes allowed', '18+ Membership Only'],
+    benefits: ['1 Travel Reward Credit (TRC)', 'Eligible for weekly reward selection', '4 International Discount Credits (₹20,000)', 'Up to 10% off on paid international tours', 'Unlimited name changes allowed', '18+ Membership Only'],
   },
 ];
 
@@ -127,39 +127,39 @@ export const AUDIT_REPORTS = [
 ];
 
 export const DESTINATIONS = [
-  { name: 'Sundarbans', tag: 'Tiger Reserve - Mangrove Boats', duration: '2N/3D', rating: 4.7, season: 'Oct - Mar', img: '/images/sundarbans_mangrove_premium.png', category: 'escapes', planBadge: 'Silver+' },
-  { name: 'Bakkhali Beach', tag: 'Casuarina Shore - Delta Sunset', duration: '1N/2D', rating: 4.6, season: 'Oct - Apr', img: '/images/bakkhali_beach_premium.png', category: 'escapes', planBadge: 'Silver+' },
+  // Domestic Escapes (Silver+)
+  { name: 'Sundarban', tag: 'Tiger Reserve - Mangrove Boats', duration: '2N/3D', rating: 4.7, season: 'Oct - Mar', img: '/images/sundarbans_mangrove_premium.png', category: 'escapes', planBadge: 'Silver+' },
+  { name: 'Digha', tag: 'Casuarina Shore - Sea Breeze', duration: '1N/2D', rating: 4.6, season: 'Oct - Apr', img: '/images/bakkhali_beach_premium.png', category: 'escapes', planBadge: 'Silver+' },
   { name: 'Mousuni Island', tag: 'Seaside Camp - Huts & Palms', duration: '1N/2D', rating: 4.5, season: 'Nov - Mar', img: '/images/mousuni_island_premium.png', category: 'escapes', planBadge: 'Silver+' },
-  { name: 'Mukutmanipur', tag: 'Hills, Forests & Kangsabati Dam', duration: '1N/2D', rating: 4.5, season: 'Oct - Mar', img: '/images/mukutmanipur_premium.png', category: 'escapes', planBadge: 'Silver+' },
+  { name: 'Purulia', tag: 'Hills, Forests & Tribal Heritage', duration: '1N/2D', rating: 4.5, season: 'Oct - Mar', img: '/images/mukutmanipur_premium.png', category: 'escapes', planBadge: 'Silver+' },
+
+  // Domestic Trails (Gold+)
   { name: 'Darjeeling', tag: 'Tiger Hill Sunrise - Tea Estates', duration: '3N/4D', rating: 4.8, season: 'Mar - Jun', img: '/images/darjeeling_tea_1779521805614.png', category: 'trails', planBadge: 'Gold+' },
-  { name: 'Dooars Safari', tag: 'Forest Huts - River Wilds', duration: '2N/3D', rating: 4.6, season: 'Sep - Apr', img: '/images/dooars_safari.png', category: 'trails', planBadge: 'Gold+' },
-  { name: 'Shimla & Manali', tag: 'Mall Road - Solang Valley Adventure', duration: '5N/6D', rating: 4.9, season: 'Oct - May', img: '/images/himachal_hills.png', category: 'trails', planBadge: 'Platinum+' },
-  { name: 'Kashmir', tag: 'Paradise on Earth - Dal Lake & Houseboats', duration: '4N/5D', rating: 4.9, season: 'Apr - Oct', img: '/images/kashmir_dal_lake_1779521728036.png', category: 'trails', planBadge: 'Platinum+' },
-  { name: 'Vizag & Araku', tag: 'Araku Coffee Gardens & Borra Caves', duration: '3N/4D', rating: 4.7, season: 'Oct - Mar', img: '/images/vizag_araku.png', category: 'trails', planBadge: 'Gold+' },
-  { name: 'Rajasthan Royal', tag: 'Jaipur - Udaipur - Desert Dunes', duration: '5N/6D', rating: 4.8, season: 'Oct - Mar', img: '/images/rajasthan_palace_1779521744228.png', category: 'royal', planBadge: 'Gold+' },
-  { name: 'Kerala Backwaters', tag: 'Houseboats - Munnar Hills', duration: '4N/5D', rating: 4.9, season: 'Sep - Mar', img: '/images/kerala_houseboat_1779521772928.png', category: 'royal', planBadge: 'Gold+' },
-  { name: 'Puri & Konark', tag: 'Sun Temple - Golden Beach', duration: '3N/4D', rating: 4.7, season: 'Oct - Mar', img: '/images/puri_konark.png', category: 'royal', planBadge: 'Gold+' },
+  { name: 'Dooars', tag: 'Forest Huts - Wildlife Safari', duration: '2N/3D', rating: 4.6, season: 'Sep - Apr', img: '/images/dooars_safari.png', category: 'trails', planBadge: 'Gold+' },
+  { name: 'Puri', tag: 'Jagannath Temple - Golden Beach', duration: '3N/4D', rating: 4.7, season: 'Oct - Mar', img: '/images/puri_konark.png', category: 'trails', planBadge: 'Gold+' },
+  { name: 'Daring Bari', tag: 'Kashmir of Odisha - Pine Forests', duration: '2N/3D', rating: 4.6, season: 'Nov - Feb', img: '/images/waterfall_bg.png', category: 'trails', planBadge: 'Gold+' },
+
+  // Domestic Royal (Platinum+)
+  { name: 'Kashmir', tag: 'Paradise on Earth - Dal Lake & Houseboats', duration: '4N/5D', rating: 4.9, season: 'Apr - Oct', img: '/images/kashmir_dal_lake_1779521728036.png', category: 'royal', planBadge: 'Platinum+' },
   { name: 'Goa', tag: 'Sun-kissed Beaches - Heritage & Nightlife', duration: '3N/4D', rating: 4.8, season: 'Oct - May', img: '/images/goa_beaches.png', category: 'royal', planBadge: 'Platinum+' },
-  { name: 'Dubai', tag: 'Burj Khalifa - Desert Safaris', duration: '4N/5D', rating: 4.9, season: 'Nov - Mar', img: '/images/dubai_skyline_1779539448313.png', category: 'intl', planBadge: 'Platinum+' },
-  { name: 'Singapore', tag: 'Sentosa - Gardens by the Bay', duration: '4N/5D', rating: 4.8, season: 'Year-round', img: '/images/singapore_skyline_1779539502293.png', category: 'intl', planBadge: 'Platinum+' },
-  { name: 'Maldives', tag: 'Overwater Bungalows - Reefs', duration: '4N/5D', rating: 4.9, season: 'Nov - Apr', img: '/images/maldives_overwater_1779539482305.png', category: 'intl', planBadge: 'Platinum+' },
-  { name: 'Thailand', tag: 'Bangkok Temples & Pattaya Beaches', duration: '4N/5D', rating: 4.7, season: 'Nov - Apr', img: '/images/thailand.png', category: 'intl', planBadge: 'Platinum+' },
-  { name: 'Sri Lanka', tag: 'Sigiriya Rock Fortress & Kandy Hills', duration: '4N/5D', rating: 4.6, season: 'Dec - Apr', img: '/images/sri_lanka.png', category: 'intl', planBadge: 'Platinum+' },
-  { name: 'Nepal', tag: 'Kathmandu Valley & Himalayan Pokhara', duration: '3N/4D', rating: 4.7, season: 'Sep - Nov', img: '/images/nepal.png', category: 'intl', planBadge: 'Platinum+' },
-  { name: 'Malaysia', tag: 'Kuala Lumpur Skyline & Langkawi', duration: '4N/5D', rating: 4.7, season: 'Year-round', img: '/images/malaysia.png', category: 'intl', planBadge: 'Platinum+' },
-  { name: 'Bali', tag: 'Ubud Rice Terraces & Uluwatu Temple', duration: '4N/5D', rating: 4.9, season: 'Apr - Oct', img: '/images/bali.png', category: 'intl', planBadge: 'Platinum+' },
-  { name: 'Vietnam', tag: 'Halong Bay Cruise & Hanoi Old Quarter', duration: '5N/6D', rating: 4.8, season: 'Nov - Apr', img: '/images/vietnam.png', category: 'intl', planBadge: 'Platinum+' },
-  { name: 'Europe', tag: 'Paris Eiffel Tower & Swiss Alps', duration: '7N/8D', rating: 4.9, season: 'May - Sep', img: '/images/europe.png', category: 'intl', planBadge: 'Platinum+' },
-  { name: 'Turkey', tag: 'Cappadocia Balloons & Pamukkale Pools', duration: '5N/6D', rating: 4.8, season: 'Apr - Oct', img: '/images/turkey.png', category: 'intl', planBadge: 'Platinum+' },
-  { name: 'Japan', tag: 'Tokyo Neon & Kyoto Cherry Blossoms', duration: '6N/7D', rating: 4.9, season: 'Mar - May', img: '/images/japan.png', category: 'intl', planBadge: 'Platinum+' },
+  { name: 'Sikkim', tag: 'Himalayan Valleys - Buddhist Monasteries', duration: '4N/5D', rating: 4.8, season: 'Mar - Jun', img: '/images/kashmir_valley_card.png', category: 'royal', planBadge: 'Platinum+' },
+  { name: 'Himachal', tag: 'Mall Road - Solang Valley Adventure', duration: '5N/6D', rating: 4.9, season: 'Oct - May', img: '/images/himachal_hills.png', category: 'royal', planBadge: 'Platinum+' },
+
+  // International (intl)
+  { name: 'Nepal', tag: 'Kathmandu Valley & Himalayan Pokhara', duration: '3N/4D', rating: 4.7, season: 'Sep - Nov', img: '/images/nepal.png', category: 'intl', planBadge: 'Silver Int+' },
+  { name: 'Bhutan', tag: 'Land of Thunder Dragon - Paro Taktsang', duration: '4N/5D', rating: 4.7, season: 'Oct - Dec', img: '/images/nepal.png', category: 'intl', planBadge: 'Silver Int+' },
+  { name: 'Thailand', tag: 'Bangkok Temples & Pattaya Beaches', duration: '4N/5D', rating: 4.7, season: 'Nov - Apr', img: '/images/thailand.png', category: 'intl', planBadge: 'Gold Int+' },
+  { name: 'Bali', tag: 'Ubud Rice Terraces & Uluwatu Temple', duration: '4N/5D', rating: 4.9, season: 'Apr - Oct', img: '/images/bali.png', category: 'intl', planBadge: 'Gold Int+' },
+  { name: 'Dubai', tag: 'Burj Khalifa - Desert Safaris', duration: '4N/5D', rating: 4.9, season: 'Nov - Mar', img: '/images/dubai_skyline_1779539448313.png', category: 'intl', planBadge: 'Platinum Int+' },
+  { name: 'Vietnam', tag: 'Halong Bay Cruise & Hanoi Old Quarter', duration: '5N/6D', rating: 4.8, season: 'Nov - Apr', img: '/images/vietnam.png', category: 'intl', planBadge: 'Platinum Int+' },
 ];
 
 export const WINNERS_DATA = [
   { name: 'Ananya Das', plan: 'Platinum', dest: 'Kashmir', week: 'Week 42', img: '/images/winner_ananya_das.png', destImg: '/images/kashmir_dal_lake_1779521728036.png' },
   { name: 'Rajesh Kumar', plan: 'Gold', dest: 'Darjeeling', week: 'Week 41', img: '/images/winner_rajesh_kumar.png', destImg: '/images/darjeeling_tea_1779521805614.png' },
-  { name: 'Priya Sen', plan: 'Silver', dest: 'Sundarbans', week: 'Week 40', img: '/images/winner_priya_sen.png', destImg: '/images/sundarbans_mangrove_1779521789593.png' },
-  { name: 'Arjun Roy', plan: 'Platinum', dest: 'Kerala', week: 'Week 39', img: '/images/winner_arjun_roy.png', destImg: '/images/kerala_houseboat_1779521772928.png' },
-  { name: 'Meera Bose', plan: 'Gold', dest: 'Rajasthan', week: 'Week 38', img: '/images/winner_meera_bose.png', destImg: '/images/rajasthan_palace_1779521744228.png' },
+  { name: 'Priya Sen', plan: 'Silver', dest: 'Sundarban', week: 'Week 40', img: '/images/winner_priya_sen.png', destImg: '/images/sundarbans_mangrove_1779521789593.png' },
+  { name: 'Arjun Roy', plan: 'Platinum', dest: 'Goa', week: 'Week 39', img: '/images/winner_arjun_roy.png', destImg: '/images/goa_beaches.png' },
+  { name: 'Meera Bose', plan: 'Gold', dest: 'Puri', week: 'Week 38', img: '/images/winner_meera_bose.png', destImg: '/images/puri_konark.png' },
   { name: 'Subhadeep Ghosh', plan: 'Platinum', dest: 'Himachal', week: 'Week 37', img: '/images/winner_subhadeep_ghosh.png', destImg: '/images/himachal_hills.png' },
 ];
 

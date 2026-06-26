@@ -43,7 +43,7 @@ const REVIEWS_DATA: Review[] = [
     plan: 'Gold Winner',
     dest: 'Darjeeling Hills',
     duration: '3N/4D Classic Tour',
-    compliment: 'I was skeptical about lucky draws, but Beduine proved me wrong. Our Darjeeling tour was arranged at a premium mountain view resort. The Himalayan toy train tickets were pre-booked, and the private cab driver was very polite. A wonderful experience overall!',
+    compliment: 'I was skeptical about travel rewards, but Beduine proved me wrong. Our Darjeeling tour was arranged at a premium mountain view resort. The Himalayan toy train tickets were pre-booked, and the private cab driver was very polite. A wonderful experience overall!',
     avatar: '/images/winner_rajesh_kumar.png',
     mainImg: '/images/darjeeling_tea_review.png',
     gallery: [
@@ -137,7 +137,7 @@ export function WinnerReviews() {
               </span>
             </h2>
             <p className="mt-6 text-slate-300/80 text-lg leading-relaxed">
-              Read real travel logs and photos uploaded by our lucky draw winners after returning from their subscription-sponsored luxury tours.
+              Read real travel logs and photos uploaded by our travel reward winners after returning from their subscription-sponsored luxury tours.
             </p>
           </div>
         </Reveal>

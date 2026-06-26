@@ -348,7 +348,7 @@ export default function LoginPage({ onBack, onLoginSuccess, initialMode = 'login
                         Welcome to <span className="text-[#FF6B6B] font-black">Beduine</span>
                       </>
                     }
-                    description="Create your membership account to receive weekly eligible entry access, fixed travel Discount Credits, and curated destination benefits."
+                    description="Create your membership account to receive TRC (Travel Reward Credit) tokens for weekly reward participation, fixed travel Discount Credits, and curated destination benefits."
                     buttonText="Create Your Account"
                     onButtonClick={() => setViewMode('signup-auth')}
                     secondaryActionText="Already have an account? Login Here"

@@ -58,7 +58,7 @@ export function TermsAndConditions() {
       id: 'E',
       title: 'E. Discount Credit (DC) Policy',
       content: `General Rules:
-30. 1 Discount Credit (DC) = 1 Person = ₹500 Discount.
+30. 1 Domestic Discount Credit (DC) = 1 Person = ₹500 Discount. 1 International Discount Credit (DC) = 1 Person = ₹5,000 Discount.
 31. A maximum of one (1) Discount Credit can be used per person per tour booking.
 32. Multiple Discount Credits cannot be combined for a single person's tour cost.
 33. Discount Credits are applicable only on Beduin Tour & Travels Paid Tour Packages.
@@ -67,21 +67,21 @@ export function TermsAndConditions() {
 36. Unused Discount Credits automatically expire upon subscription expiry.
 
 Silver Plan (1 DC):
-37. 1 DC = 1 Tour Booking (Subscriber Only). The subscriber may use the credit for one paid tour booking and receive a flat ₹500 discount.
+37. 1 DC = 1 Tour Booking (Subscriber Only). The subscriber may use the credit for one paid tour booking and receive a flat ₹500 discount (for Domestic members) or ₹5,000 discount (for International members).
 
 Gold Plan (2 DC):
-38. Option A â€“ Two Separate Tours:
-   - 2 DC may be used for two separate tour bookings by the subscriber, OR one approved Name Change for an eligible family member.
-39. Option B â€“ Two Persons in One Tour:
-   - The subscriber may use 2 DC for Subscriber + 1 Family Member/Friend in the same tour. (1 DC = Subscriber, 1 DC = Additional Person). Example: Subscriber + Spouse, Subscriber + Child, Subscriber + Friend.
+38. Option A – Two Separate Tours:
+   - 2 DC may be used for two separate tour bookings by the subscriber, OR one approved Name Change for an eligible family member. Value is ₹500 per DC for Domestic or ₹5,000 per DC for International.
+39. Option B – Two Persons in One Tour:
+   - The subscriber may use 2 DC for Subscriber + 1 Family Member/Friend in the same tour. Value is ₹500 per DC for Domestic or ₹5,000 per DC for International.
 
 Platinum Plan (4 DC):
-40. Option A â€“ Four Separate Tours:
-   - 4 DC may be used for four separate tour bookings by the subscriber, OR up to two approved Name Changes for eligible family members.
-41. Option B â€“ Four Persons in One Tour:
-   - The subscriber may use 4 DC for Subscriber + 3 Family Members/Friends in the same tour (e.g., Subscriber + Spouse + Two Children, Subscriber + Three Friends, Subscriber + Two Family Members + One Friend).
-42. Option C â€“ Two Persons in Two Separate Tours:
-   - The subscriber may use 4 DC for Tour 1 (Subscriber + 1 Family Member/Friend) and Tour 2 (Subscriber + 1 Family Member/Friend).`
+40. Option A – Four Separate Tours:
+   - 4 DC may be used for four separate tour bookings by the subscriber, OR up to two approved Name Changes for eligible family members. Value is ₹500 per DC for Domestic or ₹5,000 per DC for International.
+41. Option B – Four Persons in One Tour:
+   - The subscriber may use 4 DC for Subscriber + 3 Family Members/Friends in the same tour. Value is ₹500 per DC for Domestic or ₹5,000 per DC for International.
+42. Option C – Two Persons in Two Separate Tours:
+   - The subscriber may use 4 DC for Tour 1 (Subscriber + 1 Family Member/Friend) and Tour 2 (Subscriber + 1 Family Member/Friend). Value is ₹500 per DC for Domestic or ₹5,000 per DC for International.`
     },
     {
       id: 'F',

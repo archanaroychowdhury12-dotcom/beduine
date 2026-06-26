@@ -291,8 +291,8 @@ export function HowItWorks() {
   const steps = [
     { n: '01', icon: CreditCard, title: 'Choose Your Plan', desc: 'Select from our Silver, Gold, or Platinum tiers (domestic & international plans).', details: ['12-month validity', 'Clear credit options', '18+ membership only'], img: '/images/beduin_travel_hero_1779521651766.png' },
     { n: '02', icon: FileCheck2, title: 'Complete Verification', desc: 'Securely submit your inquiry and confirm age requirements to activate benefits.', details: ['WhatsApp Activation', '18+ age verification', 'Secure processing'], img: '/images/office_setup.png' },
-    { n: '03', icon: Wallet, title: 'Get Your Credits', desc: 'Get your Travel Reward Credit (TRC) token and Discount Credits (DCs) loaded.', details: ['1 TRC token received', '₹500 discount credits', 'Value floor guaranteed'], img: '/images/lucky_draw_ticket_1779521667122.png' },
-    { n: '04', icon: Gift, title: 'Travel & Save', desc: 'Enjoy weekly promotional winner benefits or apply discount credits on paid bookings.', details: ['Weekly winner draws', '₹500 off per booking', 'Non-cash travel benefits'], img: '/images/happy_family_travelers.png' },
+    { n: '03', icon: Wallet, title: 'Get Your Credits', desc: 'Get your Travel Reward Credit (TRC) token and Discount Credits (DCs) loaded.', details: ['1 TRC token received', 'Domestic: ₹500-value Domestic DCs', 'International: ₹5,000-value International DCs'], img: '/images/lucky_draw_ticket_1779521667122.png' },
+    { n: '04', icon: Gift, title: 'Travel & Save', desc: 'Enjoy weekly promotional winner benefits or apply discount credits on paid bookings.', details: ['Weekly winner draws', 'Credits cannot be cross-used', 'Non-cash travel benefits'], img: '/images/happy_family_travelers.png' },
   ];
   return (
     <section id="how" className="relative py-14 lg:py-20 overflow-hidden">
