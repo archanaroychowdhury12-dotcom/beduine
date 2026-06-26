@@ -24,3 +24,8 @@ dist-ssr
 *.sw?
 
 .vercel
+
+# Graphify cache (auto-generated, not needed in VCS)
+graphify-out/cache/
+graphify-out/.graphify_semantic_new.json
+graphify-out/.graphify_uncached.txt
