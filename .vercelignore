@@ -5,5 +5,6 @@ Initial_Scene_*
 node_modules
 dist
 public/images/map_3d_frames
+public/images/hero_bg_video.mp4
 *.bak
 *.log
