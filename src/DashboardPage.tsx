@@ -7,7 +7,7 @@ import {
   ChevronRight, User, Bell, ChevronLeft,
   LayoutDashboard, ShieldCheck, Tag, Route, Share2, Phone,
   MessageCircle, Trash2, Copy, FileText, CheckCircle2, Clock,
-  AlertTriangle, Lock, Unlock, RefreshCw, UserPlus, Download
+  AlertTriangle, Lock, Unlock, RefreshCw, UserPlus, Download, Plus, Info
 } from 'lucide-react';
 import { customTourService } from './services/customTourService';
 import { CustomTourForm } from './pages/main-website-tour-page/custom-tour/CustomTourForm';
@@ -1212,8 +1212,199 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack, 
 
   /* ==================== TAB RENDERERS ==================== */
 
+  const renderInactiveOverview = () => {
+    return (
+      <div className="space-y-6">
+        {/* Welcome Header and Demo Balance Container */}
+        <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
+          <div className="text-left">
+            <h1 className="text-slate-800 text-4xl font-black mt-1 leading-tight tracking-tight">
+              <span className="block text-slate-500 font-medium text-lg leading-normal font-sans">Welcome back,</span>
+              <span className="flex items-center gap-2 font-sans">{profileName} 👋</span>
+            </h1>
+            <p className="text-slate-500 text-sm mt-2 font-medium font-sans">
+              Start your journey with Beduine and unlock amazing travel rewards.
+            </p>
+          </div>
+
+          {/* Demo Balance Widget */}
+          {showDemoWallet && (
+            <div className="relative shrink-0 w-full md:w-72 bg-white border border-slate-200/80 rounded-[24px] shadow-[0_10px_30px_rgba(0,0,0,0.04)] p-4 text-left z-20 font-sans">
+              {/* Target Indicator dot at top-right corner to match screenshot */}
+              <div className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-[#FF6B6B]" />
+
+              <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-9 h-9 rounded-full bg-blue-50 flex items-center justify-center text-blue-500 shrink-0">
+                    <CreditCard className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">Demo Balance:</span>
+                    <span className="text-[15px] font-extrabold text-blue-600">₹{demoWalletBalance.toLocaleString('en-IN')}</span>
+                  </div>
+                </div>
+              </div>
+              <div className="pt-2.5 space-y-1.5">
+                <button
+                  onClick={async () => {
+                    const amountStr = prompt("Enter amount to add to Demo Wallet:", "5000");
+                    if (amountStr) {
+                      const amount = parseFloat(amountStr);
+                      if (!isNaN(amount) && amount > 0) {
+                        const res = await demoWalletService.addDemoBalance(user.id, amount);
+                        if (res.success) {
+                          setDemoWalletBalance(res.balance);
+                          const txns = await demoWalletService.getDemoTransactions(user.id);
+                          setDemoTransactions(txns);
+                          await supabase.auth.updateUser({
+                            data: {
+                              demo_wallet_balance: res.balance,
+                              demo_transactions: txns
+                            }
+                          });
+                          alert(res.message);
+                        } else {
+                          alert(res.message);
+                        }
+                      } else {
+                        alert("Invalid amount entered.");
+                      }
+                    }
+                  }}
+                  className="w-full text-left px-3 py-2 rounded-xl flex items-center gap-2.5 text-xs font-bold text-slate-600 hover:bg-slate-50 hover:text-slate-800 transition-colors border-none bg-transparent cursor-pointer"
+                >
+                  <Plus className="w-4 h-4 text-slate-400" />
+                  <span>Add Demo Balance</span>
+                </button>
+                <button
+                  onClick={() => setActiveTab('credits')}
+                  className="w-full text-left px-3 py-2 rounded-xl flex items-center gap-2.5 text-xs font-bold text-slate-600 hover:bg-slate-50 hover:text-slate-800 transition-colors border-none bg-transparent cursor-pointer"
+                >
+                  <Clock className="w-4 h-4 text-slate-400" />
+                  <span>View Logs</span>
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Big Banner Card */}
+        <div className="bg-white border border-slate-100 shadow-[0_8px_30px_rgba(16,35,63,0.03)] rounded-[28px] p-6 sm:p-8 flex flex-col md:flex-row items-center gap-6 sm:gap-8 text-left relative overflow-hidden bg-gradient-to-br from-white to-slate-50/20">
+          <div className="w-40 h-40 shrink-0 flex items-center justify-center bg-slate-50 rounded-2xl overflow-hidden p-2">
+            <img src="/images/login_suitcase.png" alt="Travel Luggage" className="w-full h-full object-contain" />
+          </div>
+          <div className="space-y-3.5 flex-1 font-sans">
+            <h2 className="text-2xl font-black text-slate-800 tracking-tight leading-tight">
+              Your travel membership is not active yet.
+            </h2>
+            <p className="text-xs text-slate-500 font-medium leading-relaxed max-w-xl">
+              Subscribe to a plan to unlock TRC, Discount Credits, member benefits and weekly reward participation.
+            </p>
+            <div className="flex flex-wrap gap-3 pt-2">
+              <button
+                onClick={() => setActiveTab('subscription')}
+                className="px-5 py-2.5 bg-[#FF6B6B] hover:bg-[#FF8E53] text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-all shadow-md shadow-rose-200 cursor-pointer border-none flex items-center gap-1.5 hover:-translate-y-0.5 active:translate-y-0"
+              >
+                Explore Plans <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+              <button
+                onClick={() => setActiveTab('subscription')}
+                className="px-5 py-2.5 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 font-bold text-xs uppercase tracking-wider rounded-xl transition-all cursor-pointer flex items-center gap-1.5 hover:border-slate-300"
+              >
+                How It Works <Info className="w-3.5 h-3.5 text-slate-400" />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* 4 Grid Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 font-sans">
+          {/* Card 1: Subscription Status */}
+          <div className="bg-white border border-slate-100 shadow-sm rounded-2xl p-5 text-left flex gap-4 hover:shadow-md transition-shadow">
+            <div className="w-10 h-10 rounded-full bg-rose-50 flex items-center justify-center shrink-0">
+              <Crown className="w-5 h-5 text-[#FF6B6B]" />
+            </div>
+            <div className="space-y-1">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider font-mono">Subscription Status</span>
+              <h3 className="text-base font-black text-slate-800 leading-tight">No Active Subscription</h3>
+              <p className="text-xs text-slate-500 leading-normal font-medium">
+                Choose a plan to get started and enjoy exclusive benefits.
+              </p>
+              <div className="pt-1.5">
+                <span className="inline-block px-2.5 py-0.5 rounded-full text-[9px] font-bold bg-rose-50 text-[#FF6B6B] border border-rose-100 uppercase tracking-wide">
+                  Inactive
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Card 2: TRC */}
+          <div className="bg-white border border-slate-100 shadow-sm rounded-2xl p-5 text-left flex gap-4 hover:shadow-md transition-shadow">
+            <div className="w-10 h-10 rounded-full bg-emerald-50 flex items-center justify-center shrink-0">
+              <Calendar className="w-5 h-5 text-emerald-550" />
+            </div>
+            <div className="space-y-1">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider font-mono">Travel Reward Credit (TRC)</span>
+              <h3 className="text-base font-black text-slate-800 leading-tight">No TRC Available</h3>
+              <p className="text-xs text-slate-500 leading-normal font-medium">
+                TRC will be issued after successful subscription purchase.
+              </p>
+              <div className="pt-1.5">
+                <span className="inline-block px-2.5 py-0.5 rounded-full text-[9px] font-bold bg-emerald-50 text-emerald-600 border border-emerald-100 uppercase tracking-wide">
+                  0 TRC
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Card 3: Discount Credits */}
+          <div className="bg-white border border-slate-100 shadow-sm rounded-2xl p-5 text-left flex gap-4 hover:shadow-md transition-shadow">
+            <div className="w-10 h-10 rounded-full bg-indigo-50 flex items-center justify-center shrink-0">
+              <CreditCard className="w-5 h-5 text-indigo-500" />
+            </div>
+            <div className="space-y-1">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider font-mono">Discount Credits</span>
+              <h3 className="text-base font-black text-slate-800 leading-tight">No Discount Credits</h3>
+              <p className="text-xs text-slate-500 leading-normal font-medium">
+                Discount Credits will be added after subscription activation.
+              </p>
+              <div className="pt-1.5">
+                <span className="inline-block px-2.5 py-0.5 rounded-full text-[9px] font-bold bg-indigo-50 text-indigo-500 border border-indigo-100 uppercase tracking-wide">
+                  0 CREDITS
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Card 4: Membership Status */}
+          <div className="bg-white border border-slate-100 shadow-sm rounded-2xl p-5 text-left flex gap-4 hover:shadow-md transition-shadow">
+            <div className="w-10 h-10 rounded-full bg-sky-50 flex items-center justify-center shrink-0">
+              <Shield className="w-5 h-5 text-sky-500" />
+            </div>
+            <div className="space-y-1">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider font-mono">Membership Status</span>
+              <h3 className="text-base font-black text-slate-800 leading-tight">Inactive</h3>
+              <p className="text-xs text-slate-500 leading-normal font-medium">
+                Your membership will become active after payment success.
+              </p>
+              <div className="pt-1.5">
+                <span className="inline-block px-2.5 py-0.5 rounded-full text-[9px] font-bold bg-sky-50 text-sky-600 border border-sky-100 uppercase tracking-wide">
+                  Inactive
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   // 1. OVERVIEW TAB
   const renderOverview = () => {
+    if (!planName) {
+      return renderInactiveOverview();
+    }
+
     return (
       <div className="space-y-6">
         {/* Sub Header Title inside Main content column */}
@@ -3589,6 +3780,85 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack, 
             initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
             className="flex flex-col gap-6"
           >
+            {!planName ? (
+              <>
+                {/* Start Your Journey */}
+                <div className="bg-white border border-slate-100 shadow-[0_8px_30px_rgba(16,35,63,0.03)] rounded-[28px] p-5 sm:p-6 text-left flex items-center justify-between gap-4 hover:shadow-md transition-shadow">
+                  <div className="flex-1 space-y-1.5 font-sans">
+                    <h3 className="text-sm sm:text-base font-black text-slate-800 leading-tight">Start Your Journey</h3>
+                    <p className="text-[11px] text-slate-500 leading-normal font-medium">
+                      Choose a subscription plan and begin your travel story today.
+                    </p>
+                    <button
+                      onClick={() => setActiveTab('subscription')}
+                      className="px-4 py-2.5 bg-[#FF6B6B] hover:bg-[#FF8E53] text-white font-bold text-[10px] uppercase tracking-wider rounded-xl transition-all shadow-md shadow-rose-100 cursor-pointer border-none flex items-center gap-1.5 mt-2.5 hover:-translate-y-0.5 active:translate-y-0"
+                    >
+                      View Subscription Plans <ArrowRight className="w-3 h-3" />
+                    </button>
+                  </div>
+                  <div className="w-20 h-20 shrink-0 flex items-center justify-center bg-slate-50 rounded-2xl overflow-hidden p-1 shadow-sm">
+                    <img src="/images/passport_journey.png" alt="Passport" className="w-full h-full object-contain" />
+                  </div>
+                </div>
+
+                {/* Popular Destinations */}
+                <div className="bg-white border border-slate-100 shadow-[0_8px_30px_rgba(16,35,63,0.03)] rounded-[28px] p-5 sm:p-6 text-left hover:shadow-md transition-shadow">
+                  <div className="flex justify-between items-center mb-4 font-sans">
+                    <h3 className="text-xs font-black uppercase tracking-wider text-slate-700">Popular Destinations</h3>
+                    <button
+                      onClick={() => setActiveTab('subscription')}
+                      className="text-[10px] font-bold text-blue-500 hover:underline bg-transparent border-none cursor-pointer uppercase tracking-wider"
+                    >
+                      View All
+                    </button>
+                  </div>
+                  <div className="space-y-4 font-sans">
+                    {/* Destination 1 */}
+                    <div className="flex items-center gap-3">
+                      <div className="w-16 h-12 rounded-xl overflow-hidden shrink-0 shadow-sm">
+                        <img src="/images/kashmir_dal_lake_1779521728036.png" alt="Kashmir Valley" className="w-full h-full object-cover" />
+                      </div>
+                      <div className="space-y-0.5">
+                        <h4 className="text-xs font-bold text-slate-800">Kashmir Valley</h4>
+                        <div className="text-[10px] text-slate-500 flex items-center gap-0.5 font-medium">
+                          <Compass className="w-2.5 h-2.5 text-slate-400" /> Paradise on Earth
+                        </div>
+                      </div>
+                    </div>
+                    {/* Destination 2 */}
+                    <div className="flex items-center gap-3">
+                      <div className="w-16 h-12 rounded-xl overflow-hidden shrink-0 shadow-sm">
+                        <img src="/images/goa_beaches.png" alt="Goa Beaches" className="w-full h-full object-cover" />
+                      </div>
+                      <div className="space-y-0.5">
+                        <h4 className="text-xs font-bold text-slate-800">Goa Beaches</h4>
+                        <div className="text-[10px] text-slate-500 flex items-center gap-0.5 font-medium">
+                          <Compass className="w-2.5 h-2.5 text-slate-400" /> Sun, Sand & Serenity
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Need Help? */}
+                <div className="bg-sky-50/40 border border-sky-100/60 shadow-[0_4px_20px_rgba(59,130,246,0.02)] rounded-[24px] p-5 text-left flex items-center gap-4 hover:shadow-md transition-shadow font-sans">
+                  <div className="w-10 h-10 rounded-full bg-white border border-sky-100 flex items-center justify-center shrink-0 shadow-sm text-blue-500">
+                    <Phone className="w-5 h-5" />
+                  </div>
+                  <div className="space-y-0.5 flex-1">
+                    <h4 className="text-xs font-black text-slate-800">Need Help?</h4>
+                    <p className="text-[10px] text-slate-500 leading-none font-medium">We are here for you!</p>
+                    <button
+                      onClick={() => setActiveTab('support')}
+                      className="text-[10px] font-bold text-blue-600 hover:underline bg-transparent border-none cursor-pointer mt-1.5 flex items-center gap-0.5 p-0"
+                    >
+                      Contact Support <ArrowRight className="w-2.5 h-2.5" />
+                    </button>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <>
             {/* Barcelona Hotspot card */}
             <div className="bg-white border border-slate-100 shadow-[0_8px_30px_rgba(16,35,63,0.03)] rounded-[28px] p-5 sm:p-6 text-left hover:shadow-md transition-shadow flex flex-col gap-4">
               <div className="flex items-center justify-between">
@@ -3664,8 +3934,48 @@ export default function DashboardPage({ user, onLogout, onBookPaidTour, onBack, 
                 ))}
               </div>
             </div>
+            </>
+            )}
           </motion.aside>
 
+        </div>
+
+        {/* ==================== PREMIUM FOOTER BAR ==================== */}
+        <div className="mt-8 pt-5 border-t border-slate-200/60 flex flex-col md:flex-row items-center justify-between gap-6 text-slate-400 text-[10px] font-medium font-sans">
+          <div className="flex flex-wrap items-center gap-6">
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-500 shrink-0">
+                <ShieldCheck className="w-4 h-4" />
+              </div>
+              <div className="text-left leading-tight">
+                <span className="block text-slate-700 font-extrabold text-[10px]">100% Secure Payments</span>
+                <span className="block text-slate-400 text-[8.5px] font-medium mt-0.5">Your payment is safe with us</span>
+              </div>
+            </div>
+            <div className="w-px h-6 bg-slate-200 hidden md:block" />
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center text-blue-500 shrink-0">
+                <Shield className="w-4 h-4" />
+              </div>
+              <div className="text-left leading-tight">
+                <span className="block text-slate-700 font-extrabold text-[10px]">Best Price Guarantee</span>
+                <span className="block text-slate-400 text-[8.5px] font-medium mt-0.5">We offer the best prices</span>
+              </div>
+            </div>
+            <div className="w-px h-6 bg-slate-200 hidden md:block" />
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 shrink-0">
+                <Phone className="w-4 h-4" />
+              </div>
+              <div className="text-left leading-tight">
+                <span className="block text-slate-700 font-extrabold text-[10px]">24/7 Customer Support</span>
+                <span className="block text-slate-400 text-[8.5px] font-medium mt-0.5">We are always here to help</span>
+              </div>
+            </div>
+          </div>
+          <div className="text-slate-400 font-semibold uppercase tracking-wider text-[9px] font-mono">
+            © 2025 Beduine Tour & Travels. All rights reserved.
+          </div>
         </div>
       </div>
     </div>

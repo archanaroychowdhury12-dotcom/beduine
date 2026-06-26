@@ -19,7 +19,6 @@ const VerifyCouponPage = lazy(() => import('./components/VerifyCouponPage'));
 
 const LegalCenterPage = lazy(() => import('./app/legal/page'));
 const PrivacyPolicyPage = lazy(() => import('./app/privacy-policy/page'));
-const TermsAndConditionsPage = lazy(() => import('./app/terms-and-conditions/page'));
 const RefundPolicyPage = lazy(() => import('./app/refund-policy/page'));
 const CancellationPolicyPage = lazy(() => import('./app/cancellation-policy/page'));
 const MembershipRulesPage = lazy(() => import('./app/membership-rules/page'));
