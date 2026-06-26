@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /dashboard
+Disallow: /admin
+Disallow: /paid-tour
+
+Sitemap: https://beduine.in/sitemap.xml

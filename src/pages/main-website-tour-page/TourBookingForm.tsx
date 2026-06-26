@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { TourPackage, Traveler, PickupInfo, Voucher, PaymentDetails, BookingConfirmation, PriceCalculation, CreditLedgerEntry } from '../../types';
 import { getAvailableCredits, validateCreditApplication, getCategoryErrorMessage, CREDIT_VALUE_DOMESTIC, CREDIT_VALUE_INTERNATIONAL } from '../../utils/creditHelpers';
+import { validateCreditRedemptionServerSide } from '../../utils/creditValidation';
 import { TOUR_PACKAGES } from '../../data/tours';
 import { getPlanDetails } from '../../data/siteData';
 import { ChevronRight, Check, Clock, X, User, ShieldCheck, Crown } from 'lucide-react';
@@ -370,6 +371,24 @@ export const TourBookingForm: React.FC<TourBookingFormProps> = ({
   const runPaymentSteps = () => {
     setBookingStage('processing');
     setPaymentDetails(p => ({ ...p, status: 'processing' }));
+
+    // Server-side DC category validation before processing
+    if (currentUser && appliedDiscountCredits > 0) {
+      const serverValidation = validateCreditRedemptionServerSide({
+        appliedCredits: appliedDiscountCredits,
+        creditCategory: creditSelection || selectedTour.category,
+        tourCategory: selectedTour.category,
+        ledger: currentUser.ledger || [],
+        travelerCount: travelers.length,
+      });
+      if (!serverValidation.valid) {
+        setBookingStage('booking');
+        setPaymentDetails(p => ({ ...p, status: 'pending' }));
+        setCreditError(serverValidation.error || 'Credit validation failed. Please review your discount credits.');
+        setAppliedDiscountCredits(0);
+        return;
+      }
+    }
 
     const steps = [
       'Authenticating secure BEDUINE payment transmission...',

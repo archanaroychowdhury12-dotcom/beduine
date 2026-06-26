@@ -126,7 +126,7 @@ const mapSupabaseUser = (supabaseUser: any) => {
     subscription_source: hasActiveRecord ? (record.subscription_source || supabaseUser.user_metadata?.subscription_source) : null,
     color,
     glow,
-    drawToken: `LDC-${Math.floor(100000 + Math.random() * 900000)}`,
+    drawToken: `TRC-${Math.floor(100000 + Math.random() * 900000)}`,
     dob,
     preferredLanguage,
     dietaryPreferences,
@@ -148,7 +148,19 @@ export default function App() {
     'cancellation-policy' | 'membership-rules' | 'website-disclaimer' |
     'cookie-policy' | 'affiliate-agent-policy' | 'grievance-redressal' | 'verify-coupon' |
     'admin'
-  >('landing');
+  >(() => {
+    const path = window.location.pathname.replace(/^\/|\/$/g, '');
+    const validViews = [
+      'landing', 'login', 'register', 'terms', 'dashboard', 'paid-tour', 'error',
+      'legal', 'privacy-policy', 'terms-and-conditions', 'refund-policy',
+      'cancellation-policy', 'membership-rules', 'website-disclaimer',
+      'cookie-policy', 'affiliate-agent-policy', 'grievance-redressal', 'verify-coupon',
+      'admin'
+    ];
+    if (!path) return 'landing';
+    if (validViews.includes(path)) return path as any;
+    return 'error';
+  });
   const [currentUser, setCurrentUser] = useState<any | null>(null);
   const [selectedPlanName, setSelectedPlanName] = useState<string>('Silver');
   const [prefilledData, setPrefilledData] = useState<any>(null);
@@ -236,7 +248,7 @@ export default function App() {
   }, [currentUser, handleSetView]);
 
   useEffect(() => {
-    const handleLocationChange = (isInitial = false) => {
+    const handleLocationChange = () => {
       const path = window.location.pathname.replace(/^\/|\/$/g, '');
       const validViews = [
         'landing', 'login', 'register', 'terms', 'dashboard', 'paid-tour', 'error',
@@ -245,18 +257,8 @@ export default function App() {
         'cookie-policy', 'affiliate-agent-policy', 'grievance-redressal', 'verify-coupon',
         'admin'
       ];
-      const isPolicyPath = [
-        'terms', 'legal', 'privacy-policy', 'terms-and-conditions', 'refund-policy',
-        'cancellation-policy', 'membership-rules', 'website-disclaimer',
-        'cookie-policy', 'affiliate-agent-policy', 'grievance-redressal'
-      ].includes(path);
 
-      if (isInitial && isPolicyPath) {
-        setView('landing');
-        if (window.location.pathname !== '/') {
-          window.history.replaceState(null, '', '/');
-        }
-      } else if (!path) {
+      if (!path) {
         setView('landing');
       } else if (validViews.includes(path)) {
         setView(path as any);
@@ -265,11 +267,92 @@ export default function App() {
       }
     };
 
-    handleLocationChange(true);
-    const onPopState = () => handleLocationChange(false);
+    handleLocationChange();
+    const onPopState = () => handleLocationChange();
     window.addEventListener('popstate', onPopState);
     return () => window.removeEventListener('popstate', onPopState);
   }, []);
+
+  // Dynamic SEO Meta Update
+  useEffect(() => {
+    const metaTitles: Record<string, string> = {
+      landing: 'Beduine Tour & Travels | Subscription Membership Plans',
+      login: 'Login | Beduine Tour & Travels',
+      register: 'Register & Subscribe | Beduine Tour & Travels',
+      dashboard: 'Member Dashboard | Beduine Tour & Travels',
+      'paid-tour': 'Book a Tour | Beduine Tour & Travels',
+      'verify-coupon': 'Verify Coupon | Beduine Tour & Travels',
+      admin: 'Admin Portal | Beduine Tour & Travels',
+      'privacy-policy': 'Privacy Policy | Beduine Tour & Travels',
+      terms: 'Terms & Conditions | Beduine Tour & Travels',
+      'terms-and-conditions': 'Terms & Conditions | Beduine Tour & Travels',
+      'refund-policy': 'Refund Policy | Beduine Tour & Travels',
+      'cancellation-policy': 'Cancellation Policy | Beduine Tour & Travels',
+      'membership-rules': 'Membership Rules | Beduine Tour & Travels',
+      'website-disclaimer': 'Website Disclaimer | Beduine Tour & Travels',
+      'cookie-policy': 'Cookie Policy | Beduine Tour & Travels',
+      'affiliate-agent-policy': 'Affiliate & Agent Policy | Beduine Tour & Travels',
+      'grievance-redressal': 'Grievance Redressal | Beduine Tour & Travels',
+      legal: 'Legal Center | Beduine Tour & Travels',
+      error: 'Page Not Found | Beduine Tour & Travels'
+    };
+
+    const metaDescriptions: Record<string, string> = {
+      landing: 'Join Beduine Tour & Travels subscription membership plans. Get fixed travel Discount Credits on paid tours, and TRC (Travel Reward Credit) tokens for weekly reward participation.',
+      login: 'Sign in to your Beduine Tour & Travels member account.',
+      register: 'Choose your travel subscription plan, create an account, and start earning travel rewards.',
+      dashboard: 'View your subscription details, wallet balance, travel reward credits (TRC), and book your next tour.',
+      'paid-tour': 'Explore and book premium domestic and international travel packages with your Discount Credits.',
+      'verify-coupon': 'Verify the authenticity of your Beduine tour coupon.',
+      admin: 'Beduine Tour & Travels administrative management portal.',
+      'privacy-policy': 'Read how Beduine Tour & Travels handles and protects your personal data.',
+      terms: 'Read the terms of service, subscription membership rules, and agreement for Beduine Tour & Travels.',
+      'terms-and-conditions': 'Read the terms of service, subscription membership rules, and agreement for Beduine Tour & Travels.',
+      'refund-policy': 'Read our refund policy for Beduine Tour & Travels subscriptions and tour bookings.',
+      'cancellation-policy': 'Cancellation and rescheduling policy for Beduine Tour & Travels tour packages.',
+      'membership-rules': 'Official rules and guidelines for Beduine travel subscription club membership.',
+      'website-disclaimer': 'Legal disclaimer regarding information and services on the Beduine website.',
+      'cookie-policy': 'Learn how Beduine Tour & Travels uses cookies to improve your browsing experience.',
+      'affiliate-agent-policy': 'Policy and rules for Beduine Tour & Travels affiliates and authorized agents.',
+      'grievance-redressal': 'Grievance redressal policy and contact information for Beduine Tour & Travels.',
+      legal: 'Legal agreements, rules, and privacy disclosures for Beduine Tour & Travels members.',
+      error: 'The requested page was not found.'
+    };
+
+    const currentTitle = metaTitles[view] || metaTitles.landing;
+    const currentDesc = metaDescriptions[view] || metaDescriptions.landing;
+
+    // Update document title
+    document.title = currentTitle;
+
+    // Update meta tags
+    const updateMetaTag = (selector: string, attr: string, value: string) => {
+      let element = document.querySelector(selector);
+      if (!element) {
+        element = document.createElement('meta');
+        if (selector.startsWith('meta[name=')) {
+          const nameMatch = selector.match(/name="([^"]+)"/);
+          if (nameMatch) element.setAttribute('name', nameMatch[1]);
+        } else if (selector.startsWith('meta[property=')) {
+          const propMatch = selector.match(/property="([^"]+)"/);
+          if (propMatch) element.setAttribute('property', propMatch[1]);
+        }
+        document.head.appendChild(element);
+      }
+      element.setAttribute(attr, value);
+    };
+
+    updateMetaTag('meta[name="description"]', 'content', currentDesc);
+    updateMetaTag('meta[property="og:title"]', 'content', currentTitle);
+    updateMetaTag('meta[property="og:description"]', 'content', currentDesc);
+    updateMetaTag('meta[name="twitter:title"]', 'content', currentTitle);
+    updateMetaTag('meta[name="twitter:description"]', 'content', currentDesc);
+
+    // Dynamic OG Image
+    const ogImg = window.location.origin + '/images/og_image.png';
+    updateMetaTag('meta[property="og:image"]', 'content', ogImg);
+    updateMetaTag('meta[name="twitter:image"]', 'content', ogImg);
+  }, [view]);
 
 
   // Manage body cursor visibility: default cursor during intro and the embedded tour site, hidden only for the custom landing cursor.

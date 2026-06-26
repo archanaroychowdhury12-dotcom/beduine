@@ -25,15 +25,15 @@ export function DiscountCreditsSection() {
   ];
 
   const domesticCredits = [
-    { plan: 'Silver', price: '₹499', ldc: '1', dc: '1 × ₹500', total: '₹500', color: 'from-slate-500 to-slate-700', image: '/images/sundarbans_mangrove_1779521789593.png' },
-    { plan: 'Gold', price: '₹799', ldc: '1', dc: '2 × ₹500', total: '₹1,000', color: 'from-teal-400 to-emerald-600', image: '/images/darjeeling_tea_1779521805614.png' },
-    { plan: 'Platinum', price: '₹1,499', ldc: '1', dc: '4 × ₹500', total: '₹2,000', color: 'from-neon-gold to-gold-deep', image: '/images/kashmir_dal_lake_1779521728036.png' },
+    { plan: 'Silver', price: '₹499', trc: '1', dc: '1 × ₹500', total: '₹500', color: 'from-slate-500 to-slate-700', image: '/images/sundarbans_mangrove_1779521789593.png' },
+    { plan: 'Gold', price: '₹799', trc: '1', dc: '2 × ₹500', total: '₹1,000', color: 'from-teal-400 to-emerald-600', image: '/images/darjeeling_tea_1779521805614.png' },
+    { plan: 'Platinum', price: '₹1,499', trc: '1', dc: '4 × ₹500', total: '₹2,000', color: 'from-neon-gold to-gold-deep', image: '/images/kashmir_dal_lake_1779521728036.png' },
   ];
 
   const intlCredits = [
-    { plan: 'Silver', price: '₹4,999', ldc: '1', dc: '1 × ₹5,000', total: '₹5,000', color: 'from-sky-400 to-blue-600', image: '/images/nepal.png' },
-    { plan: 'Gold', price: '₹7,999', ldc: '1', dc: '2 × ₹5,000', total: '₹10,000', color: 'from-emerald-400 to-teal-600', image: '/images/thailand.png' },
-    { plan: 'Platinum', price: '₹14,999', ldc: '1', dc: '4 × ₹5,000', total: '₹20,000', color: 'from-cyan via-cyan-bright to-cyan-deep', image: '/images/vietnam.png' },
+    { plan: 'Silver', price: '₹4,999', trc: '1', dc: '1 × ₹5,000', total: '₹5,000', color: 'from-sky-400 to-blue-600', image: '/images/nepal.png' },
+    { plan: 'Gold', price: '₹7,999', trc: '1', dc: '2 × ₹5,000', total: '₹10,000', color: 'from-emerald-400 to-teal-600', image: '/images/thailand.png' },
+    { plan: 'Platinum', price: '₹14,999', trc: '1', dc: '4 × ₹5,000', total: '₹20,000', color: 'from-cyan via-cyan-bright to-cyan-deep', image: '/images/vietnam.png' },
   ];
 
   const currentCredits = activeTab === 'domestic' ? domesticCredits : intlCredits;
@@ -285,7 +285,7 @@ export function DiscountCreditsSection() {
                   <tr className="border-b border-slate-line">
                     <th className="py-3 px-4 text-left text-[10px] uppercase tracking-widest text-ink/50 font-mono">Plan</th>
                     <th className="py-3 px-4 text-center text-[10px] uppercase tracking-widest text-ink/50 font-mono">Price</th>
-                    <th className="py-3 px-4 text-center text-[10px] uppercase tracking-widest text-cyan font-mono">LDC</th>
+                    <th className="py-3 px-4 text-center text-[10px] uppercase tracking-widest text-cyan font-mono">TRC</th>
                     <th className="py-3 px-4 text-center text-[10px] uppercase tracking-widest text-cyan font-mono">Discount Credits</th>
                     <th className="py-3 px-4 text-center text-[10px] uppercase tracking-widest text-emerald-600 font-mono">Min Value</th>
                   </tr>
@@ -310,7 +310,7 @@ export function DiscountCreditsSection() {
                         </div>
                       </td>
                       <td className="py-4 px-4 text-center font-display font-bold text-ink">{r.price}</td>
-                      <td className="py-4 px-4 text-center"><span className="px-2.5 py-1 rounded-full glass-cyan text-cyan text-xs font-semibold">{r.ldc}</span></td>
+                      <td className="py-4 px-4 text-center"><span className="px-2.5 py-1 rounded-full glass-cyan text-cyan text-xs font-semibold">{r.trc}</span></td>
                       <td className="py-4 px-4 text-center"><span className="px-2.5 py-1 rounded-full glass-cyan text-cyan text-xs font-semibold">{r.dc}</span></td>
                       <td className="py-4 px-4 text-center font-display font-bold text-emerald-600">{r.total}</td>
                     </tr>

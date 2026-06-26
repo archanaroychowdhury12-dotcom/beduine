@@ -1,8 +1,0 @@
-E:\busness\bediine\src\DashboardPage.tsx
-E:\busness\bediine\src\data\siteData.ts
-E:\busness\bediine\src\pages\subscription-page\SubscriptionLandingPage.tsx
-E:\busness\bediine\src\services\demoWalletService.ts
-E:\busness\bediine\src\types.ts
-E:\busness\bediine\src\vite-env.d.ts
-E:\busness\bediine\docs\superpowers\plans\2026-06-25-credit-category-locking.md
-E:\busness\bediine\docs\superpowers\specs\2026-06-25-credit-category-locking-design.md

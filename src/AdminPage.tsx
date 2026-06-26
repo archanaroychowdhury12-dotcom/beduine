@@ -912,7 +912,7 @@ export default function AdminPage({ user, onBack, onLogout }: AdminPageProps) {
             <ShieldCheck className="w-5 h-5 text-indigo-400" />
           </div>
           <div>
-            <h1 className="text-sm font-black uppercase tracking-wider text-slate-100">Beduin Admin Center</h1>
+            <h1 className="text-sm font-black uppercase tracking-wider text-slate-100">Beduine Admin Center</h1>
             <p className="text-[10px] text-indigo-300/80 font-medium">Simulation Dashboard &amp; Territory Management</p>
           </div>
         </div>
@@ -943,7 +943,7 @@ export default function AdminPage({ user, onBack, onLogout }: AdminPageProps) {
 
       {/* Footer */}
       <footer className="text-center py-6 text-[10px] text-slate-500 font-medium border-t border-slate-800 mt-12 bg-slate-950/40">
-        © 2026 BEDUIN TOUR AND TRAVELS PVT LTD • Administrative Operations Interface • Built for Quality Assurance &amp; Business Testing
+        © 2026 BEDUINE TOUR AND TRAVELS PVT LTD • Administrative Operations Interface • Built for Quality Assurance &amp; Business Testing
       </footer>
     </div>
   );

@@ -217,7 +217,7 @@ export default function RegistrationPage({ initialPlanName, onBack, prefilledDat
       planType: selectedPlan.type,
       color: selectedPlan.color,
       glow: selectedPlan.glow,
-      drawToken: `LDC-${Math.floor(100000 + Math.random() * 900000)}`
+      drawToken: `TRC-${Math.floor(100000 + Math.random() * 900000)}`
     };
 
     // Sign up via Supabase to create a real user session
