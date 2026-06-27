@@ -1,25 +1,21 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { TourPackage, Traveler, PickupInfo, Voucher, PaymentDetails, BookingConfirmation, PriceCalculation, CreditLedgerEntry } from '../../types';
-import { getAvailableCredits, validateCreditApplication, getCategoryErrorMessage, CREDIT_VALUE_DOMESTIC, CREDIT_VALUE_INTERNATIONAL } from '../../utils/creditHelpers';
-import { validateCreditRedemptionServerSide } from '../../utils/creditValidation';
-import { TOUR_PACKAGES } from '../../data/tours';
-import { getPlanDetails } from '../../data/siteData';
-import { ChevronRight, Check, Clock, X, User, ShieldCheck, Crown } from 'lucide-react';
-import { supabase } from '../../utils/supabaseClient';
-
-const formatINR = (value: number) => `₹${value.toLocaleString('en-IN')}`;
+import React from 'react';
+import { useTourBookingState } from '../../hooks/useTourBookingState';
+import { ChevronRight, Check, Clock, X, ShieldCheck, Crown, User } from 'lucide-react';
+import { CREDIT_VALUE_DOMESTIC, CREDIT_VALUE_INTERNATIONAL } from '../../utils/creditHelpers';
 
 // Child Component imports
 import { BookingPortalHeader } from './BookingPortalHeader';
 import { TourSelection } from './TourSelection';
 import { TravelerInfoSection } from './TravelerInfoForm';
-import { PickupSection, ADD_ONS } from './PickupDropoffForm';
+import { PickupSection } from './PickupDropoffForm';
 import { VoucherSection } from './VoucherCouponPanel';
 import { PriceSummarySticky } from './PriceSummary';
 import { PaymentSection } from './PaymentSection';
 import { ConfirmationScreen } from './BookingConfirmation';
 import { ReceiptModal } from './ReceiptModal';
 import { SupportFaqSection } from './TourFAQ';
+
+const formatINR = (value: number) => `₹${value.toLocaleString('en-IN')}`;
 
 interface TourBookingFormProps {
   initialTourId?: string | null;
@@ -34,527 +30,67 @@ export const TourBookingForm: React.FC<TourBookingFormProps> = ({
   currentUser,
   setCurrentUser
 }) => {
-  
-  // Save Profile modal trigger
-  const [showSaveProfileModal, setShowSaveProfileModal] = useState<boolean>(false);
-  const [activePolicy, setActivePolicy] = useState<{ title: string; content: string } | null>(null);
+  const {
+    showSaveProfileModal,
+    activePolicy,
+    selectedTour,
+    setSelectedTour,
+    bookingStep,
+    setBookingStep,
+    addOnsSelected,
+    appliedDiscountCredits,
+    creditSelection,
+    creditError,
+    creditSuccess,
+    availableDomesticCredits,
+    availableInternationalCredits,
+    selectedDate,
+    setSelectedDate,
+    travelers,
+    setTravelers,
+    pickup,
+    setPickup,
+    appliedVoucher,
+    setAppliedVoucher,
+    agreedToTerms,
+    setAgreedToTerms,
+    agreedToPassport,
+    setAgreedToPassport,
+    paymentDetails,
+    setPaymentDetails,
+    bookingStage,
+    processingStepText,
+    confirmedBookingData,
+    showReceiptModal,
+    setShowReceiptModal,
+    specialRequests,
+    setSpecialRequests,
+    handleToggleAddOn,
+    handleSelectCreditCategory,
+    handleUpdateAppliedCredits,
+    pricing,
+    termsWarning,
+    canProceed,
+    handlePayNow,
+    handleProceedWithPayment,
+    handleSaveLater,
+    handleResetBooking,
+    validateTravelersBeforeStep,
+    openPolicy,
+    closePolicy
+  } = useTourBookingState({ initialTourId, currentUser, setCurrentUser });
 
-  // Split Name Helper
-  const splitName = (fullName: string) => {
-    const parts = (fullName || '').trim().split(/\s+/);
-    const firstName = parts[0] || '';
-    const lastName = parts.slice(1).join(' ') || '';
-    return { firstName, lastName };
-  };
-
-  // 1. Selected Tour State
-  const [selectedTour, setSelectedTour] = useState<TourPackage>(() => {
-    if (initialTourId) {
-      const found = TOUR_PACKAGES.find(t => t.id === initialTourId);
-      if (found) return found;
-    }
-    return TOUR_PACKAGES[0];
-  });
-
-  // Active Plan details
-  const planDetails = useMemo(() => {
-    return currentUser?.planName ? getPlanDetails(currentUser.planName) : null;
-  }, [currentUser]);
-
-  // Progressive Booking Step (1 to 5)
-  const [bookingStep, setBookingStep] = useState<number>(1);
-
-  // Add-ons Selected State
-  const [addOnsSelected, setAddOnsSelected] = useState<string[]>([]);
-  const [appliedDiscountCredits, setAppliedDiscountCredits] = useState<number>(0);
-  const [creditSelection, setCreditSelection] = useState<'domestic' | 'international' | null>(() => {
-    return selectedTour.category;
-  });
-  const [creditError, setCreditError] = useState<string | null>(null);
-  const [creditSuccess, setCreditSuccess] = useState<string | null>(null);
-
-  const availableDomesticCredits = useMemo(() => {
-    return currentUser ? getAvailableCredits(currentUser.ledger || [], 'domestic') : 0;
-  }, [currentUser]);
-
-  const availableInternationalCredits = useMemo(() => {
-    return currentUser ? getAvailableCredits(currentUser.ledger || [], 'international') : 0;
-  }, [currentUser]);
-
-  // Whenever initialTourId changes, update selectedTour
-  useEffect(() => {
-    if (initialTourId) {
-      const found = TOUR_PACKAGES.find(t => t.id === initialTourId);
-      if (found) {
-        setSelectedTour(found);
-      }
-    }
-  }, [initialTourId]);
-
-  // Private VIP Surcharge Upgrade state (handled as part of add-ons / upgrades)
-  const [isPrivateTour, setIsPrivateTour] = useState<boolean>(false);
-
-  // Date Selection State
-  const [selectedDate, setSelectedDate] = useState<string>(selectedTour.availableDates[0]);
-
-  // Reset states when tour package changes
-  useEffect(() => {
-    setSelectedDate(selectedTour.availableDates[0]);
-    setIsPrivateTour(false);
-    setAddOnsSelected([]);
-    setAppliedDiscountCredits(0);
-    setCreditError(null);
-    setCreditSuccess(null);
-    setCreditSelection(selectedTour.category);
-  }, [selectedTour]);
-
-  // Lead Traveler + co-travelers manifest
-  const [travelers, setTravelers] = useState<Traveler[]>([
-    {
-      firstName: 'Rahul',
-      lastName: 'Sen',
-      email: 'rahul.sen@example.com',
-      phone: '+91 98765 43210',
-      isLead: true,
-      ageGroup: 'Adult'
-    }
-  ]);
-
-  // Sync applied credits if traveler count shrinks below applied credits
-  useEffect(() => {
-    if (appliedDiscountCredits > travelers.length) {
-      setAppliedDiscountCredits(travelers.length);
-      setCreditSuccess(null);
-      setCreditError(null);
-    }
-  }, [travelers.length, appliedDiscountCredits]);
-
-  // Prefill lead traveler from currentUser when logged in
-  useEffect(() => {
-    if (currentUser) {
-      const { firstName, lastName } = splitName(currentUser.fullName);
-      setTravelers(prev => {
-        const lead = prev[0];
-        const isDefault = lead && lead.firstName === 'Rahul' && lead.lastName === 'Sen' && lead.email === 'rahul.sen@example.com';
-        const isEmpty = !lead || (!lead.firstName && !lead.lastName && !lead.email);
-        
-        if (isDefault || isEmpty) {
-          const updated = [...prev];
-          updated[0] = {
-            firstName: firstName || lead?.firstName || '',
-            lastName: lastName || lead?.lastName || '',
-            email: currentUser.email || lead?.email || '',
-            phone: currentUser.mobile || lead?.phone || '',
-            isLead: true,
-            ageGroup: 'Adult',
-            dob: currentUser.dob || '',
-            preferredLanguage: currentUser.preferredLanguage || 'English',
-            dietaryPreferences: currentUser.dietaryPreferences || 'None',
-            accessibilityRequirements: currentUser.accessibilityRequirements || 'None',
-            gender: 'Male'
-          };
-          return updated;
-        }
-        return prev;
-      });
-    }
-  }, [currentUser]);
-
-  // Check if lead traveler details changed compared to currentUser profile
-  const profileHasChanges = useMemo(() => {
-    if (!currentUser) return false;
-    const lead = travelers[0];
-    if (!lead) return false;
-
-    const parts = (currentUser.fullName || '').trim().split(/\s+/);
-    const initialFirst = parts[0] || '';
-    const initialLast = parts.slice(1).join(' ') || '';
-
+  if (bookingStage === 'processing') {
     return (
-      lead.firstName !== initialFirst ||
-      lead.lastName !== initialLast ||
-      lead.email !== currentUser.email ||
-      lead.phone !== currentUser.mobile
+      <div className="bg-slate-900 min-h-screen text-slate-100 flex flex-col justify-center items-center p-6">
+        <div className="max-w-md w-full text-center space-y-6">
+          <div className="loader-ring mx-auto" />
+          <h3 className="text-lg font-black uppercase tracking-wider text-amber-400">Processing Your Booking</h3>
+          <p className="text-xs text-slate-400 font-mono animate-pulse">{processingStepText}</p>
+        </div>
+      </div>
     );
-  }, [currentUser, travelers]);
-
-  // Chauffeur Pickup State
-  const [pickup, setPickup] = useState<PickupInfo>({
-    type: 'hotel',
-    hotelName: 'BEDUINE Kolkata Assistance Desk',
-    customAddress: '',
-    landmark: '',
-    city: 'Kolkata',
-    pincode: '700001',
-    dropoffDifferent: false,
-    dropoffLocation: '',
-    specialInstructions: 'Please call before pickup confirmation.'
-  });
-
-  // Update default pickup hotel if tour destination changes
-  useEffect(() => {
-    if (selectedTour.destination.includes('Sundarbans') || selectedTour.destination.includes('Puri')) {
-      setPickup(p => ({ ...p, hotelName: 'BEDUINE Kolkata Assistance Desk', city: 'Kolkata' }));
-    } else if (selectedTour.destination.includes('Darjeeling')) {
-      setPickup(p => ({ ...p, hotelName: 'NJP Railway Station Pickup Point', city: 'Siliguri' }));
-    } else if (selectedTour.destination.includes('Kashmir')) {
-      setPickup(p => ({ ...p, hotelName: 'Srinagar Airport Pickup Point', city: 'Srinagar' }));
-    } else if (selectedTour.destination.includes('Dubai')) {
-      setPickup(p => ({ ...p, hotelName: 'Dubai International Airport Arrival Gate', city: 'Dubai' }));
-    } else if (selectedTour.destination.includes('Thailand')) {
-      setPickup(p => ({ ...p, hotelName: 'Bangkok Airport Arrival Gate', city: 'Bangkok' }));
-    }
-  }, [selectedTour]);
-
-  // Voucher state
-  const [appliedVoucher, setAppliedVoucher] = useState<Voucher | undefined>(undefined);
-
-  // Policy & Terms agreement state
-  const [agreedToTerms, setAgreedToTerms] = useState<boolean>(false);
-  const [agreedToPassport, setAgreedToPassport] = useState<boolean>(false);
-
-  // Payment Details State
-  const [paymentDetails, setPaymentDetails] = useState<PaymentDetails>({
-    method: 'credit_card',
-    status: 'pending'
-  });
-
-  // Flow Stage State
-  const [bookingStage, setBookingStage] = useState<'booking' | 'processing' | 'confirmed'>('booking');
-  const [processingStepText, setProcessingStepText] = useState<string>('Initializing Secure Checkout...');
-  const [confirmedBookingData, setConfirmedBookingData] = useState<BookingConfirmation | null>(null);
-  const [showReceiptModal, setShowReceiptModal] = useState<boolean>(false);
-
-  const handleToggleAddOn = (id: string) => {
-    setAddOnsSelected(prev =>
-      prev.includes(id) ? prev.filter(item => item !== id) : [...prev, id]
-    );
-  };
-
-  const handleSelectCreditCategory = (category: 'domestic' | 'international') => {
-    setCreditSelection(category);
-    setCreditError(null);
-    setCreditSuccess(null);
-    setAppliedDiscountCredits(0); // Reset applied credits when switching categories
-
-    const categoryError = getCategoryErrorMessage(category, selectedTour.category);
-    if (categoryError) {
-      setCreditError(categoryError);
-    }
-  };
-
-  const handleUpdateAppliedCredits = (value: number) => {
-    if (value < 0) return;
-    
-    setCreditError(null);
-    setCreditSuccess(null);
-
-    const validation = validateCreditApplication({
-      requestedCredits: value,
-      tourCategory: selectedTour.category,
-      availableDomesticCredits,
-      availableInternationalCredits,
-      travelerCount: travelers.length,
-    });
-
-    if (!validation.valid) {
-      setCreditError(validation.error || 'Invalid credit application');
-      setAppliedDiscountCredits(0);
-    } else {
-      setAppliedDiscountCredits(value);
-      if (value > 0) {
-        const creditValue = selectedTour.category === 'international' ? CREDIT_VALUE_INTERNATIONAL : CREDIT_VALUE_DOMESTIC;
-        setCreditSuccess(`Successfully applied ${value} Discount Credit(s). Saved ${formatINR(value * creditValue)}!`);
-      }
-    }
-  };
-
-  // Live Price Calculations
-  const pricing: PriceCalculation = useMemo(() => {
-    const basePricePerPerson = selectedTour.basePrice;
-    const travelerCount = travelers.length;
-    const subtotalBase = basePricePerPerson * travelerCount;
-    
-    // Private upgrade surcharge if enabled
-    const privateSurchargeTotal = isPrivateTour ? (selectedTour.groupSize.privateSurchargePerPerson * travelerCount) : 0;
-
-    // Calculate Member Discount (Up to 5% / 7% / 10% off base)
-    let memberDiscountPercent = 0;
-    if (planDetails) {
-      const discountText = planDetails.paidDiscount || '';
-      const match = discountText.match(/\d+/);
-      if (match) {
-        memberDiscountPercent = parseInt(match[0], 10);
-      }
-    }
-    const memberDiscountTotal = Math.round((subtotalBase * memberDiscountPercent) / 100);
-
-    // Calculate Add-ons cost
-    let addOnsTotal = 0;
-    let insuranceTotal = 0;
-    let isInsuranceSelected = addOnsSelected.includes('insurance');
-
-    ADD_ONS.forEach((addon: any) => {
-      if (addOnsSelected.includes(addon.id)) {
-        if (addon.id === 'insurance') {
-          // Standard: ₹399/person. Gold: 50% off. Platinum: Free.
-          const baseInsurance = 399;
-          let rate = baseInsurance;
-          if (planDetails) {
-            const rule = ((planDetails as any).insurance || '').toLowerCase();
-            if (rule.includes('free') || rule.includes('included')) rate = 0;
-            else if (rule.includes('50%')) rate = Math.round(baseInsurance / 2);
-          }
-          insuranceTotal = rate * travelerCount;
-        } else {
-          addOnsTotal += addon.perPerson ? addon.price * travelerCount : addon.price;
-        }
-      }
-    });
-
-    const creditValue = selectedTour.category === 'international' ? CREDIT_VALUE_INTERNATIONAL : CREDIT_VALUE_DOMESTIC;
-    const discountCreditsTotal = appliedDiscountCredits * creditValue;
-    const subtotalBeforeVoucher = Math.max(0, subtotalBase + privateSurchargeTotal + addOnsTotal + insuranceTotal - memberDiscountTotal - discountCreditsTotal);
-
-    let voucherDiscountAmount = 0;
-    let voucherPackSelected = '';
-    if (appliedVoucher) {
-      if (appliedVoucher.code.startsWith('PACK-')) {
-        voucherPackSelected = appliedVoucher.code.replace('PACK-', '');
-      }
-      if (appliedVoucher.type === 'fixed') {
-        voucherDiscountAmount = appliedVoucher.value;
-      } else if (appliedVoucher.type === 'percentage') {
-        voucherDiscountAmount = Math.round((subtotalBeforeVoucher * appliedVoucher.value) / 100);
-      }
-    }
-
-    // Ensure discount never exceeds total
-    voucherDiscountAmount = Math.min(voucherDiscountAmount, subtotalBeforeVoucher);
-
-    const subtotalAfterVoucher = subtotalBeforeVoucher - voucherDiscountAmount;
-    const serviceFeeOrTax = Math.round(subtotalAfterVoucher * 0.05); // 5% fee
-    const totalPayable = subtotalAfterVoucher + serviceFeeOrTax;
-
-    return {
-      basePricePerPerson,
-      travelerCount,
-      subtotalBase,
-      isPrivateTour,
-      privateSurchargeTotal,
-      isInsuranceSelected,
-      insuranceTotal,
-      memberDiscountPercent,
-      memberDiscountTotal,
-      appliedDiscountCredits,
-      discountCreditsTotal,
-      subtotalBeforeVoucher,
-      appliedVoucher,
-      voucherDiscountAmount,
-      addOnsSelected,
-      addOnsTotal,
-      voucherPackSelected,
-      serviceFeeOrTax,
-      totalPayable
-    };
-  }, [selectedTour, isPrivateTour, travelers, appliedVoucher, planDetails, addOnsSelected, appliedDiscountCredits]);
-
-  // Validation before payments
-  const termsWarning = useMemo(() => {
-    if (!agreedToPassport) return 'Please verify traveler identification checklist rules.';
-    if (!agreedToTerms) return 'Please accept the BEDUINE booking terms & conditions.';
-    return undefined;
-  }, [agreedToPassport, agreedToTerms]);
-
-  const canProceed = !termsWarning;
-
-  const runPaymentSteps = () => {
-    setBookingStage('processing');
-    setPaymentDetails(p => ({ ...p, status: 'processing' }));
-
-    // Server-side DC category validation before processing
-    if (currentUser && appliedDiscountCredits > 0) {
-      const serverValidation = validateCreditRedemptionServerSide({
-        appliedCredits: appliedDiscountCredits,
-        creditCategory: creditSelection || selectedTour.category,
-        tourCategory: selectedTour.category,
-        ledger: currentUser.ledger || [],
-        travelerCount: travelers.length,
-      });
-      if (!serverValidation.valid) {
-        setBookingStage('booking');
-        setPaymentDetails(p => ({ ...p, status: 'pending' }));
-        setCreditError(serverValidation.error || 'Credit validation failed. Please review your discount credits.');
-        setAppliedDiscountCredits(0);
-        return;
-      }
-    }
-
-    const steps = [
-      'Authenticating secure BEDUINE payment transmission...',
-      'Verifying traveler roster details and voucher codes...',
-      'Allocating tour guide and reserving vehicle plan...',
-      'Preparing pickup logistics handoff details...',
-      'Payment successful! Generating booking receipt...'
-    ];
-
-    let stepIdx = 0;
-    setProcessingStepText(steps[0]);
-
-    const interval = setInterval(() => {
-      stepIdx++;
-      if (stepIdx < steps.length) {
-        setProcessingStepText(steps[stepIdx]);
-      } else {
-        clearInterval(interval);
-        
-        const randomIdNum = Math.floor(10000 + Math.random() * 90000);
-        const bookingId = `BED-${selectedTour.id.slice(0, 3).toUpperCase()}-${randomIdNum}`;
-        const finalConfirmation: BookingConfirmation = {
-          bookingId: bookingId,
-          tour: selectedTour,
-          selectedDate,
-          isPrivateTour,
-          travelers,
-          specialRequests,
-          pickup,
-          pricing,
-          payment: {
-            ...paymentDetails,
-            status: 'success',
-            transactionId: `BED-TXN-${randomIdNum}`,
-            paymentTime: new Date().toLocaleTimeString()
-          },
-          confirmedAt: new Date().toISOString()
-        };
-
-        // Handle credit redemption if currentUser is logged in and applied credits
-        if (currentUser && appliedDiscountCredits > 0) {
-          const creditValue = selectedTour.category === 'international' ? CREDIT_VALUE_INTERNATIONAL : CREDIT_VALUE_DOMESTIC;
-          const redemptionEntry: CreditLedgerEntry = {
-            id: `TXN-DC-${Math.floor(100000 + Math.random() * 900000)}`,
-            date: new Date().toLocaleDateString('en-US', {
-              month: 'short',
-              day: '2-digit',
-              year: 'numeric',
-              hour: '2-digit',
-              minute: '2-digit'
-            }),
-            type: 'redeemed',
-            creditType: 'discount',
-            amount: appliedDiscountCredits,
-            reason: `Redeemed for tour booking: ${selectedTour.name}`,
-            bookingRef: bookingId,
-            creditCategory: selectedTour.category,
-            creditValue: creditValue,
-            usableFor: selectedTour.category === 'international' ? 'international_only' : 'domestic_only'
-          };
-          
-          const currentLedger = currentUser.ledger || [];
-          const updatedLedger = [redemptionEntry, ...currentLedger];
-          
-          const updatedUser = {
-            ...currentUser,
-            ledger: updatedLedger,
-            user_metadata: {
-              ...(currentUser.user_metadata || {}),
-              ledger: updatedLedger
-            }
-          };
-          
-          setCurrentUser(updatedUser);
-          
-          supabase.auth.updateUser({
-            data: {
-              ledger: updatedLedger
-            }
-          });
-        }
-
-        setConfirmedBookingData(finalConfirmation);
-        setBookingStage('confirmed');
-      }
-    }, 1200);
-  };
-
-  const handlePayNow = () => {
-    if (!canProceed) return;
-    if (currentUser && profileHasChanges) {
-      setShowSaveProfileModal(true);
-    } else {
-      runPaymentSteps();
-    }
-  };
-
-  const handleProceedWithPayment = async (saveToProfile: boolean) => {
-    setShowSaveProfileModal(false);
-
-    if (saveToProfile && currentUser && setCurrentUser) {
-      const lead = travelers[0];
-      if (lead) {
-        const updatedUser = {
-          ...currentUser,
-          fullName: `${lead.firstName} ${lead.lastName}`.trim(),
-          email: lead.email,
-          mobile: lead.phone,
-          dob: lead.dob || '',
-          preferredLanguage: lead.preferredLanguage || 'English',
-          dietaryPreferences: lead.dietaryPreferences || 'None',
-          accessibilityRequirements: lead.accessibilityRequirements || 'None',
-          savedTravelers: currentUser.savedTravelers || []
-        };
-        setCurrentUser(updatedUser);
-
-        // Sync updates directly to the Supabase cloud session
-        await supabase.auth.updateUser({
-          data: {
-            full_name: updatedUser.fullName,
-            dob: updatedUser.dob,
-            preferredLanguage: updatedUser.preferredLanguage,
-            dietaryPreferences: updatedUser.dietaryPreferences,
-            accessibilityRequirements: updatedUser.accessibilityRequirements,
-            savedTravelers: updatedUser.savedTravelers
-          }
-        });
-      }
-    }
-    runPaymentSteps();
-  };
-
-  const handleSaveLater = () => {
-    alert("Your booking progress has been saved securely to your BEDUINE account details. You can resume at any time!");
-  };
-
-  const handleResetBooking = () => {
-    setBookingStage('booking');
-    setConfirmedBookingData(null);
-    setBookingStep(1);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  // Validate fields in traveler cards before moving from Step 3 to Step 4
-  const validateTravelersBeforeStep = () => {
-    for (let i = 0; i < travelers.length; i++) {
-      const t = travelers[i];
-      if (!t.firstName || !t.firstName.trim() || !t.lastName || !t.lastName.trim()) {
-        alert(`Please complete the name details for Traveler ${i + 1} first.`);
-        return false;
-      }
-      if (i === 0) {
-        if (!t.email || !t.email.trim() || !t.phone || !t.phone.trim()) {
-          alert('Please enter lead traveler email and phone number contact details.');
-          return false;
-        }
-      }
-    }
-    return true;
-  };
-
-  const openPolicy = (title: string, content: string) => {
-    setActivePolicy({ title, content });
-  };
-
-  const [specialRequests, setSpecialRequests] = useState<string>('');
+  }
 
   if (bookingStage === 'confirmed' && confirmedBookingData) {
     return (
@@ -664,7 +200,7 @@ export const TourBookingForm: React.FC<TourBookingFormProps> = ({
                     </div>
                     <button
                       onClick={() => setBookingStep(1)}
-                      className="text-xs font-black text-amber-600 hover:text-amber-700 underline cursor-pointer"
+                      className="text-xs font-black text-amber-600 hover:text-amber-700 underline cursor-pointer bg-transparent border-none"
                     >
                       Edit Step
                     </button>
@@ -686,7 +222,7 @@ export const TourBookingForm: React.FC<TourBookingFormProps> = ({
                           setBookingStep(2);
                           window.scrollTo({ top: 0, behavior: 'smooth' });
                         }}
-                        className="px-6 py-3.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 transition-colors cursor-pointer shadow-md"
+                        className="px-6 py-3.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 transition-colors cursor-pointer shadow-md border-none"
                       >
                         <span>Continue</span>
                         <ChevronRight className="w-4 h-4" />
@@ -719,7 +255,7 @@ export const TourBookingForm: React.FC<TourBookingFormProps> = ({
                     </div>
                     <button
                       onClick={() => setBookingStep(2)}
-                      className="text-xs font-black text-amber-600 hover:text-amber-700 underline cursor-pointer"
+                      className="text-xs font-black text-amber-600 hover:text-amber-700 underline cursor-pointer bg-transparent border-none"
                       disabled={bookingStep < 2}
                     >
                       Edit Step
@@ -798,69 +334,46 @@ export const TourBookingForm: React.FC<TourBookingFormProps> = ({
 
                           {/* Success Alert */}
                           {creditSuccess && (
-                            <div className="p-3.5 rounded-xl border border-emerald-250/60 bg-emerald-50 text-emerald-800 text-xs font-bold flex items-center gap-2">
-                              <Check className="w-4 h-4 text-emerald-600 shrink-0" />
+                            <div className="p-3.5 rounded-xl border border-emerald-250 bg-emerald-50 text-emerald-800 text-xs font-bold flex items-center gap-2">
+                              <Check className="w-4.5 h-4.5 text-emerald-600 shrink-0" />
                               <span>{creditSuccess}</span>
                             </div>
                           )}
 
-                          {/* Credit Count Input / Control */}
-                          {!creditError && (
-                            <div className="bg-slate-50 border border-slate-200/80 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                              <div>
-                                <span className="text-xs font-bold text-slate-800 block">Apply Discount Credits</span>
-                                <span className="text-[10px] text-slate-500 block mt-0.5">
-                                  Maximum applicable for this booking: {Math.min(
-                                    travelers.length,
-                                    creditSelection === 'international' ? availableInternationalCredits : availableDomesticCredits
-                                  )} credit(s) (1 per traveler).
-                                </span>
-                              </div>
-
-                              <div className="flex items-center gap-2 shrink-0">
-                                <button
-                                  type="button"
-                                  disabled={appliedDiscountCredits <= 0}
-                                  onClick={() => handleUpdateAppliedCredits(appliedDiscountCredits - 1)}
-                                  className="w-9 h-9 rounded-lg border border-slate-200 bg-white hover:bg-slate-100 disabled:opacity-50 text-slate-700 font-black text-sm flex items-center justify-center transition-colors cursor-pointer"
-                                >
-                                  -
-                                </button>
-                                <input
-                                  type="number"
-                                  min={0}
-                                  max={travelers.length}
-                                  value={appliedDiscountCredits}
-                                  onChange={(e) => handleUpdateAppliedCredits(parseInt(e.target.value, 10) || 0)}
-                                  className="w-12 text-center py-1.5 border border-slate-200 rounded-lg bg-white text-sm font-bold focus:outline-none focus:ring-1 focus:ring-amber-500"
-                                />
-                                <button
-                                  type="button"
-                                  disabled={
-                                    appliedDiscountCredits >= travelers.length ||
-                                    appliedDiscountCredits >= (creditSelection === 'international' ? availableInternationalCredits : availableDomesticCredits)
-                                  }
-                                  onClick={() => handleUpdateAppliedCredits(appliedDiscountCredits + 1)}
-                                  className="w-9 h-9 rounded-lg border border-slate-200 bg-white hover:bg-slate-100 disabled:opacity-50 text-slate-700 font-black text-sm flex items-center justify-center transition-colors cursor-pointer"
-                                >
-                                  +
-                                </button>
-                              </div>
+                          {/* Credit Amount Input Slider */}
+                          <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200">
+                            <div className="flex justify-between items-center mb-3">
+                              <label className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Number of Credits to Redeem</label>
+                              <span className="text-sm font-black text-slate-900 bg-white border border-slate-200 px-3 py-1 rounded-xl shadow-sm">
+                                {appliedDiscountCredits} Credit(s)
+                              </span>
                             </div>
-                          )}
+                            <input
+                              type="range"
+                              min="0"
+                              max={Math.min(travelers.length, creditSelection === 'domestic' ? availableDomesticCredits : availableInternationalCredits)}
+                              value={appliedDiscountCredits}
+                              onChange={(e) => handleUpdateAppliedCredits(parseInt(e.target.value, 10))}
+                              className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-indigo-650"
+                            />
+                            <div className="flex justify-between text-[10px] text-slate-400 mt-2 font-mono">
+                              <span>0</span>
+                              <span>Max: {Math.min(travelers.length, creditSelection === 'domestic' ? availableDomesticCredits : availableInternationalCredits)}</span>
+                            </div>
+                          </div>
                         </div>
                       )}
                     </div>
 
                     {/* Step Navigation Controls */}
-                    <div className="pt-5 border-t border-slate-100 flex justify-between gap-4">
+                    <div className="pt-5 border-t border-slate-100 flex justify-between">
                       <button
                         type="button"
                         onClick={() => {
                           setBookingStep(1);
                           window.scrollTo({ top: 0, behavior: 'smooth' });
                         }}
-                        className="px-5 py-3 border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-xl text-xs font-bold uppercase cursor-pointer"
+                        className="px-6 py-3.5 text-slate-600 hover:text-slate-900 text-xs font-bold uppercase tracking-wider hover:bg-slate-50 rounded-xl transition-colors cursor-pointer border-none bg-transparent"
                       >
                         Back
                       </button>
@@ -870,7 +383,7 @@ export const TourBookingForm: React.FC<TourBookingFormProps> = ({
                           setBookingStep(3);
                           window.scrollTo({ top: 0, behavior: 'smooth' });
                         }}
-                        className="px-6 py-3.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 transition-colors cursor-pointer shadow-md"
+                        className="px-6 py-3.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 transition-colors cursor-pointer shadow-md border-none"
                       >
                         <span>Continue</span>
                         <ChevronRight className="w-4 h-4" />
@@ -880,7 +393,7 @@ export const TourBookingForm: React.FC<TourBookingFormProps> = ({
                 )}
               </div>
 
-              {/* STEP 3: TRAVELER DETAILS */}
+              {/* STEP 3: TRAVELER MANIFEST */}
               <div className={`bg-white border rounded-3xl transition-all duration-300 ${
                 bookingStep === 3 ? 'border-amber-500 shadow-md p-6 sm:p-8' : 'border-slate-200 p-5 opacity-80'
               }`}>
@@ -889,13 +402,15 @@ export const TourBookingForm: React.FC<TourBookingFormProps> = ({
                     <div>
                       <span className="text-[10px] text-slate-400 font-black uppercase block tracking-wider">Step 3 — Completed</span>
                       <h4 className="font-bold text-sm text-slate-900 mt-1">
-                        {travelers.length} Traveler{travelers.length > 1 ? 's' : ''} Details Recorded
+                        Traveler Manifest ({travelers.length} {travelers.length === 1 ? 'Person' : 'People'})
                       </h4>
-                      <span className="text-xs text-slate-550 block">Lead: {travelers[0]?.firstName} {travelers[0]?.lastName}</span>
+                      <span className="text-xs text-slate-500">
+                        Lead: {travelers[0]?.firstName} {travelers[0]?.lastName}
+                      </span>
                     </div>
                     <button
                       onClick={() => setBookingStep(3)}
-                      className="text-xs font-black text-amber-600 hover:text-amber-700 underline cursor-pointer"
+                      className="text-xs font-black text-amber-600 hover:text-amber-700 underline cursor-pointer bg-transparent border-none"
                       disabled={bookingStep < 3}
                     >
                       Edit Step
@@ -913,14 +428,14 @@ export const TourBookingForm: React.FC<TourBookingFormProps> = ({
                     />
 
                     {/* Step Navigation Controls */}
-                    <div className="pt-5 border-t border-slate-100 flex justify-between gap-4">
+                    <div className="pt-5 border-t border-slate-100 flex justify-between">
                       <button
                         type="button"
                         onClick={() => {
                           setBookingStep(2);
                           window.scrollTo({ top: 0, behavior: 'smooth' });
                         }}
-                        className="px-5 py-3 border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-xl text-xs font-bold uppercase cursor-pointer"
+                        className="px-6 py-3.5 text-slate-600 hover:text-slate-900 text-xs font-bold uppercase tracking-wider hover:bg-slate-50 rounded-xl transition-colors cursor-pointer border-none bg-transparent"
                       >
                         Back
                       </button>
@@ -932,7 +447,7 @@ export const TourBookingForm: React.FC<TourBookingFormProps> = ({
                             window.scrollTo({ top: 0, behavior: 'smooth' });
                           }
                         }}
-                        className="px-6 py-3.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 transition-colors cursor-pointer shadow-md"
+                        className="px-6 py-3.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 transition-colors cursor-pointer shadow-md border-none"
                       >
                         <span>Continue</span>
                         <ChevronRight className="w-4 h-4" />
@@ -942,7 +457,7 @@ export const TourBookingForm: React.FC<TourBookingFormProps> = ({
                 )}
               </div>
 
-              {/* STEP 4: PICKUP & ADD-ONS */}
+              {/* STEP 4: PICKUP & EXTRAS */}
               <div className={`bg-white border rounded-3xl transition-all duration-300 ${
                 bookingStep === 4 ? 'border-amber-500 shadow-md p-6 sm:p-8' : 'border-slate-200 p-5 opacity-80'
               }`}>
@@ -950,14 +465,14 @@ export const TourBookingForm: React.FC<TourBookingFormProps> = ({
                   <div className="flex justify-between items-center text-left">
                     <div>
                       <span className="text-[10px] text-slate-400 font-black uppercase block tracking-wider">Step 4 — Completed</span>
-                      <h4 className="font-bold text-sm text-slate-900 mt-1">
-                        {pickup.type === 'assistance' ? 'Request Logistics Contact Support' : 'Pickup details set'}
-                      </h4>
-                      <span className="text-xs text-slate-550 block">{addOnsSelected.length} optional extras upgrade selected</span>
+                      <h4 className="font-bold text-sm text-slate-900 mt-1">Pickup Logistics &amp; Upgrades</h4>
+                      <span className="text-xs text-slate-500">
+                        Pickup: {pickup.type === 'hotel' ? `Hotel (${pickup.hotelName})` : `Address (${pickup.city})`}
+                      </span>
                     </div>
                     <button
                       onClick={() => setBookingStep(4)}
-                      className="text-xs font-black text-amber-600 hover:text-amber-700 underline cursor-pointer"
+                      className="text-xs font-black text-amber-600 hover:text-amber-700 underline cursor-pointer bg-transparent border-none"
                       disabled={bookingStep < 4}
                     >
                       Edit Step
@@ -976,14 +491,14 @@ export const TourBookingForm: React.FC<TourBookingFormProps> = ({
                     />
 
                     {/* Step Navigation Controls */}
-                    <div className="pt-5 border-t border-slate-100 flex justify-between gap-4">
+                    <div className="pt-5 border-t border-slate-100 flex justify-between">
                       <button
                         type="button"
                         onClick={() => {
                           setBookingStep(3);
                           window.scrollTo({ top: 0, behavior: 'smooth' });
                         }}
-                        className="px-5 py-3 border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-xl text-xs font-bold uppercase cursor-pointer"
+                        className="px-6 py-3.5 text-slate-600 hover:text-slate-900 text-xs font-bold uppercase tracking-wider hover:bg-slate-50 rounded-xl transition-colors cursor-pointer border-none bg-transparent"
                       >
                         Back
                       </button>
@@ -993,9 +508,9 @@ export const TourBookingForm: React.FC<TourBookingFormProps> = ({
                           setBookingStep(5);
                           window.scrollTo({ top: 0, behavior: 'smooth' });
                         }}
-                        className="px-6 py-3.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 transition-colors cursor-pointer shadow-md"
+                        className="px-6 py-3.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 transition-colors cursor-pointer shadow-md border-none"
                       >
-                        <span>Review & Pay</span>
+                        <span>Continue</span>
                         <ChevronRight className="w-4 h-4" />
                       </button>
                     </div>
@@ -1004,50 +519,62 @@ export const TourBookingForm: React.FC<TourBookingFormProps> = ({
               </div>
 
               {/* STEP 5: REVIEW & PAY */}
-              {bookingStep === 5 && (
-                <div className="bg-white border border-amber-500 rounded-3xl p-6 sm:p-8 shadow-md">
-                  <PaymentSection
-                    tour={selectedTour}
-                    selectedDate={selectedDate}
-                    travelers={travelers}
-                    appliedVoucher={appliedVoucher}
-                    pickup={pickup}
-                    addOnsSelected={addOnsSelected}
-                    pricing={pricing}
-                    onJumpToStep={setBookingStep}
-                    paymentDetails={paymentDetails}
-                    setPaymentDetails={setPaymentDetails}
-                    onPayNow={handlePayNow}
-                    isProcessing={bookingStage === 'processing'}
-                    processingStep={processingStepText}
-                    canProceed={canProceed}
-                    termsWarning={termsWarning}
-                    agreedToTerms={agreedToTerms}
-                    setAgreedToTerms={setAgreedToTerms}
-                    agreedToPassport={agreedToPassport}
-                    setAgreedToPassport={setAgreedToPassport}
-                  />
-                </div>
-              )}
+              <div className={`bg-white border rounded-3xl transition-all duration-300 ${
+                bookingStep === 5 ? 'border-amber-500 shadow-md p-6 sm:p-8' : 'border-slate-200 p-5 opacity-80'
+              }`}>
+                {bookingStep === 5 && (
+                  <div className="space-y-6 animate-fadeIn">
+                    <PaymentSection
+                      tour={selectedTour}
+                      selectedDate={selectedDate}
+                      travelers={travelers}
+                      appliedVoucher={appliedVoucher}
+                      pickup={pickup}
+                      addOnsSelected={addOnsSelected}
+                      pricing={pricing}
+                      onJumpToStep={setBookingStep}
+                      paymentDetails={paymentDetails}
+                      setPaymentDetails={setPaymentDetails}
+                      onPayNow={handlePayNow}
+                      isProcessing={false}
+                      processingStep={processingStepText}
+                      canProceed={canProceed}
+                      termsWarning={termsWarning}
+                      agreedToTerms={agreedToTerms}
+                      setAgreedToTerms={setAgreedToTerms}
+                      agreedToPassport={agreedToPassport}
+                      setAgreedToPassport={setAgreedToPassport}
+                    />
+
+                    {/* Step Navigation Controls */}
+                    <div className="pt-5 border-t border-slate-100 flex justify-start">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setBookingStep(4);
+                          window.scrollTo({ top: 0, behavior: 'smooth' });
+                        }}
+                        className="px-6 py-3.5 text-slate-600 hover:text-slate-900 text-xs font-bold uppercase tracking-wider hover:bg-slate-50 rounded-xl transition-colors cursor-pointer border-none bg-transparent"
+                      >
+                        Back
+                      </button>
+                    </div>
+                  </div>
+                )}
+                {bookingStep !== 5 && (
+                  <div className="text-left">
+                    <span className="text-[10px] text-slate-400 font-black uppercase block tracking-wider">Step 5</span>
+                    <h4 className="font-bold text-sm text-slate-400 mt-1">Review &amp; Pay</h4>
+                  </div>
+                )}
+              </div>
 
             </div>
 
-            {/* Policy & Trust Cards Section */}
-            <div className="pt-10 border-t border-slate-200 text-left">
-              <h4 className="text-sm font-bold text-slate-900 mb-6 uppercase tracking-wider">BEDUINE Safe Travel Policy Guarantees</h4>
+            {/* Core Assurances Bar */}
+            <div className="space-y-3 pt-4 border-t border-slate-200/80 text-left">
+              <h4 className="text-[10px] font-black uppercase text-slate-400 tracking-wider">BEDUINE Safe Travel Guarantees</h4>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                
-                <div
-                  onClick={() => openPolicy('Free Cancellation Policy', 'Cancel your booking up to 48 hours prior to the scheduled departure time to get a full 100% cash refund returned to your bank account with zero service fee deduction.')}
-                  className="bg-white p-5 rounded-2xl border border-slate-200 hover:border-slate-350 shadow-sm flex items-start space-x-3.5 cursor-pointer transition-all"
-                >
-                  <Clock className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
-                  <div>
-                    <span className="font-bold text-xs text-slate-900 block">Free Cancellation</span>
-                    <span className="text-[10px] text-slate-500 block leading-tight mt-1">Full refund up to 48h prior.</span>
-                  </div>
-                </div>
-
                 <div
                   onClick={() => openPolicy('Flexible Reschedule Guarantee', 'Need to shift dates? Reschedule your tour departure window without penalty up to 24 hours prior. Rescheduling vouchers remain valid for up to 24 months.')}
                   className="bg-white p-5 rounded-2xl border border-slate-200 hover:border-slate-350 shadow-sm flex items-start space-x-3.5 cursor-pointer transition-all"
@@ -1069,11 +596,10 @@ export const TourBookingForm: React.FC<TourBookingFormProps> = ({
                     <span className="text-[10px] text-slate-500 block leading-tight mt-1">256-bit secure gateway connection.</span>
                   </div>
                 </div>
-
               </div>
             </div>
 
-            {/* Support FAQ Section (Rendered inside Wizard for accessibility) */}
+            {/* Support FAQ Section */}
             <SupportFaqSection />
 
           </div>
@@ -1103,19 +629,19 @@ export const TourBookingForm: React.FC<TourBookingFormProps> = ({
                 <User className="w-5 h-5 text-amber-500 shrink-0" />
                 <h4 className="font-bold text-base text-slate-900">Update Profile Details?</h4>
               </div>
-              <p className="text-xs text-slate-600 leading-relaxed">
+              <p className="text-xs text-slate-650 leading-relaxed">
                 The lead traveler name or email you entered differs from your account details. Would you like to sync these changes to your traveler profile?
               </p>
               <div className="flex gap-3 pt-2">
                 <button
                   onClick={() => handleProceedWithPayment(true)}
-                  className="flex-grow py-2.5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold uppercase rounded-xl cursor-pointer"
+                  className="flex-grow py-2.5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold uppercase rounded-xl cursor-pointer border-none"
                 >
-                  Yes, Update & Pay
+                  Yes, Update &amp; Pay
                 </button>
                 <button
                   onClick={() => handleProceedWithPayment(false)}
-                  className="flex-grow py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold uppercase rounded-xl cursor-pointer"
+                  className="flex-grow py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold uppercase rounded-xl cursor-pointer border-none"
                 >
                   No, Pay Only
                 </button>
@@ -1131,8 +657,8 @@ export const TourBookingForm: React.FC<TourBookingFormProps> = ({
               <div className="flex items-center justify-between border-b border-slate-100 pb-3">
                 <h4 className="font-bold text-base text-slate-900">{activePolicy.title}</h4>
                 <button
-                  onClick={() => setActivePolicy(null)}
-                  className="p-1 rounded-full hover:bg-slate-100 text-slate-400 hover:text-slate-700 cursor-pointer"
+                  onClick={closePolicy}
+                  className="p-1 rounded-full hover:bg-slate-100 text-slate-400 hover:text-slate-700 cursor-pointer bg-transparent border-none"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -1140,8 +666,8 @@ export const TourBookingForm: React.FC<TourBookingFormProps> = ({
               <p className="text-xs text-slate-650 leading-relaxed">{activePolicy.content}</p>
               <div className="pt-2 text-right">
                 <button
-                  onClick={() => setActivePolicy(null)}
-                  className="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold uppercase rounded-xl cursor-pointer"
+                  onClick={closePolicy}
+                  className="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold uppercase rounded-xl cursor-pointer border-none"
                 >
                   Close Policy
                 </button>
