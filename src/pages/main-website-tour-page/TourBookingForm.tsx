@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTourBookingState } from '../../hooks/useTourBookingState';
-import { ChevronRight, Check, Clock, X, ShieldCheck, Crown, User } from 'lucide-react';
+import { ChevronRight, Check, Clock, X, Crown } from 'lucide-react';
 import { CREDIT_VALUE_DOMESTIC, CREDIT_VALUE_INTERNATIONAL } from '../../utils/creditHelpers';
 
 // Child Component imports
@@ -14,6 +14,12 @@ import { PaymentSection } from './PaymentSection';
 import { ConfirmationScreen } from './BookingConfirmation';
 import { ReceiptModal } from './ReceiptModal';
 import { SupportFaqSection } from './TourFAQ';
+
+// New Subcomponents
+import { BookingStepper } from './BookingStepper';
+import { BookingSafeGuarantees } from './BookingSafeGuarantees';
+import { ProfileSyncModal } from './ProfileSyncModal';
+import { PolicyDrawerModal } from './PolicyDrawerModal';
 
 const formatINR = (value: number) => `₹${value.toLocaleString('en-IN')}`;
 
@@ -138,45 +144,8 @@ export const TourBookingForm: React.FC<TourBookingFormProps> = ({
           </div>
         </div>
 
-        {/* 5-Step Stepper Horizontal Progress Bar */}
-        <div className="bg-white border border-slate-200/80 p-4 rounded-2xl mb-8 shadow-sm flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-bold text-slate-500 text-left">
-          {[
-            { step: 1, label: 'Select Tour' },
-            { step: 2, label: 'Vouchers & Packs' },
-            { step: 3, label: 'Traveler Details' },
-            { step: 4, label: 'Pickup & Extras' },
-            { step: 5, label: 'Review & Pay' }
-          ].map((item) => {
-            const isActive = bookingStep === item.step;
-            const isCompleted = bookingStep > item.step;
-            return (
-              <div key={item.step} className="flex items-center space-x-3 w-full md:w-auto last:pr-0">
-                <div className="flex items-center space-x-2.5">
-                  <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs transition-colors shrink-0 ${
-                    isCompleted
-                      ? 'bg-emerald-500 text-white'
-                      : isActive
-                      ? 'bg-slate-900 text-amber-400'
-                      : 'bg-slate-100 text-slate-400'
-                  }`}>
-                    {isCompleted ? <Check className="w-4.5 h-4.5 font-black" /> : item.step}
-                  </div>
-                  <div>
-                    <span className={`block text-[10px] uppercase font-bold tracking-wider ${isActive ? 'text-slate-900' : 'text-slate-400'}`}>
-                      {item.label}
-                    </span>
-                    <span className="text-[9px] text-slate-500 font-medium block">
-                      {isCompleted ? 'Completed' : isActive ? 'Active Step' : 'Pending'}
-                    </span>
-                  </div>
-                </div>
-                {item.step < 5 && (
-                  <div className="hidden md:block h-[1px] w-12 bg-slate-200" />
-                )}
-              </div>
-            );
-          })}
-        </div>
+        {/* 5-Step Stepper Progress Bar */}
+        <BookingStepper bookingStep={bookingStep} />
 
         {/* Main Dual-Column Wizard Dashboard */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
@@ -184,7 +153,6 @@ export const TourBookingForm: React.FC<TourBookingFormProps> = ({
           {/* Left Column: Progressive Steps Panel */}
           <div className="lg:col-span-8 space-y-6">
             
-            {/* Step Accordion List */}
             <div className="space-y-6">
               
               {/* STEP 1: SELECT TOUR */}
@@ -572,32 +540,7 @@ export const TourBookingForm: React.FC<TourBookingFormProps> = ({
             </div>
 
             {/* Core Assurances Bar */}
-            <div className="space-y-3 pt-4 border-t border-slate-200/80 text-left">
-              <h4 className="text-[10px] font-black uppercase text-slate-400 tracking-wider">BEDUINE Safe Travel Guarantees</h4>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div
-                  onClick={() => openPolicy('Flexible Reschedule Guarantee', 'Need to shift dates? Reschedule your tour departure window without penalty up to 24 hours prior. Rescheduling vouchers remain valid for up to 24 months.')}
-                  className="bg-white p-5 rounded-2xl border border-slate-200 hover:border-slate-350 shadow-sm flex items-start space-x-3.5 cursor-pointer transition-all"
-                >
-                  <Clock className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
-                  <div>
-                    <span className="font-bold text-xs text-slate-900 block">Reschedule Guarantee</span>
-                    <span className="text-[10px] text-slate-500 block leading-tight mt-1">Change travel date up to 24h prior.</span>
-                  </div>
-                </div>
-
-                <div
-                  onClick={() => openPolicy('256-Bit SSL Checkout Security', 'All financial parameters and credit details are routed via verified PCI-DSS compliant secure socket channels. We do not store full CVV/card values on our servers.')}
-                  className="bg-white p-5 rounded-2xl border border-slate-200 hover:border-slate-350 shadow-sm flex items-start space-x-3.5 cursor-pointer transition-all"
-                >
-                  <ShieldCheck className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
-                  <div>
-                    <span className="font-bold text-xs text-slate-900 block">Secure Checkout</span>
-                    <span className="text-[10px] text-slate-500 block leading-tight mt-1">256-bit secure gateway connection.</span>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <BookingSafeGuarantees openPolicy={openPolicy} />
 
             {/* Support FAQ Section */}
             <SupportFaqSection />
@@ -621,60 +564,11 @@ export const TourBookingForm: React.FC<TourBookingFormProps> = ({
 
         </div>
 
-        {/* Profile Change Modal Overlay */}
-        {showSaveProfileModal && (
-          <div className="fixed inset-0 z-[150] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md">
-            <div className="bg-white rounded-[24px] p-6 max-w-sm w-full border border-slate-200/85 shadow-2xl text-left space-y-4 animate-fadeIn text-slate-800">
-              <div className="flex items-center gap-2.5">
-                <User className="w-5 h-5 text-amber-500 shrink-0" />
-                <h4 className="font-bold text-base text-slate-900">Update Profile Details?</h4>
-              </div>
-              <p className="text-xs text-slate-650 leading-relaxed">
-                The lead traveler name or email you entered differs from your account details. Would you like to sync these changes to your traveler profile?
-              </p>
-              <div className="flex gap-3 pt-2">
-                <button
-                  onClick={() => handleProceedWithPayment(true)}
-                  className="flex-grow py-2.5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold uppercase rounded-xl cursor-pointer border-none"
-                >
-                  Yes, Update &amp; Pay
-                </button>
-                <button
-                  onClick={() => handleProceedWithPayment(false)}
-                  className="flex-grow py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold uppercase rounded-xl cursor-pointer border-none"
-                >
-                  No, Pay Only
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
+        {/* Profile Sync Modal Overlay */}
+        <ProfileSyncModal show={showSaveProfileModal} onConfirm={handleProceedWithPayment} />
 
         {/* General Policy Drawer Modal */}
-        {activePolicy && (
-          <div className="fixed inset-0 z-[170] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md">
-            <div className="bg-white rounded-[24px] p-6 max-w-md w-full border border-slate-200/85 shadow-2xl text-left space-y-4 animate-fadeIn text-slate-800">
-              <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-                <h4 className="font-bold text-base text-slate-900">{activePolicy.title}</h4>
-                <button
-                  onClick={closePolicy}
-                  className="p-1 rounded-full hover:bg-slate-100 text-slate-400 hover:text-slate-700 cursor-pointer bg-transparent border-none"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
-              <p className="text-xs text-slate-650 leading-relaxed">{activePolicy.content}</p>
-              <div className="pt-2 text-right">
-                <button
-                  onClick={closePolicy}
-                  className="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold uppercase rounded-xl cursor-pointer border-none"
-                >
-                  Close Policy
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
+        <PolicyDrawerModal activePolicy={activePolicy} onClose={closePolicy} />
 
       </div>
     </div>
