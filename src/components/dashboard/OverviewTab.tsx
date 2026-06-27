@@ -421,7 +421,7 @@ export function OverviewTab({
             </div>
           </div>
           <div className="text-[11px] font-bold text-slate-700 leading-normal">
-            <div>Selection Draw: <strong className="text-slate-900 font-bold">Sunday 8:00 PM</strong></div>
+            <div>Weekly Selection: <strong className="text-slate-900 font-bold">Sunday 8:00 PM</strong></div>
             <div className="mt-0.5">Pre-travel Call: <strong className="text-slate-900 font-bold">July 02, 2026</strong></div>
           </div>
         </div>

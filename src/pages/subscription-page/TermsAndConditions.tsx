@@ -22,9 +22,9 @@ export function TermsAndConditions() {
 9. The Travel Reward selection will be conducted through a Random Number Generator (RNG) or any other approved automated digital system.
 10. The Company's decision regarding winner selection shall be final and binding.
 11. Travel Reward selection results cannot be challenged, modified, or reconsidered once announced.
-12. In case of technical issues, system failures, force majeure events, or unforeseen circumstances, the Company reserves the right to postpone, reschedule, or modify the draw.
+12. In case of technical issues, system failures, force majeure events, or unforeseen circumstances, the Company reserves the right to postpone, reschedule, or modify the selection.
 13. A minimum of 5% of the total valid participants will be selected as winners every week, using the "Round-Up" rule.
-14. The draw may be conducted live, recorded, or through an automated digital platform.
+14. The selection may be conducted live, recorded, or through an automated digital platform.
 15. Winner announcements may be published through the Company Website, Mobile App, Social Media Platforms, SMS, Email, or any other official communication channel.`
     },
     {
@@ -145,7 +145,7 @@ Platinum Plan (4 DC):
               Terms & Conditions
             </h2>
             <p className="mt-4 text-slate-400 text-sm max-w-2xl mx-auto font-mono">
-              "Choose Your Plan. Try Your Luck. Travel Beyond Limits."
+              "Choose Your Plan. Unlock Your Reward. Travel Beyond Limits."
             </p>
           </div>
         </Reveal>

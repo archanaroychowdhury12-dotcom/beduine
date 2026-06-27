@@ -16,7 +16,7 @@ export function SubscriptionCTA({ onSelectPlan }: SubscriptionCTAProps) {
             <KineticText text="Your next story begins" />
             <br /><span className="gold-shimmer"><KineticText text="with a single subscription." delay={0.4} /></span>
           </h2>
-          <p className="mt-6 text-lg text-ink/70 max-w-2xl mx-auto font-semibold">Join thousands of travelers who trust BEDUINE for AI-curated journeys, transparent draws, and guaranteed value.</p>
+          <p className="mt-6 text-lg text-ink/70 max-w-2xl mx-auto font-semibold">Join thousands of travelers who trust BEDUINE for AI-curated journeys, transparent selections, and guaranteed value.</p>
           <div className="mt-10 flex flex-col sm:flex-row gap-3 justify-center items-center">
             <button onClick={() => onSelectPlan('Silver')} className="cursor-pointer border-none bg-transparent p-0">
               <ParticleButton variant="gold" className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full font-bold text-base">

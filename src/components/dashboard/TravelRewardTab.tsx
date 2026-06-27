@@ -103,7 +103,7 @@ export function TravelRewardTab({
             )}
           </div>
           <div className="flex items-center justify-between text-xs text-slate-500 border-t border-slate-200/80 pt-3 mt-4">
-            <span>Next selection draw:</span>
+            <span>Next weekly selection:</span>
             <span className="font-bold text-[#FF8E53] flex items-center gap-1.5">
               <Calendar className="w-3.5 h-3.5" /> Next Sunday, 8:00 PM
             </span>

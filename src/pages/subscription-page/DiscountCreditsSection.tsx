@@ -12,9 +12,9 @@ export function DiscountCreditsSection() {
     { type: 'TRC', name: 'Travel Reward Credit', icon: Sparkles, accent: 'cyan',
       desc: '1 Credit is issued per subscription. This credit acts as a token that the user manually spends on the mobile app/web portal on Sunday to lock their participation in that week\'s travel reward selection.',
       rule: '1 Credit = 1 Entry in the weekly Travel Reward selection',
-      details: ['Automatically added upon payment verification', 'Used every Sunday to activate draw entry', 'Ticket ID confirmed and locked for that week', 'No extra credits can be purchased - fair chance for all'] },
+      details: ['Automatically added upon payment verification', 'Used every Sunday to activate selection entry', 'Ticket ID confirmed and locked for that week', 'No extra credits can be purchased - fair chance for all'] },
     { type: 'DC', name: 'Discount Credits', icon: CreditCard, accent: 'teal',
-      desc: 'These act as the protective floor for non-winners. If a user does not win, these credits allow them to claim a flat discount off per tour booking.',
+      desc: 'These act as the protective floor for non-selected members. If a user is not selected, these credits allow them to claim a flat discount off per tour booking.',
       rule: '1 Tour Booking = 1 Discount Credit applied',
       details: [
         'Domestic members receive ₹500-value Domestic Discount Credits.',
@@ -49,7 +49,7 @@ export function DiscountCreditsSection() {
               <KineticText text="Two credits," />
               <br /><span className="gold-shimmer"><KineticText text="zero risk." delay={0.3} /></span>
             </h2>
-            <p className="mt-6 text-ink/70 text-lg leading-relaxed">Every subscriber receives two types of credits - one for the thrill of the draw, one as your guaranteed safety net. Win or not, you always gain.</p>
+            <p className="mt-6 text-ink/70 text-lg leading-relaxed">Every subscriber receives two types of credits - one for the thrill of the selection, one as your guaranteed safety net. Selected or not, you always gain.</p>
           </div>
         </Reveal>
 
@@ -102,7 +102,7 @@ export function DiscountCreditsSection() {
                         </div>
                         <div>
                           <div className="text-white font-mono text-xl tracking-widest mb-1 font-black drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
-                            WEEKLY DRAW
+                            WEEKLY SELECTION
                           </div>
                           <div className="flex justify-between items-center text-[10px] font-mono text-slate-300 font-bold">
                             <span>TRC UNIT</span>
@@ -239,7 +239,7 @@ export function DiscountCreditsSection() {
                   </div>
 
                   <p className="text-sm text-slate-300 leading-relaxed mb-6 font-medium relative z-10">
-                    Your virtual membership card stores your draw tokens and discount credits. Accessible instantly from your phone.
+                    Your virtual membership card stores your selection tokens and discount credits. Accessible instantly from your phone.
                   </p>
                 </div>
 
@@ -333,7 +333,7 @@ export function DiscountCreditsSection() {
               <div className="flex-1">
                 <div className="font-display text-xl lg:text-2xl font-bold text-ink mb-2">The Ultimate Value Proposition</div>
                 <p className="text-lg text-ink/80 leading-relaxed font-serif italic gold-shimmer">
-                  "Every Sunday, BEDUINE runs a fair digital draw. If I win, I travel free. If not, I still get discounts. Either way, I gain."
+                  "Every Sunday, BEDUINE runs a fair digital selection. If I'm selected, I travel free. If not, I still get discounts. Either way, I gain."
                 </p>
               </div>
               <a href="#plans"><button className="px-8 py-4 bg-gradient-to-r from-neon-gold to-gold-deep text-cosmos font-bold rounded-full shadow-lg hover:scale-105 transition-transform flex items-center gap-2"><Crown className="w-5 h-5" />Subscribe Now<ChevronRight className="w-5 h-5" /></button></a>

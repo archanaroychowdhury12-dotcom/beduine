@@ -255,7 +255,7 @@ export function SubscriptionHero({ setView }: HeroProps) {
 export function TrustStrip() {
   const items = [
     { icon: Calendar, t: '12 Month Validity' },
-    { icon: Sparkles, t: 'Weekly Promotional Draw' },
+    { icon: Sparkles, t: 'Weekly Promotional Selection' },
     { icon: Wallet, t: '₹500 Discount Credit' },
     { icon: Shield, t: '18+ Membership Only' },
     { icon: Gift, t: 'Non-Cash Benefits' },

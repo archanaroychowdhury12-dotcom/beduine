@@ -30,6 +30,8 @@ const GrievanceRedressalPage = lazy(() => import('./app/grievance-redressal/page
 import { CookieConsentBanner, CookieModalTrigger } from './components/legal/CookieConsentBanner';
 import { DemoBanner } from './components/demo/DemoBanner';
 import { supabase } from './utils/supabaseClient';
+import { getRegistrationPlanFromSearch } from './utils/registrationPlanParams';
+import { getStaticLandingUrl, shouldOpenStaticLanding } from './utils/staticLandingRoute';
 
 const mapSupabaseUser = (supabaseUser: any) => {
   const fullName = supabaseUser.user_metadata?.full_name || 
@@ -142,6 +144,12 @@ const mapSupabaseUser = (supabaseUser: any) => {
 export default function App() {
   const introComplete = true;
 
+  useEffect(() => {
+    if (shouldOpenStaticLanding(window.location.pathname)) {
+      window.location.replace(getStaticLandingUrl(window.location.search, window.location.hash));
+    }
+  }, []);
+
   const [view, setView] = useState<
     'landing' | 'login' | 'register' | 'terms' | 'dashboard' | 'paid-tour' | 'error' |
     'legal' | 'privacy-policy' | 'terms-and-conditions' | 'refund-policy' |
@@ -162,7 +170,11 @@ export default function App() {
     return 'error';
   });
   const [currentUser, setCurrentUser] = useState<any | null>(null);
-  const [selectedPlanName, setSelectedPlanName] = useState<string>('Silver');
+  const [selectedPlanName, setSelectedPlanName] = useState<string>(() => {
+    return getRegistrationPlanFromSearch(window.location.search)
+      || sessionStorage.getItem('pendingPlanName')
+      || 'Silver';
+  });
   const [prefilledData, setPrefilledData] = useState<any>(null);
   const [pendingPlan, setPendingPlan] = useState<string | null>(null);
   const [loginInitialMode, setLoginInitialMode] = useState<'login' | 'register'>('login');
@@ -262,6 +274,14 @@ export default function App() {
         setView('landing');
       } else if (validViews.includes(path)) {
         setView(path as any);
+        if (path === 'register') {
+          const planFromQuery = getRegistrationPlanFromSearch(window.location.search);
+          if (planFromQuery) {
+            setSelectedPlanName(planFromQuery);
+            setPendingPlan(null);
+            sessionStorage.removeItem('pendingPlanName');
+          }
+        }
       } else {
         setView('error');
       }

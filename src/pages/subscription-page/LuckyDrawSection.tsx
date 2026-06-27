@@ -9,14 +9,14 @@ export function TravelRewardSystem() {
     { n: '01', icon: Scan, title: 'Data Verification', accent: 'cyan',
       img: '/images/transparency_verification.png',
       desc: 'All subscription logins made up to Saturday 11:59 PM are collected. Every participant is assigned a unique ticket ID.',
-      details: ['Duplicate entries & unverified payments are programmatically purged', 'Invalid accounts are filtered before pool freeze', 'Final subscriber list is frozen for that week\'s draw'] },
+      details: ['Duplicate entries & unverified payments are programmatically purged', 'Invalid accounts are filtered before pool freeze', 'Final subscriber list is frozen for that week\'s selection'] },
     { n: '02', icon: Bot, title: 'Random Selection Engine', accent: 'teal',
       img: '/images/transparency_rng.png',
       desc: 'A secure Random Number Generator (RNG) system selects the winning ticket IDs with full transparency.',
       details: ['Uses Random.org or audit-locked in-house script', 'Selection streamed live or recorded with screen-share', 'Visible on Facebook & YouTube channels'] },
     { n: '03', icon: FileText, title: 'Reports & Audits', accent: 'gold',
       img: '/images/transparency_audit.png',
-      desc: 'A comprehensive draw report containing all pool metrics is compiled weekly and archived.',
+      desc: 'A comprehensive selection report containing all pool metrics is compiled weekly and archived.',
       details: ['PDF/CSV with total pool, winning IDs & timestamps', 'RNG seed logs included for verification', 'Archived for transparent internal & external audits'] },
     { n: '04', icon: Send, title: 'Winner Announcement', accent: 'cyan',
       img: '/images/transparency_winner.png',
@@ -39,7 +39,7 @@ export function TravelRewardSystem() {
           <div className="text-center mb-16 max-w-3xl mx-auto">
             <div className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.3em] neon-cyan font-semibold mb-4"><div className="w-8 h-px bg-cyan" /> Travel Reward Protocol <div className="w-8 h-px bg-cyan" /></div>
             <h2 className="font-display text-4xl lg:text-6xl font-bold text-ink leading-tight">
-              <KineticText text="How the draw" />
+              <KineticText text="How the selection" />
               <br /><span className="gradient-neon"><KineticText text="actually works." delay={0.3} /></span>
             </h2>
             <p className="mt-6 text-ink/70 text-lg leading-relaxed">Every Sunday, eligible subscribers enter a verified travel reward selection. The customer journey stays simple: enter, watch, and receive your result securely.</p>
@@ -51,9 +51,9 @@ export function TravelRewardSystem() {
           <div className="glass-gold rounded-3xl p-6 lg:p-10 border border-neon-gold/40 mb-16 neon-border-gold">
             <div className="grid lg:grid-cols-2 gap-8 items-center">
               <div>
-                <div className="text-[11px] uppercase tracking-widest neon-gold font-semibold mb-2 font-mono">// Weekly Draw Experience</div>
+                <div className="text-[11px] uppercase tracking-widest neon-gold font-semibold mb-2 font-mono">// Weekly Selection Experience</div>
                 <div className="font-display text-2xl lg:text-3xl font-bold text-ink mb-4">Simple, secure, and verified.</div>
-                <p className="text-sm text-ink/70 leading-relaxed mb-6">Members can follow the draw experience clearly. Results are checked, documented, and shared through official BEDUINE channels.</p>
+                <p className="text-sm text-ink/70 leading-relaxed mb-6">Members can follow the selection experience clearly. Results are checked, documented, and shared through official BEDUINE channels.</p>
                 <div className="grid sm:grid-cols-3 gap-3">
                   {['Eligible entries', 'Verified selection', 'Official result'].map((item) => (
                     <div key={item} className="glass-light rounded-xl p-3 border border-slate-line text-center">
@@ -73,7 +73,7 @@ export function TravelRewardSystem() {
                   </svg>
                   <div className="absolute inset-0 flex flex-col items-center justify-center">
                     <ShieldCheck className="w-12 h-12 text-neon-gold mb-2" />
-                    <div className="text-[10px] uppercase tracking-widest text-ink/50 mt-1">Verified Draw</div>
+                    <div className="text-[10px] uppercase tracking-widest text-ink/50 mt-1">Verified Selection</div>
                   </div>
                 </div>
                 <div className="text-center">
@@ -90,7 +90,7 @@ export function TravelRewardSystem() {
           <div className="mb-16">
             <div className="text-center mb-8">
               <div className="text-[11px] uppercase tracking-widest neon-cyan font-semibold mb-2">Tour Scheduling Cycle</div>
-              <div className="font-display text-2xl lg:text-3xl font-bold text-ink">When do winners travel?</div>
+              <div className="font-display text-2xl lg:text-3xl font-bold text-ink">When do selected members travel?</div>
             </div>
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
               {schedule.map((s, i) => (
@@ -105,7 +105,7 @@ export function TravelRewardSystem() {
                       </div>
                     </div>
                     <div className="p-4">
-                      <div className="text-xs text-ink/50 uppercase tracking-widest mb-1 font-mono">Winners from</div>
+                      <div className="text-xs text-ink/50 uppercase tracking-widest mb-1 font-mono">Selected members from</div>
                       <div className="font-display text-lg font-bold text-ink">{s.quarter}</div>
                       <div className="my-2 flex justify-center"><ArrowRight className="w-4 h-4 text-neon-gold rotate-90" /></div>
                       <div className="text-xs text-ink/50 uppercase tracking-widest mb-1 font-mono">Travel in</div>
@@ -146,7 +146,7 @@ export function TravelRewardSystem() {
                     <div className="absolute bottom-3 left-3 right-3 flex justify-between items-center bg-void/85 backdrop-blur-md px-3 py-1.5 rounded-xl border border-slate-line/50 text-[10px] font-mono text-ink">
                       <span className="flex items-center gap-1.5 font-bold">
                         <span className={`w-1.5 h-1.5 rounded-full animate-pulse ${p.n === '01' ? 'bg-cyan' : p.n === '02' ? 'bg-teal-500' : p.n === '03' ? 'bg-neon-gold' : 'bg-cyan'}`} />
-                        {p.n === '01' ? 'Verification Live' : p.n === '02' ? 'Secure Entropy' : p.n === '03' ? 'Certified Logs' : 'Winner Declared'}
+                        {p.n === '01' ? 'Verification Live' : p.n === '02' ? 'Secure Entropy' : p.n === '03' ? 'Certified Logs' : 'Selection Declared'}
                       </span>
                       <span className="font-bold opacity-60">Step {p.n}</span>
                     </div>
@@ -165,20 +165,20 @@ export function TravelRewardSystem() {
           ))}
         </div>
 
-        {/* Customer-end draw UX */}
+        {/* Customer-end selection UX */}
         <Reveal>
           <div className="mt-16 glass rounded-3xl p-6 lg:p-10 border border-slate-line neon-border-cyan">
             <div className="grid lg:grid-cols-2 gap-10 items-center">
               <div>
-                <div className="text-[11px] uppercase tracking-widest neon-cyan font-semibold mb-2 font-mono">// Customer-End Draw Experience</div>
+                <div className="text-[11px] uppercase tracking-widest neon-cyan font-semibold mb-2 font-mono">// Customer-End Selection Experience</div>
                 <div className="font-display text-2xl lg:text-3xl font-bold text-ink mb-4">You don't just wait - you <span className="gradient-neon">participate.</span></div>
                 <p className="text-sm text-ink/70 leading-relaxed mb-6">Every Sunday, subscribers log in to their BEDUINE account, use their Travel Reward Credit to enter, and see results instantly. The selection is triggered by the system itself - not secretly by the company.</p>
                 <div className="space-y-3">
                   {[
                     { step: '1', t: 'Log in on Sunday', d: 'Open your BEDUINE app or web portal' },
                     { step: '2', t: 'Activate your entry', d: 'Use your 1 Travel Reward Credit to lock your ticket' },
-                    { step: '3', t: 'Watch the draw', d: 'Digital scratch card or RNG animation reveals results' },
-                    { step: '4', t: 'Instant result', d: 'Win -> Tour coupon | Not selected -> Discount credits confirmed' },
+                    { step: '3', t: 'Watch the selection', d: 'Digital scratch card or RNG animation reveals results' },
+                    { step: '4', t: 'Instant result', d: 'Selected -> Tour coupon | Not selected -> Discount credits confirmed' },
                   ].map((s) => (
                     <div key={s.step} className="flex items-start gap-4">
                       <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan to-cyan-deep flex items-center justify-center shrink-0 text-cosmos font-bold text-sm">{s.step}</div>
@@ -192,13 +192,13 @@ export function TravelRewardSystem() {
                 <div className="absolute inset-0 bg-gradient-to-t from-cosmos via-cosmos/50 to-cosmos/25" />
                 <div className="absolute inset-0 p-6 flex flex-col justify-between">
                   <div className="flex items-center justify-between">
-                    <span className="px-2.5 py-1 rounded-full glass-cyan text-cyan text-[10px] font-bold uppercase tracking-widest border border-cyan/20">Active Draw</span>
+                    <span className="px-2.5 py-1 rounded-full glass-cyan text-cyan text-[10px] font-bold uppercase tracking-widest border border-cyan/20">Active Selection</span>
                     <span className="text-xs font-mono neon-gold font-semibold flex items-center gap-1"><Sparkles className="w-3 h-3 animate-spin" /> Verifiable</span>
                   </div>
 
                   <div className="glass rounded-xl p-4 border border-neon-gold/30 backdrop-blur-md">
                     <div className="text-center mb-3">
-                      <div className="font-display text-sm font-semibold neon-gold tracking-wide">WEEKLY DRAW WINNER</div>
+                      <div className="font-display text-sm font-semibold neon-gold tracking-wide">WEEKLY REWARD SELECTION</div>
                       <div className="text-xs text-ink/75 mt-0.5">Congratulations! Your entry won a free luxury tour.</div>
                     </div>
                     <div className="glass rounded-lg p-2.5 border border-neon-gold/20 bg-cosmos/80 text-center font-mono">
@@ -222,10 +222,10 @@ export function TravelRewardSystem() {
           <div className="mt-8 glass-light rounded-xl p-5 border border-slate-line max-w-2xl mx-auto">
             <div className="flex items-center gap-3 mb-3">
               <div className="w-8 h-8 rounded-lg glass-cyan flex items-center justify-center"><MessageCircle className="w-4 h-4 text-cyan" /></div>
-              <div className="text-[10px] uppercase tracking-widest neon-cyan font-semibold">Sample Winner SMS</div>
+                  <div className="text-[10px] uppercase tracking-widest neon-cyan font-semibold">Sample Selection SMS</div>
             </div>
             <div className="glass rounded-xl p-4 border border-cyan/20 text-sm text-ink/80 leading-relaxed font-mono">
-              Congratulations <span className="neon-gold">[Name]</span>! You are a BEDUINE Travel Reward Winner! Your coupon: <span className="neon-cyan">BEDWIN-JULY-12345</span>. Call <span className="text-ink">+91 8768903565</span> for details.
+              Congratulations <span className="neon-gold">[Name]</span>! You've been selected for a BEDUINE Travel Reward! Your coupon: <span className="neon-cyan">BEDWIN-JULY-12345</span>. Call <span className="text-ink">+91 8768903565</span> for details.
             </div>
           </div>
         </Reveal>
@@ -244,7 +244,7 @@ export function NonWinnerGuarantee() {
       example: {
         name: 'Riya Das',
         avatar: '/images/winner_priya_sen.png',
-        story: 'Riya subscribed to Silver for ₹499. She didn\'t win the draw, but used her 1 Discount Credit to get ₹500 off her Sundarban trip. She saved ₹1 more than she paid!'
+        story: 'Riya subscribed to Silver for ₹499. She wasn\'t selected, but used her 1 Discount Credit to get ₹500 off her Sundarban trip. She saved ₹1 more than she paid!'
       },
     },
     {
@@ -255,7 +255,7 @@ export function NonWinnerGuarantee() {
       example: {
         name: 'Arjun Roy',
         avatar: '/images/winner_arjun_roy.png',
-        story: 'Arjun paid ₹799 for Gold. He didn\'t win, but used his 2 DCs on two separate tours - ₹500 off each. Total savings: ₹1,000 on a ₹799 subscription!'
+        story: 'Arjun paid ₹799 for Gold. He wasn\'t selected, but used his 2 DCs on two separate tours - ₹500 off each. Total savings: ₹1,000 on a ₹799 subscription!'
       },
     },
     {
@@ -266,7 +266,7 @@ export function NonWinnerGuarantee() {
       example: {
         name: 'Priya Sen',
         avatar: '/images/winner_ananya_das.png',
-        story: 'Priya subscribed to Platinum for ₹1,499. She didn\'t win, but received 4 DCs - ₹500 off on 4 different tours = ₹2,000 total savings. That\'s 133% value recovery!'
+        story: 'Priya subscribed to Platinum for ₹1,499. She wasn\'t selected, but received 4 DCs - ₹500 off on 4 different tours = ₹2,000 total savings. That\'s 133% value recovery!'
       },
     },
   ];
@@ -278,10 +278,10 @@ export function NonWinnerGuarantee() {
           <div className="text-center mb-16 max-w-3xl mx-auto">
             <div className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.3em] neon-gold font-semibold mb-4"><div className="w-8 h-px bg-neon-gold" /> No-Loss Security <div className="w-8 h-px bg-neon-gold" /></div>
             <h2 className="font-display text-4xl lg:text-6xl font-bold text-ink leading-tight">
-              <KineticText text="Didn't win?" />
-              <br /><span className="gold-shimmer"><KineticText text="You still win." delay={0.3} /></span>
+              <KineticText text="Not selected?" />
+              <br /><span className="gold-shimmer"><KineticText text="You still gain." delay={0.3} /></span>
             </h2>
-            <p className="mt-6 text-ink/70 text-lg leading-relaxed">Our Non-Winner Guarantee protects your membership value. If you don't win a travel reward draw, you get your full plan value back in discount credits. Check out how subscribers recover up to 133% of their costs.</p>
+            <p className="mt-6 text-ink/70 text-lg leading-relaxed">Our Non-Winner Guarantee protects your membership value. If you're not selected for a travel reward, you get your full plan value back in discount credits. Check out how subscribers recover up to 133% of their costs.</p>
           </div>
         </Reveal>
 

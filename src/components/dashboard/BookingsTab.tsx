@@ -452,7 +452,7 @@ export function SupportTab({
 }: SupportTabProps) {
   const faqs = [
     { q: 'How does the weekly member selection work?', a: 'Every Sunday at 8:00 PM, our RNG algorithm selects active subscribers for free curated tour rewards. Silver plan includes 1 TRC (Travel Reward Credit) for weekly reward participation, Gold includes 1 TRC, and Platinum includes 1 TRC. If not selected, value protection discount credits are credited to your wallet.' },
-    { q: 'What is Beduine Value Protection Policy?', a: 'If you subscribe and are not selected in the weekly draws, we issue ₹500 value Discount Credits. These non-cash credits are fully valid for booking any of our domestic and international paid tour packages, protecting the complete value of your subscription.' },
+    { q: 'What is Beduine Value Protection Policy?', a: 'If you subscribe and are not selected in the weekly selections, we issue ₹500 value Discount Credits. These non-cash credits are fully valid for booking any of our domestic and international paid tour packages, protecting the complete value of your subscription.' },
     { q: 'Can I change my name on the booking voucher?', a: 'Name change rules depend on your membership tier. Gold plan allows one name change, Platinum allows two, and Silver does not support name changes. Inquiries can be requested via WhatsApp.' },
     { q: 'How do I redeem my Discount Credit vouchers?', a: 'Simply go to "Book Travel", select your destination and date, and apply your active Discount Credit voucher code. Vouchers are applied to base package subtotals automatically.' }
   ];
@@ -522,7 +522,7 @@ export function SupportTab({
               <option>Booking Queries</option>
               <option>Refund Request</option>
               <option>Upgrade Membership</option>
-              <option>Selection Draw Help</option>
+              <option>Weekly Selection Help</option>
               <option>Other Queries</option>
             </select>
           </div>

@@ -24,7 +24,7 @@ export default function VerifyCouponPage() {
     const winnersStr = localStorage.getItem('beduine_winners_list');
     if (!winnersStr) {
       setCoupon(null);
-      setErrorMsg('No winners reports found in local storage. Run RNG Draw in Dashboard first.');
+      setErrorMsg('No selection reports found in local storage. Run RNG selection in Dashboard first.');
       return;
     }
 
@@ -35,11 +35,11 @@ export default function VerifyCouponPage() {
         setCoupon(found);
       } else {
         setCoupon(null);
-        setErrorMsg('Invalid Winner Coupon. No matching token or coupon code found.');
+        setErrorMsg('Invalid Selection Coupon. No matching token or coupon code found.');
       }
     } catch (err) {
       setCoupon(null);
-      setErrorMsg('Failed to parse winner database.');
+      setErrorMsg('Failed to parse selection database.');
     }
   };
 
@@ -104,7 +104,7 @@ export default function VerifyCouponPage() {
         {(!token || errorMsg) && (
           <div className="space-y-4 mb-6">
             <h1 className="text-xl font-black text-white">Coupon Verification Portal</h1>
-            <p className="text-xs text-slate-400">Scan winner QR code or enter token below manually to verify eligibility.</p>
+            <p className="text-xs text-slate-400">Scan a selected member's QR code or enter the token below manually to verify eligibility.</p>
             
             <form onSubmit={handleManualSearch} className="flex gap-2">
               <input
@@ -160,7 +160,7 @@ export default function VerifyCouponPage() {
               <div className="p-4.5 rounded-2xl border border-emerald-500/20 bg-emerald-500/5 text-emerald-400 flex items-start gap-3">
                 <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
                 <div>
-                  <h3 className="text-sm font-black uppercase tracking-wide">Valid Winner Coupon</h3>
+                  <h3 className="text-sm font-black uppercase tracking-wide">Valid Selection Coupon</h3>
                   <p className="text-[11px] text-emerald-400/80 mt-1 leading-relaxed">
                     This coupon is verified and active. Staff can proceed to redeem this tour.
                   </p>
@@ -172,7 +172,7 @@ export default function VerifyCouponPage() {
                 <div>
                   <h3 className="text-sm font-black uppercase tracking-wide">Pending Tour Assignment</h3>
                   <p className="text-[11px] text-blue-450/80 mt-1 leading-relaxed">
-                    Winner verified but destination/batch is not assigned yet by Admin.
+                    Selected member verified but destination/batch is not assigned yet by Admin.
                   </p>
                 </div>
               </div>
@@ -264,7 +264,7 @@ export default function VerifyCouponPage() {
         )}
 
         <div className="mt-8 text-[9px] text-slate-500 border-t border-white/5 pt-4 uppercase tracking-wider font-semibold">
-          BEDUINE Secure Selection Draw Verification Service v2.0
+          BEDUINE Secure Selection Verification Service v2.0
         </div>
       </div>
     </div>

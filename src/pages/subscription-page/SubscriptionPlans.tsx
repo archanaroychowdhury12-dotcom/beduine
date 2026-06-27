@@ -114,7 +114,7 @@ function PlanCard({ plan, index, onSelectPlan, selectedPlanId, showDemoWallet }:
               <span className="font-display text-5xl font-black text-white tracking-tight tabular">{plan.price}</span>
               <span className="text-slate-400 font-extrabold text-sm">/ 12 mo</span>
             </div>
-            <div className="mt-2 text-sm text-slate-300 font-bold">Winner tour value up to <span className="font-extrabold text-white">₹{plan.tourValue.toLocaleString('en-IN')}</span> - {plan.duration}</div>
+            <div className="mt-2 text-sm text-slate-300 font-bold">Selected member tour value up to <span className="font-extrabold text-white">₹{plan.tourValue.toLocaleString('en-IN')}</span> - {plan.duration}</div>
             <div className="mt-4 flex items-start gap-2 rounded-xl border border-emerald-400/25 bg-emerald-400/10 p-3 text-sm font-black leading-snug text-emerald-100">
               <Wallet className="mt-0.5 h-4 w-4 shrink-0 text-emerald-300" />
               <span>Pay ₹{plan.price.toLocaleString('en-IN')}. If not selected, use ₹{creditValue} as travel credit.</span>
@@ -122,7 +122,7 @@ function PlanCard({ plan, index, onSelectPlan, selectedPlanId, showDemoWallet }:
           </div>
 
           <div className="p-7 border-b border-slate-800/80">
-            <div className="flex items-center gap-2 mb-3"><MapPin className="w-4 h-4 text-cyan" /><div className="text-[11px] uppercase tracking-widest text-cyan font-bold">Winner Destinations</div></div>
+            <div className="flex items-center gap-2 mb-3"><MapPin className="w-4 h-4 text-cyan" /><div className="text-[11px] uppercase tracking-widest text-cyan font-bold">Selection Destinations</div></div>
             <ul className="space-y-2">{plan.destinations.map((d) => <li key={d} className="flex items-start gap-2 text-sm text-slate-200 font-bold"><GoldCheck size={15} /><span>{d}</span></li>)}</ul>
           </div>
 
@@ -215,7 +215,7 @@ function IntlPlanCard({ plan, index, onSelectPlan, selectedPlanId, showDemoWalle
               <span className="font-display text-5xl font-black text-white tracking-tight tabular">{plan.price.toLocaleString('en-IN')}</span>
               <span className="text-slate-400 font-extrabold text-sm">/ 12 mo</span>
             </div>
-            <div className="mt-2 text-sm text-slate-300 font-bold">Winner tour value up to <span className="font-extrabold text-white">₹{plan.tourValue.toLocaleString('en-IN')}</span> - {plan.duration}</div>
+            <div className="mt-2 text-sm text-slate-300 font-bold">Selected member tour value up to <span className="font-extrabold text-white">₹{plan.tourValue.toLocaleString('en-IN')}</span> - {plan.duration}</div>
             <div className="mt-4 flex items-start gap-2 rounded-xl border border-cyan/25 bg-cyan/10 p-3 text-sm font-black leading-snug text-cyan-bright">
               <Wallet className="mt-0.5 h-4 w-4 shrink-0" />
               <span>Pay ₹{plan.price.toLocaleString('en-IN')}. If not selected, use ₹{creditValue} as travel credit.</span>
@@ -301,7 +301,7 @@ export function Plans({ onSelectPlan, selectedPlanId, showDemoWallet }: { onSele
                 Subscription Rules & Benefits
               </div>
               <div className="text-ink/75 mt-1">
-                <span className="font-semibold text-rose-700">No Cash Refunds.</span> Every active plan joins the draw. If you do not win, your plan value turns into <span className="font-semibold text-ink">travel credits</span> for future bookings.
+                <span className="font-semibold text-rose-700">No Cash Refunds.</span> Every active plan joins the weekly selection. If you are not selected, your plan value turns into <span className="font-semibold text-ink">travel credits</span> for future bookings.
               </div>
             </div>
           </motion.div>
@@ -317,7 +317,7 @@ export function Plans({ onSelectPlan, selectedPlanId, showDemoWallet }: { onSele
           <div className="mt-14 glass rounded-2xl p-6 lg:p-8 border border-slate-line">
             <div className="text-center text-[11px] uppercase tracking-widest neon-cyan font-semibold mb-5">Included in every domestic plan</div>
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
-              {[{ type: 'calendar', t: '12 Months Validity', d: 'Full subscription coverage' }, { type: 'mappin', t: 'Pickup & Drop', d: 'From selected points' }, { type: 'award', t: 'Quarterly Tours', d: 'Batched travel cycles' }, { type: 'barchart', t: 'Digital Dashboard', d: 'Track credits & draws' }].map((b) => (
+              {[{ type: 'calendar', t: '12 Months Validity', d: 'Full subscription coverage' }, { type: 'mappin', t: 'Pickup & Drop', d: 'From selected points' }, { type: 'award', t: 'Quarterly Tours', d: 'Batched travel cycles' }, { type: 'barchart', t: 'Digital Dashboard', d: 'Track credits & selections' }].map((b) => (
                 <div key={b.t} className="flex items-center gap-3.5">
                   <AIIcon type={b.type} />
                   <div><div className="font-bold text-white text-sm">{b.t}</div><div className="text-xs text-slate-400 mt-0.5">{b.d}</div></div>

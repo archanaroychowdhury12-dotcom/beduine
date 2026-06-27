@@ -100,7 +100,7 @@ export function SubscriptionTab({
           <h2 className="text-base font-black flex items-center gap-2 text-slate-805 uppercase tracking-wide">
             <ShieldCheck className="w-5 h-5 text-[#FF6B6B]" /> Join Beduine Membership
           </h2>
-          <p className="text-xs text-slate-400">Choose a travel subscription plan to start your journey with guaranteed discount credits and weekly travel draw entries.</p>
+          <p className="text-xs text-slate-400">Choose a travel subscription plan to start your journey with guaranteed discount credits and weekly travel selection entries.</p>
         </div>
 
         <div className="grid sm:grid-cols-2 gap-4 font-sans">

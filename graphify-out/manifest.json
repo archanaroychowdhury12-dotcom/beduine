@@ -1,29 +1,4 @@
 {
-  ".codex-screenshots/axe-accessibility.json": {
-    "mtime": 1781586643.0905824,
-    "ast_hash": "c088faeb68011bcd25975fbf6a329ec0",
-    "semantic_hash": "c088faeb68011bcd25975fbf6a329ec0"
-  },
-  ".codex-screenshots/chrome-profile-2/component_crx_cache/metadata.json": {
-    "mtime": 1781116061.5298862,
-    "ast_hash": "770dfcd6e63fe336082079faf9ce964c",
-    "semantic_hash": "770dfcd6e63fe336082079faf9ce964c"
-  },
-  ".codex-screenshots/chrome-profile/component_crx_cache/metadata.json": {
-    "mtime": 1781115913.3147151,
-    "ast_hash": "770dfcd6e63fe336082079faf9ce964c",
-    "semantic_hash": "770dfcd6e63fe336082079faf9ce964c"
-  },
-  ".codex-screenshots/lighthouse-accessibility.json": {
-    "mtime": 1781586559.3407867,
-    "ast_hash": "83bf640f5fb085a7a8bf3ada03c15497",
-    "semantic_hash": "83bf640f5fb085a7a8bf3ada03c15497"
-  },
-  ".codex-screenshots/lighthouse-desktop.json": {
-    "mtime": 1781585962.7997937,
-    "ast_hash": "8ecf61440f852eeb496e9f10ff1380e7",
-    "semantic_hash": "8ecf61440f852eeb496e9f10ff1380e7"
-  },
   "package.json": {
     "mtime": 1781876385.1894498,
     "ast_hash": "a7bdf023878e8a9adc340bc96b94af90",
@@ -514,11 +489,6 @@
     "ast_hash": "437e64cad73ba869ed4b503bc1bcb2f5",
     "semantic_hash": "437e64cad73ba869ed4b503bc1bcb2f5"
   },
-  ".codex-doc-review/BEDUIN_TOUR_AND_TRAVELS_extracted.txt": {
-    "mtime": 1781715378.8496568,
-    "ast_hash": "fd2fd9285cb6e3f10bb1dcd3b9c43fec",
-    "semantic_hash": "fd2fd9285cb6e3f10bb1dcd3b9c43fec"
-  },
   "index.html": {
     "mtime": 1782321433.770441,
     "ast_hash": "5c90b055b893c9ed8230afdf3016cf5b",
@@ -533,71 +503,6 @@
     "mtime": 1782391836.2801995,
     "ast_hash": "74ce666b76b98191ccb6730c01760d3e",
     "semantic_hash": "74ce666b76b98191ccb6730c01760d3e"
-  },
-  ".codex-screenshots/dashboard-bookings-desktop.png": {
-    "mtime": 1781408866.4336667,
-    "ast_hash": "781d2fe0c8c1ba13c16d2abfa616b6d5",
-    "semantic_hash": "781d2fe0c8c1ba13c16d2abfa616b6d5"
-  },
-  ".codex-screenshots/dashboard-bookings-scrolled.png": {
-    "mtime": 1781408946.5655143,
-    "ast_hash": "c929c6968d47c08c5d3b6b226767c579",
-    "semantic_hash": "c929c6968d47c08c5d3b6b226767c579"
-  },
-  ".codex-screenshots/dashboard-credits-desktop.png": {
-    "mtime": 1781408859.1498785,
-    "ast_hash": "dcdb23807f457675d2f0fdae27ee2fad",
-    "semantic_hash": "dcdb23807f457675d2f0fdae27ee2fad"
-  },
-  ".codex-screenshots/dashboard-credits-mobile.png": {
-    "mtime": 1781409019.7555354,
-    "ast_hash": "7c8dc0fe39f1f5804a83c970978d03de",
-    "semantic_hash": "7c8dc0fe39f1f5804a83c970978d03de"
-  },
-  ".codex-screenshots/dashboard-credits-scrolled.png": {
-    "mtime": 1781408936.1838539,
-    "ast_hash": "df30166e304baf9a15ed851ef3a2e4ab",
-    "semantic_hash": "df30166e304baf9a15ed851ef3a2e4ab"
-  },
-  ".codex-screenshots/dashboard-draws-desktop.png": {
-    "mtime": 1781408862.7675743,
-    "ast_hash": "18b17f3c1870b860c8b7265ffb41af61",
-    "semantic_hash": "18b17f3c1870b860c8b7265ffb41af61"
-  },
-  ".codex-screenshots/dashboard-draws-scrolled.png": {
-    "mtime": 1781408940.9639943,
-    "ast_hash": "18760383674714e03a5cdb0fa810a312",
-    "semantic_hash": "18760383674714e03a5cdb0fa810a312"
-  },
-  ".codex-screenshots/dashboard-edit-profile-desktop.png": {
-    "mtime": 1781408870.1611798,
-    "ast_hash": "d43116b8a0fc0a63e67fb50e413c0482",
-    "semantic_hash": "d43116b8a0fc0a63e67fb50e413c0482"
-  },
-  ".codex-screenshots/dashboard-edit-profile-mobile.png": {
-    "mtime": 1781409011.443882,
-    "ast_hash": "92bbb48f622daf7891037e0cfc64837a",
-    "semantic_hash": "92bbb48f622daf7891037e0cfc64837a"
-  },
-  ".codex-screenshots/dashboard-edit-profile-scrolled.png": {
-    "mtime": 1781408951.692759,
-    "ast_hash": "8131494c65831ad68c4d54c189df9fac",
-    "semantic_hash": "8131494c65831ad68c4d54c189df9fac"
-  },
-  ".codex-screenshots/dashboard-lucky-status-desktop.png": {
-    "mtime": 1781408873.4286861,
-    "ast_hash": "1196ced669defd7326593f88df5951ab",
-    "semantic_hash": "1196ced669defd7326593f88df5951ab"
-  },
-  ".codex-screenshots/dashboard-lucky-status-mobile.png": {
-    "mtime": 1781409015.5787451,
-    "ast_hash": "eb5b1b303a09f5816c6f417cc59bac9a",
-    "semantic_hash": "eb5b1b303a09f5816c6f417cc59bac9a"
-  },
-  ".codex-screenshots/dashboard-lucky-status-scrolled.png": {
-    "mtime": 1781408957.7298987,
-    "ast_hash": "45f9d7a60d8eaed9e2b61f109e3e8603",
-    "semantic_hash": "45f9d7a60d8eaed9e2b61f109e3e8603"
   },
   "Initial_Scene_-_2026-06-05_202606052345_frames/frame_001.jpg": {
     "mtime": 1780683904.6603396,
@@ -1169,45 +1074,20 @@
     "ast_hash": "0b5d95c3c1d45a306e7c136b3403e20c",
     "semantic_hash": "0b5d95c3c1d45a306e7c136b3403e20c"
   },
-  "E:\\busness\\bediine\\.codex-screenshots\\axe-accessibility.json": {
-    "mtime": 1781586643.0905824,
-    "ast_hash": "c088faeb68011bcd25975fbf6a329ec0",
-    "semantic_hash": "c088faeb68011bcd25975fbf6a329ec0"
-  },
-  "E:\\busness\\bediine\\.codex-screenshots\\chrome-profile-2\\component_crx_cache\\metadata.json": {
-    "mtime": 1781116061.5298862,
-    "ast_hash": "770dfcd6e63fe336082079faf9ce964c",
-    "semantic_hash": "770dfcd6e63fe336082079faf9ce964c"
-  },
-  "E:\\busness\\bediine\\.codex-screenshots\\chrome-profile\\component_crx_cache\\metadata.json": {
-    "mtime": 1781115913.3147151,
-    "ast_hash": "770dfcd6e63fe336082079faf9ce964c",
-    "semantic_hash": "770dfcd6e63fe336082079faf9ce964c"
-  },
-  "E:\\busness\\bediine\\.codex-screenshots\\lighthouse-accessibility.json": {
-    "mtime": 1781586559.3407867,
-    "ast_hash": "83bf640f5fb085a7a8bf3ada03c15497",
-    "semantic_hash": "83bf640f5fb085a7a8bf3ada03c15497"
-  },
-  "E:\\busness\\bediine\\.codex-screenshots\\lighthouse-desktop.json": {
-    "mtime": 1781585962.7997937,
-    "ast_hash": "8ecf61440f852eeb496e9f10ff1380e7",
-    "semantic_hash": "8ecf61440f852eeb496e9f10ff1380e7"
-  },
   "E:\\busness\\bediine\\package.json": {
     "mtime": 1782473208.8697565,
     "ast_hash": "6b7b82745a85a4e8fead6e2ec3fd59e9",
     "semantic_hash": "6b7b82745a85a4e8fead6e2ec3fd59e9"
   },
   "E:\\busness\\bediine\\src\\App.tsx": {
-    "mtime": 1782473830.3979383,
-    "ast_hash": "62849cb51084cbdef45ea1d50a8a02d2",
-    "semantic_hash": "62849cb51084cbdef45ea1d50a8a02d2"
+    "mtime": 1782499972.4599822,
+    "ast_hash": "a3648e4a0ed644633adf06b169310ab9",
+    "semantic_hash": "a3648e4a0ed644633adf06b169310ab9"
   },
   "E:\\busness\\bediine\\src\\DashboardPage.tsx": {
-    "mtime": 1782476714.0716631,
-    "ast_hash": "17dfbd4cb4a73e231f8fa22c1da6c8fe",
-    "semantic_hash": "17dfbd4cb4a73e231f8fa22c1da6c8fe"
+    "mtime": 1782497526.542285,
+    "ast_hash": "7041e1fed918155a6f3625f9b53a3471",
+    "semantic_hash": "7041e1fed918155a6f3625f9b53a3471"
   },
   "E:\\busness\\bediine\\src\\ErrorPage.tsx": {
     "mtime": 1781617217.8050704,
@@ -1220,9 +1100,9 @@
     "semantic_hash": "26eb332ee8ef2ab8c71eb2d0cdc320ac"
   },
   "E:\\busness\\bediine\\src\\RegistrationPage.tsx": {
-    "mtime": 1782476698.832628,
-    "ast_hash": "6e45ff858691ddfbbb6a44c7c138c0d7",
-    "semantic_hash": "6e45ff858691ddfbbb6a44c7c138c0d7"
+    "mtime": 1782496593.409046,
+    "ast_hash": "80e31fab6e21dfeb068d7fce9b9294c8",
+    "semantic_hash": "80e31fab6e21dfeb068d7fce9b9294c8"
   },
   "E:\\busness\\bediine\\src\\ScatteredShowcase.tsx": {
     "mtime": 1782321433.773055,
@@ -1420,9 +1300,9 @@
     "semantic_hash": "c8c5f2bb9b6d97d25f56ae0a60736bc2"
   },
   "E:\\busness\\bediine\\src\\data\\tours.ts": {
-    "mtime": 1782473208.9537406,
-    "ast_hash": "7343c140cab020cc3ac31152f70848c3",
-    "semantic_hash": "7343c140cab020cc3ac31152f70848c3"
+    "mtime": 1782486190.0445971,
+    "ast_hash": "d8002d6dc49284f0eb3ad0a8018fafa5",
+    "semantic_hash": "d8002d6dc49284f0eb3ad0a8018fafa5"
   },
   "E:\\busness\\bediine\\src\\hooks\\useScrollReveal.ts": {
     "mtime": 1781692778.3028738,
@@ -1495,9 +1375,9 @@
     "semantic_hash": "5ed9aa5b31f5a07704abf9208fc65879"
   },
   "E:\\busness\\bediine\\src\\pages\\main-website-tour-page\\TourBookingForm.tsx": {
-    "mtime": 1782473208.9537406,
-    "ast_hash": "07864ffafb8b2c54d45aee586e4403c6",
-    "semantic_hash": "07864ffafb8b2c54d45aee586e4403c6"
+    "mtime": 1782486079.5635035,
+    "ast_hash": "bf714a4d3e1153bb9489deb12b818a94",
+    "semantic_hash": "bf714a4d3e1153bb9489deb12b818a94"
   },
   "E:\\busness\\bediine\\src\\pages\\main-website-tour-page\\TourDetails.tsx": {
     "mtime": 1782316427.9677906,
@@ -1565,9 +1445,9 @@
     "semantic_hash": "7a14ca32d7425b4e2acb6159b824ecab"
   },
   "E:\\busness\\bediine\\src\\pages\\subscription-page\\DiscountCreditsSection.tsx": {
-    "mtime": 1782475693.3075721,
-    "ast_hash": "5b9f1ed92946d2fc16b1da29aaf4ee50",
-    "semantic_hash": "5b9f1ed92946d2fc16b1da29aaf4ee50"
+    "mtime": 1782500478.1259375,
+    "ast_hash": "9bf468139203ca21abe4183dd0ddce37",
+    "semantic_hash": "9bf468139203ca21abe4183dd0ddce37"
   },
   "E:\\busness\\bediine\\src\\pages\\subscription-page\\LandingShell.tsx": {
     "mtime": 1782477039.5390205,
@@ -1689,11 +1569,6 @@
     "ast_hash": "7533633f1a103f8167c5ada63556b417",
     "semantic_hash": "7533633f1a103f8167c5ada63556b417"
   },
-  "E:\\busness\\bediine\\.codex-doc-review\\BEDUIN_TOUR_AND_TRAVELS_extracted.txt": {
-    "mtime": 1781715378.8496568,
-    "ast_hash": "fd2fd9285cb6e3f10bb1dcd3b9c43fec",
-    "semantic_hash": "fd2fd9285cb6e3f10bb1dcd3b9c43fec"
-  },
   "E:\\busness\\bediine\\docs\\superpowers\\plans\\2026-06-25-credit-category-locking.md": {
     "mtime": 1782473208.8224425,
     "ast_hash": "ba8de6b03e97bc570fc12915855289e1",
@@ -1705,74 +1580,9 @@
     "semantic_hash": "55200b04f1b41f6540db0453c7f2f148"
   },
   "E:\\busness\\bediine\\index.html": {
-    "mtime": 1782477046.6056263,
-    "ast_hash": "ab2c4882a6abc2653459b759b5265fb1",
-    "semantic_hash": "ab2c4882a6abc2653459b759b5265fb1"
-  },
-  "E:\\busness\\bediine\\.codex-screenshots\\dashboard-bookings-desktop.png": {
-    "mtime": 1781408866.4336667,
-    "ast_hash": "781d2fe0c8c1ba13c16d2abfa616b6d5",
-    "semantic_hash": "781d2fe0c8c1ba13c16d2abfa616b6d5"
-  },
-  "E:\\busness\\bediine\\.codex-screenshots\\dashboard-bookings-scrolled.png": {
-    "mtime": 1781408946.5655143,
-    "ast_hash": "c929c6968d47c08c5d3b6b226767c579",
-    "semantic_hash": "c929c6968d47c08c5d3b6b226767c579"
-  },
-  "E:\\busness\\bediine\\.codex-screenshots\\dashboard-credits-desktop.png": {
-    "mtime": 1781408859.1498785,
-    "ast_hash": "dcdb23807f457675d2f0fdae27ee2fad",
-    "semantic_hash": "dcdb23807f457675d2f0fdae27ee2fad"
-  },
-  "E:\\busness\\bediine\\.codex-screenshots\\dashboard-credits-mobile.png": {
-    "mtime": 1781409019.7555354,
-    "ast_hash": "7c8dc0fe39f1f5804a83c970978d03de",
-    "semantic_hash": "7c8dc0fe39f1f5804a83c970978d03de"
-  },
-  "E:\\busness\\bediine\\.codex-screenshots\\dashboard-credits-scrolled.png": {
-    "mtime": 1781408936.1838539,
-    "ast_hash": "df30166e304baf9a15ed851ef3a2e4ab",
-    "semantic_hash": "df30166e304baf9a15ed851ef3a2e4ab"
-  },
-  "E:\\busness\\bediine\\.codex-screenshots\\dashboard-draws-desktop.png": {
-    "mtime": 1781408862.7675743,
-    "ast_hash": "18b17f3c1870b860c8b7265ffb41af61",
-    "semantic_hash": "18b17f3c1870b860c8b7265ffb41af61"
-  },
-  "E:\\busness\\bediine\\.codex-screenshots\\dashboard-draws-scrolled.png": {
-    "mtime": 1781408940.9639943,
-    "ast_hash": "18760383674714e03a5cdb0fa810a312",
-    "semantic_hash": "18760383674714e03a5cdb0fa810a312"
-  },
-  "E:\\busness\\bediine\\.codex-screenshots\\dashboard-edit-profile-desktop.png": {
-    "mtime": 1781408870.1611798,
-    "ast_hash": "d43116b8a0fc0a63e67fb50e413c0482",
-    "semantic_hash": "d43116b8a0fc0a63e67fb50e413c0482"
-  },
-  "E:\\busness\\bediine\\.codex-screenshots\\dashboard-edit-profile-mobile.png": {
-    "mtime": 1781409011.443882,
-    "ast_hash": "92bbb48f622daf7891037e0cfc64837a",
-    "semantic_hash": "92bbb48f622daf7891037e0cfc64837a"
-  },
-  "E:\\busness\\bediine\\.codex-screenshots\\dashboard-edit-profile-scrolled.png": {
-    "mtime": 1781408951.692759,
-    "ast_hash": "8131494c65831ad68c4d54c189df9fac",
-    "semantic_hash": "8131494c65831ad68c4d54c189df9fac"
-  },
-  "E:\\busness\\bediine\\.codex-screenshots\\dashboard-lucky-status-desktop.png": {
-    "mtime": 1781408873.4286861,
-    "ast_hash": "1196ced669defd7326593f88df5951ab",
-    "semantic_hash": "1196ced669defd7326593f88df5951ab"
-  },
-  "E:\\busness\\bediine\\.codex-screenshots\\dashboard-lucky-status-mobile.png": {
-    "mtime": 1781409015.5787451,
-    "ast_hash": "eb5b1b303a09f5816c6f417cc59bac9a",
-    "semantic_hash": "eb5b1b303a09f5816c6f417cc59bac9a"
-  },
-  "E:\\busness\\bediine\\.codex-screenshots\\dashboard-lucky-status-scrolled.png": {
-    "mtime": 1781408957.7298987,
-    "ast_hash": "45f9d7a60d8eaed9e2b61f109e3e8603",
-    "semantic_hash": "45f9d7a60d8eaed9e2b61f109e3e8603"
+    "mtime": 1782486935.0008235,
+    "ast_hash": "bf2f96e1ee1641d37406ba81571e2581",
+    "semantic_hash": "bf2f96e1ee1641d37406ba81571e2581"
   },
   "E:\\busness\\bediine\\Initial_Scene_-_2026-06-05_202606052345_frames\\frame_001.jpg": {
     "mtime": 1780683904.6603396,
@@ -2355,9 +2165,9 @@
     "semantic_hash": "7d043d066a15010fc30815f7ef070c52"
   },
   "E:\\busness\\bediine\\src\\AdminPage.tsx": {
-    "mtime": 1782473208.945351,
-    "ast_hash": "d380288b8339ee753714fc81ba5e7fdc",
-    "semantic_hash": "d380288b8339ee753714fc81ba5e7fdc"
+    "mtime": 1782486925.6298735,
+    "ast_hash": "be9c4a0a0a99a81b069eb1ec890d51f1",
+    "semantic_hash": "be9c4a0a0a99a81b069eb1ec890d51f1"
   },
   "E:\\busness\\bediine\\src\\components\\demo\\DemoBanner.tsx": {
     "mtime": 1782473208.9516032,
@@ -2378,5 +2188,60 @@
     "mtime": 1782473786.874326,
     "ast_hash": "920a1028d4a5f8cd50c29b37a86ba16d",
     "semantic_hash": "920a1028d4a5f8cd50c29b37a86ba16d"
+  },
+  "E:\\busness\\bediine\\src\\components\\dashboard\\AdminDrawPanel.tsx": {
+    "mtime": 1782496968.0278401,
+    "ast_hash": "43deaa98e2a1646a8dd835fe4814473b",
+    "semantic_hash": "43deaa98e2a1646a8dd835fe4814473b"
+  },
+  "E:\\busness\\bediine\\src\\components\\dashboard\\BookingsTab.tsx": {
+    "mtime": 1782497044.0529835,
+    "ast_hash": "d806792d3f7b7f285bab8f46af8bb9da",
+    "semantic_hash": "d806792d3f7b7f285bab8f46af8bb9da"
+  },
+  "E:\\busness\\bediine\\src\\components\\dashboard\\CreditsTab.tsx": {
+    "mtime": 1782497047.1739619,
+    "ast_hash": "2fac5b81fb5ccbd4febeb86f9abe4395",
+    "semantic_hash": "2fac5b81fb5ccbd4febeb86f9abe4395"
+  },
+  "E:\\busness\\bediine\\src\\components\\dashboard\\DashboardLayout.tsx": {
+    "mtime": 1782497052.0137572,
+    "ast_hash": "6fff79c1caa0e1433c9c637ae22958ac",
+    "semantic_hash": "6fff79c1caa0e1433c9c637ae22958ac"
+  },
+  "E:\\busness\\bediine\\src\\components\\dashboard\\OverviewTab.tsx": {
+    "mtime": 1782496875.8127327,
+    "ast_hash": "0854b86610cdb3b3ce17a06d2aa6a54c",
+    "semantic_hash": "0854b86610cdb3b3ce17a06d2aa6a54c"
+  },
+  "E:\\busness\\bediine\\src\\components\\dashboard\\ProfileTab.tsx": {
+    "mtime": 1782496950.4920895,
+    "ast_hash": "caa4e73ee646adad355989ad56a4d832",
+    "semantic_hash": "caa4e73ee646adad355989ad56a4d832"
+  },
+  "E:\\busness\\bediine\\src\\components\\dashboard\\SubscriptionTab.tsx": {
+    "mtime": 1782497063.1884782,
+    "ast_hash": "e15b8ee7ea298d2c1a2095fc2f1633d3",
+    "semantic_hash": "e15b8ee7ea298d2c1a2095fc2f1633d3"
+  },
+  "E:\\busness\\bediine\\src\\components\\dashboard\\TravelRewardTab.tsx": {
+    "mtime": 1782496902.5922012,
+    "ast_hash": "0842b50f4456245433136f935d454fa6",
+    "semantic_hash": "0842b50f4456245433136f935d454fa6"
+  },
+  "E:\\busness\\bediine\\src\\utils\\creditValidation.ts": {
+    "mtime": 1782486064.6676812,
+    "ast_hash": "472c5a1cdf9ed22019087a742839fb3d",
+    "semantic_hash": "472c5a1cdf9ed22019087a742839fb3d"
+  },
+  "E:\\busness\\bediine\\public\\robots.txt": {
+    "mtime": 1782486548.7086568,
+    "ast_hash": "631d19bd2936a29ea9f04d20aca09647",
+    "semantic_hash": "631d19bd2936a29ea9f04d20aca09647"
+  },
+  "E:\\busness\\bediine\\public\\images\\og_image.png": {
+    "mtime": 1782486539.4766068,
+    "ast_hash": "10efbe9c18bb5ead63e2e518c3432088",
+    "semantic_hash": "10efbe9c18bb5ead63e2e518c3432088"
   }
 }

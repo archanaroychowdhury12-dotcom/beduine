@@ -33,7 +33,7 @@ export function AboutUs() {
     {
       num: '03',
       icon: Trophy,
-      title: 'Winner Experiences',
+      title: 'Selected Member Experiences',
       text: 'Handpicked destinations, quality stays, unique activities, and premium experiences designed to feel special.',
     },
     {
@@ -291,8 +291,8 @@ export function HowItWorks() {
   const steps = [
     { n: '01', icon: CreditCard, title: 'Choose Your Plan', desc: 'Select from our Silver, Gold, or Platinum tiers (domestic & international plans).', details: ['12-month validity', 'Clear credit options', '18+ membership only'], img: '/images/beduin_travel_hero_1779521651766.png' },
     { n: '02', icon: FileCheck2, title: 'Complete Verification', desc: 'Securely submit your inquiry and confirm age requirements to activate benefits.', details: ['WhatsApp Activation', '18+ age verification', 'Secure processing'], img: '/images/office_setup.png' },
-    { n: '03', icon: Wallet, title: 'Get Your Credits', desc: 'Get your Travel Reward Credit (TRC) token and Discount Credits (DCs) loaded.', details: ['1 TRC token received', 'Domestic: ₹500-value Domestic DCs', 'International: ₹5,000-value International DCs'], img: '/images/lucky_draw_ticket_1779521667122.png' },
-    { n: '04', icon: Gift, title: 'Travel & Save', desc: 'Enjoy weekly promotional winner benefits or apply discount credits on paid bookings.', details: ['Weekly winner draws', 'Credits cannot be cross-used', 'Non-cash travel benefits'], img: '/images/happy_family_travelers.png' },
+    { n: '03', icon: Wallet, title: 'Get Your Credits', desc: 'After subscription activation, receive 1 TRC for weekly reward participation and fixed non-cash Discount Credits.', details: ['1 TRC token received', 'Domestic: ₹500-value Domestic DCs', 'International: ₹5,000-value International DCs'], img: '/images/lucky_draw_ticket_1779521667122.png' },
+    { n: '04', icon: Gift, title: 'Travel & Save', desc: 'Use your TRC every Sunday for reward participation. Apply Discount Credits on paid tour bookings. Domestic DC and International DC cannot be cross-used.', details: ['Weekly reward participation', 'Domestic DC for Domestic tours only', 'International DC for International tours only'], img: '/images/happy_family_travelers.png' },
   ];
   return (
     <section id="how" className="relative py-14 lg:py-20 overflow-hidden">
@@ -343,7 +343,7 @@ export function HowItWorks() {
             <div className="flex-1">
               <div className="text-[11px] uppercase tracking-widest neon-gold font-semibold mb-1">Our Commitment</div>
               <div className="font-display text-xl lg:text-2xl font-bold text-ink">100% Operational Integrity.</div>
-              <p className="text-sm text-ink/70 mt-2">Every draw uses a certified RNG. Every result is live-streamed and archived. Every member receives documented, verifiable value.</p>
+              <p className="text-sm text-ink/70 mt-2">Every selection uses a certified RNG. Every result is live-streamed and archived. Every member receives documented, verifiable value.</p>
             </div>
             <a href="#audit" data-magnetic className="inline-flex items-center gap-2 px-5 py-3 rounded-full border border-neon-gold/50 text-neon-gold text-sm font-semibold hover:bg-neon-gold/10 transition-all shrink-0">View Audit Archive <ArrowRight className="w-4 h-4" /></a>
           </div>
@@ -358,8 +358,8 @@ export function HowItWorks() {
 /* ---------- Transparency ---------- */
 export function Transparency() {
   const features = [
-    { icon: Eye,       t: 'Live-streamed draws',      d: 'Every Sunday at 6 PM on YouTube & Facebook.',              color: 'from-cyan-500 to-[#00F5D4]', glow: 'rgba(0,245,212,0.25)' },
-    { icon: FileText,  t: 'Public audit reports',     d: 'PDF / CSV with verified draw records and winner list.',      color: 'from-amber-400 to-amber-600',   glow: 'rgba(245,158,11,0.25)' },
+    { icon: Eye,       t: 'Live-streamed selections',      d: 'Every Sunday at 6 PM on YouTube & Facebook.',              color: 'from-cyan-500 to-[#00F5D4]', glow: 'rgba(0,245,212,0.25)' },
+    { icon: FileText,  t: 'Public audit reports',     d: 'PDF / CSV with verified selection records and selected-member list.',      color: 'from-amber-400 to-amber-600',   glow: 'rgba(245,158,11,0.25)' },
     { icon: Lock,      t: 'Verifiable coupons',       d: 'Unique QR / UUID codes - impossible to duplicate.',          color: 'from-sky-500 to-cyan-600', glow: 'rgba(34,211,238,0.25)' },
     { icon: TrendingUp,t: 'Fair selection process',   d: 'Results reviewed and published through official channels.',  color: 'from-teal-400 to-emerald-500', glow: 'rgba(16,185,129,0.25)' },
   ];
@@ -372,11 +372,11 @@ export function Transparency() {
           <div className="text-center mb-12">
             <SubSectionBadge text="Transparency Engine" theme="gold" />
             <h2 className="font-display text-4xl lg:text-5xl font-bold text-white leading-tight mt-4">
-              <KineticText text="Every draw," />
+              <KineticText text="Every selection," />
               <br /><span className="gold-shimmer"><KineticText text="fully documented." delay={0.3} /></span>
             </h2>
             <p className="mt-4 text-white/80 text-base lg:text-lg leading-relaxed max-w-2xl mx-auto">
-              Trust isn't claimed - it's proven. Our weekly reward draws use certified RNG, are live-streamed, and archived as downloadable audit reports.
+              Trust isn't claimed - it's proven. Our weekly reward selections use certified RNG, are live-streamed, and archived as downloadable audit reports.
             </p>
           </div>
         </Reveal>
@@ -409,7 +409,7 @@ export function Transparency() {
               <div className="flex items-center justify-between px-6 pt-6 pb-4 border-b border-white/10">
                 <div>
                   <SubSectionBadge text="Digital Audit Archive" theme="cyan" />
-                  <div className="font-display text-lg font-bold text-white mt-2">Recent Draw Reports</div>
+                  <div className="font-display text-lg font-bold text-white mt-2">Recent Selection Reports</div>
                 </div>
                 <FloatingIcon>
                   <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-[#00F5D4] flex items-center justify-center shadow-lg shadow-cyan-500/30">

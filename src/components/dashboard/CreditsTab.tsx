@@ -123,7 +123,7 @@ export function CreditsTab({
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
             <div>
               <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-[9px] font-black uppercase bg-[#00D4F5] text-slate-950 tracking-wider">
-                🏆 Travel Reward Winner Coupon
+                🏆 Travel Reward Selection Coupon
               </span>
               <h3 className="text-lg font-black mt-2 tracking-wide text-white">Beduine Sponsored Travel Ticket</h3>
               <p className="text-xs text-slate-400 mt-1 leading-relaxed">
@@ -325,7 +325,7 @@ export function CreditsTab({
                   </td>
                   <td className="py-3">
                     <span className="font-semibold text-slate-700 capitalize">
-                      {item.creditType.replace('_', ' ')}
+                      {item.creditType === 'lucky_draw' ? 'travel reward' : item.creditType.replace('_', ' ')}
                     </span>
                   </td>
                   <td className={`py-3 text-center font-black ${item.amount > 0 ? 'text-emerald-505' : 'text-slate-655'}`}>

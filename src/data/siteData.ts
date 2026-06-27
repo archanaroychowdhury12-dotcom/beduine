@@ -177,7 +177,7 @@ export const HERO_SLIDES = [
     tagline: 'Safar Jo Yaad Rahe',
     title1: 'Explore More.',
     title2: 'Pay Less.',
-    desc: "India's first subscription-based travel company. Get guaranteed non-cash Discount Credits and weekly promotional member tour benefits.",
+    desc: "Subscribe once for 12 months. Get 1 TRC for weekly reward participation. Get fixed non-cash Discount Credits after subscription activation. Domestic DC and International DC cannot be cross-used.",
   },
   {
     image: '/images/kashmir_dal_lake_1779521728036.png',

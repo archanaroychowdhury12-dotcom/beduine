@@ -81,7 +81,7 @@ export const LEGAL_POLICIES: LegalPolicy[] = [
     id: 'terms-and-conditions',
     title: 'Beduine Tour & Travels Website and Membership Terms',
     slug: 'terms-and-conditions',
-    summary: 'Governs website use, subscription memberships, booking requests, and promotional draw rules.',
+    summary: 'Governs website use, subscription memberships, booking requests, and promotional selection rules.',
     icon: Scale,
     version: '1.0.0',
     effectiveDate: LEGAL_CONTACTS.effectiveDate,
@@ -161,7 +161,7 @@ export const LEGAL_POLICIES: LegalPolicy[] = [
       {
         num: 13,
         title: 'Membership Benefits',
-        content: `Members receive non-cash benefits: Discount Credits (DCs), eligibility for promotional draws, and special rates on paid tour bookings.`
+        content: `Members receive non-cash benefits: Discount Credits (DCs), eligibility for promotional selections, and special rates on paid tour bookings.`
       },
       {
         num: 14,
@@ -176,7 +176,7 @@ export const LEGAL_POLICIES: LegalPolicy[] = [
       {
         num: 16,
         title: 'Travel-Reward Participation Disclaimer',
-        content: `The promotional draw is an optional membership incentive. The draw uses a digital Random Number Generator (RNG) for fair selection.`
+        content: `The promotional selection is an optional membership incentive. It uses a digital Random Number Generator (RNG) for fair selection.`
       },
       {
         num: 17,
@@ -439,7 +439,7 @@ export const LEGAL_POLICIES: LegalPolicy[] = [
       {
         num: 8,
         title: 'Active Membership Requirements',
-        content: `You must keep your account active to access member-only rates, promotional draws, and customer support.`
+        content: `You must keep your account active to access member-only rates, promotional selections, and customer support.`
       },
       {
         num: 9,
@@ -454,12 +454,12 @@ export const LEGAL_POLICIES: LegalPolicy[] = [
       {
         num: 11,
         title: 'Promotional Rewards',
-        content: `Members are entered into promotional draws. Winners receive specified tour packages matching their plan tier.`
+        content: `Members are entered into promotional selections. Winners receive specified tour packages matching their plan tier.`
       },
       {
         num: 12,
         title: 'Travel-Reward Participation Requirements',
-        content: `Only members with active accounts during the draw date are eligible for random selection.`
+        content: `Only members with active accounts during the selection date are eligible for random selection.`
       },
       {
         num: 13,
@@ -494,7 +494,7 @@ export const LEGAL_POLICIES: LegalPolicy[] = [
       {
         num: 19,
         title: 'Non-Cashability',
-        content: `Discount Credits and promotional draws cannot be traded or redeemed for cash under any circumstances.`
+        content: `Discount Credits and promotional selections cannot be traded or redeemed for cash under any circumstances.`
       },
       {
         num: 20,
@@ -534,7 +534,7 @@ export const LEGAL_POLICIES: LegalPolicy[] = [
       {
         num: 27,
         title: 'Suspension',
-        content: `We may suspend accounts under investigation for terms violations. Suspended accounts lose access to draws and credits.`
+        content: `We may suspend accounts under investigation for terms violations. Suspended accounts lose access to selections and credits.`
       },
       {
         num: 28,
@@ -784,7 +784,7 @@ export const LEGAL_POLICIES: LegalPolicy[] = [
       {
         num: 9,
         title: 'Accurate Representation',
-        content: `Partners must describe our travel subscriptions accurately, outlining both membership features and the random nature of promotional draws.`
+        content: `Partners must describe our travel subscriptions accurately, outlining both membership features and the random nature of promotional selections.`
       },
       {
         num: 10,

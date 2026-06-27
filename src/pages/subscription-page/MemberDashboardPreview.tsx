@@ -72,7 +72,7 @@ export function Winners() {
             <div className="glass-gold rounded-2xl p-5 flex items-center gap-5 breathe-glow">
               <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-neon-gold to-gold-deep text-cosmos flex items-center justify-center"><Zap className="w-6 h-6" /></div>
               <div>
-                <div className="text-[10px] uppercase tracking-widest neon-gold font-semibold">Next Draw In</div>
+                <div className="text-[10px] uppercase tracking-widest neon-gold font-semibold">Next Selection In</div>
                 <div className="font-display text-2xl font-bold text-ink tabular flex gap-1 mt-1">
                   <span>{String(t.d).padStart(2, '0')}<span className="text-[9px] text-gold/70 ml-0.5">D</span></span>:
                   <span>{String(t.h).padStart(2, '0')}<span className="text-[9px] text-gold/70 ml-0.5">H</span></span>:
