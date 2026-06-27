@@ -466,6 +466,7 @@ export default function App() {
           ) : view === 'dashboard' ? (
             <DashboardPage 
               user={currentUser} 
+              setCurrentUser={setCurrentUser}
               onBookPaidTour={() => {
                 handleSetView('paid-tour');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
