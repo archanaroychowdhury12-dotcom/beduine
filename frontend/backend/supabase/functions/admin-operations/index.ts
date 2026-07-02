@@ -89,6 +89,207 @@ function mapCancellation(row: UnknownRecord, emailByUserId: Map<string, string>)
   };
 }
 
+async function listAdminUsers(
+  admin: ReturnType<typeof createAdminClient>,
+) {
+  const [{ data: profiles, error: profileError }, { data: subscriptions, error: subscriptionError }] = await Promise.all([
+    admin
+      .from('profiles')
+      .select('id,uid,email,full_name,phone,city,role,created_at')
+      .order('created_at', { ascending: false })
+      .limit(500),
+    admin
+      .from('subscriptions')
+      .select('user_id,plan_id,plan_name,plan_type,status,activated_at,expires_at')
+      .order('activated_at', { ascending: false })
+      .limit(1000),
+  ]);
+  if (profileError || subscriptionError) throw new HttpError(500, 'ADMIN_USER_LIST_FAILED');
+
+  const subscriptionByUser = new Map<string, UnknownRecord>();
+  for (const subscription of subscriptions || []) {
+    const userId = String(subscription.user_id);
+    if (!subscriptionByUser.has(userId)) subscriptionByUser.set(userId, subscription);
+  }
+
+  return (profiles || []).map((profile) => {
+    const subscription = subscriptionByUser.get(String(profile.id));
+    return {
+      id: profile.id,
+      email: profile.email,
+      phone: profile.phone,
+      created_at: profile.created_at,
+      user_metadata: {
+        full_name: profile.full_name,
+        phone: profile.phone,
+        city: profile.city,
+        role: profile.role,
+        uid: profile.uid,
+        planName: subscription?.plan_name || null,
+        planType: subscription?.plan_type || null,
+        subscriptionStatus: subscription?.status || 'inactive',
+        subscription_source: subscription ? 'real' : 'none',
+        is_demo_user: false,
+        real_wallet_balance: 0,
+        demo_wallet_balance: 0,
+        discount_credits: 0,
+        ledger: [],
+        demo_transactions: [],
+      },
+    };
+  });
+}
+
+async function listAuditLogs(
+  admin: ReturnType<typeof createAdminClient>,
+  cursor: unknown,
+) {
+  let query = admin
+    .from('audit_logs')
+    .select('id,action,actor_id,actor_email,actor_role,target_id,target_email,amount,status,reason,metadata,created_at')
+    .order('created_at', { ascending: false })
+    .limit(101);
+  if (cursor) {
+    const parsed = text(cursor, 'AUDIT_CURSOR_INVALID', 40, 20);
+    if (Number.isNaN(Date.parse(parsed))) throw new HttpError(400, 'AUDIT_CURSOR_INVALID');
+    query = query.lt('created_at', parsed);
+  }
+  const { data, error } = await query;
+  if (error) throw new HttpError(500, 'AUDIT_LOG_LIST_FAILED');
+  const hasMore = (data || []).length > 100;
+  const rows = (data || []).slice(0, 100);
+  return {
+    logs: rows.map((row) => ({
+      id: row.id,
+      action: row.action,
+      actorId: row.actor_id || '',
+      actorEmail: row.actor_email || '',
+      actorRole: row.actor_role || 'customer',
+      targetId: row.target_id || undefined,
+      targetEmail: row.target_email || undefined,
+      amount: row.amount == null ? undefined : Number(row.amount),
+      status: row.status,
+      reason: row.reason,
+      metadata: row.metadata || undefined,
+      created_at: row.created_at,
+      environment: 'production',
+    })),
+    nextCursor: hasMore ? rows[rows.length - 1]?.created_at : undefined,
+  };
+}
+
+function mapAdminSupportTicket(row: UnknownRecord, emailByUserId: Map<string, string>) {
+  return {
+    id: row.id,
+    userId: row.user_id,
+    userEmail: emailByUserId.get(String(row.user_id)),
+    subject: row.subject,
+    category: row.category,
+    priority: row.priority,
+    status: row.status,
+    assignedAdminId: row.assigned_admin_id || undefined,
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
+    messages: Array.isArray(row.support_ticket_messages)
+      ? row.support_ticket_messages.map((message) => {
+        const value = asRecord(message);
+        return {
+          id: value.id,
+          ticketId: value.ticket_id,
+          senderRole: value.sender_role,
+          message: value.message,
+          internalNote: value.internal_note,
+          createdAt: value.created_at,
+        };
+      })
+      : [],
+  };
+}
+
+const adminSupportSelect = `
+  id,
+  user_id,
+  subject,
+  category,
+  priority,
+  status,
+  assigned_admin_id,
+  created_at,
+  updated_at,
+  support_ticket_messages(
+    id,
+    ticket_id,
+    sender_role,
+    message,
+    internal_note,
+    created_at
+  )
+`;
+
+async function listAdminSupportTickets(
+  admin: ReturnType<typeof createAdminClient>,
+) {
+  const { data, error } = await admin
+    .from('support_tickets')
+    .select(adminSupportSelect)
+    .order('updated_at', { ascending: false })
+    .limit(200);
+  if (error) throw new HttpError(500, 'SUPPORT_TICKET_LIST_FAILED');
+
+  const userIds = [...new Set((data || []).map((row) => String(row.user_id)))];
+  const emailByUserId = new Map<string, string>();
+  if (userIds.length > 0) {
+    const { data: profiles, error: profileError } = await admin
+      .from('profiles')
+      .select('id,email')
+      .in('id', userIds);
+    if (profileError) throw new HttpError(500, 'PROFILE_LIST_FAILED');
+    for (const profile of profiles || []) {
+      emailByUserId.set(String(profile.id), String(profile.email || ''));
+    }
+  }
+  return (data || []).map((row) => mapAdminSupportTicket(row, emailByUserId));
+}
+
+async function getAdminSupportTicket(
+  admin: ReturnType<typeof createAdminClient>,
+  id: string,
+) {
+  const { data, error } = await admin
+    .from('support_tickets')
+    .select(adminSupportSelect)
+    .eq('id', id)
+    .maybeSingle();
+  if (error) throw new HttpError(500, 'SUPPORT_TICKET_LOOKUP_FAILED');
+  if (!data) throw new HttpError(404, 'SUPPORT_TICKET_NOT_FOUND');
+  const { data: profile } = await admin
+    .from('profiles')
+    .select('id,email')
+    .eq('id', data.user_id)
+    .maybeSingle();
+  return mapAdminSupportTicket(
+    data,
+    new Map(profile ? [[String(profile.id), String(profile.email || '')]] : []),
+  );
+}
+
+function supportTicketId(value: unknown): string {
+  const parsed = text(value, 'SUPPORT_TICKET_ID_INVALID', 20, 8);
+  if (!/^SUP-[0-9]{6,}$/.test(parsed)) {
+    throw new HttpError(400, 'SUPPORT_TICKET_ID_INVALID');
+  }
+  return parsed;
+}
+
+function optionalUuid(value: unknown): string | null {
+  if (value == null || value === '') return null;
+  const parsed = String(value);
+  if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(parsed)) {
+    throw new HttpError(400, 'SUPPORT_ASSIGNEE_INVALID');
+  }
+  return parsed;
+}
+
 async function listCancellations(
   admin: ReturnType<typeof createAdminClient>,
 ) {
@@ -216,6 +417,43 @@ serve(async (req) => {
 
     if (action === 'list_cancellations') {
       return json({ requests: await listCancellations(admin) }, {}, req);
+    }
+
+    if (action === 'list_users') {
+      return json({ users: await listAdminUsers(admin) }, {}, req);
+    }
+
+    if (action === 'list_audit_logs') {
+      return json(await listAuditLogs(admin, body.cursor), {}, req);
+    }
+
+    if (action === 'list_support_tickets') {
+      return json({ tickets: await listAdminSupportTickets(admin) }, {}, req);
+    }
+
+    if (action === 'update_support_ticket') {
+      const status = body.status == null ? null : String(body.status);
+      const priority = body.priority == null ? null : String(body.priority);
+      if (status && !['open', 'in_progress', 'waiting_customer', 'resolved', 'closed'].includes(status)) {
+        throw new HttpError(400, 'SUPPORT_STATUS_INVALID');
+      }
+      if (priority && !['low', 'normal', 'high', 'urgent'].includes(priority)) {
+        throw new HttpError(400, 'SUPPORT_PRIORITY_INVALID');
+      }
+      const id = supportTicketId(body.ticketId);
+      const message = optionalText(body.message, 'SUPPORT_MESSAGE_INVALID', 5_000);
+      if (message && message.length < 3) throw new HttpError(400, 'SUPPORT_MESSAGE_INVALID');
+      const { error } = await admin.rpc('admin_update_support_ticket_v1', {
+        p_ticket_id: id,
+        p_actor_id: user.id,
+        p_status: status,
+        p_priority: priority,
+        p_assigned_admin_id: optionalUuid(body.assignedAdminId),
+        p_message: message,
+        p_internal_note: body.internalNote === true,
+      });
+      if (error) throw new HttpError(409, 'SUPPORT_TICKET_UPDATE_REJECTED');
+      return json({ ticket: await getAdminSupportTicket(admin, id) }, {}, req);
     }
 
     if (action === 'review_cancellation') {

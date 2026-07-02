@@ -20,6 +20,14 @@ import type {
   WeeklyDrawStatusResponse,
   TourBookingDraftResponse,
   ReviewCancellationInput,
+  AdminAuditLogPage,
+  AdminSupportTicket,
+  AdminSupportUpdateInput,
+  AdminUserSummary,
+  CreateSupportTicketInput,
+  CustomerSupportTicket,
+  ReplySupportTicketInput,
+  SupportTicketMessage,
 } from './backendContracts';
 import type { CustomTourRequest } from '@/types';
 
@@ -41,6 +49,13 @@ export interface BeduineBackendAdapter {
   listCancellationRequests(): Promise<CancellationAdminSummary[]>;
   reviewCancellation(input: ReviewCancellationInput): Promise<CancellationReviewResponse>;
   processCancellationPayout(requestId: string): Promise<CancellationPayoutResponse>;
+  listCustomerSupportTickets(): Promise<CustomerSupportTicket[]>;
+  createSupportTicket(input: CreateSupportTicketInput): Promise<CustomerSupportTicket>;
+  replySupportTicket(input: ReplySupportTicketInput): Promise<SupportTicketMessage>;
+  listAdminUsers(): Promise<AdminUserSummary[]>;
+  listAuditLogs(cursor?: string): Promise<AdminAuditLogPage>;
+  listSupportTickets(): Promise<AdminSupportTicket[]>;
+  updateSupportTicket(input: AdminSupportUpdateInput): Promise<AdminSupportTicket>;
 }
 
 export class BackendNotConnectedError extends Error {
@@ -102,6 +117,27 @@ export function createProductionBackendAdapter(): BeduineBackendAdapter {
     },
     async processCancellationPayout() {
       throw new BackendNotConnectedError('processCancellationPayout');
+    },
+    async listCustomerSupportTickets() {
+      throw new BackendNotConnectedError('listCustomerSupportTickets');
+    },
+    async createSupportTicket() {
+      throw new BackendNotConnectedError('createSupportTicket');
+    },
+    async replySupportTicket() {
+      throw new BackendNotConnectedError('replySupportTicket');
+    },
+    async listAdminUsers() {
+      throw new BackendNotConnectedError('listAdminUsers');
+    },
+    async listAuditLogs() {
+      throw new BackendNotConnectedError('listAuditLogs');
+    },
+    async listSupportTickets() {
+      throw new BackendNotConnectedError('listSupportTickets');
+    },
+    async updateSupportTicket() {
+      throw new BackendNotConnectedError('updateSupportTicket');
     },
   };
 }

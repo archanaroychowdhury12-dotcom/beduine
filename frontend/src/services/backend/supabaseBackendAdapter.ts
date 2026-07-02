@@ -26,6 +26,14 @@ import type {
   WeeklyDrawStatusResponse,
   TourBookingDraftResponse,
   ReviewCancellationInput,
+  AdminAuditLogPage,
+  AdminSupportTicket,
+  AdminSupportUpdateInput,
+  AdminUserSummary,
+  CreateSupportTicketInput,
+  CustomerSupportTicket,
+  ReplySupportTicketInput,
+  SupportTicketMessage,
 } from './backendContracts';
 import type { CustomTourRequest } from '@/types';
 
@@ -373,6 +381,62 @@ export function createSupabaseBackendAdapter(): BeduineBackendAdapter {
         action: 'process_cancellation_payout',
         requestId,
       });
+    },
+
+    async listCustomerSupportTickets(): Promise<CustomerSupportTicket[]> {
+      const response = await callFunction<{ tickets: CustomerSupportTicket[] }>(
+        'support-tickets',
+        undefined,
+        'GET',
+      );
+      return response.tickets;
+    },
+
+    async createSupportTicket(input: CreateSupportTicketInput): Promise<CustomerSupportTicket> {
+      const response = await callFunction<{ ticket: CustomerSupportTicket }>(
+        'support-tickets',
+        { action: 'create', ...input },
+      );
+      return response.ticket;
+    },
+
+    async replySupportTicket(input: ReplySupportTicketInput): Promise<SupportTicketMessage> {
+      const response = await callFunction<{ message: SupportTicketMessage }>(
+        'support-tickets',
+        { action: 'reply', ...input },
+      );
+      return response.message;
+    },
+
+    async listAdminUsers(): Promise<AdminUserSummary[]> {
+      const response = await callFunction<{ users: AdminUserSummary[] }>(
+        'admin-operations',
+        { action: 'list_users' },
+      );
+      return response.users;
+    },
+
+    async listAuditLogs(cursor?: string): Promise<AdminAuditLogPage> {
+      return callFunction<AdminAuditLogPage>('admin-operations', {
+        action: 'list_audit_logs',
+        ...(cursor ? { cursor } : {}),
+      });
+    },
+
+    async listSupportTickets(): Promise<AdminSupportTicket[]> {
+      const response = await callFunction<{ tickets: AdminSupportTicket[] }>(
+        'admin-operations',
+        { action: 'list_support_tickets' },
+      );
+      return response.tickets;
+    },
+
+    async updateSupportTicket(input: AdminSupportUpdateInput): Promise<AdminSupportTicket> {
+      const response = await callFunction<{ ticket: AdminSupportTicket }>(
+        'admin-operations',
+        { action: 'update_support_ticket', ...input },
+      );
+      return response.ticket;
     },
   };
 }

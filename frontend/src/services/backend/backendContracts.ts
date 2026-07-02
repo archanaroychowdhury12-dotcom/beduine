@@ -8,6 +8,7 @@ import type {
   TransportPreference,
   TripCategory,
   TripType,
+  SupabaseRawUser,
 } from '@/types';
 
 export type PlanTier = 'silver' | 'gold' | 'platinum';
@@ -356,6 +357,75 @@ export interface CustomerSupportTicket {
   subject: string;
   createdAt: string;
   updatedAt?: string | null;
+  category?: SupportCategory;
+  priority?: SupportPriority;
+  assignedAdminId?: string;
+  messages?: SupportTicketMessage[];
+}
+
+export type SupportCategory = 'account' | 'payment' | 'subscription' | 'booking' | 'lucky_draw' | 'refund' | 'other';
+export type SupportPriority = 'low' | 'normal' | 'high' | 'urgent';
+export type SupportStatus = 'open' | 'in_progress' | 'waiting_customer' | 'resolved' | 'closed';
+
+export interface SupportTicketMessage {
+  id?: string;
+  ticketId?: string;
+  senderRole: 'admin' | 'customer';
+  message: string;
+  createdAt: string;
+  internalNote?: boolean;
+}
+
+export interface CreateSupportTicketInput {
+  subject: string;
+  message: string;
+  category: SupportCategory;
+}
+
+export interface ReplySupportTicketInput {
+  ticketId: string;
+  message: string;
+}
+
+export type AdminUserSummary = SupabaseRawUser;
+
+export interface AdminAuditLog {
+  id: string;
+  action: string;
+  actorId: string;
+  actorEmail: string;
+  actorRole: 'admin' | 'customer';
+  targetId?: string;
+  targetEmail?: string | null;
+  amount?: number;
+  status: 'success' | 'failed' | 'pending';
+  reason: string;
+  metadata?: Record<string, unknown>;
+  created_at: string;
+  environment: 'production';
+}
+
+export interface AdminAuditLogPage {
+  logs: AdminAuditLog[];
+  nextCursor?: string;
+}
+
+export interface AdminSupportTicket extends CustomerSupportTicket {
+  userId: string;
+  userEmail?: string;
+  category: SupportCategory;
+  priority: SupportPriority;
+  status: SupportStatus;
+  messages: SupportTicketMessage[];
+}
+
+export interface AdminSupportUpdateInput {
+  ticketId: string;
+  status?: SupportStatus;
+  priority?: SupportPriority;
+  assignedAdminId?: string;
+  message?: string;
+  internalNote?: boolean;
 }
 
 export interface CustomerDashboardResponse {

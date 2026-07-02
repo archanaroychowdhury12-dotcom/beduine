@@ -253,5 +253,38 @@ export function createDemoBackendAdapter(): BeduineBackendAdapter {
     async processCancellationPayout() {
       throw new Error('Cancellation administration requires production mode.');
     },
+    async listCustomerSupportTickets() {
+      return [];
+    },
+    async createSupportTicket(input) {
+      return {
+        id: `SUP-DEMO-${Date.now()}`,
+        subject: input.subject,
+        category: input.category,
+        status: 'open',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+    },
+    async replySupportTicket(input) {
+      return {
+        ticketId: input.ticketId,
+        senderRole: 'customer',
+        message: input.message,
+        createdAt: new Date().toISOString(),
+      };
+    },
+    async listAdminUsers() {
+      return [];
+    },
+    async listAuditLogs() {
+      return { logs: [] };
+    },
+    async listSupportTickets() {
+      return [];
+    },
+    async updateSupportTicket() {
+      throw new Error('Support administration requires production mode.');
+    },
   };
 }

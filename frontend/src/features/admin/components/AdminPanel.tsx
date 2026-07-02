@@ -3,6 +3,7 @@ import { ShieldCheck, Trash2, RefreshCw, User, Wallet, Plus, Minus, TrendingUp, 
 import { AdminFranchiseAgentTab } from './AdminFranchiseAgentTab';
 import { AdminDrawOperations } from './AdminDrawOperations';
 import { CancellationAdminPage } from './CancellationAdminPage';
+import { AdminSupportTicketsPage } from './AdminSupportTicketsPage';
 import { Agent, CreditLedgerEntry, DemoTransactionRecord, Franchise, SupabaseRawUser } from '@/types';
 import { AuditLogEntry } from '@/services/auditLogService';
 
@@ -433,6 +434,7 @@ function RecentActivity() {
 
 // ── Master Component Export ──────────────────────────────────────────────────
 export function AdminPanel({ ctx }: AdminPanelProps) {
+  const isProduction = import.meta.env.VITE_BACKEND_MODE === 'production';
   const adminUsers = ctx.adminUsers;
   const {
     selectedAdminUser, setSelectedAdminUser,
@@ -541,7 +543,7 @@ export function AdminPanel({ ctx }: AdminPanelProps) {
           {adminSubTab === 'settings'      && 'Settings'}
           {adminSubTab === 'franchise'     && 'Franchise & Agents'}
         </h2>
-        {adminSubTab === 'users' && (
+        {adminSubTab === 'users' && !isProduction && (
           <button
             onClick={handleResetAllDemoUsers}
             style={{ padding: '8px 16px', borderRadius: 10, background: '#ef4444', color: '#fff', fontWeight: 700, fontSize: 12, border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6 }}
@@ -606,9 +608,7 @@ export function AdminPanel({ ctx }: AdminPanelProps) {
 
       {/* ── Support ── */}
       {adminSubTab === 'support' && (
-        <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 12, padding: 24, textAlign: 'center', color: '#64748b', fontWeight: 550 }}>
-          Membership, credit and booking support tickets will appear here after backend ticket storage is connected.
-        </div>
+        <AdminSupportTicketsPage />
       )}
 
       {/* ── Settings ── */}
@@ -627,7 +627,28 @@ export function AdminPanel({ ctx }: AdminPanelProps) {
       {adminSubTab === 'franchise' && <AdminFranchiseAgentTab ctx={ctx} />}
 
       {/* ── Users ── */}
-      {adminSubTab === 'users' && (
+      {adminSubTab === 'users' && isProduction && (
+        <div style={{ overflowX: 'auto', border: '1px solid #e2e8f0' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
+            <thead><tr style={{ background: '#f8fafc' }}>
+              {['User', 'UID', 'Role', 'Plan', 'Status'].map((heading) => (
+                <th key={heading} style={{ padding: 12, textAlign: 'left', color: '#64748b' }}>{heading}</th>
+              ))}
+            </tr></thead>
+            <tbody>{adminUsers.map((account) => (
+              <tr key={account.id} style={{ borderTop: '1px solid #e2e8f0' }}>
+                <td style={{ padding: 12, fontWeight: 700 }}>{account.email}</td>
+                <td style={{ padding: 12, fontFamily: 'monospace' }}>{String(account.user_metadata?.uid || '-')}</td>
+                <td style={{ padding: 12 }}>{String(account.user_metadata?.role || 'customer')}</td>
+                <td style={{ padding: 12 }}>{String(account.user_metadata?.planName || '-')}</td>
+                <td style={{ padding: 12 }}>{String(account.user_metadata?.subscriptionStatus || 'inactive')}</td>
+              </tr>
+            ))}</tbody>
+          </table>
+        </div>
+      )}
+
+      {adminSubTab === 'users' && !isProduction && (
         <>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14, marginBottom: 20 }}>
             <div style={{ padding: 20, background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: 12 }}>

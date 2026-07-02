@@ -18,6 +18,7 @@ import {
 } from '@/services/backend';
 import type { DashboardRoute } from '../routes';
 import { StatusBadge } from '../components/StatusBadge';
+import { SupportTickets } from './SupportTickets';
 
 interface CustomerDashboardViewProps {
   route: DashboardRoute;
@@ -334,18 +335,7 @@ export function CustomerDashboardView({
   }
 
   if (route === 'support') {
-    return (
-      <Panel title="Support Tickets">
-        {model.supportTickets.length === 0 ? <EmptyState title="No support tickets" /> : (
-          <div className="divide-y divide-slate-100">{model.supportTickets.map((ticket) => (
-            <div key={ticket.id} className="flex items-center justify-between gap-3 py-3">
-              <div><p className="font-bold">{ticket.subject}</p><p className="text-xs text-slate-500">{formatDate(ticket.createdAt)}</p></div>
-              <StatusBadge status={ticket.status} />
-            </div>
-          ))}</div>
-        )}
-      </Panel>
-    );
+    return <SupportTickets tickets={model.supportTickets} />;
   }
 
   return (

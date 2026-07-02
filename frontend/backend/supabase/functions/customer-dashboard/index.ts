@@ -60,11 +60,21 @@ type PaymentSessionRow = {
   id: string;
   provider: string;
   provider_order_id: string | null;
-  plan_id: string;
+  plan_id: string | null;
   amount: number | string;
   currency: string;
   status: string;
   created_at: string;
+};
+
+type SupportTicketRow = {
+  id: string;
+  status: string;
+  subject: string;
+  category: string;
+  priority: string;
+  created_at: string;
+  updated_at: string;
 };
 
 type WinnerBenefitRow = {
@@ -196,6 +206,7 @@ serve(async (req) => {
       bookingsResult,
       paymentSessionsResult,
       paymentEventsResult,
+      supportTicketsResult,
     ] = await Promise.all([
       admin
         .from('subscriptions')
@@ -254,6 +265,12 @@ serve(async (req) => {
         .eq('user_id', user.id)
         .order('created_at', { ascending: false })
         .returns<PaymentEventRow[]>(),
+      admin
+        .from('support_tickets')
+        .select('id,status,subject,category,priority,created_at,updated_at')
+        .eq('user_id', user.id)
+        .order('updated_at', { ascending: false })
+        .returns<SupportTicketRow[]>(),
     ]);
 
     const results = [
@@ -266,6 +283,7 @@ serve(async (req) => {
       bookingsResult,
       paymentSessionsResult,
       paymentEventsResult,
+      supportTicketsResult,
     ];
 
     const failedResult = results.find((result) => result.error);
@@ -350,7 +368,15 @@ serve(async (req) => {
         createdAt: booking.created_at,
       })),
       payments: buildPaymentSummaries(paymentSessionsResult.data ?? [], paymentEventsResult.data ?? []),
-      supportTickets: [],
+      supportTickets: (supportTicketsResult.data ?? []).map((ticket) => ({
+        id: ticket.id,
+        status: ticket.status,
+        subject: ticket.subject,
+        category: ticket.category,
+        priority: ticket.priority,
+        createdAt: ticket.created_at,
+        updatedAt: ticket.updated_at,
+      })),
     }, {}, req);
   } catch (error) {
     return errorResponse(error, req);

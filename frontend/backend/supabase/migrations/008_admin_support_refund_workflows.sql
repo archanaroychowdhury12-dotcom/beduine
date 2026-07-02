@@ -838,3 +838,357 @@ grant execute on function public.admin_mark_refund_result_v1(
 grant execute on function public.process_verified_refund_webhook_v1(
   text, text, text, jsonb, boolean
 ) to service_role;
+
+-- Support tickets and threaded customer/admin messages.
+create sequence if not exists public.support_ticket_sequence start with 1001;
+
+create table if not exists public.support_tickets (
+  id text primary key default (
+    'SUP-' || lpad(nextval('public.support_ticket_sequence')::text, 6, '0')
+  ),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  subject text not null check (char_length(subject) between 3 and 200),
+  category text not null default 'other' check (category in (
+    'account',
+    'payment',
+    'subscription',
+    'booking',
+    'lucky_draw',
+    'refund',
+    'other'
+  )),
+  priority text not null default 'normal'
+    check (priority in ('low', 'normal', 'high', 'urgent')),
+  status text not null default 'open' check (status in (
+    'open',
+    'in_progress',
+    'waiting_customer',
+    'resolved',
+    'closed'
+  )),
+  assigned_admin_id uuid references auth.users(id) on delete set null,
+  last_message_at timestamptz not null default now(),
+  resolved_at timestamptz,
+  closed_at timestamptz,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create table if not exists public.support_ticket_messages (
+  id uuid primary key default gen_random_uuid(),
+  ticket_id text not null references public.support_tickets(id) on delete cascade,
+  sender_id uuid not null references auth.users(id) on delete cascade,
+  sender_role public.app_role not null,
+  message text not null check (char_length(message) between 3 and 5000),
+  internal_note boolean not null default false,
+  created_at timestamptz not null default now()
+);
+
+create index if not exists support_tickets_user_updated_idx
+  on public.support_tickets(user_id, updated_at desc);
+
+create index if not exists support_tickets_admin_queue_idx
+  on public.support_tickets(status, priority, updated_at desc);
+
+create index if not exists support_ticket_messages_ticket_created_idx
+  on public.support_ticket_messages(ticket_id, created_at);
+
+alter table public.support_tickets enable row level security;
+alter table public.support_ticket_messages enable row level security;
+
+drop policy if exists "support_tickets_read_self_or_admin" on public.support_tickets;
+create policy "support_tickets_read_self_or_admin" on public.support_tickets
+for select using (user_id = auth.uid() or public.current_app_role() = 'admin');
+
+drop policy if exists "support_tickets_create_self" on public.support_tickets;
+create policy "support_tickets_create_self" on public.support_tickets
+for insert with check (
+  user_id = auth.uid()
+  and status = 'open'
+  and assigned_admin_id is null
+);
+
+drop policy if exists "support_ticket_messages_read_self_or_admin" on public.support_ticket_messages;
+create policy "support_ticket_messages_read_self_or_admin" on public.support_ticket_messages
+for select using (
+  public.current_app_role() = 'admin'
+  or (
+    not internal_note
+    and exists (
+      select 1 from public.support_tickets
+      where support_tickets.id = support_ticket_messages.ticket_id
+        and support_tickets.user_id = auth.uid()
+    )
+  )
+);
+
+drop policy if exists "support_ticket_messages_create_self" on public.support_ticket_messages;
+create policy "support_ticket_messages_create_self" on public.support_ticket_messages
+for insert with check (
+  sender_id = auth.uid()
+  and sender_role = 'customer'
+  and not internal_note
+  and exists (
+    select 1 from public.support_tickets
+    where support_tickets.id = support_ticket_messages.ticket_id
+      and support_tickets.user_id = auth.uid()
+      and support_tickets.status not in ('resolved', 'closed')
+  )
+);
+
+create or replace function public.create_support_ticket_v1(
+  p_user_id uuid,
+  p_subject text,
+  p_category text,
+  p_message text
+)
+returns jsonb
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  v_ticket public.support_tickets%rowtype;
+begin
+  if not exists (
+    select 1 from public.profiles
+    where id = p_user_id and role = 'customer'
+  ) then
+    raise exception 'CUSTOMER_ONLY';
+  end if;
+  if char_length(trim(coalesce(p_subject, ''))) not between 3 and 200 then
+    raise exception 'SUPPORT_SUBJECT_INVALID';
+  end if;
+  if char_length(trim(coalesce(p_message, ''))) not between 3 and 5000 then
+    raise exception 'SUPPORT_MESSAGE_INVALID';
+  end if;
+  if p_category not in (
+    'account', 'payment', 'subscription', 'booking', 'lucky_draw', 'refund', 'other'
+  ) then
+    raise exception 'SUPPORT_CATEGORY_INVALID';
+  end if;
+
+  insert into public.support_tickets (user_id, subject, category)
+  values (p_user_id, trim(p_subject), p_category)
+  returning * into v_ticket;
+
+  insert into public.support_ticket_messages (
+    ticket_id, sender_id, sender_role, message
+  )
+  values (v_ticket.id, p_user_id, 'customer', trim(p_message));
+
+  insert into public.audit_logs (
+    action, actor_id, actor_role, status, reason, metadata
+  )
+  values (
+    'support_ticket.created',
+    p_user_id,
+    'customer',
+    'success',
+    'Customer created a support ticket',
+    jsonb_build_object('ticketId', v_ticket.id, 'category', p_category)
+  );
+
+  return jsonb_build_object(
+    'id', v_ticket.id,
+    'subject', v_ticket.subject,
+    'category', v_ticket.category,
+    'priority', v_ticket.priority,
+    'status', v_ticket.status,
+    'createdAt', v_ticket.created_at,
+    'updatedAt', v_ticket.updated_at,
+    'messages', jsonb_build_array(jsonb_build_object(
+      'senderRole', 'customer',
+      'message', trim(p_message),
+      'createdAt', v_ticket.created_at
+    ))
+  );
+end;
+$$;
+
+create or replace function public.add_support_ticket_message_v1(
+  p_ticket_id text,
+  p_user_id uuid,
+  p_message text
+)
+returns jsonb
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  v_ticket public.support_tickets%rowtype;
+  v_message public.support_ticket_messages%rowtype;
+begin
+  if char_length(trim(coalesce(p_message, ''))) not between 3 and 5000 then
+    raise exception 'SUPPORT_MESSAGE_INVALID';
+  end if;
+
+  select * into v_ticket
+  from public.support_tickets
+  where id = p_ticket_id
+  for update;
+  if not found then raise exception 'SUPPORT_TICKET_NOT_FOUND'; end if;
+  if v_ticket.user_id <> p_user_id then raise exception 'SUPPORT_TICKET_FORBIDDEN'; end if;
+  if v_ticket.status in ('resolved', 'closed') then
+    raise exception 'SUPPORT_TICKET_CLOSED';
+  end if;
+
+  insert into public.support_ticket_messages (
+    ticket_id, sender_id, sender_role, message
+  )
+  values (v_ticket.id, p_user_id, 'customer', trim(p_message))
+  returning * into v_message;
+
+  update public.support_tickets
+  set status = case when status = 'waiting_customer' then 'in_progress' else status end,
+      last_message_at = now(),
+      updated_at = now()
+  where id = v_ticket.id;
+
+  insert into public.audit_logs (
+    action, actor_id, actor_role, status, reason, metadata
+  )
+  values (
+    'support_ticket.customer_replied',
+    p_user_id,
+    'customer',
+    'success',
+    'Customer replied to a support ticket',
+    jsonb_build_object('ticketId', v_ticket.id, 'messageId', v_message.id)
+  );
+
+  return jsonb_build_object(
+    'id', v_message.id,
+    'ticketId', v_message.ticket_id,
+    'senderRole', v_message.sender_role,
+    'message', v_message.message,
+    'createdAt', v_message.created_at
+  );
+end;
+$$;
+
+revoke all on function public.create_support_ticket_v1(
+  uuid, text, text, text
+) from public, anon, authenticated;
+revoke all on function public.add_support_ticket_message_v1(
+  text, uuid, text
+) from public, anon, authenticated;
+grant execute on function public.create_support_ticket_v1(
+  uuid, text, text, text
+) to service_role;
+grant execute on function public.add_support_ticket_message_v1(
+  text, uuid, text
+) to service_role;
+
+create or replace function public.admin_update_support_ticket_v1(
+  p_ticket_id text,
+  p_actor_id uuid,
+  p_status text,
+  p_priority text,
+  p_assigned_admin_id uuid,
+  p_message text,
+  p_internal_note boolean
+)
+returns jsonb
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  v_ticket public.support_tickets%rowtype;
+  v_message_id uuid;
+begin
+  if not exists (
+    select 1 from public.profiles
+    where id = p_actor_id and role = 'admin'
+  ) then
+    raise exception 'ADMIN_ONLY';
+  end if;
+
+  select * into v_ticket
+  from public.support_tickets
+  where id = p_ticket_id
+  for update;
+  if not found then raise exception 'SUPPORT_TICKET_NOT_FOUND'; end if;
+
+  if p_status is not null and p_status not in (
+    'open', 'in_progress', 'waiting_customer', 'resolved', 'closed'
+  ) then
+    raise exception 'SUPPORT_STATUS_INVALID';
+  end if;
+  if p_priority is not null and p_priority not in ('low', 'normal', 'high', 'urgent') then
+    raise exception 'SUPPORT_PRIORITY_INVALID';
+  end if;
+  if p_assigned_admin_id is not null and not exists (
+    select 1 from public.profiles
+    where id = p_assigned_admin_id and role = 'admin'
+  ) then
+    raise exception 'SUPPORT_ASSIGNEE_INVALID';
+  end if;
+  if p_message is not null and char_length(trim(p_message)) not between 3 and 5000 then
+    raise exception 'SUPPORT_MESSAGE_INVALID';
+  end if;
+
+  if p_message is not null then
+    insert into public.support_ticket_messages (
+      ticket_id, sender_id, sender_role, message, internal_note
+    )
+    values (
+      p_ticket_id,
+      p_actor_id,
+      'admin',
+      trim(p_message),
+      coalesce(p_internal_note, false)
+    )
+    returning id into v_message_id;
+  end if;
+
+  update public.support_tickets
+  set status = coalesce(p_status, status),
+      priority = coalesce(p_priority, priority),
+      assigned_admin_id = coalesce(p_assigned_admin_id, assigned_admin_id, p_actor_id),
+      last_message_at = case when p_message is null then last_message_at else now() end,
+      resolved_at = case
+        when p_status = 'resolved' then now()
+        when p_status is not null and p_status <> 'resolved' then null
+        else resolved_at
+      end,
+      closed_at = case
+        when p_status = 'closed' then now()
+        when p_status is not null and p_status <> 'closed' then null
+        else closed_at
+      end,
+      updated_at = now()
+  where id = p_ticket_id
+  returning * into v_ticket;
+
+  insert into public.audit_logs (
+    action, actor_id, actor_role, status, reason, metadata
+  )
+  values (
+    'support_ticket.admin_updated',
+    p_actor_id,
+    'admin',
+    'success',
+    'Admin updated a support ticket',
+    jsonb_build_object(
+      'ticketId', p_ticket_id,
+      'status', v_ticket.status,
+      'priority', v_ticket.priority,
+      'assignedAdminId', v_ticket.assigned_admin_id,
+      'messageId', v_message_id,
+      'internalNote', coalesce(p_internal_note, false)
+    )
+  );
+
+  return jsonb_build_object('ticketId', v_ticket.id);
+end;
+$$;
+
+revoke all on function public.admin_update_support_ticket_v1(
+  text, uuid, text, text, uuid, text, boolean
+) from public, anon, authenticated;
+grant execute on function public.admin_update_support_ticket_v1(
+  text, uuid, text, text, uuid, text, boolean
+) to service_role;
