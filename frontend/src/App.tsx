@@ -44,7 +44,8 @@ import {
   normalizeNextPath,
 } from './utils/appRoutes';
 import { canAccessAdmin, canUseDemoTools } from './services/accessControl';
-import { mapSupabaseUser } from './utils/userMapper';
+import { notify } from './services/uiFeedback';
+import { loadProfileRecord, mapSupabaseUser } from './utils/userMapper';
 import { AppUser, SupabaseRawUser } from './types';
 import { FeedbackProvider } from './components/ui/FeedbackProvider';
 
@@ -136,6 +137,11 @@ export default function App() {
   const [pendingPlan, setPendingPlan] = useState<string | null>(null);
   const [loginInitialMode, setLoginInitialMode] = useState<'login' | 'register'>('login');
 
+  const hydrateAuthenticatedUser = useCallback(async (rawUser: SupabaseRawUser) => {
+    const profile = await loadProfileRecord(rawUser.id);
+    return mapSupabaseUser(rawUser, profile);
+  }, []);
+
   const handleSetView = useCallback((newView: AppView, hash?: string) => {
     setView(newView);
     const path = `/${newView}${hash || ''}`;
@@ -192,6 +198,8 @@ export default function App() {
 
   // Supabase Auth listener
   useEffect(() => {
+    let cancelled = false;
+
     const checkPendingPlanAndRedirectLocally = () => {
       const storedPending = sessionStorage.getItem('pendingPlanName');
       if (storedPending) {
@@ -203,39 +211,67 @@ export default function App() {
       return false;
     };
 
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
       if (session?.user) {
-        const mapped = mapSupabaseUser(session.user);
-        setCurrentUser(mapped);
-        const redirectedToNext = consumePostAuthRedirect();
-        const redirected = redirectedToNext || checkPendingPlanAndRedirectLocally();
-        if (!redirected && window.location.pathname === APP_ROUTES.login) {
-          handleSetView('dashboard');
-        }
-      }
-    }).finally(() => setAuthReady(true));
+        try {
+          const mapped = await hydrateAuthenticatedUser(session.user);
+          if (cancelled) return;
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (session?.user) {
-        const mapped = mapSupabaseUser(session.user);
-        setCurrentUser(mapped);
-        if (event === 'SIGNED_IN') {
+          setCurrentUser(mapped);
           const redirectedToNext = consumePostAuthRedirect();
           const redirected = redirectedToNext || checkPendingPlanAndRedirectLocally();
-          if (!redirected && (window.location.pathname === APP_ROUTES.login || window.location.pathname === APP_ROUTES.register)) {
+          if (!redirected && window.location.pathname === APP_ROUTES.login) {
             handleSetView('dashboard');
           }
+        } catch (error) {
+          if (!cancelled) {
+            setCurrentUser(null);
+            notify.error(error instanceof Error ? error.message : 'Unable to load your profile.');
+          }
         }
-      } else {
-        setCurrentUser(null);
       }
-      setAuthReady(true);
+    }).finally(() => {
+      if (!cancelled) {
+        setAuthReady(true);
+      }
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      void (async () => {
+        if (session?.user) {
+          try {
+            const mapped = await hydrateAuthenticatedUser(session.user);
+            if (cancelled) return;
+
+            setCurrentUser(mapped);
+            if (event === 'SIGNED_IN') {
+              const redirectedToNext = consumePostAuthRedirect();
+              const redirected = redirectedToNext || checkPendingPlanAndRedirectLocally();
+              if (!redirected && (window.location.pathname === APP_ROUTES.login || window.location.pathname === APP_ROUTES.register)) {
+                handleSetView('dashboard');
+              }
+            }
+          } catch (error) {
+            if (!cancelled) {
+              setCurrentUser(null);
+              notify.error(error instanceof Error ? error.message : 'Unable to load your profile.');
+            }
+          }
+        } else if (!cancelled) {
+          setCurrentUser(null);
+        }
+
+        if (!cancelled) {
+          setAuthReady(true);
+        }
+      })();
     });
 
     return () => {
+      cancelled = true;
       subscription.unsubscribe();
     };
-  }, [consumePostAuthRedirect, handleSetView]);
+  }, [consumePostAuthRedirect, handleSetView, hydrateAuthenticatedUser]);
 
   useEffect(() => {
     if (!authReady) return;
@@ -433,14 +469,20 @@ export default function App() {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
               onLoginSuccess={(rawUser: SupabaseRawUser) => {
-                const mapped = mapSupabaseUser(rawUser);
-                setCurrentUser(mapped);
-                const redirectedToNext = consumePostAuthRedirect();
-                const redirected = redirectedToNext || checkPendingPlanAndRedirect();
-                if (!redirected) {
-                  handleSetView('dashboard');
-                }
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                void (async () => {
+                  try {
+                    const mapped = await hydrateAuthenticatedUser(rawUser);
+                    setCurrentUser(mapped);
+                    const redirectedToNext = consumePostAuthRedirect();
+                    const redirected = redirectedToNext || checkPendingPlanAndRedirect();
+                    if (!redirected) {
+                      handleSetView('dashboard');
+                    }
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  } catch (error) {
+                    notify.error(error instanceof Error ? error.message : 'Unable to load your profile.');
+                  }
+                })();
               }}
             />
           ) : view === 'register' ? (
@@ -459,9 +501,15 @@ export default function App() {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }} 
               onRegisterSuccess={(userData: SupabaseRawUser) => {
-                setCurrentUser(mapSupabaseUser(userData));
-                handleSetView('dashboard');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                void (async () => {
+                  try {
+                    setCurrentUser(await hydrateAuthenticatedUser(userData));
+                    handleSetView('dashboard');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  } catch (error) {
+                    notify.error(error instanceof Error ? error.message : 'Unable to load your profile.');
+                  }
+                })();
               }}
             />
           ) : view === 'dashboard' ? (
@@ -488,9 +536,15 @@ export default function App() {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
               onAdminLoginSuccess={(userData: SupabaseRawUser) => {
-                setCurrentUser(mapSupabaseUser(userData));
-                handleSetView('admin');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                void (async () => {
+                  try {
+                    setCurrentUser(await hydrateAuthenticatedUser(userData));
+                    handleSetView('admin');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  } catch (error) {
+                    notify.error(error instanceof Error ? error.message : 'Unable to load your profile.');
+                  }
+                })();
               }}
             />
           ) : view === 'admin' ? (
