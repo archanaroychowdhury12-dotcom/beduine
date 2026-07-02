@@ -69,4 +69,42 @@ describe('mapSupabaseUser', () => {
     expect(result.is_demo_user).toBe(true);
     expect(result.city).toBe('Demo City');
   });
+
+  it('does not seed demo travelers for a server-backed customer profile', () => {
+    const result = mapSupabaseUser(
+      {
+        id: 'real-user-1',
+        email: 'rahul.sen@example.com',
+        user_metadata: {},
+      } as SupabaseRawUser,
+      {
+        id: 'real-user-1',
+        uid: 'BDU-2026-REAL01-4821',
+        role: 'customer',
+        full_name: 'Rahul Sen',
+        email: 'rahul.sen@example.com',
+        phone: '+91 9876543210',
+        city: 'Kolkata',
+        is_demo_user: false,
+      },
+    );
+
+    expect(result.savedTravelers).toEqual([]);
+    expect(result.savedPickups).toEqual([]);
+  });
+
+  it('keeps generated demo UIDs in the canonical format', () => {
+    import.meta.env.VITE_ENABLE_DEMO_WALLET = 'true';
+
+    const result = mapSupabaseUser(
+      {
+        id: 'demo-user-without-numeric-id',
+        email: 'demo@beduine.com',
+        user_metadata: { is_demo_user: true },
+      } as SupabaseRawUser,
+      null,
+    );
+
+    expect(result.uid).toMatch(/^BDU-[0-9]{4}-[A-Z0-9]{6}-[0-9]{4}$/);
+  });
 });

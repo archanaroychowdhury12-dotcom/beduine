@@ -19,6 +19,14 @@ function normalizeDemoSegment(value: string, length: number): string {
   return (sanitized + 'DEMO00').slice(0, length);
 }
 
+function buildDemoNumericSuffix(value: string): string {
+  let hash = 0;
+  for (const char of value) {
+    hash = (hash * 31 + char.charCodeAt(0)) % 10000;
+  }
+  return String(hash).padStart(4, '0');
+}
+
 function buildDemoUid(supabaseUser: SupabaseRawUser): string {
   const metadataUid = supabaseUser.user_metadata?.uid;
   if (typeof metadataUid === 'string' && PROFILE_UID_PATTERN.test(metadataUid)) {
@@ -27,7 +35,7 @@ function buildDemoUid(supabaseUser: SupabaseRawUser): string {
 
   const year = new Date().getFullYear();
   const seed = normalizeDemoSegment(supabaseUser.id, 6);
-  const suffix = normalizeDemoSegment(supabaseUser.id.replace(/\D/g, ''), 4).padStart(4, '0').slice(-4);
+  const suffix = buildDemoNumericSuffix(supabaseUser.id);
   return `BDU-${year}-${seed}-${suffix}`;
 }
 
@@ -94,6 +102,8 @@ export function mapSupabaseUser(supabaseUser: SupabaseRawUser, profile: ProfileR
     'Member';
   const email = supabaseUser.email || '';
   const mobile = resolvedProfile.phone || supabaseUser.phone || metadata.phone || '';
+  const isDemoUser = Boolean(resolvedProfile.is_demo_user ?? isExplicitDemoUser({ user_metadata: metadata }));
+  const shouldSeedDemoDefaults = isExplicitDemoModeEnabled() && isDemoUser;
 
   let dob = metadata.dob || '';
   let preferredLanguage = metadata.preferredLanguage || 'English';
@@ -103,7 +113,7 @@ export function mapSupabaseUser(supabaseUser: SupabaseRawUser, profile: ProfileR
   let savedPickups = ensureArray<SavedPickupProfile>(metadata.savedPickups);
 
   // Demo seed profile defaults. Authorization is never inferred from email text.
-  if (email.includes('arunasish')) {
+  if (shouldSeedDemoDefaults && email.includes('arunasish')) {
     dob = dob || '1989-05-12';
     preferredLanguage = preferredLanguage || 'Bengali';
     dietaryPreferences = dietaryPreferences || 'Non-Vegetarian';
@@ -119,7 +129,7 @@ export function mapSupabaseUser(supabaseUser: SupabaseRawUser, profile: ProfileR
         { id: 'p-aru-2', type: 'hotel', hotelName: 'Kolkata Airport Arrival Gate', customAddress: '', label: 'Kolkata Airport (Saved)' },
       ];
     }
-  } else if (email.includes('rahul.sen')) {
+  } else if (shouldSeedDemoDefaults && email.includes('rahul.sen')) {
     dob = dob || '1994-08-15';
     preferredLanguage = preferredLanguage || 'Bengali';
     dietaryPreferences = dietaryPreferences || 'Vegetarian';
@@ -143,7 +153,6 @@ export function mapSupabaseUser(supabaseUser: SupabaseRawUser, profile: ProfileR
   const planPrice = hasActiveRecord ? (record?.planPrice ?? null) : (metadata.planPrice ?? null);
   const planType = (hasActiveRecord ? (record?.planType ?? null) : (metadata.planType ?? null)) as 'domestic' | 'international' | null;
   const subscriptionStatus = (hasActiveRecord ? 'active' : (metadata.subscriptionStatus ?? 'inactive')) as any;
-  const isDemoUser = Boolean(resolvedProfile.is_demo_user ?? isExplicitDemoUser({ user_metadata: metadata }));
   const role = resolvedProfile.role;
 
   let color = 'from-slate-400 via-slate-500 to-slate-700';
