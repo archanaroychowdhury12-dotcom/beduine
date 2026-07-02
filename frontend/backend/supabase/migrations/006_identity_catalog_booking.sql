@@ -412,3 +412,174 @@ on conflict (id) do update set
   departure_at = excluded.departure_at,
   capacity_total = excluded.capacity_total,
   updated_at = now();
+
+-- Customized-tour requests are public to browse but authenticated to submit.
+create sequence if not exists public.custom_tour_request_sequence start with 1;
+
+create table if not exists public.custom_tour_requests (
+  id uuid primary key default gen_random_uuid(),
+  display_code text not null unique default (
+    'CTR-' || lpad(nextval('public.custom_tour_request_sequence')::text, 6, '0')
+  ),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  package_id text,
+  trip_type text not null check (trip_type in ('Domestic', 'International')),
+  destination text not null check (char_length(destination) between 2 and 120),
+  departure_city text not null check (char_length(departure_city) between 2 and 120),
+  flexible_dates boolean not null default false,
+  travel_start_date date,
+  travel_end_date date,
+  flexible_month text,
+  duration_nights integer not null check (duration_nights between 1 and 60),
+  adults integer not null check (adults between 1 and 20),
+  children integer not null default 0 check (children between 0 and 10),
+  child_ages integer[] not null default '{}',
+  rooms integer not null check (rooms between 1 and 10),
+  hotel_category text not null,
+  transport_preference text not null,
+  meal_preference text not null,
+  budget integer not null check (budget between 1000 and 100000000),
+  currency text not null default 'INR' check (currency = 'INR'),
+  activities text[] not null default '{}',
+  special_requirements text check (char_length(special_requirements) <= 2000),
+  phone text not null check (phone ~ '^[0-9+ ()-]{7,20}$'),
+  email text not null check (char_length(email) between 3 and 254),
+  status text not null default 'Under Review' check (status in (
+    'Under Review',
+    'Quotation Sent',
+    'Revision Requested',
+    'Quotation Accepted',
+    'Payment Pending',
+    'Payment Failed',
+    'Confirmed Booking',
+    'Cancelled',
+    'Expired'
+  )),
+  estimated_min integer not null check (estimated_min >= 0),
+  estimated_max integer not null check (estimated_max >= estimated_min),
+  payment_status text not null default 'Not Started'
+    check (payment_status in ('Not Started', 'Pending', 'Paid', 'Failed', 'Refunded')),
+  booking_id text references public.bookings(id) on delete set null,
+  voucher_code text,
+  submitted_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
+  check (
+    (flexible_dates and flexible_month is not null)
+    or (not flexible_dates and travel_start_date is not null and travel_end_date is not null)
+  ),
+  check (travel_end_date is null or travel_start_date is null or travel_end_date >= travel_start_date),
+  check (cardinality(child_ages) = 0 or cardinality(child_ages) = children)
+);
+
+create table if not exists public.custom_tour_quotations (
+  id uuid primary key default gen_random_uuid(),
+  request_id uuid not null references public.custom_tour_requests(id) on delete cascade,
+  version integer not null check (version > 0),
+  total_price integer not null check (total_price > 0),
+  currency text not null default 'INR' check (currency = 'INR'),
+  hotel_name text not null check (char_length(hotel_name) between 2 and 240),
+  hotel_category text not null,
+  vehicle_assigned text not null check (char_length(vehicle_assigned) between 2 and 240),
+  meals_included text not null check (char_length(meals_included) between 2 and 500),
+  itinerary_details text not null check (char_length(itinerary_details) between 10 and 10000),
+  inclusions text[] not null default '{}',
+  exclusions text[] not null default '{}',
+  payment_terms text not null check (char_length(payment_terms) between 3 and 2000),
+  cancellation_policy text not null check (char_length(cancellation_policy) between 3 and 2000),
+  valid_until timestamptz not null,
+  status text not null default 'Sent'
+    check (status in ('Draft', 'Sent', 'Accepted', 'Revision Requested', 'Expired')),
+  created_by uuid references auth.users(id) on delete set null,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
+  unique (request_id, version)
+);
+
+create table if not exists public.custom_tour_revisions (
+  id uuid primary key default gen_random_uuid(),
+  request_id uuid not null references public.custom_tour_requests(id) on delete cascade,
+  quotation_id uuid references public.custom_tour_quotations(id) on delete set null,
+  user_id uuid not null references auth.users(id) on delete cascade,
+  message text not null check (char_length(message) between 3 and 2000),
+  status text not null default 'Open' check (status in ('Open', 'Resolved')),
+  created_at timestamptz not null default now(),
+  resolved_at timestamptz
+);
+
+create index if not exists custom_tour_requests_user_created_idx
+  on public.custom_tour_requests(user_id, submitted_at desc);
+
+create index if not exists custom_tour_quotations_request_version_idx
+  on public.custom_tour_quotations(request_id, version desc);
+
+create index if not exists custom_tour_revisions_request_created_idx
+  on public.custom_tour_revisions(request_id, created_at desc);
+
+create or replace function public.enforce_custom_tour_status_transition()
+returns trigger
+language plpgsql
+as $$
+begin
+  if old.status = new.status then
+    return new;
+  end if;
+
+  if (old.status, new.status) in (
+    ('Under Review', 'Quotation Sent'),
+    ('Under Review', 'Cancelled'),
+    ('Quotation Sent', 'Revision Requested'),
+    ('Quotation Sent', 'Quotation Accepted'),
+    ('Quotation Sent', 'Expired'),
+    ('Quotation Sent', 'Cancelled'),
+    ('Revision Requested', 'Quotation Sent'),
+    ('Revision Requested', 'Cancelled'),
+    ('Quotation Accepted', 'Payment Pending'),
+    ('Quotation Accepted', 'Cancelled'),
+    ('Payment Pending', 'Confirmed Booking'),
+    ('Payment Pending', 'Payment Failed'),
+    ('Payment Pending', 'Cancelled'),
+    ('Payment Failed', 'Payment Pending'),
+    ('Payment Failed', 'Cancelled')
+  ) then
+    new.updated_at := now();
+    return new;
+  end if;
+
+  raise exception 'INVALID_CUSTOM_TOUR_TRANSITION:%->%', old.status, new.status;
+end;
+$$;
+
+drop trigger if exists custom_tour_status_transition_guard on public.custom_tour_requests;
+create trigger custom_tour_status_transition_guard
+before update of status on public.custom_tour_requests
+for each row execute function public.enforce_custom_tour_status_transition();
+
+alter table public.custom_tour_requests enable row level security;
+alter table public.custom_tour_quotations enable row level security;
+alter table public.custom_tour_revisions enable row level security;
+
+drop policy if exists "custom_tour_requests_read_self_or_admin" on public.custom_tour_requests;
+create policy "custom_tour_requests_read_self_or_admin" on public.custom_tour_requests
+for select using (user_id = auth.uid() or public.current_app_role() = 'admin');
+
+drop policy if exists "custom_tour_quotations_read_self_or_admin" on public.custom_tour_quotations;
+create policy "custom_tour_quotations_read_self_or_admin" on public.custom_tour_quotations
+for select using (
+  public.current_app_role() = 'admin'
+  or exists (
+    select 1 from public.custom_tour_requests
+    where custom_tour_requests.id = custom_tour_quotations.request_id
+      and custom_tour_requests.user_id = auth.uid()
+  )
+);
+
+drop policy if exists "custom_tour_revisions_read_self_or_admin" on public.custom_tour_revisions;
+create policy "custom_tour_revisions_read_self_or_admin" on public.custom_tour_revisions
+for select using (
+  public.current_app_role() = 'admin'
+  or exists (
+    select 1 from public.custom_tour_requests
+    where custom_tour_requests.id = custom_tour_revisions.request_id
+      and custom_tour_requests.user_id = auth.uid()
+  )
+);

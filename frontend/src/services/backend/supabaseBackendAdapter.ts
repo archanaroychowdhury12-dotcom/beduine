@@ -6,6 +6,9 @@ import type {
   CancellationRequestInput,
   CancellationRequestResponse,
   CreditIssuanceResponse,
+  CustomTourCreateInput,
+  CustomTourListResponse,
+  CustomTourUpdateInput,
   CreateTourBookingDraftInput,
   CreatePaymentOrderInput,
   CustomerDashboardResponse,
@@ -20,6 +23,7 @@ import type {
   WeeklyDrawStatusResponse,
   TourBookingDraftResponse,
 } from './backendContracts';
+import type { CustomTourRequest } from '@/types';
 
 type UnknownRecord = Record<string, unknown>;
 
@@ -280,6 +284,26 @@ export function createSupabaseBackendAdapter(): BeduineBackendAdapter {
 
     async createTourBookingDraft(input: CreateTourBookingDraftInput): Promise<TourBookingDraftResponse> {
       return callFunction<TourBookingDraftResponse>('create-tour-booking', { ...input });
+    },
+
+    async createCustomTourRequest(input: CustomTourCreateInput): Promise<CustomTourRequest> {
+      const response = await callFunction<{ request: CustomTourRequest }>(
+        'custom-tour-request',
+        { action: 'create', request: input },
+      );
+      return response.request;
+    },
+
+    async listCustomTourRequests(): Promise<CustomTourListResponse> {
+      return callFunction<CustomTourListResponse>('custom-tour-request', undefined, 'GET');
+    },
+
+    async updateCustomTourRequest(input: CustomTourUpdateInput): Promise<CustomTourRequest> {
+      const response = await callFunction<{ request: CustomTourRequest }>(
+        'custom-tour-request',
+        { ...input },
+      );
+      return response.request;
     },
 
     async participateInWeeklyDraw(): Promise<ParticipationResponse> {

@@ -2,6 +2,7 @@ import type { BeduineBackendAdapter } from './backendAdapter';
 import type {
   CancellationRequestInput,
   CreditIssuanceResponse,
+  CustomTourCreateInput,
   CreateTourBookingDraftInput,
   CreatePaymentOrderInput,
   CustomerDashboardResponse,
@@ -14,6 +15,7 @@ import type {
   WeeklyDrawStatusResponse,
   TourBookingDraftResponse,
 } from './backendContracts';
+import type { CustomTourRequest } from '@/types';
 
 const now = new Date();
 const nextSundaySix = new Date(now);
@@ -163,6 +165,18 @@ export function createDemoBackendAdapter(): BeduineBackendAdapter {
           creditValue,
         })),
       };
+    },
+
+    async createCustomTourRequest(_input: CustomTourCreateInput): Promise<CustomTourRequest> {
+      throw new Error('Use the demo custom-tour service in demo mode.');
+    },
+
+    async listCustomTourRequests() {
+      return { requests: [] };
+    },
+
+    async updateCustomTourRequest(): Promise<CustomTourRequest> {
+      throw new Error('Use the demo custom-tour service in demo mode.');
     },
 
     async participateInWeeklyDraw(): Promise<ParticipationResponse> {

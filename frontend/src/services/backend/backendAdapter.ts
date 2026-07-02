@@ -2,6 +2,9 @@ import type {
   CancellationRequestInput,
   CancellationRequestResponse,
   CreditIssuanceResponse,
+  CustomTourCreateInput,
+  CustomTourListResponse,
+  CustomTourUpdateInput,
   CreateTourBookingDraftInput,
   CreatePaymentOrderInput,
   CustomerDashboardResponse,
@@ -14,11 +17,15 @@ import type {
   WeeklyDrawStatusResponse,
   TourBookingDraftResponse,
 } from './backendContracts';
+import type { CustomTourRequest } from '@/types';
 
 export interface BeduineBackendAdapter {
   createPaymentOrder(input: CreatePaymentOrderInput): Promise<PaymentOrderResponse>;
   getPaymentStatus(sessionId: string): Promise<PaymentStatusResponse>;
   createTourBookingDraft(input: CreateTourBookingDraftInput): Promise<TourBookingDraftResponse>;
+  createCustomTourRequest(input: CustomTourCreateInput): Promise<CustomTourRequest>;
+  listCustomTourRequests(): Promise<CustomTourListResponse>;
+  updateCustomTourRequest(input: CustomTourUpdateInput): Promise<CustomTourRequest>;
   participateInWeeklyDraw(): Promise<ParticipationResponse>;
   issueNonWinnerCredits(cycleId: string): Promise<CreditIssuanceResponse>;
   listPublicWinners(): Promise<PublicWinnerSummary[]>;
@@ -46,6 +53,15 @@ export function createProductionBackendAdapter(): BeduineBackendAdapter {
     },
     async createTourBookingDraft() {
       throw new BackendNotConnectedError('createTourBookingDraft');
+    },
+    async createCustomTourRequest() {
+      throw new BackendNotConnectedError('createCustomTourRequest');
+    },
+    async listCustomTourRequests() {
+      throw new BackendNotConnectedError('listCustomTourRequests');
+    },
+    async updateCustomTourRequest() {
+      throw new BackendNotConnectedError('updateCustomTourRequest');
     },
     async participateInWeeklyDraw() {
       throw new BackendNotConnectedError('participateInWeeklyDraw');

@@ -1,4 +1,14 @@
-import type { CreditLedgerEntry, SubscriptionStatus, TripCategory } from '@/types';
+import type {
+  CreditLedgerEntry,
+  CustomTourRequest,
+  HotelCategory,
+  MealPreference,
+  SubscriptionStatus,
+  TourActivity,
+  TransportPreference,
+  TripCategory,
+  TripType,
+} from '@/types';
 
 export type PlanTier = 'silver' | 'gold' | 'platinum';
 export type DrawRoundKey = `${TripCategory}_${PlanTier}`;
@@ -141,6 +151,41 @@ export interface TourBookingDraftResponse {
     travelerKey: string;
     creditValue: number;
   }>;
+}
+
+export interface CustomTourCreateInput {
+  packageId?: string;
+  tripType: TripType;
+  destination: string;
+  departureCity: string;
+  flexibleDates: boolean;
+  travelStartDate?: string;
+  travelEndDate?: string;
+  flexibleMonth?: string;
+  durationNights: number;
+  adults: number;
+  children: number;
+  childAges?: number[];
+  rooms: number;
+  hotelCategory: HotelCategory;
+  transportPreference: TransportPreference;
+  mealPreference: MealPreference;
+  budget: number;
+  activities: TourActivity[];
+  specialRequirements?: string;
+  phone: string;
+  email: string;
+}
+
+export interface CustomTourUpdateInput {
+  requestId: string;
+  action: 'request_revision' | 'accept_quotation' | 'begin_payment' | 'cancel' | 'admin_quote';
+  message?: string;
+  quotation?: Record<string, unknown>;
+}
+
+export interface CustomTourListResponse {
+  requests: CustomTourRequest[];
 }
 
 export interface ParticipationResponse {
