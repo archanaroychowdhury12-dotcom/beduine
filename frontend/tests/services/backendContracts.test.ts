@@ -40,6 +40,29 @@ describe('frontend backend adapter contracts', () => {
     });
   });
 
+  it('creates an authoritative paid-tour booking draft', async () => {
+    const adapter = createDemoBackendAdapter();
+    const draft = await adapter.createTourBookingDraft({
+      tourId: 'digha-sea-beach-retreat',
+      departureId: 'digha-sea-beach-retreat:2026-07-04',
+      bookingType: 'fixed_departure',
+      travelers: [{
+        travelerKey: 'traveler-1',
+        firstName: 'Rahul',
+        lastName: 'Sen',
+        email: 'rahul@example.com',
+        phone: '9000000001',
+      }],
+      pickup: { type: 'manual', address: 'Kolkata' },
+      creditAssignments: [],
+      instantBookingRequired: false,
+    });
+
+    expect(draft.bookingId).toMatch(/^BDU-BKG-/);
+    expect(draft.currency).toBe('INR');
+    expect(draft.amountDueNow).toBeGreaterThan(0);
+  });
+
   it('exposes customer dashboard contract', async () => {
     const adapter = createDemoBackendAdapter();
     const dashboard = await adapter.getCustomerDashboard();

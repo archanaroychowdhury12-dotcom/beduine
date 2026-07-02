@@ -2,6 +2,7 @@ import type {
   CancellationRequestInput,
   CancellationRequestResponse,
   CreditIssuanceResponse,
+  CreateTourBookingDraftInput,
   CreatePaymentOrderInput,
   CustomerDashboardResponse,
   LedgerResponse,
@@ -11,11 +12,13 @@ import type {
   PublicWinnerSummary,
   RevealedWinnerResponse,
   WeeklyDrawStatusResponse,
+  TourBookingDraftResponse,
 } from './backendContracts';
 
 export interface BeduineBackendAdapter {
   createPaymentOrder(input: CreatePaymentOrderInput): Promise<PaymentOrderResponse>;
   getPaymentStatus(sessionId: string): Promise<PaymentStatusResponse>;
+  createTourBookingDraft(input: CreateTourBookingDraftInput): Promise<TourBookingDraftResponse>;
   participateInWeeklyDraw(): Promise<ParticipationResponse>;
   issueNonWinnerCredits(cycleId: string): Promise<CreditIssuanceResponse>;
   listPublicWinners(): Promise<PublicWinnerSummary[]>;
@@ -40,6 +43,9 @@ export function createProductionBackendAdapter(): BeduineBackendAdapter {
     },
     async getPaymentStatus() {
       throw new BackendNotConnectedError('getPaymentStatus');
+    },
+    async createTourBookingDraft() {
+      throw new BackendNotConnectedError('createTourBookingDraft');
     },
     async participateInWeeklyDraw() {
       throw new BackendNotConnectedError('participateInWeeklyDraw');

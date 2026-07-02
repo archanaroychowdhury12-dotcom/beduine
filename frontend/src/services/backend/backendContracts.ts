@@ -96,6 +96,53 @@ export interface PaymentStatusResponse {
   bookingId?: string;
 }
 
+export interface BookingTravelerDraftInput {
+  travelerKey: string;
+  firstName: string;
+  lastName: string;
+  email?: string;
+  phone?: string;
+}
+
+export interface BookingPickupDraftInput {
+  type: 'hotel' | 'manual' | 'none' | 'assistance';
+  address?: string;
+  city?: string;
+  pincode?: string;
+  specialInstructions?: string;
+}
+
+export interface CreateTourBookingDraftInput {
+  tourId: string;
+  departureId: string;
+  bookingType: 'fixed_departure' | 'customized_tailor_made';
+  travelers: BookingTravelerDraftInput[];
+  pickup: BookingPickupDraftInput;
+  creditAssignments: Array<{
+    creditUnitId: string;
+    travelerKey: string;
+  }>;
+  instantBookingRequired: boolean;
+}
+
+export interface TourBookingDraftResponse {
+  bookingId: string;
+  currency: 'INR';
+  grossTourTotal: number;
+  totalDiscount: number;
+  finalTourTotal: number;
+  instantBookingCharge: number;
+  grandTotal: number;
+  amountDueNow: number;
+  balanceDueLater: number;
+  reservationExpiresAt: string;
+  reservedCreditUnits: Array<{
+    creditUnitId: string;
+    travelerKey: string;
+    creditValue: number;
+  }>;
+}
+
 export interface ParticipationResponse {
   cycleId: string;
   ticketId: string;

@@ -815,3 +815,584 @@ end;
 $$;
 
 revoke all on function public.admin_reveal_next_weekly_draw_winner_v1(text,uuid) from anon, authenticated;
+
+create or replace function public.create_tour_booking_draft_v1(
+  p_user_id uuid,
+  p_tour_id text,
+  p_departure_id text,
+  p_booking_type text,
+  p_travelers jsonb,
+  p_pickup jsonb,
+  p_credit_assignments jsonb default '[]'::jsonb,
+  p_instant_booking_required boolean default false
+)
+returns jsonb
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  v_tour public.tours%rowtype;
+  v_departure public.tour_departures%rowtype;
+  v_unit public.discount_credit_units%rowtype;
+  v_traveler jsonb;
+  v_assignment jsonb;
+  v_booking_id text;
+  v_traveler_count integer;
+  v_pending_travelers integer;
+  v_gross_total integer;
+  v_discount_total integer := 0;
+  v_final_total integer;
+  v_instant_charge integer;
+  v_grand_total integer;
+  v_due_now integer;
+  v_balance_due integer;
+  v_first_amount integer;
+  v_second_amount integer;
+  v_third_amount integer;
+  v_sequence integer := 1;
+  v_reservation_expires_at timestamptz := now() + interval '20 minutes';
+  v_reserved_units jsonb := '[]'::jsonb;
+begin
+  if p_user_id is null then raise exception 'AUTH_REQUIRED'; end if;
+  if not exists (select 1 from public.profiles where id = p_user_id) then
+    raise exception 'PROFILE_NOT_FOUND';
+  end if;
+  if p_booking_type not in ('fixed_departure', 'customized_tailor_made') then
+    raise exception 'BOOKING_TYPE_INVALID';
+  end if;
+  if jsonb_typeof(p_travelers) <> 'array'
+     or jsonb_typeof(p_credit_assignments) <> 'array'
+     or jsonb_typeof(p_pickup) <> 'object' then
+    raise exception 'BOOKING_PAYLOAD_INVALID';
+  end if;
+
+  v_traveler_count := jsonb_array_length(p_travelers);
+  if v_traveler_count < 1 or v_traveler_count > 20 then
+    raise exception 'TRAVELER_COUNT_INVALID';
+  end if;
+
+  if exists (
+    select 1
+    from jsonb_array_elements(p_travelers) as traveler
+    where length(trim(coalesce(traveler->>'travelerKey', ''))) not between 1 and 100
+       or length(trim(coalesce(traveler->>'firstName', ''))) not between 1 and 100
+       or length(trim(coalesce(traveler->>'lastName', ''))) not between 1 and 100
+  ) then
+    raise exception 'TRAVELER_INVALID';
+  end if;
+
+  if (
+    select count(*) from jsonb_array_elements(p_travelers)
+  ) <> (
+    select count(distinct traveler->>'travelerKey')
+    from jsonb_array_elements(p_travelers) as traveler
+  ) then
+    raise exception 'TRAVELER_KEY_INVALID';
+  end if;
+
+  if (
+    select count(*) from jsonb_array_elements(p_credit_assignments)
+  ) <> (
+    select count(distinct assignment->>'travelerKey')
+    from jsonb_array_elements(p_credit_assignments) as assignment
+  ) then
+    raise exception 'ONE_CREDIT_PER_TRAVELER';
+  end if;
+
+  if (
+    select count(*) from jsonb_array_elements(p_credit_assignments)
+  ) <> (
+    select count(distinct assignment->>'creditUnitId')
+    from jsonb_array_elements(p_credit_assignments) as assignment
+  ) then
+    raise exception 'CREDIT_UNIT_DUPLICATE';
+  end if;
+
+  if exists (
+    select 1
+    from jsonb_array_elements(p_credit_assignments) as assignment
+    where not exists (
+      select 1
+      from jsonb_array_elements(p_travelers) as traveler
+      where traveler->>'travelerKey' = assignment->>'travelerKey'
+    )
+  ) then
+    raise exception 'CREDIT_TRAVELER_INVALID';
+  end if;
+
+  select * into v_departure
+  from public.tour_departures
+  where id = p_departure_id
+    and tour_id = p_tour_id
+  for update;
+
+  if not found then raise exception 'TOUR_DEPARTURE_NOT_FOUND'; end if;
+  if v_departure.status <> 'open' then raise exception 'TOUR_DEPARTURE_CLOSED'; end if;
+
+  select * into v_tour
+  from public.tours
+  where id = p_tour_id
+    and active = true;
+
+  if not found then raise exception 'TOUR_NOT_AVAILABLE'; end if;
+
+  select coalesce(sum(traveler_count), 0)::integer into v_pending_travelers
+  from public.bookings
+  where departure_id = p_departure_id
+    and status = 'pending_payment'
+    and reservation_expires_at > now();
+
+  if v_departure.capacity_total - v_departure.capacity_reserved - v_pending_travelers < v_traveler_count then
+    raise exception 'DEPARTURE_CAPACITY_EXCEEDED';
+  end if;
+
+  for v_assignment in
+    select assignment
+    from jsonb_array_elements(p_credit_assignments) as assignment
+    order by assignment->>'creditUnitId'
+  loop
+    begin
+      select * into v_unit
+      from public.discount_credit_units
+      where id = (v_assignment->>'creditUnitId')::uuid
+        and user_id = p_user_id
+      for update;
+    exception when invalid_text_representation then
+      raise exception 'CREDIT_UNIT_INVALID';
+    end;
+
+    if not found or v_unit.status <> 'available' then
+      raise exception 'CREDIT_UNIT_NOT_AVAILABLE';
+    end if;
+    if v_unit.credit_category <> v_tour.category then
+      raise exception 'CREDIT_CATEGORY_MISMATCH';
+    end if;
+    if v_unit.credit_value <> case when v_tour.category = 'international' then 5000 else 500 end then
+      raise exception 'CREDIT_VALUE_INVALID';
+    end if;
+
+    v_discount_total := v_discount_total + v_unit.credit_value::integer;
+    v_reserved_units := v_reserved_units || jsonb_build_array(jsonb_build_object(
+      'creditUnitId', v_unit.id,
+      'travelerKey', v_assignment->>'travelerKey',
+      'creditValue', v_unit.credit_value::integer
+    ));
+  end loop;
+
+  v_gross_total := v_tour.base_price_per_traveler * v_traveler_count;
+  v_final_total := v_gross_total - v_discount_total;
+  if v_final_total <= 0 then raise exception 'BOOKING_TOTAL_INVALID'; end if;
+
+  v_instant_charge := case
+    when not p_instant_booking_required then 0
+    when v_tour.category = 'international' then 5000
+    else 2000
+  end;
+  v_grand_total := v_final_total + v_instant_charge;
+  v_due_now := round(v_final_total * case when p_booking_type = 'customized_tailor_made' then 0.50 else 0.25 end)::integer + v_instant_charge;
+  v_balance_due := v_grand_total - v_due_now;
+  v_booking_id := 'BDU-BKG-' || lpad(nextval('public.booking_reference_sequence')::text, 8, '0');
+
+  insert into public.bookings (
+    id, user_id, tour_id, departure_id, title, tour_name, category,
+    booking_type, traveler_count, gross_tour_total, discount_total,
+    final_tour_total, instant_booking_charge, grand_total, amount_due_now,
+    balance_due, departure_at, reservation_expires_at
+  ) values (
+    v_booking_id, p_user_id, v_tour.id, v_departure.id, v_tour.name,
+    v_tour.name, v_tour.category, p_booking_type, v_traveler_count,
+    v_gross_total, v_discount_total, v_final_total, v_instant_charge,
+    v_grand_total, v_due_now, v_balance_due, v_departure.departure_at,
+    v_reservation_expires_at
+  );
+
+  for v_traveler in select * from jsonb_array_elements(p_travelers)
+  loop
+    insert into public.booking_travelers (
+      booking_id, traveler_key, first_name, last_name, email, phone
+    ) values (
+      v_booking_id,
+      trim(v_traveler->>'travelerKey'),
+      trim(v_traveler->>'firstName'),
+      trim(v_traveler->>'lastName'),
+      nullif(trim(v_traveler->>'email'), ''),
+      nullif(trim(v_traveler->>'phone'), '')
+    );
+  end loop;
+
+  if coalesce(p_pickup->>'type', '') not in ('hotel', 'manual', 'none', 'assistance') then
+    raise exception 'PICKUP_TYPE_INVALID';
+  end if;
+
+  insert into public.booking_pickups (
+    booking_id, pickup_type, address, city, pincode, special_instructions
+  ) values (
+    v_booking_id,
+    p_pickup->>'type',
+    nullif(trim(p_pickup->>'address'), ''),
+    nullif(trim(p_pickup->>'city'), ''),
+    nullif(trim(p_pickup->>'pincode'), ''),
+    nullif(trim(p_pickup->>'specialInstructions'), '')
+  );
+
+  if v_instant_charge > 0 then
+    insert into public.booking_installments (
+      booking_id, sequence_no, label, percentage, amount, due_label, status
+    ) values (
+      v_booking_id, v_sequence, 'Instant Booking Service Charge', 0,
+      v_instant_charge, 'Pay now', 'pay_now'
+    );
+    v_sequence := v_sequence + 1;
+  end if;
+
+  if p_booking_type = 'customized_tailor_made' then
+    v_first_amount := round(v_final_total * 0.50)::integer;
+    v_second_amount := round(v_final_total * 0.25)::integer;
+    insert into public.booking_installments (booking_id, sequence_no, label, percentage, amount, due_label, due_at, status)
+    values
+      (v_booking_id, v_sequence, 'Booking Confirmation Advance', 50, v_first_amount, 'Pay now', now(), 'pay_now'),
+      (v_booking_id, v_sequence + 1, 'Second Payment', 25, v_second_amount, 'Due 7 days before departure', v_departure.departure_at - interval '7 days', 'upcoming'),
+      (v_booking_id, v_sequence + 2, 'Final Balance', 25, v_final_total - v_first_amount - v_second_amount, 'Due before departure', v_departure.departure_at, 'upcoming');
+  else
+    v_first_amount := round(v_final_total * 0.25)::integer;
+    v_second_amount := round(v_final_total * 0.25)::integer;
+    v_third_amount := round(v_final_total * 0.30)::integer;
+    insert into public.booking_installments (booking_id, sequence_no, label, percentage, amount, due_label, due_at, status)
+    values
+      (v_booking_id, v_sequence, 'Booking Confirmation Advance', 25, v_first_amount, 'Pay now', now(), 'pay_now'),
+      (v_booking_id, v_sequence + 1, 'Second Payment', 25, v_second_amount, 'Due 30 days before departure', v_departure.departure_at - interval '30 days', 'upcoming'),
+      (v_booking_id, v_sequence + 2, 'Third Payment', 30, v_third_amount, 'Due 15 days before departure', v_departure.departure_at - interval '15 days', 'upcoming'),
+      (v_booking_id, v_sequence + 3, 'Final Balance', 20, v_final_total - v_first_amount - v_second_amount - v_third_amount, 'Due 7 days before departure', v_departure.departure_at - interval '7 days', 'upcoming');
+  end if;
+
+  for v_assignment in select * from jsonb_array_elements(p_credit_assignments)
+  loop
+    update public.discount_credit_units
+    set status = 'reserved',
+        reserved_by_booking_id = v_booking_id,
+        reserved_for_traveler_key = v_assignment->>'travelerKey',
+        reserved_until = v_reservation_expires_at,
+        updated_at = now()
+    where id = (v_assignment->>'creditUnitId')::uuid
+      and user_id = p_user_id
+      and status = 'available';
+
+    if not found then raise exception 'CREDIT_UNIT_NOT_AVAILABLE'; end if;
+
+    insert into public.discount_credit_redemptions (
+      booking_id, user_id, traveler_key, credit_unit_id, credit_category,
+      credit_value, status, expires_at
+    )
+    select
+      v_booking_id, p_user_id, v_assignment->>'travelerKey', unit.id,
+      unit.credit_category, unit.credit_value, 'reserved', v_reservation_expires_at
+    from public.discount_credit_units as unit
+    where unit.id = (v_assignment->>'creditUnitId')::uuid;
+  end loop;
+
+  insert into public.audit_logs (action, target_id, amount, status, reason, metadata)
+  values (
+    'booking.draft_created',
+    p_user_id,
+    v_due_now,
+    'pending',
+    'Authoritative tour booking draft created with locked credit reservations.',
+    jsonb_build_object(
+      'bookingId', v_booking_id,
+      'tourId', v_tour.id,
+      'departureId', v_departure.id,
+      'travelerCount', v_traveler_count,
+      'totalDiscount', v_discount_total,
+      'amountDueNow', v_due_now
+    )
+  );
+
+  return jsonb_build_object(
+    'bookingId', v_booking_id,
+    'currency', 'INR',
+    'grossTourTotal', v_gross_total,
+    'totalDiscount', v_discount_total,
+    'finalTourTotal', v_final_total,
+    'instantBookingCharge', v_instant_charge,
+    'grandTotal', v_grand_total,
+    'amountDueNow', v_due_now,
+    'balanceDueLater', v_balance_due,
+    'reservationExpiresAt', v_reservation_expires_at,
+    'reservedCreditUnits', v_reserved_units
+  );
+end;
+$$;
+
+revoke all on function public.create_tour_booking_draft_v1(uuid,text,text,text,jsonb,jsonb,jsonb,boolean) from anon, authenticated;
+
+create or replace function public.process_verified_booking_payment_v1(
+  p_provider text,
+  p_provider_event_id text,
+  p_idempotency_key text,
+  p_provider_payment_id text,
+  p_session_ref text,
+  p_event_type text,
+  p_status public.payment_status,
+  p_amount numeric,
+  p_currency text,
+  p_payload jsonb,
+  p_signature_verified boolean
+)
+returns jsonb
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  v_session public.payment_sessions%rowtype;
+  v_existing_event public.payment_events%rowtype;
+  v_event_id uuid;
+  v_booking public.bookings%rowtype;
+  v_departure public.tour_departures%rowtype;
+  v_installment public.booking_installments%rowtype;
+  v_redemption public.discount_credit_redemptions%rowtype;
+  v_booking_id text;
+begin
+  if not p_signature_verified then raise exception 'PAYMENT_SIGNATURE_INVALID'; end if;
+  if p_status not in ('verified', 'failed') then raise exception 'PAYMENT_STATUS_INVALID'; end if;
+
+  select * into v_existing_event
+  from public.payment_events
+  where idempotency_key = p_idempotency_key
+     or (provider = p_provider and provider_event_id = p_provider_event_id)
+     or (provider = p_provider and provider_payment_id = p_provider_payment_id)
+  order by created_at
+  limit 1;
+
+  if found then
+    return jsonb_build_object(
+      'duplicate', true,
+      'paymentEventId', v_existing_event.id,
+      'status', v_existing_event.status
+    );
+  end if;
+
+  select * into v_session
+  from public.payment_sessions
+  where provider = p_provider
+    and (id::text = p_session_ref or provider_order_id = p_session_ref)
+  for update;
+
+  if not found then raise exception 'PAYMENT_SESSION_NOT_FOUND'; end if;
+  if v_session.purpose not in ('tour_booking', 'installment') then
+    raise exception 'PAYMENT_PURPOSE_INVALID';
+  end if;
+  if v_session.status in ('verified', 'refunded', 'chargeback') then
+    return jsonb_build_object(
+      'duplicate', true,
+      'staleEvent', true,
+      'status', v_session.status,
+      'sessionId', v_session.id
+    );
+  end if;
+  if upper(coalesce(p_currency, '')) <> upper(v_session.currency) then
+    raise exception 'PAYMENT_CURRENCY_MISMATCH';
+  end if;
+  if p_amount <> coalesce(v_session.expected_amount, v_session.amount) then
+    raise exception 'PAYMENT_AMOUNT_MISMATCH';
+  end if;
+
+  insert into public.payment_events (
+    session_id, user_id, provider, provider_event_id, provider_payment_id,
+    idempotency_key, event_type, status, amount, currency,
+    signature_verified, raw_payload
+  ) values (
+    v_session.id, v_session.user_id, p_provider, p_provider_event_id,
+    p_provider_payment_id, p_idempotency_key, p_event_type, p_status,
+    p_amount, upper(p_currency), true, p_payload
+  ) returning id into v_event_id;
+
+  update public.payment_sessions
+  set status = p_status,
+      updated_at = now()
+  where id = v_session.id;
+
+  if v_session.purpose = 'tour_booking' then
+    select * into v_booking
+    from public.bookings
+    where id = v_session.reference_id
+      and user_id = v_session.user_id
+    for update;
+
+    if not found then raise exception 'BOOKING_NOT_FOUND'; end if;
+    v_booking_id := v_booking.id;
+
+    if p_status = 'verified' then
+      if v_booking.status <> 'pending_payment' then
+        raise exception 'BOOKING_NOT_PAYABLE';
+      end if;
+
+      select * into v_departure
+      from public.tour_departures
+      where id = v_booking.departure_id
+      for update;
+
+      if not found or v_departure.status <> 'open' then
+        raise exception 'TOUR_DEPARTURE_CLOSED';
+      end if;
+      if v_departure.capacity_reserved + v_booking.traveler_count > v_departure.capacity_total then
+        raise exception 'DEPARTURE_CAPACITY_EXCEEDED';
+      end if;
+
+      update public.booking_installments
+      set status = 'paid',
+          paid_payment_event_id = v_event_id,
+          paid_at = now(),
+          updated_at = now()
+      where booking_id = v_booking.id
+        and status = 'pay_now';
+
+      update public.tour_departures
+      set capacity_reserved = capacity_reserved + v_booking.traveler_count,
+          updated_at = now()
+      where id = v_departure.id;
+
+      for v_redemption in
+        select *
+        from public.discount_credit_redemptions
+        where booking_id = v_booking.id
+          and user_id = v_booking.user_id
+          and status = 'reserved'
+        order by id
+        for update
+      loop
+        update public.discount_credit_redemptions
+        set status = 'redeemed',
+            updated_at = now()
+        where id = v_redemption.id;
+
+        update public.discount_credit_units
+        set status = 'redeemed',
+            redeemed_booking_id = v_booking.id,
+            reserved_until = null,
+            updated_at = now()
+        where id = v_redemption.credit_unit_id
+          and status = 'reserved'
+          and reserved_by_booking_id = v_booking.id;
+
+        if not found then raise exception 'BOOKING_CREDIT_RESERVATION_INVALID'; end if;
+
+        insert into public.credit_ledger (
+          user_id, type, credit_type, credit_category, amount, credit_value,
+          usable_for, source, reason, booking_ref, admin_ref
+        ) values (
+          v_booking.user_id,
+          'redeemed',
+          'discount',
+          v_redemption.credit_category,
+          1,
+          v_redemption.credit_value,
+          case when v_redemption.credit_category = 'international' then 'international_only' else 'domestic_only' end,
+          'real',
+          'Discount Credit redeemed after verified paid-tour booking payment.',
+          v_booking.id,
+          'BOOKING_PAYMENT_EVENT_' || v_event_id::text || '_' || v_redemption.id::text
+        );
+      end loop;
+
+      update public.bookings
+      set status = 'confirmed',
+          amount_paid = p_amount::integer,
+          balance_due = greatest(grand_total - p_amount::integer, 0),
+          confirmed_at = now(),
+          reservation_expires_at = null,
+          updated_at = now()
+      where id = v_booking.id;
+    else
+      update public.discount_credit_redemptions
+      set status = 'reversed',
+          updated_at = now()
+      where booking_id = v_booking.id
+        and status = 'reserved';
+
+      update public.discount_credit_units
+      set status = 'available',
+          reserved_by_booking_id = null,
+          reserved_for_traveler_key = null,
+          reserved_until = null,
+          updated_at = now()
+      where user_id = v_booking.user_id
+        and reserved_by_booking_id = v_booking.id
+        and status = 'reserved';
+
+      update public.bookings
+      set status = 'payment_failed',
+          reservation_expires_at = null,
+          updated_at = now()
+      where id = v_booking.id
+        and status = 'pending_payment';
+    end if;
+  else
+    begin
+      select * into v_installment
+      from public.booking_installments
+      where id = v_session.reference_id::uuid
+      for update;
+    exception when invalid_text_representation then
+      raise exception 'INSTALLMENT_NOT_FOUND';
+    end;
+
+    if not found then raise exception 'INSTALLMENT_NOT_FOUND'; end if;
+
+    select * into v_booking
+    from public.bookings
+    where id = v_installment.booking_id
+      and user_id = v_session.user_id
+    for update;
+
+    if not found then raise exception 'BOOKING_NOT_FOUND'; end if;
+    v_booking_id := v_booking.id;
+
+    if p_status = 'verified' then
+      if v_installment.status <> 'upcoming' then raise exception 'INSTALLMENT_NOT_PAYABLE'; end if;
+      update public.booking_installments
+      set status = 'paid',
+          paid_payment_event_id = v_event_id,
+          paid_at = now(),
+          updated_at = now()
+      where id = v_installment.id;
+
+      update public.bookings
+      set amount_paid = amount_paid + p_amount::integer,
+          balance_due = greatest(balance_due - p_amount::integer, 0),
+          updated_at = now()
+      where id = v_booking.id;
+    end if;
+  end if;
+
+  insert into public.audit_logs (
+    action, actor_email, actor_role, target_id, amount, status, reason, metadata
+  ) values (
+    case when p_status = 'verified' then 'booking.payment_verified' else 'booking.payment_failed' end,
+    p_provider || '-webhook@beduine.system',
+    'admin',
+    v_session.user_id,
+    p_amount,
+    case when p_status = 'verified' then 'success'::public.audit_status else 'failed'::public.audit_status end,
+    'Booking payment webhook processed atomically.',
+    jsonb_build_object(
+      'bookingId', v_booking_id,
+      'sessionId', v_session.id,
+      'paymentEventId', v_event_id,
+      'purpose', v_session.purpose,
+      'providerEventId', p_provider_event_id
+    )
+  );
+
+  return jsonb_build_object(
+    'duplicate', false,
+    'paymentEventId', v_event_id,
+    'sessionId', v_session.id,
+    'bookingId', v_booking_id,
+    'status', p_status
+  );
+end;
+$$;
+
+revoke all on function public.process_verified_booking_payment_v1(text,text,text,text,text,text,public.payment_status,numeric,text,jsonb,boolean) from anon, authenticated;

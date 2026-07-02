@@ -2,6 +2,7 @@ import type { BeduineBackendAdapter } from './backendAdapter';
 import type {
   CancellationRequestInput,
   CreditIssuanceResponse,
+  CreateTourBookingDraftInput,
   CreatePaymentOrderInput,
   CustomerDashboardResponse,
   DrawRoundSummary,
@@ -11,6 +12,7 @@ import type {
   ParticipationResponse,
   PublicWinnerSummary,
   WeeklyDrawStatusResponse,
+  TourBookingDraftResponse,
 } from './backendContracts';
 
 const now = new Date();
@@ -79,21 +81,41 @@ const demoPlanPrices: Record<string, number> = {
   international_platinum: 14999,
 };
 
+const demoTourCatalog: Record<string, { price: number; category: 'domestic' | 'international' }> = {
+  'digha-sea-beach-retreat': { price: 8499, category: 'domestic' },
+  'sundarbans-mangrove-safari': { price: 12499, category: 'domestic' },
+  'darjeeling-hills-tea': { price: 17499, category: 'domestic' },
+  'dubai-city-desert': { price: 52999, category: 'international' },
+  'thailand-bangkok-pattaya': { price: 45999, category: 'international' },
+};
+
+const demoBookingAmounts = new Map<string, number>();
+const demoPaymentBookings = new Map<string, string>();
+
 export function createDemoBackendAdapter(): BeduineBackendAdapter {
   return {
     async createPaymentOrder(input: CreatePaymentOrderInput): Promise<PaymentOrderResponse> {
-      const amountRupees = demoPlanPrices[input.referenceId];
-      if (input.purpose !== 'subscription' || !amountRupees) {
+      const amountRupees = input.purpose === 'subscription'
+        ? demoPlanPrices[input.referenceId]
+        : input.purpose === 'tour_booking'
+          ? demoBookingAmounts.get(input.referenceId)
+          : undefined;
+      if (!amountRupees) {
         throw new Error('Demo payment reference is not available.');
       }
       const sessionId = `demo-session-${Date.now()}`;
+      if (input.purpose === 'tour_booking') {
+        demoPaymentBookings.set(sessionId, input.referenceId);
+      }
       return {
         sessionId,
         keyId: 'rzp_test_demo',
         orderId: `demo-order-${Date.now()}`,
         amountPaise: amountRupees * 100,
         currency: 'INR',
-        description: `${input.referenceId.replace(/_/g, ' ')} membership`,
+        description: input.purpose === 'subscription'
+          ? `${input.referenceId.replace(/_/g, ' ')} membership`
+          : 'Demo paid-tour advance',
       };
     },
 
@@ -101,7 +123,46 @@ export function createDemoBackendAdapter(): BeduineBackendAdapter {
       if (!sessionId.startsWith('demo-session-')) {
         throw new Error('Demo payment session is not available.');
       }
-      return { sessionId, status: 'verified' };
+      const bookingId = demoPaymentBookings.get(sessionId);
+      return {
+        sessionId,
+        status: 'verified',
+        ...(bookingId ? { bookingId } : {}),
+      };
+    },
+
+    async createTourBookingDraft(input: CreateTourBookingDraftInput): Promise<TourBookingDraftResponse> {
+      const tour = demoTourCatalog[input.tourId];
+      if (!tour || input.travelers.length < 1) throw new Error('Demo tour is not available.');
+      const grossTourTotal = tour.price * input.travelers.length;
+      const creditValue = tour.category === 'international' ? 5000 : 500;
+      const totalDiscount = input.creditAssignments.length * creditValue;
+      const finalTourTotal = grossTourTotal - totalDiscount;
+      const instantBookingCharge = input.instantBookingRequired
+        ? tour.category === 'international' ? 5000 : 2000
+        : 0;
+      const amountDueNow = Math.round(
+        finalTourTotal * (input.bookingType === 'customized_tailor_made' ? 0.5 : 0.25),
+      ) + instantBookingCharge;
+      const grandTotal = finalTourTotal + instantBookingCharge;
+      const bookingId = `BDU-BKG-DEMO-${Date.now()}`;
+      demoBookingAmounts.set(bookingId, amountDueNow);
+      return {
+        bookingId,
+        currency: 'INR',
+        grossTourTotal,
+        totalDiscount,
+        finalTourTotal,
+        instantBookingCharge,
+        grandTotal,
+        amountDueNow,
+        balanceDueLater: grandTotal - amountDueNow,
+        reservationExpiresAt: new Date(Date.now() + 20 * 60_000).toISOString(),
+        reservedCreditUnits: input.creditAssignments.map((assignment) => ({
+          ...assignment,
+          creditValue,
+        })),
+      };
     },
 
     async participateInWeeklyDraw(): Promise<ParticipationResponse> {

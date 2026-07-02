@@ -58,7 +58,8 @@ serve(async (req) => {
   if (sessionError || !session) {
     return Response.json({ error: { code: 'PAYMENT_SESSION_NOT_FOUND' } }, { status: 409 });
   }
-  if (getRazorpayFulfillmentTarget(session.purpose) !== 'subscription') {
+  const fulfillmentTarget = getRazorpayFulfillmentTarget(session.purpose);
+  if (fulfillmentTarget === 'unsupported') {
     return Response.json({ error: { code: 'PAYMENT_PURPOSE_NOT_SUPPORTED' } }, { status: 409 });
   }
   if (!shouldApplyRazorpayPaymentTransition(session.status, event.status)) {
@@ -70,7 +71,7 @@ serve(async (req) => {
     });
   }
 
-  const { data, error } = await supabase.rpc('process_verified_subscription_payment_v1', {
+  const sharedRpcInput = {
     p_provider: 'razorpay',
     p_provider_event_id: event.eventId,
     p_idempotency_key: `razorpay:${event.eventId}`,
@@ -82,9 +83,14 @@ serve(async (req) => {
     p_currency: event.currency,
     p_payload: payload,
     p_signature_verified: true,
-    p_plan_name: '',
-    p_plan_type: '',
-  });
+  };
+  const { data, error } = fulfillmentTarget === 'subscription'
+    ? await supabase.rpc('process_verified_subscription_payment_v1', {
+        ...sharedRpcInput,
+        p_plan_name: '',
+        p_plan_type: '',
+      })
+    : await supabase.rpc('process_verified_booking_payment_v1', sharedRpcInput);
 
   if (error) {
     console.error('Razorpay fulfillment rejected', error.code, error.message);
@@ -95,5 +101,6 @@ serve(async (req) => {
     provider: 'razorpay',
     duplicate: Boolean(data?.duplicate),
     status: data?.status || event.status,
+    ...(data?.bookingId ? { bookingId: data.bookingId } : {}),
   });
 });

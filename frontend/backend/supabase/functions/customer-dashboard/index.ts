@@ -78,6 +78,13 @@ type WinnerBenefitRow = {
   created_at: string;
 };
 
+type BookingRow = {
+  id: string;
+  status: string;
+  title: string;
+  created_at: string;
+};
+
 type PaymentEventRow = {
   id: string;
   session_id: string | null;
@@ -186,6 +193,7 @@ serve(async (req) => {
       discountUnitsResult,
       drawEntriesResult,
       winnerBenefitsResult,
+      bookingsResult,
       paymentSessionsResult,
       paymentEventsResult,
     ] = await Promise.all([
@@ -229,6 +237,12 @@ serve(async (req) => {
         .order('created_at', { ascending: false })
         .returns<WinnerBenefitRow[]>(),
       admin
+        .from('bookings')
+        .select('id,status,title,created_at')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false })
+        .returns<BookingRow[]>(),
+      admin
         .from('payment_sessions')
         .select('id,provider,provider_order_id,plan_id,amount,currency,status,created_at')
         .eq('user_id', user.id)
@@ -249,6 +263,7 @@ serve(async (req) => {
       discountUnitsResult,
       drawEntriesResult,
       winnerBenefitsResult,
+      bookingsResult,
       paymentSessionsResult,
       paymentEventsResult,
     ];
@@ -328,7 +343,12 @@ serve(async (req) => {
         status: benefit.status,
         createdAt: benefit.created_at,
       })),
-      bookings: [],
+      bookings: (bookingsResult.data ?? []).map((booking) => ({
+        id: booking.id,
+        status: booking.status,
+        title: booking.title,
+        createdAt: booking.created_at,
+      })),
       payments: buildPaymentSummaries(paymentSessionsResult.data ?? [], paymentEventsResult.data ?? []),
       supportTickets: [],
     }, {}, req);

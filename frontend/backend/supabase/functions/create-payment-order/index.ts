@@ -71,13 +71,19 @@ async function resolveAuthoritativePayment(
   if (input.purpose === 'tour_booking') {
     const { data, error } = await admin
       .from('bookings')
-      .select('id,amount_due_now,currency,status,tour_name')
+      .select('id,amount_due_now,currency,status,tour_name,reservation_expires_at')
       .eq('id', input.referenceId)
       .eq('user_id', userId)
       .maybeSingle();
 
     if (error) throw new HttpError(500, 'BOOKING_LOOKUP_FAILED');
-    if (!data || data.currency !== 'INR' || data.status !== 'pending_payment') {
+    if (
+      !data
+      || data.currency !== 'INR'
+      || data.status !== 'pending_payment'
+      || !data.reservation_expires_at
+      || new Date(data.reservation_expires_at).getTime() <= Date.now()
+    ) {
       throw new HttpError(404, 'BOOKING_NOT_PAYABLE');
     }
     return {

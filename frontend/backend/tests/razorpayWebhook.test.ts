@@ -24,10 +24,10 @@ const capturedPayload = {
 };
 
 describe('Razorpay webhook processing', () => {
-  it('does not route booking payments through subscription fulfillment', () => {
+  it('routes booking and installment events to booking fulfillment', () => {
     expect(getRazorpayFulfillmentTarget('subscription')).toBe('subscription');
-    expect(getRazorpayFulfillmentTarget('tour_booking')).toBe('unsupported');
-    expect(getRazorpayFulfillmentTarget('installment')).toBe('unsupported');
+    expect(getRazorpayFulfillmentTarget('tour_booking')).toBe('booking');
+    expect(getRazorpayFulfillmentTarget('installment')).toBe('booking');
   });
 
   it('keeps verified payment state monotonic for out-of-order events', () => {

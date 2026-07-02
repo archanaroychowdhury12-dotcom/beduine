@@ -6,6 +6,7 @@ import type {
   CancellationRequestInput,
   CancellationRequestResponse,
   CreditIssuanceResponse,
+  CreateTourBookingDraftInput,
   CreatePaymentOrderInput,
   CustomerDashboardResponse,
   DrawRoundKey,
@@ -17,6 +18,7 @@ import type {
   PublicWinnerSummary,
   RevealedWinnerResponse,
   WeeklyDrawStatusResponse,
+  TourBookingDraftResponse,
 } from './backendContracts';
 
 type UnknownRecord = Record<string, unknown>;
@@ -274,6 +276,10 @@ export function createSupabaseBackendAdapter(): BeduineBackendAdapter {
 
     async getPaymentStatus(sessionId: string): Promise<PaymentStatusResponse> {
       return callFunction<PaymentStatusResponse>('payment-status', { sessionId });
+    },
+
+    async createTourBookingDraft(input: CreateTourBookingDraftInput): Promise<TourBookingDraftResponse> {
+      return callFunction<TourBookingDraftResponse>('create-tour-booking', { ...input });
     },
 
     async participateInWeeklyDraw(): Promise<ParticipationResponse> {

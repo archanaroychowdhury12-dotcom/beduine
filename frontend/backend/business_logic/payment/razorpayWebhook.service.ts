@@ -13,8 +13,10 @@ export interface ParsedRazorpayWebhook {
 
 export function getRazorpayFulfillmentTarget(
   purpose: string,
-): 'subscription' | 'unsupported' {
-  return purpose === 'subscription' ? 'subscription' : 'unsupported';
+): 'subscription' | 'booking' | 'unsupported' {
+  if (purpose === 'subscription') return 'subscription';
+  if (purpose === 'tour_booking' || purpose === 'installment') return 'booking';
+  return 'unsupported';
 }
 
 export function shouldApplyRazorpayPaymentTransition(
