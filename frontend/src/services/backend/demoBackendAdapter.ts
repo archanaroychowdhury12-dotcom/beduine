@@ -6,6 +6,7 @@ import type {
   DrawRoundSummary,
   RevealedWinnerResponse,
   PaymentOrderResponse,
+  PaymentStatusResponse,
   WeeklyDrawStatusResponse,
 } from './backendContracts';
 
@@ -91,6 +92,13 @@ export function createDemoBackendAdapter(): BeduineBackendAdapter {
         currency: 'INR',
         description: `${input.referenceId.replace(/_/g, ' ')} membership`,
       };
+    },
+
+    async getPaymentStatus(sessionId: string): Promise<PaymentStatusResponse> {
+      if (!sessionId.startsWith('demo-session-')) {
+        throw new Error('Demo payment session is not available.');
+      }
+      return { sessionId, status: 'verified' };
     },
 
     async getCustomerDashboard(): Promise<CustomerDashboardResponse> {

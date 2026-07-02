@@ -11,6 +11,7 @@ import type {
   DrawRoundSummary,
   LedgerResponse,
   PaymentOrderResponse,
+  PaymentStatusResponse,
   RevealedWinnerResponse,
   WeeklyDrawStatusResponse,
 } from './backendContracts';
@@ -260,6 +261,10 @@ export function createSupabaseBackendAdapter(): BeduineBackendAdapter {
   return {
     async createPaymentOrder(input: CreatePaymentOrderInput): Promise<PaymentOrderResponse> {
       return callFunction<PaymentOrderResponse>('create-payment-order', { ...input });
+    },
+
+    async getPaymentStatus(sessionId: string): Promise<PaymentStatusResponse> {
+      return callFunction<PaymentStatusResponse>('payment-status', { sessionId });
     },
 
     async getCustomerDashboard(): Promise<CustomerDashboardResponse> {

@@ -5,12 +5,14 @@ import type {
   CustomerDashboardResponse,
   LedgerResponse,
   PaymentOrderResponse,
+  PaymentStatusResponse,
   RevealedWinnerResponse,
   WeeklyDrawStatusResponse,
 } from './backendContracts';
 
 export interface BeduineBackendAdapter {
   createPaymentOrder(input: CreatePaymentOrderInput): Promise<PaymentOrderResponse>;
+  getPaymentStatus(sessionId: string): Promise<PaymentStatusResponse>;
   getCustomerDashboard(): Promise<CustomerDashboardResponse>;
   getTrcAndDiscountLedger(userId: string): Promise<LedgerResponse>;
   getWeeklyDrawStatus(): Promise<WeeklyDrawStatusResponse>;
@@ -29,6 +31,9 @@ export function createProductionBackendAdapter(): BeduineBackendAdapter {
   return {
     async createPaymentOrder() {
       throw new BackendNotConnectedError('createPaymentOrder');
+    },
+    async getPaymentStatus() {
+      throw new BackendNotConnectedError('getPaymentStatus');
     },
     async getCustomerDashboard() {
       throw new BackendNotConnectedError('getCustomerDashboard');

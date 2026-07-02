@@ -13,6 +13,10 @@ describe('frontend backend adapter contracts', () => {
       currency: 'INR',
       amountPaise: 79_900,
     });
+    await expect(adapter.getPaymentStatus(order.sessionId)).resolves.toMatchObject({
+      sessionId: order.sessionId,
+      status: 'verified',
+    });
   });
 
   it('exposes customer dashboard contract', async () => {

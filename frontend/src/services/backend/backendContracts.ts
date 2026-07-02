@@ -89,6 +89,13 @@ export interface PaymentOrderResponse {
   description: string;
 }
 
+export interface PaymentStatusResponse {
+  sessionId: string;
+  status: 'pending' | 'verified' | 'failed' | 'refunded' | 'chargeback';
+  subscriptionId?: string;
+  bookingId?: string;
+}
+
 export interface CustomerProfileSummary {
   uid: string;
   fullName: string;
