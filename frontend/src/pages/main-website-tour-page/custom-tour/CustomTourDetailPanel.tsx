@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { CustomTourRequest } from '../../../types';
 import { customTourService } from '../../../services/customTourService';
-import { DemoAdminControls } from './DemoAdminControls';
 import {
   Check, Clock, ShieldAlert, CreditCard, ShieldCheck,
   MessageSquare, X
@@ -26,11 +25,6 @@ export const CustomTourDetailPanel: React.FC<CustomTourDetailPanelProps> = ({
   const [revisionMessage, setRevisionMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<'upi' | 'card' | 'wallet'>('upi');
-
-  const handleStateUpdate = (updated: CustomTourRequest) => {
-    setRequest(updated);
-    onRefresh(); // Trigger parent refresh
-  };
 
   const handleRequestRevision = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -190,11 +184,6 @@ export const CustomTourDetailPanel: React.FC<CustomTourDetailPanelProps> = ({
           })}
         </div>
       </div>
-
-      {/* Demo Admin Controls Block */}
-      {!isProduction && (
-        <DemoAdminControls request={request} onUpdate={handleStateUpdate} />
-      )}
 
       {/* Main Grid: Request Data vs Interactive Panel */}
       <div className="grid lg:grid-cols-2 gap-6">

@@ -31,7 +31,6 @@ const AffiliateAgentPolicyPage = lazy(() => import('./app/affiliate-agent-policy
 const GrievanceRedressalPage = lazy(() => import('./app/grievance-redressal/page'));
 
 import { CookieConsentBanner, CookieModalTrigger } from './components/legal/CookieConsentBanner';
-import { DemoBanner } from './components/demo/DemoBanner';
 import { supabase } from './utils/supabaseClient';
 import { getRegistrationPlanFromSearch } from './utils/registrationPlanParams';
 import { getStaticLandingUrl, shouldOpenStaticLanding } from './utils/staticLandingRoute';
@@ -43,7 +42,7 @@ import {
   isProtectedView,
   normalizeNextPath,
 } from './utils/appRoutes';
-import { canAccessAdmin, canUseDemoTools } from './services/accessControl';
+import { canAccessAdmin } from './services/accessControl';
 import { notify } from './services/uiFeedback';
 import { loadProfileRecord, mapSupabaseUser } from './utils/userMapper';
 import { AppUser, SupabaseRawUser } from './types';
@@ -420,14 +419,12 @@ export default function App() {
     };
   }, [introComplete, view]);
 
-  const isDemoWalletEnabled = import.meta.env.VITE_ENABLE_DEMO_WALLET === 'true';
-  const showDemoBanner = isDemoWalletEnabled && (!currentUser || canUseDemoTools(currentUser)) && view !== 'admin' && view !== 'admin-login';
+  const showDemoBanner = false;
   const waitingForProtectedAuth = !authReady && isProtectedView(getRouteKey(window.location.pathname));
 
   return (
     <FeedbackProvider>
     <div className={`min-h-screen bg-cosmos text-ink relative ${showDemoBanner ? 'pt-9' : ''}`}>
-      {showDemoBanner && <DemoBanner currentUser={currentUser} />}
       {/* Intro animation completely bypassed */}
 
       {introComplete && view !== 'paid-tour' && <CustomCursor />}

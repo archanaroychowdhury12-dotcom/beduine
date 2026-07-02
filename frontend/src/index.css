@@ -1,0 +1,9 @@
+@import "tailwindcss";
+
+@import "./styles/tokens/theme.css";
+@import "./styles/animations/cinematic.css";
+@import "./styles/base/reset.css";
+@import "./styles/base/typography.css";
+@import "./styles/utilities/animation-utilities.css";
+@import "./styles/features/tour-website.css";
+@import "./features/dashboard/modern/modern.css";

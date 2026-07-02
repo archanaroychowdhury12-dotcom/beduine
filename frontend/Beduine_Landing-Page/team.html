@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Our Team | Beduine Tour and Travels</title>
+  <base href="/Beduine_Landing-Page/">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Montserrat:wght@600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/" class="brand" aria-label="Beduine Home">
+        <img src="assets/logo.png" alt="BEDUINE Tour and Travels" />
+      </a>
+
+      <button class="mobile-menu-toggle" aria-label="Toggle navigation" type="button">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav class="nav-menu" aria-label="Primary navigation">
+        <a href="index.html#home" class="nav-link">Home</a>
+        <a href="team.html" class="nav-link active">Our Team</a>
+        <a href="/login?next=/landing" class="nav-link">BEDUINE CLUB</a>
+        <a href="index.html#location" class="nav-link">Contact</a>
+      </nav>
+
+      <div class="header-actions">
+        <a href="/login" class="btn-login-new">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Login
+        </a>
+        <a href="/login?next=/landing" class="btn-primary btn-join-club">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M16 11h6"/></svg>
+          Join Club
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main style="min-height: 70vh; display: flex; align-items: center; padding: 60px 0;">
+    <section class="section team-section" id="team" style="width: 100%;">
+      <div class="container">
+        <div class="section-heading">
+          <h2>Meet Our <span>Team</span></h2>
+          <p>A dedicated team of travel professionals driven to create memorable journeys for our members.</p>
+        </div>
+        <div class="team-grid">
+          <article class="team-card">
+            <img src="assets/team_akhil.png" alt="Akhil" />
+            <h3>Akhil</h3>
+            <em>Travel Operations</em>
+            <p>Coordinates tour operations and keeps every confirmed journey on schedule.</p>
+          </article>
+          <article class="team-card">
+            <img src="assets/team_bananindra.png" alt="Bananindra" />
+            <h3>Bananindra</h3>
+            <em>Tour Coordination</em>
+            <p>Works with travelers and suppliers to coordinate reliable tour arrangements.</p>
+          </article>
+          <article class="team-card">
+            <img src="assets/team_prantik.png" alt="Prantik" />
+            <h3>Prantik</h3>
+            <em>Member Experience</em>
+            <p>Supports Beduine Club members throughout subscriptions, draws, and bookings.</p>
+          </article>
+          <article class="team-card">
+            <img src="assets/team_rima.png" alt="Rima" />
+            <h3>Rima</h3>
+            <em>Customer Support</em>
+            <p>Helps customers resolve booking, payment, and travel support requests.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" id="footer">
+    <div class="container footer-inner">
+      <p>&copy; 2026 BEDUINE TOUR AND TRAVELS. All rights reserved.</p>
+      <nav>
+        <a href="/privacy-policy">Privacy Policy</a>
+        <a href="/terms-and-conditions">Terms &amp; Conditions</a>
+      </nav>
+      <div class="socials">
+        <b>f</b><b>t</b><b>i</b><b>y</b><b>in</b>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

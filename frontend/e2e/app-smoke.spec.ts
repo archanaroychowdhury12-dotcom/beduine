@@ -43,6 +43,6 @@ test.describe('Beduine app smoke coverage', () => {
   test('winners route stays public and reaches its public shell', async ({ page }) => {
     await page.goto('/winners');
     await expect(page).toHaveURL(/\/winners$/);
-    await expect(page.getByText('No published winners yet')).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Beduine Public Winners' })).toBeVisible();
   });
 });

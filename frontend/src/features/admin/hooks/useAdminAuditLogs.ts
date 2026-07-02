@@ -12,7 +12,9 @@ export function useAdminAuditLogs(
 
   useEffect(() => {
     if (mode === 'production') {
-      void backend.listAuditLogs().then((page) => setAuditLogs(page.logs));
+      void backend.listAuditLogs()
+        .then((page) => setAuditLogs(page.logs))
+        .catch(() => setAuditLogs([]));
       return;
     }
     const syncAuditLogs = () => setAuditLogs(auditLogService.list());

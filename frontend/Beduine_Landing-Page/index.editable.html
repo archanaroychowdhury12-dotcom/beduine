@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Beduine Tour and Travels | Membership Landing Page</title>
+  <base href="/Beduine_Landing-Page/">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Montserrat:wght@600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/" class="brand" aria-label="Beduine Home">
+        <img src="assets/logo.png" alt="BEDUINE Tour and Travels" />
+      </a>
+
+      <button class="mobile-menu-toggle" aria-label="Toggle navigation" type="button">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav class="nav-menu" aria-label="Primary navigation">
+        <a href="#home" class="nav-link active">Home</a>
+        <a href="#about" class="nav-link">About Us</a>
+        <a href="#plans" class="nav-link">Destinations</a>
+        <a href="#how" class="nav-link">How It Works</a>
+        <a href="#team" class="nav-link">Reviews</a>
+        <a href="#location" class="nav-link">Contact Us</a>
+      </nav>
+
+      <div class="header-actions">
+        <a href="/login" class="btn-login-new">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Login
+        </a>
+        <a href="/login?next=/landing" class="btn-primary btn-join-club">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M16 11h6"/></svg>
+          Join Now
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero-section" id="home">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <h1>One Membership,<br><span>Endless Journeys</span></h1>
+          <p>Pick your plan and unlock access to travel rewards and exciting lucky draw opportunities.</p>
+          <div class="hero-features">
+            <div class="mini-feature">
+              <span class="icon-circle">🎁</span>
+              <div><strong>Win Exciting Prizes</strong><small>Every Lucky Draw</small></div>
+            </div>
+            <div class="mini-feature">
+              <span class="icon-circle">🏷️</span>
+              <div><strong>Exclusive Benefits</strong><small>for Members</small></div>
+            </div>
+            <div class="mini-feature">
+              <span class="icon-circle">👤</span>
+              <div><strong>Preferred Access</strong><small>to Curated Tours</small></div>
+            </div>
+          </div>
+        </div>
+        <div class="hero-visual" aria-hidden="true">
+          <img src="assets/hero_couple.png" alt="" />
+          <span class="float-balloon balloon-one">🎈</span>
+          <span class="float-balloon balloon-two">🎈</span>
+          <span class="float-plane">✈</span>
+        </div>
+      </div>
+      <div class="hero-wave"></div>
+    </section>
+
+    <section class="section plans-section" id="plans">
+      <div class="container">
+        <div class="section-heading">
+          <h2>Choose Your <span>Membership Plan</span></h2>
+          <p>Pick a plan that suits your travel dreams.</p>
+        </div>
+        <div class="plans-grid">
+          <article class="plan-card blue-plan">
+            <div class="plan-medal">✈</div>
+            <h3>Domestic Plan</h3>
+            <div class="price">₹499 <small>/year</small></div>
+            <p class="plan-note">Winner eligibility,<br>curated short getaways</p>
+            <h4>Destinations</h4>
+            <ul>
+              <li>Sundarban</li>
+              <li>Digha</li>
+              <li>Mousuni Island</li>
+              <li>Purulia</li>
+            </ul>
+            <a href="/login?next=/landing" class="btn-plan-outline btn-blue" data-plan="Silver">Join Now <span>→</span></a>
+          </article>
+
+          <article class="plan-card orange-plan featured-plan">
+            <div class="popular-tag">POPULAR</div>
+            <div class="plan-medal">%</div>
+            <h3>Gold Plan</h3>
+            <div class="price">₹799 <small>/year</small></div>
+            <p class="plan-note">Popular choice,<br>premium domestic escapes</p>
+            <h4>Destinations</h4>
+            <ul>
+              <li>Darjeeling</li>
+              <li>Dooars</li>
+              <li>Puri</li>
+              <li>Daring Bari</li>
+            </ul>
+            <a href="/login?next=/landing" class="btn-plan-filled btn-orange" data-plan="Gold">Join Now <span>→</span></a>
+          </article>
+
+          <article class="plan-card purple-plan">
+            <div class="plan-medal">♛</div>
+            <h3>Premium / VIP Plan</h3>
+            <div class="price">₹1,499 <small>/year</small></div>
+            <p class="plan-note">Priority winner benefits,<br>premium tour support</p>
+            <h4>Destinations</h4>
+            <ul>
+              <li>Kashmir</li>
+              <li>Goa</li>
+              <li>Sikkim</li>
+              <li>Himachal (Shimla+Manali)</li>
+            </ul>
+            <a href="/login?next=/landing" class="btn-plan-outline btn-purple" data-plan="Platinum">Join Now <span>→</span></a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section about-section" id="about">
+      <div class="container about-card">
+        <div class="about-copy">
+          <h2>About <span>Beduine</span></h2>
+          <p>Beduine Tour and Travels is a travel membership brand built for explorers who love memorable journeys. We offer curated tours, exciting lucky draws, and exclusive member benefits through a transparent and trustworthy platform.</p>
+          <p>From short getaways to premium vacations, our goal is to make travel simple, exciting, and customer-friendly.</p>
+          <div class="about-points">
+            <div><span>🎁</span><small>Curated<br>Experiences</small></div>
+            <div><span>🛡️</span><small>Trusted &<br>Transparent</small></div>
+            <div><span>👥</span><small>Member First<br>Approach</small></div>
+            <div><span>🏵️</span><small>Memorable<br>Journeys</small></div>
+          </div>
+        </div>
+        <div class="about-image">
+          <img src="assets/about_beduine_view.png" alt="A traveller enjoying a mountain and lake view" />
+          <span class="paper-plane">⌁ ✈</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section how-section" id="how">
+      <div class="container">
+        <div class="section-heading compact">
+          <h2>How <span>Beduine Club</span> Works</h2>
+        </div>
+        <div class="steps-flow">
+          <div class="step-node"><b>👤</b><div><strong>1. Register</strong><small>Create your account<br>in just 2 minutes</small></div></div>
+          <span class="flow-arrow">›</span>
+          <div class="step-node"><b>💳</b><div><strong>2. Choose Plan</strong><small>Select a plan that<br>suits your travel goals</small></div></div>
+          <span class="flow-arrow">›</span>
+          <div class="step-node"><b>🛡️</b><div><strong>3. Become Member</strong><small>Get exclusive member<br>benefits & updates</small></div></div>
+          <span class="flow-arrow">›</span>
+          <div class="step-node"><b>🎁</b><div><strong>4. Unlock Benefits</strong><small>Enjoy rewards, lucky<br>draws & savings</small></div></div>
+          <span class="flow-arrow">›</span>
+          <div class="step-node"><b>✈</b><div><strong>5. Travel More</strong><small>Book tours and enjoy<br>unforgettable trips</small></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section location-section" id="location">
+      <div class="container location-card">
+        <div class="location-copy">
+          <span class="eyebrow">⌖ Visit Our Office</span>
+          <h2>Fulia, Nadia,<br><span>West Bengal - 741402</span></h2>
+          <p>Plan your next travel experience! Visit us to talk to our team, know more about your travel benefits, and get help for the win.</p>
+          <ul class="contact-list">
+            <li><span>☎</span><div><small>Call Us</small><strong>+91 12345 67890</strong></div></li>
+            <li><span>⏱</span><div><small>Office Time</small><strong>10 AM - 6 PM</strong></div></li>
+            <li><span>✉</span><div><small>Email</small><strong>support@beduine.in</strong></div></li>
+            <li><span>◎</span><div><small>Website</small><strong>www.beduine.in</strong></div></li>
+          </ul>
+          <div class="location-actions">
+            <a href="https://maps.google.com/?q=Fulia%20Nadia%20West%20Bengal%20741402" class="office-btn primary-office">Get Direction <small>Find Our Office</small></a>
+            <a href="#team" class="office-btn">View Gallery <small>See Our Office</small></a>
+            <a href="#team" class="office-btn">View Stories <small>Check Updates</small></a>
+            <a href="#footer" class="office-btn">Follow Us <small>On Social Media</small></a>
+          </div>
+        </div>
+        <div class="location-media">
+          <div class="map-wrap">
+            <img src="assets/office_map_card.png" alt="Fulia office location map" />
+            <a href="https://maps.google.com/?q=Fulia%20Nadia%20West%20Bengal%20741402" class="map-pill">📍 View Location - Click to Navigate</a>
+          </div>
+          <div class="office-photo">
+            <img src="assets/office_setup_card.png" alt="Beduine office setup" />
+            <a href="/register" class="see-office-btn">See Our Office</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section support-faq-section" id="support">
+      <div class="container support-faq-grid">
+        <article class="support-card">
+          <h2>Trust & <span>Support</span></h2>
+          <ul>
+            <li>Transparent winner process</li>
+            <li>Secure payment</li>
+            <li>Member UID tracking</li>
+            <li>Support team</li>
+            <li>Booking assistance</li>
+            <li>Refund/cancellation policy</li>
+          </ul>
+          <div class="shield-art">🛡️</div>
+        </article>
+        <article class="faq-card" id="faq">
+          <h2>Quick <span>FAQ</span></h2>
+          <div class="faq-list">
+            <details><summary>Do I get discount credit immediately after buying a plan?</summary><p>No. It is unlocked only as per the official winner/non-winner benefit rules.</p></details>
+            <details><summary>What is TRC?</summary><p>TRC means Travel Reward Credit for lucky draw participation.</p></details>
+            <details><summary>How does Lucky Draw work?</summary><p>Eligible members participate in the weekly digital draw process.</p></details>
+            <details><summary>What happens if I don’t win?</summary><p>You remain eligible for applicable member benefits as per company policy.</p></details>
+            <details><summary>How can I use Discount Credit?</summary><p>It can be applied during eligible paid tour booking.</p></details>
+            <details><summary>Can I withdraw Discount Credit as cash?</summary><p>No. It is a non-cash travel benefit.</p></details>
+            <details><summary>Can I transfer my credit?</summary><p>No. Credits remain linked to the member UID/account.</p></details>
+            <details><summary>How do I book a paid tour?</summary><p>Use the paid tour page or contact the support team for booking assistance.</p></details>
+            <details><summary>Where can I see my UID?</summary><p>After login, your UID is visible inside the member dashboard.</p></details>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section team-section" id="team">
+      <div class="container">
+        <div class="section-heading compact">
+          <h2>OUR TEAM</h2>
+          <p>A dedicated team of travel professionals driven to create memorable journeys for our members.</p>
+        </div>
+        <div class="team-grid">
+          <article class="team-card">
+            <img src="assets/team_akhil.png" alt="Akhil Ranjan Paul" />
+            <h3>Akhil Ranjan Paul</h3>
+            <em>Co-Founder & CEO</em>
+            <p>Passionate traveler and leader with years of experience in building member-first travel solutions.</p>
+          </article>
+          <article class="team-card">
+            <img src="assets/team_bananindra.png" alt="Bananindra Biswas" />
+            <h3>Bananindra Biswas</h3>
+            <em>Co-Founder & Operations Head</em>
+            <p>Operations expert ensuring smooth experiences and trusted support for every member.</p>
+          </article>
+          <article class="team-card">
+            <img src="assets/team_rima.png" alt="Rima Basak" />
+            <h3>Rima Basak</h3>
+            <em>Co-Founder & Product Director</em>
+            <p>Drives product innovation and curated experiences that our members love.</p>
+          </article>
+          <article class="team-card">
+            <img src="assets/team_prantik.png" alt="Prantik Nagin" />
+            <h3>Prantik Nagin</h3>
+            <em>Co-Founder & Customer Relations</em>
+            <p>Dedicated to member happiness and providing quick, reliable support at every step.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" id="footer">
+    <div class="container footer-inner">
+      <p>© 2025 BEDUINE TOUR AND TRAVELS. All rights reserved.</p>
+      <nav>
+        <a href="/privacy-policy">Privacy Policy</a>
+        <a href="/terms-and-conditions">Terms & Conditions</a>
+        <a href="/refund-policy">Refund Policy</a>
+      </nav>
+      <div class="socials"><span>Follow us on</span><b>f</b><b>◎</b><b>▶</b><b>in</b></div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

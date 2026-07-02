@@ -467,6 +467,56 @@ export function AdminPanel({ ctx }: AdminPanelProps) {
 
   // ── OVERVIEW TAB ──────────────────────────────────────────────────────────
   if (adminSubTab === 'overview') {
+    if (isProduction) {
+      const verifiedWebhookCount = auditLogs.filter(
+        (log: AuditLogEntry) => log.action === 'PAYMENT_WEBHOOK_VERIFIED',
+      ).length;
+
+      return (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+          <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap' }}>
+            <StatCard label="Total Users" value={allUsersList.length.toLocaleString()} growth="" icon={Users} color="#8b5cf6" />
+            <StatCard label="Active Subscriptions" value={activeSubscriptions.length.toLocaleString()} growth="" icon={ShieldCheck} color="#3b82f6" />
+            <StatCard label="Verified Webhooks" value={verifiedWebhookCount.toLocaleString()} growth="" icon={TicketCheck} color="#f59e0b" />
+            <StatCard label="Audit Events" value={auditLogs.length.toLocaleString()} growth="" icon={BookOpen} color="#0ea5e9" />
+            <StatCard label="Verified Revenue" value={`₹${realRevenue.toLocaleString('en-IN')}`} growth="" icon={TrendingUp} color="#22c55e" />
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'minmax(280px, 0.8fr) minmax(420px, 1.4fr)', gap: 16 }}>
+            <Card style={{ padding: '20px' }}>
+              <QuickActions setAdminSubTab={setAdminSubTab} />
+            </Card>
+            <Card style={{ padding: '20px', overflow: 'hidden' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
+                <h3 style={{ fontSize: 14, fontWeight: 800, color: '#0f172a' }}>Latest Audit Events</h3>
+                <button
+                  type="button"
+                  onClick={() => setAdminSubTab('audit')}
+                  style={{ border: 0, background: 'transparent', color: '#6366f1', cursor: 'pointer', fontSize: 12, fontWeight: 750 }}
+                >
+                  View all
+                </button>
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                {auditLogs.slice(0, 6).map((log: AuditLogEntry) => (
+                  <div key={log.id} style={{ display: 'grid', gridTemplateColumns: 'minmax(150px, 1fr) auto', gap: 12, padding: '10px 0', borderBottom: '1px solid #f1f5f9' }}>
+                    <div style={{ minWidth: 0 }}>
+                      <div style={{ color: '#1e293b', fontFamily: 'monospace', fontSize: 11, fontWeight: 700, overflow: 'hidden', textOverflow: 'ellipsis' }}>{log.action}</div>
+                      <div style={{ color: '#94a3b8', fontSize: 10, marginTop: 3 }}>{log.actorEmail}</div>
+                    </div>
+                    <div style={{ color: '#64748b', fontSize: 10, whiteSpace: 'nowrap' }}>{new Date(log.created_at).toLocaleString('en-IN')}</div>
+                  </div>
+                ))}
+                {auditLogs.length === 0 && (
+                  <div style={{ padding: 24, textAlign: 'center', color: '#94a3b8', fontSize: 12 }}>No audit events yet.</div>
+                )}
+              </div>
+            </Card>
+          </div>
+        </div>
+      );
+    }
+
     const domestic = Math.max(1, Math.round(activeSubscriptions.length * 0.62));
     const international = Math.max(1, Math.round(activeSubscriptions.length * 0.32));
     const premium = Math.max(1, activeSubscriptions.length - domestic - international);
@@ -592,15 +642,17 @@ export function AdminPanel({ ctx }: AdminPanelProps) {
       {/* ── Payments ── */}
       {adminSubTab === 'payments' && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: isProduction ? '1fr' : '1fr 1fr', gap: 14 }}>
             <div style={{ padding: 20, background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: 12 }}>
               <div style={{ fontSize: 11, fontWeight: 700, color: '#16a34a', marginBottom: 8, textTransform: 'uppercase' }}>Verified Real Revenue</div>
               <div style={{ fontSize: 26, fontWeight: 900, color: '#15803d' }}>₹{realRevenue.toLocaleString('en-IN')}</div>
             </div>
-            <div style={{ padding: 20, background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 12 }}>
-              <div style={{ fontSize: 11, fontWeight: 700, color: '#64748b', marginBottom: 8, textTransform: 'uppercase' }}>Simulated Demo Volume</div>
-              <div style={{ fontSize: 26, fontWeight: 900, color: '#475569' }}>₹{demoRevenue.toLocaleString('en-IN')}</div>
-            </div>
+            {!isProduction && (
+              <div style={{ padding: 20, background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 12 }}>
+                <div style={{ fontSize: 11, fontWeight: 700, color: '#64748b', marginBottom: 8, textTransform: 'uppercase' }}>Simulated Demo Volume</div>
+                <div style={{ fontSize: 26, fontWeight: 900, color: '#475569' }}>₹{demoRevenue.toLocaleString('en-IN')}</div>
+              </div>
+            )}
           </div>
           <p style={{ fontSize: 12, color: '#94a3b8', fontWeight: 550 }}>Webhook verified payment events appear in Audit Logs.</p>
         </div>

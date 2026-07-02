@@ -1,9 +1,6 @@
 import { useEffect, useState } from 'react';
 import { AppUser, SupabaseRawUser } from '@/types';
-import { demoWalletService } from '@/services/demoWalletService';
-import { auditLogService } from '@/services/auditLogService';
-import { confirmAction, notify } from '@/services/uiFeedback';
-import { getMockAuthAdmin } from './adminAuthAdapter';
+import { notify } from '@/services/uiFeedback';
 import { beduineBackend, type BeduineBackendAdapter } from '@/services/backend';
 
 export type AdminFilter = 'all' | 'real' | 'demo';
@@ -26,10 +23,8 @@ export function useAdminUsers(
       }
       return;
     }
-    const auth = getMockAuthAdmin();
-    if (auth?.getUsersList) {
-      setAdminUsers(auth.getUsersList());
-    }
+    const demo = await import('./adminUsersDemo');
+    setAdminUsers(demo.loadDemoAdminUsers());
   };
 
   useEffect(() => {
@@ -38,10 +33,9 @@ export function useAdminUsers(
 
   const handleResetSelectedDemoUser = async (userToReset: SupabaseRawUser) => {
     if (mode === 'production') return;
-    const res = await demoWalletService.resetDemoAccount(userToReset.id, user);
-    if (res.success) {
-      const auth = getMockAuthAdmin();
-      const updatedList = auth.getUsersList?.() || [];
+    const demo = await import('./adminUsersDemo');
+    const { result, users: updatedList } = await demo.resetSelectedDemoUser(userToReset, user);
+    if (result.success) {
       setAdminUsers(updatedList);
       if (selectedAdminUser && selectedAdminUser.id === userToReset.id) {
         setSelectedAdminUser(updatedList.find((u) => u.id === userToReset.id) || null);
@@ -49,26 +43,14 @@ export function useAdminUsers(
       notify.info(`Demo user ${userToReset.email} reset successfully.`);
       return;
     }
-    notify.info(res.message);
+    notify.info(result.message);
   };
 
   const handleResetAllDemoUsers = async () => {
     if (mode === 'production') return;
-    const confirmed = await confirmAction({
-      title: 'Reset all accounts?',
-      message: 'This will reset all user accounts to a zero-state.',
-      confirmLabel: 'Reset all',
-      danger: true,
-    });
+    const demo = await import('./adminUsersDemo');
+    const { confirmed, users: updatedList } = await demo.resetAllDemoUsers(user);
     if (!confirmed) return;
-    const auth = getMockAuthAdmin();
-    auth.resetAllAccounts?.();
-    auditLogService.logAdminAction({
-      action: 'ADMIN_RESET_ALL_ACCOUNTS',
-      actor: user,
-      reason: 'Reset all accounts to zero-state from admin panel',
-    });
-    const updatedList = auth.getUsersList?.() || [];
     setAdminUsers(updatedList);
     setSelectedAdminUser(null);
     notify.info('All user accounts have been reset to ₹0 balance, null plans, and zero-credits successfully.');

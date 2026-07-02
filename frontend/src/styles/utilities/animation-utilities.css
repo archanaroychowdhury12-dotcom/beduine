@@ -1,0 +1,5 @@
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes pulseSoft { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.04); opacity: 0.88; } }
+.animate-fadeIn { animation: fadeIn 0.28s ease-out both; }
+.animate-pulse-soft { animation: pulseSoft 2.4s ease-in-out infinite; }
+.bg-radial-gradient { background-image: radial-gradient(circle at 50% 0%, rgba(245, 158, 11, 0.16), transparent 58%); }

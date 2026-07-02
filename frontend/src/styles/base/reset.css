@@ -1,0 +1,50 @@
+:root {
+  --bg: #F7F3ED;
+  --card: #FAF2E6;
+  --premium-beige: #E6D1B1;
+  --cream: #F3E7D3;
+  --navy: #1E3147;
+  --muted: #728091;
+  --teal: #138A8A;
+  --gold: #C89C53;
+  --border: #E7DCCF;
+  --danger: #D66A5D;
+
+  /* 6 Pastel Colors */
+  --bali: #FFFABE;
+  --capri: #F8DCBE;
+  --latte: #FFECF3;
+  --rose: #FDE0D9;
+  --oceanic: #DBE7D2;
+  --nimbus: #DFD8F8;
+
+  --bedune-text-primary: #F8FAFC;
+  --bedune-text-secondary: #D8E4EA;
+  --bedune-text-muted: #AFC0CA;
+  --bedune-accent-cyan: #18D7F2;
+  --bedune-accent-teal: #00C7A3;
+  --bedune-accent-gold: #F7B500;
+  --bedune-bright-card-text: #0B1F2E;
+  --bedune-nav-navy: #071B2C;
+  --travel-coral: #FF6B4A;
+  --travel-orange: #F4511E;
+  --travel-ocean: #0077B6;
+  --travel-teal: #00A676;
+  --travel-sky: #EAF7FB;
+  --travel-card: #FFFFFF;
+  --travel-ink: #16233A;
+}
+
+html {
+  scroll-behavior: smooth;
+  background: #F8FAFC;
+}
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: #F8FAFC;
+  color: #0F172A;
+  -webkit-font-smoothing: antialiased;
+
+  cursor: none;
+}

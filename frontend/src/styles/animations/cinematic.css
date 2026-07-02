@@ -1,0 +1,106 @@
+@keyframes cinematic-dust-drift {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 0;
+  }
+  10%,
+  90% {
+    opacity: 0.35;
+  }
+  100% {
+    transform: translate(120px, -120px) rotate(180deg);
+    opacity: 0;
+  }
+}
+
+@keyframes cinematic-scratch-flash-1 {
+  0%,
+  100% {
+    opacity: 0;
+    left: 20%;
+  }
+  4% {
+    opacity: 0.25;
+    left: 24%;
+  }
+  5%,
+  45%,
+  47% {
+    opacity: 0;
+  }
+  46% {
+    opacity: 0.2;
+    left: 74%;
+  }
+}
+
+@keyframes cinematic-scratch-flash-2 {
+  0%,
+  100% {
+    opacity: 0;
+    left: 45%;
+  }
+  18% {
+    opacity: 0.3;
+    left: 42%;
+  }
+  19%,
+  75%,
+  77% {
+    opacity: 0;
+  }
+  76% {
+    opacity: 0.15;
+    left: 18%;
+  }
+}
+
+.dust-spec {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 15;
+  animation: cinematic-dust-drift 6s linear infinite;
+}
+
+.scratch-line-1,
+.scratch-line-2 {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  pointer-events: none;
+  z-index: 15;
+}
+
+.scratch-line-1 {
+  background: rgba(255, 255, 255, 0.15);
+  animation: cinematic-scratch-flash-1 8s steps(1) infinite;
+}
+
+.scratch-line-2 {
+  background: rgba(255, 255, 255, 0.12);
+  animation: cinematic-scratch-flash-2 12s steps(1) infinite;
+}
+
+.vignette-shadow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 14;
+  mix-blend-mode: multiply;
+  transition: background 0.3s ease;
+}
+
+.film-noise-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 13;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='noise'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/></filter><rect width='120' height='120' filter='url(%23noise)'/></svg>");
+  mix-blend-mode: overlay;
+  will-change: opacity;
+}

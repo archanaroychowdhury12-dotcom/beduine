@@ -12,7 +12,7 @@ interface AdminLoginPageProps {
 }
 
 export default function AdminLoginPage({ onBack, onAdminLoginSuccess }: AdminLoginPageProps) {
-  const [email, setEmail] = useState('admin@beduine.com');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -91,7 +91,6 @@ export default function AdminLoginPage({ onBack, onAdminLoginSuccess }: AdminLog
                 required
               />
             </div>
-            <p className="text-[10px] text-slate-500 mt-2 font-semibold">Demo admin password: admin123</p>
           </div>
           <button
             type="submit"

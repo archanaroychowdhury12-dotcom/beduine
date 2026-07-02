@@ -1,10 +1,14 @@
 import { createDemoBackendAdapter } from './demoBackendAdapter';
 import { createSupabaseBackendAdapter } from './supabaseBackendAdapter';
+import { assertBackendModeAllowed } from '@/config/productionEnv';
 
 export * from './backendContracts';
 export * from './backendAdapter';
 
-export const beduineBackend =
-  import.meta.env.VITE_BACKEND_MODE === 'production'
-    ? createSupabaseBackendAdapter()
-    : createDemoBackendAdapter();
+assertBackendModeAllowed(import.meta.env);
+
+const backendMode = import.meta.env.VITE_BACKEND_MODE;
+
+export const beduineBackend = backendMode === 'production'
+  ? createSupabaseBackendAdapter()
+  : createDemoBackendAdapter();
