@@ -96,6 +96,30 @@ export interface PaymentStatusResponse {
   bookingId?: string;
 }
 
+export interface ParticipationResponse {
+  cycleId: string;
+  ticketId: string;
+  roundKey: DrawRoundKey;
+  freezeAtIso: string;
+}
+
+export interface CreditIssuanceResponse {
+  cycleId: string;
+  issuedUsers: number;
+  issuedUnits: number;
+  duplicate: boolean;
+}
+
+export interface PublicWinnerSummary {
+  name: string;
+  uid: string;
+  ticketId: string;
+  roundKey: DrawRoundKey;
+  coupon: string;
+  benefitSummary?: string;
+  resultDate: string;
+}
+
 export interface CustomerProfileSummary {
   uid: string;
   fullName: string;
@@ -144,12 +168,14 @@ export interface CustomerDrawEntry {
 }
 
 export interface CustomerWinnerBenefit {
+  id: string;
   cycleId: string;
-  ticketId: string;
-  rank: number | null;
-  roundRank: number | null;
-  couponCode: string | null;
-  revealedAt: string | null;
+  coupon: string;
+  value: number | null;
+  destination: string | null;
+  batchId: string | null;
+  status: 'issued' | 'assigned' | 'used' | 'cancelled';
+  createdAt: string;
 }
 
 export interface CustomerBookingSummary {

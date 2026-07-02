@@ -67,6 +67,17 @@ type PaymentSessionRow = {
   created_at: string;
 };
 
+type WinnerBenefitRow = {
+  id: string;
+  cycle_id: string;
+  coupon: string;
+  benefit_value_inr: number | string | null;
+  destination: string | null;
+  batch_id: string | null;
+  status: 'issued' | 'assigned' | 'used' | 'cancelled';
+  created_at: string;
+};
+
 type PaymentEventRow = {
   id: string;
   session_id: string | null;
@@ -174,6 +185,7 @@ serve(async (req) => {
       discountLedgerResult,
       discountUnitsResult,
       drawEntriesResult,
+      winnerBenefitsResult,
       paymentSessionsResult,
       paymentEventsResult,
     ] = await Promise.all([
@@ -211,6 +223,12 @@ serve(async (req) => {
         .order('created_at', { ascending: false })
         .returns<DrawEntryRow[]>(),
       admin
+        .from('winner_benefits')
+        .select('id,cycle_id,coupon,benefit_value_inr,destination,batch_id,status,created_at')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false })
+        .returns<WinnerBenefitRow[]>(),
+      admin
         .from('payment_sessions')
         .select('id,provider,provider_order_id,plan_id,amount,currency,status,created_at')
         .eq('user_id', user.id)
@@ -230,6 +248,7 @@ serve(async (req) => {
       discountLedgerResult,
       discountUnitsResult,
       drawEntriesResult,
+      winnerBenefitsResult,
       paymentSessionsResult,
       paymentEventsResult,
     ];
@@ -243,17 +262,6 @@ serve(async (req) => {
     const trcBalances = computeCreditBalances(trcHistory);
     const discountHistory = discountLedgerResult.data ?? [];
     const drawEntries = drawEntriesResult.data ?? [];
-    const winnerBenefits = drawEntries
-      .filter((entry) => entry.draw_result === 'winner')
-      .map((entry) => ({
-        cycleId: entry.cycle_id,
-        ticketId: entry.ticket_id,
-        rank: entry.winner_rank,
-        roundRank: entry.round_winner_rank,
-        couponCode: entry.coupon_code,
-        revealedAt: entry.revealed_at,
-      }));
-
     return json({
       profile: {
         uid: profile.uid,
@@ -308,7 +316,18 @@ serve(async (req) => {
         revealedAt: entry.revealed_at,
         createdAt: entry.created_at,
       })),
-      winnerBenefits,
+      winnerBenefits: (winnerBenefitsResult.data ?? []).map((benefit) => ({
+        id: benefit.id,
+        cycleId: benefit.cycle_id,
+        coupon: benefit.coupon,
+        value: benefit.benefit_value_inr == null
+          ? null
+          : toNumber(benefit.benefit_value_inr),
+        destination: benefit.destination,
+        batchId: benefit.batch_id,
+        status: benefit.status,
+        createdAt: benefit.created_at,
+      })),
       bookings: [],
       payments: buildPaymentSummaries(paymentSessionsResult.data ?? [], paymentEventsResult.data ?? []),
       supportTickets: [],

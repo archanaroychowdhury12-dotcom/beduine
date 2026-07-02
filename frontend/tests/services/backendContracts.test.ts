@@ -2,6 +2,27 @@ import { describe, expect, it } from 'vitest';
 import { createDemoBackendAdapter } from '../../src/services/backend/demoBackendAdapter';
 
 describe('frontend backend adapter contracts', () => {
+  it('exposes published winners without customer contact fields', async () => {
+    const adapter = createDemoBackendAdapter();
+    const winners = await adapter.listPublicWinners();
+
+    expect(winners[0]).toMatchObject({
+      uid: expect.stringMatching(/^BDU-/),
+      roundKey: 'domestic_gold',
+    });
+    expect(winners[0]).not.toHaveProperty('email');
+    expect(winners[0]).not.toHaveProperty('phone');
+  });
+
+  it('participates in the current Sunday draw without accepting a user id', async () => {
+    const adapter = createDemoBackendAdapter();
+    const participation = await adapter.participateInWeeklyDraw();
+
+    expect(participation.ticketId).toMatch(/^TRC-SUN-[0-9]{5}$/);
+    expect(participation.roundKey).toBe('domestic_gold');
+    expect(participation.freezeAtIso).toBeTruthy();
+  });
+
   it('creates payment orders from a server-owned reference', async () => {
     const adapter = createDemoBackendAdapter();
     const order = await adapter.createPaymentOrder({

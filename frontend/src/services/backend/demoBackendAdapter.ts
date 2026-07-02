@@ -1,12 +1,15 @@
 import type { BeduineBackendAdapter } from './backendAdapter';
 import type {
   CancellationRequestInput,
+  CreditIssuanceResponse,
   CreatePaymentOrderInput,
   CustomerDashboardResponse,
   DrawRoundSummary,
   RevealedWinnerResponse,
   PaymentOrderResponse,
   PaymentStatusResponse,
+  ParticipationResponse,
+  PublicWinnerSummary,
   WeeklyDrawStatusResponse,
 } from './backendContracts';
 
@@ -99,6 +102,36 @@ export function createDemoBackendAdapter(): BeduineBackendAdapter {
         throw new Error('Demo payment session is not available.');
       }
       return { sessionId, status: 'verified' };
+    },
+
+    async participateInWeeklyDraw(): Promise<ParticipationResponse> {
+      return {
+        cycleId: 'BEDUINE-SUN-DEMO-1800-IST',
+        ticketId: 'TRC-SUN-00091',
+        roundKey: 'domestic_gold',
+        freezeAtIso: nextSundaySix.toISOString(),
+      };
+    },
+
+    async issueNonWinnerCredits(cycleId: string): Promise<CreditIssuanceResponse> {
+      return {
+        cycleId,
+        issuedUsers: 1,
+        issuedUnits: 2,
+        duplicate: false,
+      };
+    },
+
+    async listPublicWinners(): Promise<PublicWinnerSummary[]> {
+      return [{
+        name: 'Rahul Sen',
+        uid: 'BDU-2026-RHLSEN-4821',
+        ticketId: 'TRC-SUN-00091',
+        roundKey: 'domestic_gold',
+        coupon: 'BEDWIN-2026-4821',
+        benefitSummary: 'Gold winner tour benefit',
+        resultDate: '2026-07-05T13:00:00.000Z',
+      }];
     },
 
     async getCustomerDashboard(): Promise<CustomerDashboardResponse> {

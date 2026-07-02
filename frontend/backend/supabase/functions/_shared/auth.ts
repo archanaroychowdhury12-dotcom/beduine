@@ -32,7 +32,10 @@ export function createAdminClient(): SupabaseClient {
   });
 }
 
-export async function requireUser(req: Request, admin: SupabaseClient): Promise<AuthenticatedUserContext> {
+async function requireAuthenticatedProfile(
+  req: Request,
+  admin: SupabaseClient,
+): Promise<AuthenticatedUserContext> {
   const token = req.headers.get('Authorization')?.replace(/^Bearer\s+/i, '').trim();
   if (!token) throw new HttpError(401, 'AUTH_REQUIRED');
 
@@ -47,10 +50,34 @@ export async function requireUser(req: Request, admin: SupabaseClient): Promise<
 
   if (profileError) throw new HttpError(500, 'PROFILE_LOOKUP_FAILED');
   if (!profile) throw new HttpError(403, 'PROFILE_REQUIRED');
-  if (profile.role !== 'customer') throw new HttpError(403, 'CUSTOMER_ONLY');
 
   return {
     user: data.user,
     profile: profile as AuthenticatedProfile,
   };
+}
+
+export async function requireAuthenticated(
+  req: Request,
+  admin: SupabaseClient,
+): Promise<AuthenticatedUserContext> {
+  return requireAuthenticatedProfile(req, admin);
+}
+
+export async function requireUser(
+  req: Request,
+  admin: SupabaseClient,
+): Promise<AuthenticatedUserContext> {
+  const context = await requireAuthenticatedProfile(req, admin);
+  if (context.profile.role !== 'customer') throw new HttpError(403, 'CUSTOMER_ONLY');
+  return context;
+}
+
+export async function requireAdmin(
+  req: Request,
+  admin: SupabaseClient,
+): Promise<AuthenticatedUserContext> {
+  const context = await requireAuthenticatedProfile(req, admin);
+  if (context.profile.role !== 'admin') throw new HttpError(403, 'ADMIN_ONLY');
+  return context;
 }

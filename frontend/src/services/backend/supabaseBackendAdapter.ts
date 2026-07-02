@@ -5,6 +5,7 @@ import type { BeduineBackendAdapter } from './backendAdapter';
 import type {
   CancellationRequestInput,
   CancellationRequestResponse,
+  CreditIssuanceResponse,
   CreatePaymentOrderInput,
   CustomerDashboardResponse,
   DrawRoundKey,
@@ -12,6 +13,8 @@ import type {
   LedgerResponse,
   PaymentOrderResponse,
   PaymentStatusResponse,
+  ParticipationResponse,
+  PublicWinnerSummary,
   RevealedWinnerResponse,
   WeeklyDrawStatusResponse,
 } from './backendContracts';
@@ -170,12 +173,18 @@ function normalizeDashboard(payload: UnknownRecord): CustomerDashboardResponse {
       ? payload.winnerBenefits.map((benefit) => {
           const input = benefit as UnknownRecord;
           return {
+            id: String(input.id || ''),
             cycleId: String(input.cycleId || input.cycle_id || ''),
-            ticketId: String(input.ticketId || input.ticket_id || ''),
-            rank: input.rank == null ? null : Number(input.rank),
-            roundRank: input.roundRank == null && input.round_rank == null ? null : Number(input.roundRank ?? input.round_rank),
-            couponCode: input.couponCode == null && input.coupon_code == null ? null : String(input.couponCode || input.coupon_code),
-            revealedAt: input.revealedAt == null && input.revealed_at == null ? null : String(input.revealedAt || input.revealed_at),
+            coupon: String(input.coupon || ''),
+            value: input.value == null && input.benefit_value_inr == null
+              ? null
+              : Number(input.value ?? input.benefit_value_inr),
+            destination: input.destination == null ? null : String(input.destination),
+            batchId: input.batchId == null && input.batch_id == null
+              ? null
+              : String(input.batchId || input.batch_id),
+            status: String(input.status || 'issued') as 'issued' | 'assigned' | 'used' | 'cancelled',
+            createdAt: String(input.createdAt || input.created_at || ''),
           };
         })
       : [],
@@ -265,6 +274,25 @@ export function createSupabaseBackendAdapter(): BeduineBackendAdapter {
 
     async getPaymentStatus(sessionId: string): Promise<PaymentStatusResponse> {
       return callFunction<PaymentStatusResponse>('payment-status', { sessionId });
+    },
+
+    async participateInWeeklyDraw(): Promise<ParticipationResponse> {
+      return callFunction<ParticipationResponse>('participate-weekly-draw', {});
+    },
+
+    async issueNonWinnerCredits(cycleId: string): Promise<CreditIssuanceResponse> {
+      return callFunction<CreditIssuanceResponse>('issue-non-winner-credits', {
+        cycleId,
+      });
+    },
+
+    async listPublicWinners(): Promise<PublicWinnerSummary[]> {
+      const response = await callFunction<{ winners: PublicWinnerSummary[] }>(
+        'public-winners',
+        undefined,
+        'GET',
+      );
+      return response.winners;
     },
 
     async getCustomerDashboard(): Promise<CustomerDashboardResponse> {

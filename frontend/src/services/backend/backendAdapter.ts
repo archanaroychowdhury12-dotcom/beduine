@@ -1,11 +1,14 @@
 import type {
   CancellationRequestInput,
   CancellationRequestResponse,
+  CreditIssuanceResponse,
   CreatePaymentOrderInput,
   CustomerDashboardResponse,
   LedgerResponse,
   PaymentOrderResponse,
   PaymentStatusResponse,
+  ParticipationResponse,
+  PublicWinnerSummary,
   RevealedWinnerResponse,
   WeeklyDrawStatusResponse,
 } from './backendContracts';
@@ -13,6 +16,9 @@ import type {
 export interface BeduineBackendAdapter {
   createPaymentOrder(input: CreatePaymentOrderInput): Promise<PaymentOrderResponse>;
   getPaymentStatus(sessionId: string): Promise<PaymentStatusResponse>;
+  participateInWeeklyDraw(): Promise<ParticipationResponse>;
+  issueNonWinnerCredits(cycleId: string): Promise<CreditIssuanceResponse>;
+  listPublicWinners(): Promise<PublicWinnerSummary[]>;
   getCustomerDashboard(): Promise<CustomerDashboardResponse>;
   getTrcAndDiscountLedger(userId: string): Promise<LedgerResponse>;
   getWeeklyDrawStatus(): Promise<WeeklyDrawStatusResponse>;
@@ -34,6 +40,15 @@ export function createProductionBackendAdapter(): BeduineBackendAdapter {
     },
     async getPaymentStatus() {
       throw new BackendNotConnectedError('getPaymentStatus');
+    },
+    async participateInWeeklyDraw() {
+      throw new BackendNotConnectedError('participateInWeeklyDraw');
+    },
+    async issueNonWinnerCredits() {
+      throw new BackendNotConnectedError('issueNonWinnerCredits');
+    },
+    async listPublicWinners() {
+      throw new BackendNotConnectedError('listPublicWinners');
     },
     async getCustomerDashboard() {
       throw new BackendNotConnectedError('getCustomerDashboard');

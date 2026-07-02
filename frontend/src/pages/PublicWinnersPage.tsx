@@ -1,66 +1,124 @@
-import { useEffect, useState } from 'react';
-import { Sparkles, Trophy } from 'lucide-react';
+import { useCallback, useEffect, useState } from 'react';
+import { RefreshCw, Sparkles, Trophy } from 'lucide-react';
+import {
+  beduineBackend,
+  type PublicWinnerSummary,
+} from '@/services/backend';
 
-const WINNERS_LOADING_DELAY_MS = 600;
+interface PublicWinnersPageProps {
+  loadWinners?: () => Promise<PublicWinnerSummary[]>;
+}
 
-export default function PublicWinnersPage() {
+function loadPublishedWinners() {
+  return beduineBackend.listPublicWinners();
+}
+
+function formatRound(value: string): string {
+  return value
+    .split('_')
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(' ');
+}
+
+export default function PublicWinnersPage({
+  loadWinners = loadPublishedWinners,
+}: PublicWinnersPageProps) {
+  const [winners, setWinners] = useState<PublicWinnerSummary[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const load = useCallback(async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      setWinners(await loadWinners());
+    } catch {
+      setError('Published results could not be loaded.');
+    } finally {
+      setIsLoading(false);
+    }
+  }, [loadWinners]);
 
   useEffect(() => {
-    const timer = window.setTimeout(() => setIsLoading(false), WINNERS_LOADING_DELAY_MS);
-    return () => window.clearTimeout(timer);
-  }, []);
+    void load();
+  }, [load]);
 
   return (
-    <section className="relative min-h-screen overflow-hidden bg-[#030C15] px-4 pb-16 pt-28 text-white sm:px-6 lg:px-8">
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute left-[-8rem] top-12 h-64 w-64 rounded-full bg-cyan/10 blur-3xl" />
-        <div className="absolute bottom-0 right-[-6rem] h-72 w-72 rounded-full bg-amber-400/10 blur-3xl" />
-      </div>
-
-      <div className="relative mx-auto flex w-full max-w-4xl flex-col gap-8">
-        <div className="max-w-2xl">
-          <p className="mb-3 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-cyan">
-            <Sparkles className="h-3.5 w-3.5" />
+    <section className="min-h-screen bg-[#07131c] px-4 pb-16 pt-28 text-white sm:px-6 lg:px-8">
+      <div className="mx-auto flex w-full max-w-5xl flex-col gap-8">
+        <header className="max-w-2xl">
+          <p className="mb-3 inline-flex items-center gap-2 text-xs font-semibold uppercase text-cyan">
+            <Sparkles className="h-4 w-4" />
             Weekly Results
           </p>
           <h1 className="text-4xl font-black tracking-normal text-white sm:text-5xl">
             Beduine Public Winners
           </h1>
-          <p className="mt-4 max-w-xl text-sm leading-7 text-white/70 sm:text-base">
-            Verified winner publications will appear here once the public results feed is connected.
+          <p className="mt-4 text-sm leading-7 text-white/70 sm:text-base">
+            Published Sunday draw results.
           </p>
-        </div>
+        </header>
 
-        <div className="rounded-[28px] border border-white/10 bg-white/5 p-8 shadow-2xl shadow-cyan-950/20 backdrop-blur">
-          {isLoading ? (
-            <div
-              aria-busy="true"
-              aria-live="polite"
-              className="flex min-h-[18rem] flex-col items-center justify-center gap-4 text-center"
+        {isLoading ? (
+          <div
+            aria-busy="true"
+            aria-live="polite"
+            className="flex min-h-72 items-center justify-center border-y border-white/10"
+          >
+            <div className="h-10 w-10 animate-spin rounded-full border-2 border-white/15 border-t-cyan" />
+            <span className="ml-4 font-semibold">Loading published winner results...</span>
+          </div>
+        ) : error ? (
+          <div className="flex min-h-72 flex-col items-center justify-center gap-4 border-y border-red-300/20 text-center">
+            <p className="font-semibold text-red-100">{error}</p>
+            <button
+              type="button"
+              onClick={() => void load()}
+              className="inline-flex h-10 items-center gap-2 rounded-md bg-white px-4 text-sm font-bold text-[#07131c]"
             >
-              <div className="h-12 w-12 animate-spin rounded-full border-2 border-white/15 border-t-cyan" />
-              <div>
-                <p className="text-lg font-semibold text-white">Loading published winner results...</p>
-                <p className="mt-2 text-sm text-white/60">
-                  This placeholder route is ready for the public results feed.
-                </p>
-              </div>
-            </div>
-          ) : (
-            <div className="flex min-h-[18rem] flex-col items-center justify-center gap-5 text-center">
-              <div className="flex h-16 w-16 items-center justify-center rounded-full border border-amber-300/30 bg-amber-300/10 text-amber-200">
-                <Trophy className="h-8 w-8" />
-              </div>
-              <div>
-                <h2 className="text-2xl font-bold text-white">No published winners yet</h2>
-                <p className="mt-3 max-w-lg text-sm leading-7 text-white/65">
-                  Public winner announcements have not been connected for this production route yet. Check back after the results publication workflow is enabled.
-                </p>
-              </div>
-            </div>
-          )}
-        </div>
+              <RefreshCw className="h-4 w-4" />
+              Retry
+            </button>
+          </div>
+        ) : winners.length === 0 ? (
+          <div className="flex min-h-72 flex-col items-center justify-center gap-4 border-y border-white/10 text-center">
+            <Trophy className="h-10 w-10 text-amber-300" />
+            <h2 className="text-2xl font-bold">No published winners yet</h2>
+          </div>
+        ) : (
+          <div className="grid gap-4 md:grid-cols-2">
+            {winners.map((winner) => (
+              <article
+                key={`${winner.ticketId}-${winner.coupon}`}
+                className="rounded-lg border border-white/10 bg-white/5 p-5"
+              >
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <p className="text-xs font-bold uppercase text-cyan">
+                      {formatRound(winner.roundKey)}
+                    </p>
+                    <h2 className="mt-2 text-xl font-black">{winner.name}</h2>
+                    <p className="mt-1 font-mono text-sm text-white/70">{winner.uid}</p>
+                  </div>
+                  <Trophy className="h-7 w-7 shrink-0 text-amber-300" />
+                </div>
+                <dl className="mt-5 grid gap-2 border-t border-white/10 pt-4 text-sm">
+                  <div className="flex justify-between gap-4">
+                    <dt className="text-white/55">Ticket</dt>
+                    <dd className="font-mono">{winner.ticketId}</dd>
+                  </div>
+                  <div className="flex justify-between gap-4">
+                    <dt className="text-white/55">Coupon</dt>
+                    <dd className="font-mono text-amber-200">{winner.coupon}</dd>
+                  </div>
+                </dl>
+                {winner.benefitSummary && (
+                  <p className="mt-4 text-sm text-white/75">{winner.benefitSummary}</p>
+                )}
+              </article>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );
