@@ -1,13 +1,16 @@
 import type {
   CancellationRequestInput,
   CancellationRequestResponse,
+  CreatePaymentOrderInput,
   CustomerDashboardResponse,
   LedgerResponse,
+  PaymentOrderResponse,
   RevealedWinnerResponse,
   WeeklyDrawStatusResponse,
 } from './backendContracts';
 
 export interface BeduineBackendAdapter {
+  createPaymentOrder(input: CreatePaymentOrderInput): Promise<PaymentOrderResponse>;
   getCustomerDashboard(): Promise<CustomerDashboardResponse>;
   getTrcAndDiscountLedger(userId: string): Promise<LedgerResponse>;
   getWeeklyDrawStatus(): Promise<WeeklyDrawStatusResponse>;
@@ -24,6 +27,9 @@ export class BackendNotConnectedError extends Error {
 
 export function createProductionBackendAdapter(): BeduineBackendAdapter {
   return {
+    async createPaymentOrder() {
+      throw new BackendNotConnectedError('createPaymentOrder');
+    },
     async getCustomerDashboard() {
       throw new BackendNotConnectedError('getCustomerDashboard');
     },

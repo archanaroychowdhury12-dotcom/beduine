@@ -5,10 +5,12 @@ import type { BeduineBackendAdapter } from './backendAdapter';
 import type {
   CancellationRequestInput,
   CancellationRequestResponse,
+  CreatePaymentOrderInput,
   CustomerDashboardResponse,
   DrawRoundKey,
   DrawRoundSummary,
   LedgerResponse,
+  PaymentOrderResponse,
   RevealedWinnerResponse,
   WeeklyDrawStatusResponse,
 } from './backendContracts';
@@ -256,6 +258,10 @@ async function callFunction<T>(functionName: string, body?: UnknownRecord, metho
 
 export function createSupabaseBackendAdapter(): BeduineBackendAdapter {
   return {
+    async createPaymentOrder(input: CreatePaymentOrderInput): Promise<PaymentOrderResponse> {
+      return callFunction<PaymentOrderResponse>('create-payment-order', { ...input });
+    },
+
     async getCustomerDashboard(): Promise<CustomerDashboardResponse> {
       const payload = await callFunction<UnknownRecord>('customer-dashboard', undefined, 'GET');
       return normalizeDashboard(payload);

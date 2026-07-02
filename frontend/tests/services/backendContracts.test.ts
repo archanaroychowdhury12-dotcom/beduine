@@ -2,6 +2,19 @@ import { describe, expect, it } from 'vitest';
 import { createDemoBackendAdapter } from '../../src/services/backend/demoBackendAdapter';
 
 describe('frontend backend adapter contracts', () => {
+  it('creates payment orders from a server-owned reference', async () => {
+    const adapter = createDemoBackendAdapter();
+    const order = await adapter.createPaymentOrder({
+      purpose: 'subscription',
+      referenceId: 'domestic_gold',
+    });
+
+    expect(order).toMatchObject({
+      currency: 'INR',
+      amountPaise: 79_900,
+    });
+  });
+
   it('exposes customer dashboard contract', async () => {
     const adapter = createDemoBackendAdapter();
     const dashboard = await adapter.getCustomerDashboard();

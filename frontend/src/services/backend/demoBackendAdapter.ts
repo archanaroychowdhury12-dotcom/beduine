@@ -1,9 +1,11 @@
 import type { BeduineBackendAdapter } from './backendAdapter';
 import type {
   CancellationRequestInput,
+  CreatePaymentOrderInput,
   CustomerDashboardResponse,
   DrawRoundSummary,
   RevealedWinnerResponse,
+  PaymentOrderResponse,
   WeeklyDrawStatusResponse,
 } from './backendContracts';
 
@@ -64,8 +66,33 @@ const customerDashboard: CustomerDashboardResponse = {
   supportTickets: [],
 };
 
+const demoPlanPrices: Record<string, number> = {
+  domestic_silver: 499,
+  domestic_gold: 799,
+  domestic_platinum: 1499,
+  international_silver: 4999,
+  international_gold: 7999,
+  international_platinum: 14999,
+};
+
 export function createDemoBackendAdapter(): BeduineBackendAdapter {
   return {
+    async createPaymentOrder(input: CreatePaymentOrderInput): Promise<PaymentOrderResponse> {
+      const amountRupees = demoPlanPrices[input.referenceId];
+      if (input.purpose !== 'subscription' || !amountRupees) {
+        throw new Error('Demo payment reference is not available.');
+      }
+      const sessionId = `demo-session-${Date.now()}`;
+      return {
+        sessionId,
+        keyId: 'rzp_test_demo',
+        orderId: `demo-order-${Date.now()}`,
+        amountPaise: amountRupees * 100,
+        currency: 'INR',
+        description: `${input.referenceId.replace(/_/g, ' ')} membership`,
+      };
+    },
+
     async getCustomerDashboard(): Promise<CustomerDashboardResponse> {
       return customerDashboard;
     },

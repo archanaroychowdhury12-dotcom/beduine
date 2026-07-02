@@ -49,6 +49,7 @@ export interface LedgerResponse {
 }
 
 export type RefundPreference = 'cash_refund' | 'credit_adjustment';
+export type PaymentPurpose = 'subscription' | 'tour_booking' | 'installment';
 export type CancellationRequestStatus =
   | 'requested'
   | 'admin_review'
@@ -72,6 +73,20 @@ export interface CancellationRequestResponse {
   status: CancellationRequestStatus;
   estimatedRefund?: number;
   creditAdjustmentAmount?: number;
+}
+
+export interface CreatePaymentOrderInput {
+  purpose: PaymentPurpose;
+  referenceId: string;
+}
+
+export interface PaymentOrderResponse {
+  sessionId: string;
+  keyId: string;
+  orderId: string;
+  amountPaise: number;
+  currency: 'INR';
+  description: string;
 }
 
 export interface CustomerProfileSummary {
