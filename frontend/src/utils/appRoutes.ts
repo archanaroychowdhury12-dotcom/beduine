@@ -19,6 +19,13 @@ const protectedViews = new Set([
   APP_ROUTES.subscriptionCheckout.slice(1),
   APP_ROUTES.tourCheckout.slice(1),
 ]);
+const protectedPathnames = new Set<string>([
+  APP_ROUTES.club,
+  APP_ROUTES.register,
+  APP_ROUTES.dashboard,
+  APP_ROUTES.subscriptionCheckout,
+  APP_ROUTES.tourCheckout,
+]);
 
 const postAuthViews = new Map<string, string>([
   [APP_ROUTES.club, 'landing'],
@@ -55,16 +62,37 @@ export function buildLoginRedirect(nextPath: string): string {
 }
 
 export function getProtectedRouteRedirect(
-  view: string,
+  viewOrPath: string,
   isAuthenticated: boolean,
 ): ProtectedRouteRedirect | null {
-  if (!isProtectedView(view) || isAuthenticated) {
+  if (isAuthenticated) {
+    return null;
+  }
+
+  if (viewOrPath.startsWith('/')) {
+    const safeNextPath = normalizeNextPath(viewOrPath);
+    if (!safeNextPath) {
+      return null;
+    }
+
+    const pathname = safeNextPath.split(/[?#]/)[0];
+    if (!protectedPathnames.has(pathname)) {
+      return null;
+    }
+
+    return {
+      view: 'login',
+      nextPath: safeNextPath,
+    };
+  }
+
+  if (!isProtectedView(viewOrPath)) {
     return null;
   }
 
   return {
     view: 'login',
-    nextPath: `/${view}`,
+    nextPath: `/${viewOrPath}`,
   };
 }
 

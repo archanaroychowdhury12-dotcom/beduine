@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
 import { Sparkles, Trophy } from 'lucide-react';
 
+const WINNERS_LOADING_DELAY_MS = 600;
+
 export default function PublicWinnersPage() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const timer = window.setTimeout(() => setIsLoading(false), 150);
+    const timer = window.setTimeout(() => setIsLoading(false), WINNERS_LOADING_DELAY_MS);
     return () => window.clearTimeout(timer);
   }, []);
 

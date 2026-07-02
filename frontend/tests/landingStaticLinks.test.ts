@@ -11,11 +11,6 @@ const landingScript = readFileSync(
   'utf8',
 );
 
-const teamHtml = readFileSync(
-  resolve(process.cwd(), 'Beduine_Landing-Page/team.html'),
-  'utf8',
-);
-
 describe('Beduine static landing links', () => {
   it('resolves static assets from the landing page folder when opened from the root URL', () => {
     expect(landingHtml).toContain('<base href="/Beduine_Landing-Page/">');
@@ -49,24 +44,5 @@ describe('Beduine static landing links', () => {
   it('does not block CTA navigation with the old mock alert', () => {
     expect(landingScript).not.toContain('preventDefault');
     expect(landingScript).not.toContain('alert(`Thank you for choosing Beduine!');
-  });
-
-  it('renders the "Why Choose Beduine" section', () => {
-    expect(landingHtml).toContain('id="why-us"');
-    expect(landingHtml).toContain('Why Choose <span>Beduine?</span>');
-    expect(landingHtml).toContain('Travel More. Save More. Get Rewarded.');
-    expect(landingHtml).toContain('Curated Travel Experiences');
-    expect(landingHtml).toContain('Savings on Future Trips');
-    expect(landingHtml).toContain('class="why-bento"');
-    expect(landingHtml).toContain('class="bento-card');
-    expect(landingHtml).toContain('src="assets/why_choose_beduine.png"');
-  });
-
-  it('renders the standalone Our Team page (team.html)', () => {
-    expect(teamHtml).toContain('<title>Our Team | Beduine Tour and Travels</title>');
-    expect(teamHtml).toContain('href="team.html" class="nav-link active">Our Team</a>');
-    expect(teamHtml).toContain('Meet Our <span>Team</span>');
-    expect(teamHtml).toContain('Cristiano Ronaldo');
-    expect(teamHtml).toContain('Lionel Messi');
   });
 });

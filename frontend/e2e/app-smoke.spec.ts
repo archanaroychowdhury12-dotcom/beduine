@@ -39,4 +39,10 @@ test.describe('Beduine app smoke coverage', () => {
     await page.goto('/paid-tour#customize');
     await expect(page).toHaveURL(/\/paid-tour#customize$/);
   });
+
+  test('winners route stays public and reaches its public shell', async ({ page }) => {
+    await page.goto('/winners');
+    await expect(page).toHaveURL(/\/winners$/);
+    await expect(page.getByText('No published winners yet')).toBeVisible();
+  });
 });

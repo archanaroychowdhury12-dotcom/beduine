@@ -240,7 +240,10 @@ export default function App() {
   useEffect(() => {
     if (!authReady) return;
 
-    const redirect = getProtectedRouteRedirect(getRouteKey(window.location.pathname), Boolean(currentUser));
+    const redirect = getProtectedRouteRedirect(
+      window.location.pathname + window.location.search + window.location.hash,
+      Boolean(currentUser),
+    );
     if (redirect) {
       redirectToLoginForProtectedView(redirect.nextPath);
     }
