@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Beduine Tour and Travels | Membership Landing Page</title>
+  <base href="/Beduine_Landing-Page/">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Montserrat:wght@600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/" class="brand" aria-label="Beduine Home">
+        <img src="assets/logo.png" alt="BEDUINE Tour and Travels" />
+      </a>
+
+      <button class="mobile-menu-toggle" aria-label="Toggle navigation" type="button">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav class="nav-menu" aria-label="Primary navigation">
+        <a href="#home" class="nav-link active">Home</a>
+        <a href="/paid-tour" class="nav-link">Tours</a>
+        <a href="/paid-tour#destinations" class="nav-link">Destinations</a>
+        <a href="/winners" class="nav-link">Winners</a>
+        <a href="/login?next=/landing" class="nav-link">BEDUINE CLUB</a>
+        <a href="#location" class="nav-link">Contact</a>
+      </nav>
+
+      <div class="header-actions">
+        <a href="/login" class="btn-login-new">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Login
+        </a>
+        <a href="/login?next=/landing" class="btn-primary btn-join-club">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M16 11h6"/></svg>
+          Join Now
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero-section" id="home">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <h1>One Membership,<br><span>Endless Journeys</span></h1>
+          <p>Pick your plan and unlock access to travel rewards and exciting lucky draw opportunities.</p>
+          
+          <div class="hero-actions">
+            <a href="/login?next=/landing" class="btn-primary btn-large">Join Beduine Club</a>
+            <a href="/paid-tour#customize" class="btn-blue-primary btn-large">Customize Tour</a>
+          </div>
+
+          <div class="hero-features">
+            <div class="mini-feature">
+              <span class="icon-circle">🎁</span>
+              <div><strong>Win Exciting Prizes</strong><small>Every Lucky Draw</small></div>
+            </div>
+            <div class="mini-feature">
+              <span class="icon-circle">🏷️</span>
+              <div><strong>Exclusive Benefits</strong><small>for Members</small></div>
+            </div>
+            <div class="mini-feature">
+              <span class="icon-circle">👤</span>
+              <div><strong>Preferred Access</strong><small>to Curated Tours</small></div>
+            </div>
+          </div>
+        </div>
+        <div class="hero-visual" aria-hidden="true">
+          <img src="assets/hero_couple.png" alt="" />
+          <span class="float-balloon balloon-one">🎈</span>
+          <span class="float-balloon balloon-two">🎈</span>
+          <span class="float-plane">✈</span>
+        </div>
+      </div>
+      <div class="hero-wave"></div>
+    </section>
+
+    <section class="section plans-section" id="plans">
+      <div class="container">
+        <div class="section-heading">
+          <h2>Choose Your <span>Membership Plan</span></h2>
+          <p>Pick a plan that suits your travel dreams.</p>
+        </div>
+        <div class="plans-grid">
+          <article class="plan-card blue-plan">
+            <div class="plan-medal">
+              <svg viewBox="0 0 100 100" class="plan-medal-svg">
+                <defs>
+                  <linearGradient id="silver-grad" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="#ffffff"/>
+                    <stop offset="50%" stop-color="#cbd5e1"/>
+                    <stop offset="100%" stop-color="#64748b"/>
+                  </linearGradient>
+                  <linearGradient id="silver-inner" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="#e2e8f0"/>
+                    <stop offset="100%" stop-color="#475569"/>
+                  </linearGradient>
+                </defs>
+                <path d="M35 55 L22 88 L40 82 L50 60 Z" fill="#64748b" />
+                <path d="M65 55 L78 88 L60 82 L50 60 Z" fill="#94a3b8" />
+                <circle cx="50" cy="45" r="34" fill="url(#silver-grad)" stroke="#475569" stroke-width="1.5" />
+                <circle cx="50" cy="45" r="28" fill="none" stroke="#f1f5f9" stroke-width="1.5" stroke-dasharray="3 2" />
+                <circle cx="50" cy="45" r="24" fill="url(#silver-inner)" />
+                <polygon points="50,26 55,37 67,37 58,45 61,56 50,49 39,56 42,45 33,37 45,37" fill="#ffffff" />
+              </svg>
+            </div>
+            <h3>Domestic Plan</h3>
+            <div class="price">₹499 <small>/year</small></div>
+            
+            <div class="plan-features">
+              <div class="feature-item">
+                <span class="plan-check plan-blue-check">
+                  <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </span>
+                <span>1 FREE Lucky Draw Entry</span>
+              </div>
+              <div class="feature-item">
+                <span class="plan-check plan-blue-check">
+                  <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </span>
+                <span>₹500 Non-Winner Discount</span>
+              </div>
+            </div>
+
+            <h4 class="destinations-title">Popular Destinations</h4>
+            <ul class="destinations-list">
+              <li>
+                <span class="plan-check plan-blue-check">
+                  <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </span>
+                Sundarban
+              </li>
+              <li>
+                <span class="plan-check plan-blue-check">
+                  <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </span>
+                Digha
+              </li>
+              <li>
+                <span class="plan-check plan-blue-check">
+                  <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </span>
+                Mousuni Island
+              </li>
+              <li>
+                <span class="plan-check plan-blue-check">
+                  <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </span>
+                Purulia
+              </li>
+            </ul>
+            <a href="/login?next=/landing" class="btn-plan-outline btn-blue" data-plan="Silver">Join Now <span>→</span></a>
+          </article>
+
+          <article class="plan-card orange-plan featured-plan">
+            <div class="popular-tag">POPULAR</div>
+            <div class="plan-medal">
+              <svg viewBox="0 0 100 100" class="plan-medal-svg">
+                <defs>
+                  <linearGradient id="gold-grad" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="#fef08a"/>
+                    <stop offset="50%" stop-color="#f59e0b"/>
+                    <stop offset="100%" stop-color="#d97706"/>
+                  </linearGradient>
+                  <linearGradient id="gold-inner" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="#fef3c7"/>
+                    <stop offset="100%" stop-color="#92400e"/>
+                  </linearGradient>
+                </defs>
+                <path d="M35 55 L22 88 L40 82 L50 60 Z" fill="#92400e" />
+                <path d="M65 55 L78 88 L60 82 L50 60 Z" fill="#d97706" />
+                <circle cx="50" cy="45" r="34" fill="url(#gold-grad)" stroke="#92400e" stroke-width="1.5" />
+                <circle cx="50" cy="45" r="28" fill="none" stroke="#fef3c7" stroke-width="1.5" stroke-dasharray="3 2" />
+                <circle cx="50" cy="45" r="24" fill="url(#gold-inner)" />
+                <polygon points="50,26 55,37 67,37 58,45 61,56 50,49 39,56 42,45 33,37 45,37" fill="#ffffff" />
+              </svg>
+            </div>
+            <h3>Gold Plan</h3>
+            <div class="price">₹799 <small>/year</small></div>
+            
+            <div class="plan-features">
+              <div class="feature-item">
+                <span class="plan-check plan-orange-check">
+                  <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </span>
+                <span>1 FREE Lucky Draw Entry</span>
+              </div>
+              <div class="feature-item">
+                <span class="plan-check plan-orange-check">
+                  <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </span>
+                <span>₹1,000 Non-Winner Discount</span>
+              </div>
+            </div>
+
+            <h4 class="destinations-title">Popular Destinations</h4>
+            <ul class="destinations-list">
+              <li>
+                <span class="plan-check plan-orange-check">
+                  <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </span>
+                Darjeeling
+              </li>
+              <li>
+                <span class="plan-check plan-orange-check">
+                  <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </span>
+                Dooars
+              </li>
+              <li>
+                <span class="plan-check plan-orange-check">
+                  <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </span>
+                Puri
+              </li>
+              <li>
+                <span class="plan-check plan-orange-check">
+                  <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </span>
+                Daring Bari
+              </li>
+            </ul>
+            <a href="/login?next=/landing" class="btn-plan-filled btn-orange" data-plan="Gold">Join Now <span>→</span></a>
+          </article>
+
+          <article class="plan-card purple-plan">
+            <div class="plan-medal">
+              <svg viewBox="0 0 100 100" class="plan-medal-svg">
+                <defs>
+                  <linearGradient id="purple-grad" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="#f3e8ff"/>
+                    <stop offset="50%" stop-color="#a855f7"/>
+                    <stop offset="100%" stop-color="#6b21a8"/>
+                  </linearGradient>
+                  <linearGradient id="purple-inner" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="#faf5ff"/>
+                    <stop offset="100%" stop-color="#581c87"/>
+                  </linearGradient>
+                </defs>
+                <path d="M35 55 L22 88 L40 82 L50 60 Z" fill="#581c87" />
+                <path d="M65 55 L78 88 L60 82 L50 60 Z" fill="#7e22ce" />
+                <circle cx="50" cy="45" r="34" fill="url(#purple-grad)" stroke="#581c87" stroke-width="1.5" />
+                <circle cx="50" cy="45" r="28" fill="none" stroke="#faf5ff" stroke-width="1.5" stroke-dasharray="3 2" />
+                <circle cx="50" cy="45" r="24" fill="url(#purple-inner)" />
+                <polygon points="50,26 55,37 67,37 58,45 61,56 50,49 39,56 42,45 33,37 45,37" fill="#ffffff" />
+              </svg>
+            </div>
+            <h3>Premium / VIP Plan</h3>
+            <div class="price">₹1,499 <small>/year</small></div>
+            
+            <div class="plan-features">
+              <div class="feature-item">
+                <span class="plan-check plan-purple-check">
+                  <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </span>
+                <span>1 FREE Lucky Draw Entry</span>
+              </div>
+              <div class="feature-item">
+                <span class="plan-check plan-purple-check">
+                  <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </span>
+                <span>₹2,000 Non-Winner Discount</span>
+              </div>
+            </div>
+
+            <h4 class="destinations-title">Popular Destinations</h4>
+            <ul class="destinations-list">
+              <li>
+                <span class="plan-check plan-purple-check">
+                  <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </span>
+                Kashmir
+              </li>
+              <li>
+                <span class="plan-check plan-purple-check">
+                  <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </span>
+                Goa
+              </li>
+              <li>
+                <span class="plan-check plan-purple-check">
+                  <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </span>
+                Sikkim
+              </li>
+              <li>
+                <span class="plan-check plan-purple-check">
+                  <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </span>
+                Himachal (Shimla+Manali)
+              </li>
+            </ul>
+            <a href="/login?next=/landing" class="btn-plan-outline btn-purple" data-plan="Platinum">Join Now <span>→</span></a>
+          </article>
+        </div>
+
+        <div class="plans-footer">
+          <a href="/paid-tour#customize" class="btn-outline-dark">Customize Tour</a>
+          <a href="/login?next=/landing" class="btn-primary btn-large btn-cta-main">JOIN BEDUINE CLUB</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section about-section" id="about">
+      <div class="container about-card">
+        <div class="about-copy">
+          <h2>About <span>Beduine</span></h2>
+          <p>Beduine Tour and Travels is a travel membership brand built for explorers who love memorable journeys. We offer curated tours, exciting lucky draws, and exclusive member benefits through a transparent and trustworthy platform.</p>
+          <p>From short getaways to premium vacations, our goal is to make travel simple, exciting, and customer-friendly.</p>
+          <div class="about-points">
+            <div><span>🎁</span><small>Curated<br>Experiences</small></div>
+            <div><span>🛡️</span><small>Trusted &<br>Transparent</small></div>
+            <div><span>👥</span><small>Member First<br>Approach</small></div>
+            <div><span>🏵️</span><small>Memorable<br>Journeys</small></div>
+          </div>
+        </div>
+        <div class="about-image">
+          <img src="assets/about_beduine_view.png" alt="A traveller enjoying a mountain and lake view" />
+          <span class="paper-plane">⌁ ✈</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section why-section" id="why-us">
+      <div class="why-glow-spot spot-1"></div>
+      <div class="why-glow-spot spot-2"></div>
+      <div class="container">
+        <div class="section-heading">
+          <h2>Why Choose <span>Beduine?</span></h2>
+          <p>Travel More. Save More. Get Rewarded.</p>
+          <p class="why-intro">Travel smarter with Beduine — where every journey comes with more value, better planning, and exciting travel rewards.</p>
+        </div>
+        <div class="why-bento">
+          <article class="bento-card bento-span-2">
+            <div class="bento-card-icon">🧭</div>
+            <h3>Curated Travel Experiences</h3>
+            <p>Explore handpicked domestic and international destinations planned for comfort, budget, and memorable experiences.</p>
+            <div class="dest-badges">
+              <span class="badge blue-badge">🏔️ Kashmir</span>
+              <span class="badge orange-badge">🏖️ Goa</span>
+              <span class="badge purple-badge">🕌 Dubai</span>
+              <span class="badge teal-badge">🌸 Sikkim</span>
+            </div>
+          </article>
+
+          <article class="bento-card bento-row-2 bento-image-card">
+            <div class="bento-img-wrap">
+              <img src="assets/why_choose_beduine.png" alt="Beduine Travel Perks" />
+              <div class="bento-content-overlay">
+                <h3>Beduine Travel Rewards</h3>
+                <p>As a Beduine Club member, you get access to exclusive travel rewards, special benefits, and member-only opportunities on eligible tours.</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="bento-card">
+            <div class="bento-card-icon">💰</div>
+            <h3>Savings on Future Trips</h3>
+            <p>Members can receive travel discount credits that help reduce the cost of future paid tour bookings.</p>
+            <div class="mini-credit-card">
+              <div class="card-chip"></div>
+              <div class="card-val">₹500</div>
+              <div class="card-lbl">Discount Credit</div>
+            </div>
+          </article>
+
+          <article class="bento-card">
+            <div class="bento-card-icon">📅</div>
+            <h3>Flexible Booking Support</h3>
+            <p>From fixed departure group tours to customized travel plans, Beduine makes booking easier with structured advance payment options.</p>
+            <div class="payment-steps">
+              <div class="step active"><b>50%</b><small>Confirm</small></div>
+              <div class="step-line"></div>
+              <div class="step"><b>25%</b><small>Mid-way</small></div>
+              <div class="step-line"></div>
+              <div class="step"><b>25%</b><small>Start</small></div>
+            </div>
+          </article>
+
+          <article class="bento-card bento-span-2">
+            <div class="bento-card-icon">🖥️</div>
+            <h3>Easy Customer Dashboard</h3>
+            <p>Track your UID, membership plan, travel rewards, discount credits, bookings, payments, and support requests from one simple dashboard.</p>
+            <div class="dashboard-mock">
+              <div class="db-header">
+                <div class="db-avatar">👤</div>
+                <div>
+                  <strong>BED-98321</strong>
+                  <small>Active Member</small>
+                </div>
+              </div>
+              <div class="db-stats">
+                <div><b>Gold</b><small>Plan</small></div>
+                <div><b>2 DC</b><small>Available</small></div>
+                <div><b>1 TRC</b><small>Tokens</small></div>
+              </div>
+            </div>
+          </article>
+
+          <article class="bento-card">
+            <div class="bento-card-icon">👥</div>
+            <h3>Trusted Travel Assistance</h3>
+            <p>Our team supports you from planning to booking, payment updates, cancellation requests, and trip-related guidance.</p>
+            <div class="assist-mock">
+              <div class="chat-bubble left">Any travel question?</div>
+              <div class="chat-bubble right">Ask our team 24/7!</div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section how-section" id="how">
+      <div class="container">
+        <div class="section-heading compact">
+          <h2>How <span>Beduine Club</span> Works</h2>
+        </div>
+        <div class="steps-flow">
+          <div class="step-node"><b>👤</b><div><strong>1. Register</strong><small>Create your account<br>in just 2 minutes</small></div></div>
+          <span class="flow-arrow">›</span>
+          <div class="step-node"><b>💳</b><div><strong>2. Choose Plan</strong><small>Select a plan that<br>suits your travel goals</small></div></div>
+          <span class="flow-arrow">›</span>
+          <div class="step-node"><b>🛡️</b><div><strong>3. Become Member</strong><small>Get exclusive member<br>benefits & updates</small></div></div>
+          <span class="flow-arrow">›</span>
+          <div class="step-node"><b>🎁</b><div><strong>4. Unlock Benefits</strong><small>Enjoy rewards, lucky<br>draws & savings</small></div></div>
+          <span class="flow-arrow">›</span>
+          <div class="step-node"><b>✈</b><div><strong>5. Travel More</strong><small>Book tours and enjoy<br>unforgettable trips</small></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section location-section" id="location">
+      <div class="container location-card">
+        <div class="location-copy">
+          <span class="eyebrow">⌖ Visit Our Office</span>
+          <h2>Fulia, Nadia,<br><span>West Bengal - 741402</span></h2>
+          <p>Plan your next travel experience! Visit us to talk to our team, know more about your travel benefits, and get help for the win.</p>
+          <ul class="contact-list">
+            <li><span>☎</span><div><small>Call Us</small><strong>+91 87689 03565</strong></div></li>
+            <li><span>⏱</span><div><small>Office Time</small><strong>10 AM - 6 PM</strong></div></li>
+            <li><span>✉</span><div><small>Email</small><strong>support@beduine.in</strong></div></li>
+            <li><span>◎</span><div><small>Website</small><strong>www.beduine.in</strong></div></li>
+          </ul>
+          <div class="location-actions">
+            <a href="https://maps.app.goo.gl/JEqUWXKofJTKfFNY6" class="office-btn primary-office">Get Direction <small>Find Our Office</small></a>
+            <a href="#team" class="office-btn">View Gallery <small>See Our Office</small></a>
+            <a href="#team" class="office-btn">View Stories <small>Check Updates</small></a>
+            <a href="#footer" class="office-btn">Follow Us <small>On Social Media</small></a>
+          </div>
+        </div>
+        <div class="location-media">
+          <div class="map-wrap">
+            <iframe
+              src="https://www.openstreetmap.org/export/embed.html?bbox=88.3702%2C22.9937%2C88.4102%2C23.0937&layer=mapnik&marker=23.0437%2C88.3902"
+              width="100%"
+              height="260"
+              style="border:0;"
+              allowfullscreen
+              loading="lazy"
+              title="Beduine Office Location - Fulia, Nadia, West Bengal"
+            ></iframe>
+            <a href="https://maps.app.goo.gl/JEqUWXKofJTKfFNY6" class="map-pill" target="_blank" rel="noreferrer">📍 View Location - Click to Navigate</a>
+          </div>
+          <div class="office-photo">
+            <img src="assets/office_setup_card.png" alt="Beduine office setup" />
+            <a href="/register" class="see-office-btn">See Our Office</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section support-faq-section" id="support">
+      <div class="container support-faq-grid">
+        <article class="support-card">
+          <h2>Trust & <span>Support</span></h2>
+          <ul>
+            <li>Transparent winner process</li>
+            <li>Secure payment</li>
+            <li>Member UID tracking</li>
+            <li>Support team</li>
+            <li>Booking assistance</li>
+            <li>Refund/cancellation policy</li>
+          </ul>
+          <div class="shield-art">🛡️</div>
+        </article>
+        <article class="faq-card" id="faq">
+          <h2>Quick <span>FAQ</span></h2>
+          <div class="faq-list">
+            <details><summary>Do I get discount credit immediately after buying a plan?</summary><p>No. It is unlocked only as per the official winner/non-winner benefit rules.</p></details>
+            <details><summary>What is TRC?</summary><p>TRC means Travel Reward Credit for lucky draw participation.</p></details>
+            <details><summary>How does Lucky Draw work?</summary><p>Eligible members participate in the weekly digital draw process.</p></details>
+            <details><summary>What happens if I don’t win?</summary><p>You remain eligible for applicable member benefits as per company policy.</p></details>
+            <details><summary>How can I use Discount Credit?</summary><p>It can be applied during eligible paid tour booking.</p></details>
+            <details><summary>Can I withdraw Discount Credit as cash?</summary><p>No. It is a non-cash travel benefit.</p></details>
+            <details><summary>Can I transfer my credit?</summary><p>No. Credits remain linked to the member UID/account.</p></details>
+            <details><summary>How do I book a paid tour?</summary><p>Use the paid tour page or contact the support team for booking assistance.</p></details>
+            <details><summary>Where can I see my UID?</summary><p>After login, your UID is visible inside the member dashboard.</p></details>
+          </div>
+        </article>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer" id="footer">
+    <div class="container footer-inner">
+      <p>© 2025 BEDUINE TOUR AND TRAVELS. All rights reserved.</p>
+      <nav>
+        <a href="/privacy-policy">Privacy Policy</a>
+        <a href="/terms-and-conditions">Terms & Conditions</a>
+        <a href="/refund-policy">Refund Policy</a>
+      </nav>
+      <div class="socials"><span>Follow us on</span><b>f</b><b>◎</b><b>▶</b><b>in</b></div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
