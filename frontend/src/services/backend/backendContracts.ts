@@ -85,6 +85,64 @@ export interface CancellationRequestResponse {
   creditAdjustmentAmount?: number;
 }
 
+export interface CancellationCalculation {
+  daysBeforeDeparture: number;
+  cancellationFeePercent: number;
+  landPackageCancellationCharge: number;
+  serviceCharge: number;
+  supplierCharges: number;
+  totalDeduction: number;
+  estimatedRefund: number;
+  policyBand: '30_plus_days' | '15_to_29_days' | '7_to_14_days' | '0_to_6_days' | 'no_show';
+}
+
+export interface CancellationAdminSummary {
+  requestId: string;
+  bookingId: string;
+  userId: string;
+  userEmail?: string;
+  status: CancellationRequestStatus;
+  reason: string;
+  refundPreference: RefundPreference;
+  refundMode?: RefundPreference;
+  totalTourCost: number;
+  amountPaid: number;
+  travelerCount: number;
+  departureDate: string;
+  supplierCharges: number;
+  supplierProofUrls?: string[];
+  estimatedRefund?: number;
+  calculation?: CancellationCalculation;
+  refundStatus?: string;
+  providerRefundId?: string;
+  requestedAt: string;
+  updatedAt?: string;
+}
+
+export interface ReviewCancellationInput {
+  requestId: string;
+  approve: boolean;
+  refundMode: RefundPreference;
+  supplierCharges: number;
+  supplierProofUrl?: string;
+  adminNote?: string;
+}
+
+export interface CancellationReviewResponse extends CancellationAdminSummary {
+  calculation?: CancellationCalculation;
+}
+
+export interface CancellationPayoutResponse {
+  requestId: string;
+  bookingId: string;
+  status: CancellationRequestStatus;
+  refundMode: RefundPreference;
+  amount: number;
+  providerRefundId?: string;
+  duplicate: boolean;
+  shouldCallProvider: boolean;
+}
+
 export interface CreatePaymentOrderInput {
   purpose: PaymentPurpose;
   referenceId: string;

@@ -5,6 +5,9 @@ import type { BeduineBackendAdapter } from './backendAdapter';
 import type {
   CancellationRequestInput,
   CancellationRequestResponse,
+  CancellationAdminSummary,
+  CancellationPayoutResponse,
+  CancellationReviewResponse,
   CreditIssuanceResponse,
   CustomTourCreateInput,
   CustomTourListResponse,
@@ -22,6 +25,7 @@ import type {
   RevealedWinnerResponse,
   WeeklyDrawStatusResponse,
   TourBookingDraftResponse,
+  ReviewCancellationInput,
 } from './backendContracts';
 import type { CustomTourRequest } from '@/types';
 
@@ -347,6 +351,28 @@ export function createSupabaseBackendAdapter(): BeduineBackendAdapter {
 
     async requestCancellation(input: CancellationRequestInput): Promise<CancellationRequestResponse> {
       return callFunction<CancellationRequestResponse>('request-cancellation', { ...input });
+    },
+
+    async listCancellationRequests(): Promise<CancellationAdminSummary[]> {
+      const response = await callFunction<{ requests: CancellationAdminSummary[] }>(
+        'admin-operations',
+        { action: 'list_cancellations' },
+      );
+      return response.requests;
+    },
+
+    async reviewCancellation(input: ReviewCancellationInput): Promise<CancellationReviewResponse> {
+      return callFunction<CancellationReviewResponse>('admin-operations', {
+        action: 'review_cancellation',
+        ...input,
+      });
+    },
+
+    async processCancellationPayout(requestId: string): Promise<CancellationPayoutResponse> {
+      return callFunction<CancellationPayoutResponse>('admin-operations', {
+        action: 'process_cancellation_payout',
+        requestId,
+      });
     },
   };
 }

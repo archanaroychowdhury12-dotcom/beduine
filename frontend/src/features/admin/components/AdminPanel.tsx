@@ -2,6 +2,7 @@ import React from 'react';
 import { ShieldCheck, Trash2, RefreshCw, User, Wallet, Plus, Minus, TrendingUp, Users, Star, Trophy, CreditCard, BookOpen, UserPlus, TicketCheck, Award, ArrowUpRight } from 'lucide-react';
 import { AdminFranchiseAgentTab } from './AdminFranchiseAgentTab';
 import { AdminDrawOperations } from './AdminDrawOperations';
+import { CancellationAdminPage } from './CancellationAdminPage';
 import { Agent, CreditLedgerEntry, DemoTransactionRecord, Franchise, SupabaseRawUser } from '@/types';
 import { AuditLogEntry } from '@/services/auditLogService';
 
@@ -583,9 +584,7 @@ export function AdminPanel({ ctx }: AdminPanelProps) {
 
       {/* ── Bookings ── */}
       {adminSubTab === 'bookings' && (
-        <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 12, padding: 24, textAlign: 'center', color: '#64748b', fontWeight: 550 }}>
-          Paid tour booking records will appear here when backend booking table is connected.
-        </div>
+        <CancellationAdminPage />
       )}
 
       {/* ── Payments ── */}

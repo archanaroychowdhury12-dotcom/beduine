@@ -244,5 +244,14 @@ export function createDemoBackendAdapter(): BeduineBackendAdapter {
         creditAdjustmentAmount: input.refundPreference === 'credit_adjustment' ? 0 : undefined,
       };
     },
+    async listCancellationRequests() {
+      return [];
+    },
+    async reviewCancellation() {
+      throw new Error('Cancellation administration requires production mode.');
+    },
+    async processCancellationPayout() {
+      throw new Error('Cancellation administration requires production mode.');
+    },
   };
 }

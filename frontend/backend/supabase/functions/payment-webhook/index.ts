@@ -35,6 +35,56 @@ serve(async (req) => {
     return Response.json({ error: { code: 'WEBHOOK_SIGNATURE_INVALID' } }, { status: 401 });
   }
 
+  let payload: Record<string, unknown>;
+  try {
+    payload = JSON.parse(rawBody) as Record<string, unknown>;
+  } catch {
+    return Response.json({ error: { code: 'WEBHOOK_PAYLOAD_INVALID' } }, { status: 400 });
+  }
+
+  const eventType = String(payload.event || '');
+  if (eventType.startsWith('refund.')) {
+    if (!eventId || eventId.length > 255) {
+      return Response.json({ error: { code: 'WEBHOOK_EVENT_ID_INVALID' } }, { status: 400 });
+    }
+    const refundEntity = (
+      payload.payload as Record<string, unknown> | undefined
+    )?.refund as Record<string, unknown> | undefined;
+    const refund = refundEntity?.entity as Record<string, unknown> | undefined;
+    const refundId = String(refund?.id || '');
+    const entityStatus = String(refund?.status || '').toLowerCase();
+    const refundStatus = eventType === 'refund.processed' && entityStatus === 'processed'
+      ? 'processed'
+      : eventType === 'refund.failed' && entityStatus === 'failed'
+      ? 'failed'
+      : eventType === 'refund.created' || entityStatus === 'pending'
+      ? 'pending'
+      : null;
+    if (!refundId || !refundStatus) {
+      return Response.json({ error: { code: 'REFUND_WEBHOOK_INVALID' } }, { status: 400 });
+    }
+
+    const supabase = createClient(supabaseUrl, serviceRoleKey);
+    const { data, error } = await supabase.rpc('process_verified_refund_webhook_v1', {
+      p_provider_event_id: eventId,
+      p_provider_refund_id: refundId,
+      p_provider_status: refundStatus,
+      p_payload: payload,
+      p_signature_verified: true,
+    });
+    if (error) {
+      console.error('Razorpay refund webhook rejected', error.code, error.message);
+      return Response.json({ error: { code: 'REFUND_FULFILLMENT_REJECTED' } }, { status: 409 });
+    }
+    return Response.json({
+      received: true,
+      provider: 'razorpay',
+      refund: true,
+      duplicate: Boolean(data?.duplicate),
+      status: data?.status || refundStatus,
+    });
+  }
+
   let event;
   try {
     event = parseRazorpayWebhook(rawBody, eventId);
@@ -45,8 +95,6 @@ serve(async (req) => {
   if (!event.shouldProcess) {
     return Response.json({ received: true, ignored: true, eventType: event.eventType });
   }
-
-  const payload = JSON.parse(rawBody) as Record<string, unknown>;
 
   const supabase = createClient(supabaseUrl, serviceRoleKey);
   const { data: session, error: sessionError } = await supabase

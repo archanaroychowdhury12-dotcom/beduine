@@ -1,6 +1,9 @@
 import type {
   CancellationRequestInput,
   CancellationRequestResponse,
+  CancellationAdminSummary,
+  CancellationPayoutResponse,
+  CancellationReviewResponse,
   CreditIssuanceResponse,
   CustomTourCreateInput,
   CustomTourListResponse,
@@ -16,6 +19,7 @@ import type {
   RevealedWinnerResponse,
   WeeklyDrawStatusResponse,
   TourBookingDraftResponse,
+  ReviewCancellationInput,
 } from './backendContracts';
 import type { CustomTourRequest } from '@/types';
 
@@ -34,6 +38,9 @@ export interface BeduineBackendAdapter {
   getWeeklyDrawStatus(): Promise<WeeklyDrawStatusResponse>;
   revealNextWinner(cycleId: string): Promise<RevealedWinnerResponse>;
   requestCancellation(input: CancellationRequestInput): Promise<CancellationRequestResponse>;
+  listCancellationRequests(): Promise<CancellationAdminSummary[]>;
+  reviewCancellation(input: ReviewCancellationInput): Promise<CancellationReviewResponse>;
+  processCancellationPayout(requestId: string): Promise<CancellationPayoutResponse>;
 }
 
 export class BackendNotConnectedError extends Error {
@@ -86,6 +93,15 @@ export function createProductionBackendAdapter(): BeduineBackendAdapter {
     },
     async requestCancellation() {
       throw new BackendNotConnectedError('requestCancellation');
+    },
+    async listCancellationRequests() {
+      throw new BackendNotConnectedError('listCancellationRequests');
+    },
+    async reviewCancellation() {
+      throw new BackendNotConnectedError('reviewCancellation');
+    },
+    async processCancellationPayout() {
+      throw new BackendNotConnectedError('processCancellationPayout');
     },
   };
 }
