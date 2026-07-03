@@ -1,5 +1,23 @@
 import { describe, expect, it } from 'vitest';
 import { createDemoBackendAdapter } from '../../src/services/backend/demoBackendAdapter';
+import { demoWalletService } from '../../src/services/demoWalletService';
+import { supabase } from '../../src/utils/supabaseClient';
+
+type DemoAuth = typeof supabase.auth & { resetAllAccounts?: () => void };
+
+async function loginSubscribedDemoCustomer() {
+  const auth = supabase.auth as DemoAuth;
+  auth.resetAllAccounts?.();
+  const login = await auth.signInWithPassword({
+    email: 'demo@beduine.com',
+    password: 'beduine123',
+  });
+  await demoWalletService.checkoutSubscription(
+    login.data.user!.id,
+    'domestic_gold',
+    'demo_wallet',
+  );
+}
 
 describe('frontend backend adapter contracts', () => {
   it('exposes published winners without customer contact fields', async () => {
@@ -15,6 +33,7 @@ describe('frontend backend adapter contracts', () => {
   });
 
   it('participates in the current Sunday draw without accepting a user id', async () => {
+    await loginSubscribedDemoCustomer();
     const adapter = createDemoBackendAdapter();
     const participation = await adapter.participateInWeeklyDraw();
 
@@ -64,10 +83,11 @@ describe('frontend backend adapter contracts', () => {
   });
 
   it('exposes customer dashboard contract', async () => {
+    await loginSubscribedDemoCustomer();
     const adapter = createDemoBackendAdapter();
     const dashboard = await adapter.getCustomerDashboard();
     expect(dashboard.profile.uid).toContain('BDU-2026');
-    expect(dashboard.discountCredits.availableUnits).toEqual([]);
+    expect(dashboard.trc.available).toBe(1);
     expect(dashboard.supportTickets).toEqual([]);
   });
 

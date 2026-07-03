@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { createDemoBackendAdapter } from '../../src/services/backend/demoBackendAdapter';
 import type { CustomerDashboardResponse } from '../../src/services/backend/backendContracts';
+import { supabase } from '../../src/utils/supabaseClient';
 
 describe('customer dashboard backend contract', () => {
   it('defines the customer dashboard response shape', () => {
@@ -21,6 +22,10 @@ describe('customer dashboard backend contract', () => {
   });
 
   it('returns a customer dashboard payload from the demo adapter', async () => {
+    await supabase.auth.signInWithPassword({
+      email: 'demo@beduine.com',
+      password: 'beduine123',
+    });
     const adapter = createDemoBackendAdapter();
     const response = await adapter.getCustomerDashboard();
 

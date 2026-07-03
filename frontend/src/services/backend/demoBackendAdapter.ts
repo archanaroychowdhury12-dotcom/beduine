@@ -15,7 +15,9 @@ import type {
   WeeklyDrawStatusResponse,
   TourBookingDraftResponse,
 } from './backendContracts';
-import type { CustomTourRequest } from '@/types';
+import type { AppUserMetadata, CustomTourRequest, SupabaseRawUser } from '@/types';
+import { supabase } from '@/utils/supabaseClient';
+import { applyNonWinnerDiscountCredit } from '@/services/nonWinnerCreditService';
 
 const now = new Date();
 const nextSundaySix = new Date(now);
@@ -48,31 +50,118 @@ const revealQueue: RevealedWinnerResponse[] = rounds.flatMap((round, roundIndex)
 
 let revealIndex = 0;
 
-const customerDashboard: CustomerDashboardResponse = {
-  profile: {
-    uid: 'BDU-2026-RHLSEN-4821',
-    fullName: 'Rahul Sen',
-    role: 'customer',
-    email: 'rahul.sen@example.com',
-    phone: '9876543210',
-    city: 'Nadia',
-  },
-  subscription: null,
-  trc: {
-    available: 0,
-    locked: 0,
-    history: [],
-  },
-  discountCredits: {
-    availableUnits: [],
-    history: [],
-  },
-  drawEntries: [],
-  winnerBenefits: [],
-  bookings: [],
-  payments: [],
-  supportTickets: [],
+type DemoAuthAdmin = typeof supabase.auth & {
+  getUsersList?: () => SupabaseRawUser[];
+  saveUsersList?: (users: SupabaseRawUser[]) => void;
 };
+
+type DemoDrawEntry = CustomerDashboardResponse['drawEntries'][number];
+
+function getDemoAuthAdmin(): DemoAuthAdmin {
+  return supabase.auth as DemoAuthAdmin;
+}
+
+function getPlanTier(metadata: AppUserMetadata): 'silver' | 'gold' | 'platinum' {
+  const plan = String(metadata.planName || '').toLowerCase();
+  if (plan.includes('platinum')) return 'platinum';
+  if (plan.includes('gold')) return 'gold';
+  return 'silver';
+}
+
+function getPlanCategory(metadata: AppUserMetadata): 'domestic' | 'international' {
+  return metadata.planType === 'international' || String(metadata.planName || '').toLowerCase().includes('international')
+    ? 'international'
+    : 'domestic';
+}
+
+function getPlanId(metadata: AppUserMetadata): string {
+  return `${getPlanCategory(metadata)}_${getPlanTier(metadata)}`;
+}
+
+function getDemoDrawEntries(metadata: AppUserMetadata): DemoDrawEntry[] {
+  return Array.isArray(metadata.demo_draw_entries)
+    ? metadata.demo_draw_entries as DemoDrawEntry[]
+    : [];
+}
+
+function buildCustomerDashboard(user: SupabaseRawUser): CustomerDashboardResponse {
+  const metadata = user.user_metadata || {};
+  const ledger = metadata.ledger || [];
+  const trcHistory = ledger.filter((entry) => entry.creditType === 'lucky_draw');
+  const discountHistory = ledger.filter((entry) => entry.creditType === 'discount');
+  const category = getPlanCategory(metadata);
+  const activeSubscription = metadata.subscriptionStatus === 'active' && Boolean(metadata.planName);
+  const demoTransactions = metadata.demo_transactions || [];
+  const subscriptionTransaction = demoTransactions.find((entry) => entry.reason?.startsWith('Subscribed to '));
+
+  return {
+    profile: {
+      uid: String(metadata.uid || ''),
+      fullName: String(metadata.full_name || metadata.name || user.email?.split('@')[0] || 'Demo Customer'),
+      role: 'customer',
+      email: user.email,
+      phone: user.phone || String(metadata.phone || ''),
+      city: String(metadata.city || ''),
+    },
+    subscription: activeSubscription ? {
+      planId: getPlanId(metadata),
+      planName: String(metadata.planName),
+      planType: category,
+      status: 'active',
+      activatedAt: subscriptionTransaction?.created_at || null,
+      expiresAt: null,
+    } : null,
+    trc: {
+      available: Number(metadata.weekly_eligible_entry_count || 0),
+      locked: Number(metadata.weekly_locked_entry_count || 0),
+      history: trcHistory,
+    },
+    discountCredits: {
+      availableUnits: discountHistory
+        .filter((entry) => entry.type === 'issued')
+        .map((entry) => ({
+          id: entry.id,
+          creditCategory: entry.creditCategory === 'international' ? 'international' : 'domestic',
+          creditValue: entry.creditValue,
+          status: 'available' as const,
+          reservedByBookingId: null,
+          reservedForTravelerKey: null,
+          reservedUntil: null,
+          redeemedBookingId: null,
+          createdAt: entry.date,
+          updatedAt: entry.date,
+        })),
+      history: discountHistory,
+    },
+    drawEntries: getDemoDrawEntries(metadata),
+    winnerBenefits: [],
+    bookings: [],
+    payments: demoTransactions
+      .filter((entry) => entry.payment_type === 'demo_wallet')
+      .map((entry) => ({
+        id: entry.id,
+        sessionId: null,
+        provider: 'demo_wallet',
+        planId: entry.reason?.startsWith('Subscribed to ') ? getPlanId(metadata) : null,
+        amount: Math.abs(entry.amount),
+        currency: 'INR',
+        status: entry.status,
+        createdAt: entry.created_at,
+        providerOrderId: null,
+        eventType: 'simulated_webhook',
+        providerPaymentId: null,
+        verified: entry.status === 'success',
+      })),
+    supportTickets: [],
+  };
+}
+
+async function getCurrentDemoUser(): Promise<SupabaseRawUser> {
+  const session = await supabase.auth.getSession();
+  const user = session.data.session?.user;
+  if (!user) throw new Error('Demo customer is not logged in.');
+  return user;
+}
 
 const demoPlanPrices: Record<string, number> = {
   domestic_silver: 499,
@@ -180,20 +269,94 @@ export function createDemoBackendAdapter(): BeduineBackendAdapter {
     },
 
     async participateInWeeklyDraw(): Promise<ParticipationResponse> {
-      return {
-        cycleId: 'BEDUINE-SUN-DEMO-1800-IST',
-        ticketId: 'TRC-SUN-00091',
-        roundKey: 'domestic_gold',
-        freezeAtIso: nextSundaySix.toISOString(),
+      const user = await getCurrentDemoUser();
+      const metadata = user.user_metadata || {};
+      const cycleId = 'BEDUINE-SUN-DEMO-1800-IST';
+      const existing = getDemoDrawEntries(metadata).find((entry) => entry.cycleId === cycleId);
+      if (existing) {
+        return {
+          cycleId,
+          ticketId: existing.ticketId,
+          roundKey: existing.planRoundKey || getPlanId(metadata) as ParticipationResponse['roundKey'],
+          freezeAtIso: nextSundaySix.toISOString(),
+        };
+      }
+      if (metadata.subscriptionStatus !== 'active' || !metadata.planName) {
+        throw new Error('An active subscription is required to participate.');
+      }
+      const availableTrc = Number(metadata.weekly_eligible_entry_count || 0);
+      if (availableTrc < 1) {
+        throw new Error('No available TRC for this draw cycle.');
+      }
+
+      const roundKey = getPlanId(metadata) as ParticipationResponse['roundKey'];
+      const ticketId = `TRC-SUN-${user.id.replace(/[^A-Z0-9]/gi, '').slice(-5).toUpperCase().padStart(5, '0')}`;
+      const createdAt = new Date().toISOString();
+      const drawEntry: DemoDrawEntry = {
+        id: `DRAW-${cycleId}-${user.id}`,
+        cycleId,
+        ticketId,
+        planId: getPlanId(metadata),
+        planRoundKey: roundKey,
+        verificationStatus: 'verified',
+        verificationReason: null,
+        drawResult: 'pending',
+        winnerRank: null,
+        roundWinnerRank: null,
+        couponCode: null,
+        revealedAt: null,
+        createdAt,
       };
+
+      await supabase.auth.updateUser({
+        data: {
+          weekly_eligible_entry_count: availableTrc - 1,
+          weekly_locked_entry_count: Number(metadata.weekly_locked_entry_count || 0) + 1,
+          weekly_participation_status: 'active',
+          weekly_participation_cycle_id: cycleId,
+          demo_draw_entries: [...getDemoDrawEntries(metadata), drawEntry],
+        },
+      });
+
+      return { cycleId, ticketId, roundKey, freezeAtIso: nextSundaySix.toISOString() };
     },
 
     async issueNonWinnerCredits(cycleId: string): Promise<CreditIssuanceResponse> {
+      const actor = await getCurrentDemoUser();
+      if (actor.user_metadata?.role !== 'admin') {
+        throw new Error('Admin access is required to issue non-winner credits.');
+      }
+      const auth = getDemoAuthAdmin();
+      if (!auth.getUsersList || !auth.saveUsersList) {
+        throw new Error('Demo account store is unavailable.');
+      }
+
+      let eligibleUsers = 0;
+      let issuedUsers = 0;
+      let issuedUnits = 0;
+      const users = auth.getUsersList();
+      const updatedUsers = users.map((user) => {
+        const metadata = user.user_metadata || {};
+        const isEligible = metadata.role === 'customer'
+          && metadata.subscriptionStatus === 'active'
+          && metadata.weekly_participation_cycle_id === cycleId;
+        if (!isEligible) return user;
+
+        eligibleUsers += 1;
+        const result = applyNonWinnerDiscountCredit(user, cycleId);
+        if (result.issued) {
+          issuedUsers += 1;
+          issuedUnits += result.issuedUnits;
+        }
+        return result.user;
+      });
+      auth.saveUsersList(updatedUsers);
+
       return {
         cycleId,
-        issuedUsers: 1,
-        issuedUnits: 2,
-        duplicate: false,
+        issuedUsers,
+        issuedUnits,
+        duplicate: eligibleUsers > 0 && issuedUsers === 0,
       };
     },
 
@@ -210,10 +373,15 @@ export function createDemoBackendAdapter(): BeduineBackendAdapter {
     },
 
     async getCustomerDashboard(): Promise<CustomerDashboardResponse> {
-      return customerDashboard;
+      const user = await getCurrentDemoUser();
+      if (user.user_metadata?.role === 'admin') {
+        throw new Error('Customer dashboard is not available for admin accounts.');
+      }
+      return buildCustomerDashboard(user);
     },
     async getTrcAndDiscountLedger() {
-      return { ledger: [] };
+      const user = await getCurrentDemoUser();
+      return { ledger: user.user_metadata?.ledger || [] };
     },
     async getWeeklyDrawStatus(): Promise<WeeklyDrawStatusResponse> {
       const revealedByRound = rounds.map((round) => ({

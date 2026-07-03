@@ -29,6 +29,11 @@ type AuditActor = {
   user_metadata?: { role?: 'admin' | 'customer'; [key: string]: unknown };
 };
 
+type DemoAuthAdmin = typeof supabase.auth & {
+  getUsersList?: () => SupabaseRawUser[];
+  saveUsersList?: (users: SupabaseRawUser[]) => void;
+};
+
 export const demoWalletService = {
   async addDemoBalance(
     userId: string,
@@ -36,10 +41,22 @@ export const demoWalletService = {
     _actor?: AuditActor | null
   ): Promise<{ success: boolean; balance: number; message: string }> {
     const session = await supabase.auth.getSession();
-    const user = session.data.session?.user;
-    if (!user) return { success: false, balance: 0, message: 'User not logged in' };
+    const actor = session.data.session?.user;
+    if (!actor) return { success: false, balance: 0, message: 'User not logged in' };
 
-    const currentBalance = user.user_metadata?.demo_wallet_balance ?? 0;
+    const auth = supabase.auth as DemoAuthAdmin;
+    const users = auth.getUsersList?.() || [];
+    const targetIndex = users.findIndex((user) => user.id === userId);
+    if (targetIndex < 0 || !auth.saveUsersList) {
+      return { success: false, balance: 0, message: 'Demo customer account was not found.' };
+    }
+    const actorRole = actor.user_metadata?.role;
+    if (actor.id !== userId && actorRole !== 'admin') {
+      return { success: false, balance: 0, message: 'Not authorized to update this demo account.' };
+    }
+
+    const target = users[targetIndex];
+    const currentBalance = target.user_metadata?.demo_wallet_balance ?? 0;
     const newBalance = currentBalance + amount;
 
     const newTxn: DemoTransaction = {
@@ -54,25 +71,43 @@ export const demoWalletService = {
       created_at: new Date().toISOString(),
     };
 
-    const demoTransactions = user.user_metadata?.demo_transactions || [];
-    demoTransactions.unshift(newTxn);
-
-    await supabase.auth.updateUser({
-      data: {
+    const demoTransactions = [newTxn, ...(target.user_metadata?.demo_transactions || [])];
+    users[targetIndex] = {
+      ...target,
+      user_metadata: {
+        ...target.user_metadata,
         demo_wallet_balance: newBalance,
         demo_transactions: demoTransactions,
       },
-    });
+    };
+    auth.saveUsersList(users);
 
     return { success: true, balance: newBalance, message: `Successfully loaded ₹${amount} Demo Balance.` };
   },
 
   async resetDemoAccount(
-    _userId: string,
+    userId: string,
     _actor?: AuditActor | null
   ): Promise<{ success: boolean; message: string }> {
-    await supabase.auth.updateUser({
-      data: {
+    const session = await supabase.auth.getSession();
+    const actor = session.data.session?.user;
+    if (!actor) return { success: false, message: 'User not logged in' };
+
+    const auth = supabase.auth as DemoAuthAdmin;
+    const users = auth.getUsersList?.() || [];
+    const targetIndex = users.findIndex((user) => user.id === userId);
+    if (targetIndex < 0 || !auth.saveUsersList) {
+      return { success: false, message: 'Demo customer account was not found.' };
+    }
+    if (actor.id !== userId && actor.user_metadata?.role !== 'admin') {
+      return { success: false, message: 'Not authorized to reset this demo account.' };
+    }
+
+    const target = users[targetIndex];
+    users[targetIndex] = {
+      ...target,
+      user_metadata: {
+        ...target.user_metadata,
         planName: null,
         planPrice: null,
         planType: null,
@@ -92,7 +127,8 @@ export const demoWalletService = {
         demo_transactions: [],
         real_transactions: [],
       },
-    });
+    };
+    auth.saveUsersList(users);
 
     return { success: true, message: 'Demo account reset successfully.' };
   },
