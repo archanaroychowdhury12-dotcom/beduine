@@ -4,7 +4,7 @@ This codebase currently runs in **client-demo simulation mode** so a client can 
 
 The important security change is that the demo now follows production boundaries:
 
-- Admin access is based on explicit `role` metadata: `admin`, `customer`, or `agent`.
+- Admin access is based on explicit `role` metadata: `admin` or `customer`.
 - Email text such as `admin@test.com` no longer grants admin access.
 - Subscription activation happens only after a payment event is verified.
 - In demo mode, the verification event is a simulated webhook.
@@ -14,17 +14,21 @@ The important security change is that the demo now follows production boundaries
 ## Demo mode
 
 ```env
+VITE_BACKEND_MODE=demo
 VITE_ENABLE_DEMO_WALLET=true
 VITE_PAYMENT_PROVIDER=mock
 ```
 
 In this mode:
 
-1. The seeded mock user `demo@beduine.com` has `role: admin` and `is_demo_user: true`.
-2. Demo wallet can be credited for client presentations.
-3. Checkout creates a mock checkout session.
-4. A simulated webhook verifies the payment.
-5. Subscription entitlements are issued after the simulated webhook event.
+1. Customer: `demo@beduine.com` / `beduine123`.
+2. Admin: `admin@beduine.com` / `admin123`.
+3. Login pages provide a demo-only one-click account fill button.
+4. The customer starts with a Rs 5,000 demo wallet for presentation checkout.
+5. Checkout creates a mock checkout session and simulated verified webhook.
+6. Every verified plan purchase issues exactly one TRC.
+7. Admin access still requires the seeded admin identity and admin role.
+8. Registration creates customer accounts only; it cannot self-assign admin access.
 
 ## Production mode
 

@@ -49,7 +49,7 @@ function buildDemoProfile(supabaseUser: SupabaseRawUser): ProfileRecord {
     full_name: String(metadata.full_name || metadata.name || supabaseUser.email?.split('@')[0] || 'Member'),
     phone: String(supabaseUser.phone || metadata.phone || ''),
     city: String(metadata.city || ''),
-    role: 'customer',
+    role: metadata.role === 'admin' ? 'admin' : 'customer',
     is_demo_user: true,
   };
 }

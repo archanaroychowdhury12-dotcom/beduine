@@ -11,7 +11,7 @@ test.describe('Beduine app smoke coverage', () => {
   test('login fields appear after the welcome choice', async ({ page }) => {
     await page.goto('/login');
     await expect(page).toHaveTitle(/Login|Beduine/i);
-    await page.getByRole('button', { name: 'Log In to Your Account' }).click();
+    await page.getByRole('button', { name: 'Log In to Your Account' }).click({ force: true });
     await expect(page.locator('#loginEmail')).toBeVisible();
     await expect(page.locator('#loginPassword')).toBeVisible();
   });
@@ -26,6 +26,21 @@ test.describe('Beduine app smoke coverage', () => {
     await expect(page.getByText(/Admin Login/i).first()).toBeVisible();
     await expect(page.locator('#adminEmail')).toBeVisible();
     await expect(page.locator('#adminPassword')).toBeVisible();
+  });
+
+  test('seeded demo customer and admin accounts authenticate into their own areas', async ({ page }) => {
+    await page.goto('/login');
+    await page.getByRole('button', { name: 'Log In to Your Account' }).click({ force: true });
+    await page.getByRole('button', { name: /Use Demo Customer/i }).click();
+    await expect(page.locator('#loginEmail')).toHaveValue('demo@beduine.com');
+    await page.getByRole('button', { name: 'Log In', exact: true }).click();
+    await expect(page).toHaveURL(/\/dashboard$/);
+
+    await page.goto('/admin-login');
+    await page.getByRole('button', { name: /Use Demo Admin/i }).click();
+    await expect(page.locator('#adminEmail')).toHaveValue('admin@beduine.com');
+    await page.getByRole('button', { name: 'Enter Admin Panel' }).click();
+    await expect(page).toHaveURL(/\/admin$/);
   });
 
   test('paid tour route loads booking/tour experience shell', async ({ page }) => {

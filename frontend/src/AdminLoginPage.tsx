@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { ArrowLeft, Lock, Mail, ShieldCheck } from 'lucide-react';
-import { supabase } from '@/utils/supabaseClient';
+import { DEMO_ACCOUNT_CREDENTIALS, isRealSupabaseConnected, supabase } from '@/utils/supabaseClient';
 import { canAccessAdmin } from '@/services/accessControl';
 import { loadProfileRecord, mapSupabaseUser } from '@/utils/userMapper';
 import { notify } from '@/services/uiFeedback';
@@ -60,6 +60,22 @@ export default function AdminLoginPage({ onBack, onAdminLoginSuccess }: AdminLog
             <p className="text-xs text-slate-400 font-semibold">Separate restricted page. Customers cannot enter.</p>
           </div>
         </div>
+
+        {!isRealSupabaseConnected && (
+          <button
+            type="button"
+            onClick={() => {
+              setEmail(DEMO_ACCOUNT_CREDENTIALS.admin.email);
+              setPassword(DEMO_ACCOUNT_CREDENTIALS.admin.password);
+            }}
+            className="mb-4 w-full rounded-xl border border-indigo-400/30 bg-indigo-500/10 px-4 py-3 text-left transition-colors hover:bg-indigo-500/15"
+          >
+            <span className="block text-[10px] font-black uppercase tracking-wider text-indigo-300">Use Demo Admin</span>
+            <span className="mt-1 block text-[11px] font-semibold text-slate-300">
+              {DEMO_ACCOUNT_CREDENTIALS.admin.email} / {DEMO_ACCOUNT_CREDENTIALS.admin.password}
+            </span>
+          </button>
+        )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>

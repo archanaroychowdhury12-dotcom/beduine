@@ -70,6 +70,26 @@ describe('mapSupabaseUser', () => {
     expect(result.city).toBe('Demo City');
   });
 
+  it('preserves the seeded admin role in an explicit demo profile', () => {
+    import.meta.env.VITE_ENABLE_DEMO_WALLET = 'true';
+
+    const result = mapSupabaseUser(
+      {
+        id: 'demo-admin-id-90001',
+        email: 'admin@beduine.com',
+        user_metadata: {
+          uid: 'BDU-DEMO-ADMIN-001',
+          full_name: 'Beduine Admin',
+          is_demo_user: true,
+          role: 'admin',
+        },
+      } as SupabaseRawUser,
+      null,
+    );
+
+    expect(result.role).toBe('admin');
+  });
+
   it('does not seed demo travelers for a server-backed customer profile', () => {
     const result = mapSupabaseUser(
       {

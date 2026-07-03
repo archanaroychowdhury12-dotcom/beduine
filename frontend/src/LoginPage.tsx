@@ -4,7 +4,7 @@ import {
   ArrowLeft, ShieldCheck, Mail, Phone, Lock, User, Sparkles, Globe, Plane, Heart, ArrowRight
 } from 'lucide-react';
 import { WelcomeScreen } from '@/components/ui/onboarding-welcome-screen';
-import { supabase } from './utils/supabaseClient';
+import { DEMO_ACCOUNT_CREDENTIALS, isRealSupabaseConnected, supabase } from './utils/supabaseClient';
 import { notify } from '@/services/uiFeedback';
 import { emailSchema, fullNameSchema, getValidationMessage, indianMobileSchema, otpSchema, passwordSchema } from '@/utils/formValidation';
 import { SupabaseRawUser } from '@/types';
@@ -484,6 +484,21 @@ export default function LoginPage({ onBack, onLoginSuccess, initialMode = 'login
                     <form onSubmit={handleCustomSubmit} className="space-y-4">
                       {customStep === 1 ? (
                         <div className="space-y-4 text-left">
+                          {viewMode === 'login' && !isRealSupabaseConnected && (
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setCustomEmail(DEMO_ACCOUNT_CREDENTIALS.customer.email);
+                                setCustomPassword(DEMO_ACCOUNT_CREDENTIALS.customer.password);
+                              }}
+                              className="w-full rounded-xl border border-emerald-200 bg-emerald-50/80 px-4 py-3 text-left transition-colors hover:bg-emerald-100"
+                            >
+                              <span className="block text-[10px] font-black uppercase tracking-wider text-emerald-700">Use Demo Customer</span>
+                              <span className="mt-1 block text-[11px] font-semibold text-slate-600">
+                                {DEMO_ACCOUNT_CREDENTIALS.customer.email} / {DEMO_ACCOUNT_CREDENTIALS.customer.password}
+                              </span>
+                            </button>
+                          )}
                           <div>
                             <label className="block text-xs font-bold text-slate-600 mb-1.5" htmlFor="loginEmail">Email</label>
                             <div className="relative">

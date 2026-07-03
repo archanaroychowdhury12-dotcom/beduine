@@ -142,14 +142,14 @@ export const demoWalletService = {
       const demoTransactions = user.user_metadata?.demo_transactions || [];
       demoTransactions.unshift(newTxn);
 
-      // Create a dummy lucky draw credit in the ledger for visual preview
+      // Mirror the verified subscription entitlement: one TRC for every plan.
       const ledgerEntry = {
         id: `TXN-TRC-${Math.floor(100000 + Math.random() * 900000)}`,
         date: new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }),
         type: 'issued' as const,
         creditType: 'lucky_draw' as const,
         amount: 1,
-        reason: `MOCK: Subscription purchase benefit for ${planName}`,
+        reason: `Subscription purchase benefit for ${planName}`,
         creditCategory: 'travel_winner benefit' as const,
         creditValue: 1,
         usableFor: 'lucky_draw' as const,
@@ -169,7 +169,7 @@ export const demoWalletService = {
           payment_type: paymentMethod,
           demo_wallet_balance: newBalance,
           demo_transactions: demoTransactions,
-          weekly_eligible_entry_count: planId.toLowerCase().includes('platinum') ? 4 : planId.toLowerCase().includes('gold') ? 2 : 1,
+          weekly_eligible_entry_count: 1,
           ledger,
         },
       });
