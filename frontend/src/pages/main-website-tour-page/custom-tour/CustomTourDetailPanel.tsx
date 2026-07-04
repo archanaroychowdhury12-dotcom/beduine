@@ -2,11 +2,10 @@ import React, { useState } from 'react';
 import { CustomTourRequest } from '../../../types';
 import { customTourService } from '../../../services/customTourService';
 import {
-  Check, Clock, ShieldAlert, CreditCard, ShieldCheck,
+  Check, Clock, CreditCard, ShieldCheck,
   MessageSquare, X
 } from 'lucide-react';
 import { notify } from '@/services/uiFeedback';
-import { calculateAdvancePaymentPlan } from '@/features/booking/utils/advancePaymentSchedule';
 
 interface CustomTourDetailPanelProps {
   request: CustomTourRequest;
@@ -19,12 +18,10 @@ export const CustomTourDetailPanel: React.FC<CustomTourDetailPanelProps> = ({
   onClose,
   onRefresh
 }) => {
-  const isProduction = import.meta.env.VITE_BACKEND_MODE === 'production';
   const [request, setRequest] = useState<CustomTourRequest>(initialRequest);
   const [showRevisionForm, setShowRevisionForm] = useState(false);
   const [revisionMessage, setRevisionMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState<'upi' | 'card' | 'wallet'>('upi');
 
   const handleRequestRevision = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -58,34 +55,8 @@ export const CustomTourDetailPanel: React.FC<CustomTourDetailPanelProps> = ({
     }
   };
 
-  const handleProcessPayment = async () => {
-    if (isProduction) {
-      notify.info('Your verified payment link will be available after final review.');
-      return;
-    }
-    setIsSubmitting(true);
-    try {
-      const updated = await customTourService.confirmMockPayment(request.id);
-      setRequest(updated);
-      onRefresh();
-    } catch (err: any) {
-      notify.info(err.message);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
   // Find active quotation
   const activeQuotation = request.quotations.find((q: any) => q.id === request.currentQuotationId);
-  const customizedPaymentPlan = activeQuotation
-    ? calculateAdvancePaymentPlan({
-        baseTourTotal: activeQuotation.totalPrice,
-        selectedDate: request.travelStartDate,
-        tourCategory: request.tripType === 'International' ? 'international' : 'domestic',
-        bookingType: 'customized_tailor_made',
-      })
-    : null;
-
   // Status mapping to indices (1 to 5)
   const getStatusStep = (status: string): number => {
     switch (status) {
@@ -394,95 +365,7 @@ export const CustomTourDetailPanel: React.FC<CustomTourDetailPanelProps> = ({
             </form>
           )}
 
-          {/* Mock checkout payment portal */}
-          {!isProduction && request.status === 'Payment Pending' && activeQuotation && (
-            <div className="bg-white rounded-3xl p-5 border border-slate-150 shadow-sm space-y-4">
-              <div className="pb-3 border-b border-slate-100 text-left">
-                <span className="text-xs font-black text-slate-800 uppercase tracking-wide flex items-center gap-1.5">
-                  <CreditCard className="w-4.5 h-4.5 text-[#0096C7]" /> Secure Demo Checkout
-                </span>
-                <span className="text-[9.5px] text-slate-400 font-bold uppercase mt-1 block">
-                  Processing custom quotation v{activeQuotation.version}
-                </span>
-              </div>
-
-              {/* Payment Warning Disclaimer */}
-              <div className="p-3.5 bg-rose-50 border border-rose-100 rounded-2xl flex items-start gap-2.5 text-rose-800 text-[10px] leading-relaxed font-bold">
-                <ShieldAlert className="w-4 h-4 text-rose-500 shrink-0 mt-0.5" />
-                <div>
-                  <span>DEMO CHECKOUT ONLY</span>
-                  <p className="font-normal text-rose-600 mt-0.5">
-                    No real money will be charged. Payment gateway webhooks and formal invoice generation will be connected during the production phase.
-                  </p>
-                </div>
-              </div>
-
-              {/* Payment Method Selector */}
-              <div className="space-y-2">
-                <span className="text-[9.5px] text-slate-450 uppercase block font-black">Select Payment Mode</span>
-                <div className="grid grid-cols-3 gap-2 text-xs">
-                  {['upi', 'card', 'wallet'].map((method) => (
-                    <button
-                      type="button"
-                      key={method}
-                      onClick={() => setPaymentMethod(method as any)}
-                      className={`py-2 rounded-xl text-[10px] font-extrabold capitalize cursor-pointer border transition-all ${
-                        paymentMethod === method
-                          ? 'border-[#0096C7] bg-[#0096C7]/5 text-[#0086B3]'
-                          : 'border-slate-200 text-slate-500 bg-white hover:bg-slate-50'
-                      }`}
-                    >
-                      {method === 'upi' ? 'UPI / GPay' : method === 'card' ? 'Debit/Credit Card' : 'Net Banking'}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {customizedPaymentPlan && (
-                <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4 space-y-3">
-                  <div className="flex justify-between items-start gap-3 text-xs">
-                    <div>
-                      <span className="text-[9.5px] text-amber-700 uppercase block font-black">Customized Advance Schedule</span>
-                      <span className="text-[10px] text-slate-500 block mt-0.5">50% now, 25% seven days before, 25% before departure.</span>
-                    </div>
-                    <div className="text-right">
-                      <span className="text-[9.5px] text-slate-400 uppercase block font-black">Total</span>
-                      <span className="font-mono font-black text-slate-900">{formatPrice(customizedPaymentPlan.grandTotal)}</span>
-                    </div>
-                  </div>
-                  <div className="space-y-2">
-                    {customizedPaymentPlan.installments.map((row) => (
-                      <div key={row.id} className="flex justify-between gap-3 bg-white rounded-xl border border-amber-100 p-2.5 text-[10px]">
-                        <div>
-                          <span className="font-black text-slate-800">{row.label} • {row.percentage}%</span>
-                          <span className="block text-slate-500">{row.dueLabel}</span>
-                        </div>
-                        <span className="font-mono font-black text-slate-900">{formatPrice(row.amount)}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              <div className="border-t border-slate-100 pt-3 flex justify-between items-center text-xs">
-                <span className="text-slate-450 font-bold uppercase text-[9.5px]">Advance Payable Now</span>
-                <span className="text-base font-black text-[#0096C7] font-mono">
-                  {formatPrice(customizedPaymentPlan?.advanceDueNow || activeQuotation.totalPrice)}
-                </span>
-              </div>
-
-              <button
-                type="button"
-                disabled={isSubmitting}
-                onClick={handleProcessPayment}
-                className="w-full py-3 bg-[#0096C7] hover:bg-[#0086B3] text-white rounded-2xl text-xs font-black uppercase tracking-wider transition-all shadow-md shadow-cyan-100 cursor-pointer disabled:opacity-50"
-              >
-                {isSubmitting ? 'Processing Payment...' : 'Demo Pay Advance & Confirm'}
-              </button>
-            </div>
-          )}
-
-          {isProduction && request.status === 'Payment Pending' && activeQuotation && (
+          {request.status === 'Payment Pending' && activeQuotation && (
             <div className="bg-white rounded-3xl p-5 border border-slate-150 shadow-sm text-left">
               <span className="text-xs font-black text-slate-800 uppercase tracking-wide flex items-center gap-1.5">
                 <CreditCard className="w-4.5 h-4.5 text-[#0096C7]" /> Payment Link Pending
@@ -546,7 +429,7 @@ export const CustomTourDetailPanel: React.FC<CustomTourDetailPanelProps> = ({
                 {/* QR Code Payload (Google Charts QR Generator API) */}
                 <div className="pt-3 border-t border-dashed border-slate-200 flex flex-col items-center gap-2">
                   <img
-                    src={`https://chart.googleapis.com/chart?chs=120x120&cht=qr&chl=https%3A%2F%2Fbeduin.in%2Fverify-booking%2F${request.bookingId}`}
+                    src={`https://chart.googleapis.com/chart?chs=120x120&cht=qr&chl=https%3A%2F%2Fbeduine.in%2Fverify-booking%2F${request.bookingId}`}
                     alt="Voucher Verification QR"
                     className="w-28 h-28 object-contain border border-slate-100 rounded-xl p-1 bg-white"
                   />

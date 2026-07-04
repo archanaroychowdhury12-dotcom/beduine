@@ -1,5 +1,5 @@
 import React from 'react';
-import { Car, Building2, MapPin, HelpCircle, BadgeInfo, Check } from 'lucide-react';
+import { Car, Building2, MapPin, HelpCircle, BadgeInfo } from 'lucide-react';
 import { PickupInfo } from '../../types';
 
 export interface AddOn {
@@ -26,10 +26,6 @@ interface PickupSectionProps {
   setPickup: React.Dispatch<React.SetStateAction<PickupInfo>>;
   destinationName: string;
   currentUser?: any;
-  addOnsSelected: string[];
-  onToggleAddOn: (id: string) => void;
-  travelerCount: number;
-  showAddOns?: boolean;
 }
 
 const PICKUP_POINTS: Record<string, string[]> = {
@@ -71,16 +67,10 @@ const PICKUP_POINTS: Record<string, string[]> = {
   ],
 };
 
-const formatINR = (value: number) => `₹${value.toLocaleString('en-IN')}`;
-
 export const PickupSection: React.FC<PickupSectionProps> = ({
   pickup,
   setPickup,
   destinationName,
-  addOnsSelected,
-  onToggleAddOn,
-  travelerCount,
-  showAddOns = true,
 }) => {
   const destinationKey = Object.keys(PICKUP_POINTS).find((key) => destinationName.includes(key)) || 'Sundarbans';
   const pickupPoints = PICKUP_POINTS[destinationKey];
@@ -89,23 +79,13 @@ export const PickupSection: React.FC<PickupSectionProps> = ({
     setPickup((prev) => ({ ...prev, [field]: value }));
   };
 
-  const getAddOnCost = (addOn: AddOn) => {
-    return addOn.perPerson ? addOn.price * travelerCount : addOn.price;
-  };
-
-  // Add-ons Subtotal
-  const addOnsSubtotal = ADD_ONS.filter((item) => addOnsSelected.includes(item.id)).reduce(
-    (sum, item) => sum + getAddOnCost(item),
-    0
-  );
-
   return (
     <div className="space-y-8 text-left">
 
       {/* Pickup Section */}
       <div className="space-y-4">
         <div>
-          <span className="text-xs font-black text-amber-600 uppercase tracking-widest block mb-0.5">Step 4 — Pickup & Add-ons</span>
+          <span className="text-xs font-black text-amber-600 uppercase tracking-widest block mb-0.5">Step 4 — Pickup</span>
           <h3 className="text-xl font-bold text-slate-900">Customize Ground Transfers</h3>
           <p className="text-xs text-slate-500 mt-1">Provide your pickup point or request help from our logistics team.</p>
         </div>
@@ -272,57 +252,6 @@ export const PickupSection: React.FC<PickupSectionProps> = ({
           className="w-full bg-slate-50/50 py-3 px-4 rounded-lg border border-slate-200 text-xs font-semibold focus:bg-white focus:outline-none focus:ring-1 focus:ring-amber-500 animate-fadeIn"
         />
       </div>
-
-      {/* Add-ons Section */}
-      {showAddOns && <div className="space-y-4 pt-4 border-t border-slate-100">
-        <div className="flex items-center justify-between">
-          <h4 className="text-sm font-bold text-slate-900">Optional Expedition Add-ons</h4>
-          <span className="text-xs font-black text-amber-600 bg-amber-50 px-2.5 py-1 rounded-full border border-amber-100">
-            Subtotal: {formatINR(addOnsSubtotal)}
-          </span>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-          {ADD_ONS.map((addon) => {
-            const isSelected = addOnsSelected.includes(addon.id);
-            const totalCost = getAddOnCost(addon);
-
-            return (
-              <div
-                key={addon.id}
-                onClick={() => onToggleAddOn(addon.id)}
-                className={`p-4 rounded-xl border flex items-start gap-3.5 transition-all cursor-pointer h-24 ${
-                  isSelected
-                    ? 'border-amber-500 bg-amber-50/10 shadow-sm ring-2 ring-amber-500/10'
-                    : 'border-slate-200 bg-white hover:border-slate-300'
-                }`}
-              >
-                {/* Checkbox circle */}
-                <div className={`w-5 h-5 rounded-full border flex items-center justify-center shrink-0 mt-0.5 transition-colors ${
-                  isSelected ? 'bg-amber-500 border-amber-500 text-slate-950' : 'border-slate-300 bg-white'
-                }`}>
-                  {isSelected && <Check className="w-3.5 h-3.5 font-bold" />}
-                </div>
-
-                <div className="truncate flex-grow flex flex-col justify-between h-full text-left">
-                  <div>
-                    <span className="font-bold text-xs text-slate-900 block truncate">{addon.name}</span>
-                    <span className="text-[10px] text-slate-500 block leading-tight line-clamp-2 mt-0.5">
-                      {addon.description}
-                    </span>
-                  </div>
-                  <div className="text-[10px] font-bold text-slate-700 pt-1 mt-1 border-t border-slate-50">
-                    {formatINR(addon.price)} {addon.perPerson ? '/ person' : '/ group'}
-                    {addon.perPerson && travelerCount > 1 && (
-                      <span className="text-slate-400 font-semibold ml-1">(Total: {formatINR(totalCost)})</span>
-                    )}
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>}
 
     </div>
   );

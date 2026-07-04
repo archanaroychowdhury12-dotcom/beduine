@@ -6,8 +6,7 @@ import {
   Check, ChevronRight, Crown, Printer, 
   ShieldCheck, Users, Award, Star
 } from 'lucide-react';
-import { createClient } from '@supabase/supabase-js';
-import { isRealSupabaseConnected, supabase } from './utils/supabaseClient';
+import { supabase } from './utils/supabaseClient';
 import { notify } from '@/services/uiFeedback';
 import { AppUser, SupabaseRawUser } from '@/types';
 import { getValidationMessage, registrationAddressSchema, registrationPersonalSchema } from '@/utils/formValidation';
@@ -153,7 +152,7 @@ const ALL_PLANS = [
 export default function RegistrationPage({ initialPlanName, onBack, prefilledData, onRegisterSuccess, currentUser, onRedirectToLogin }: RegistrationPageProps) {
   const [showWelcome, setShowWelcome] = useState(false);
   // If already logged in, skip personal-info (step 1) and address (step 2) — go straight to plan confirmation
-  const [step, setStep] = useState(() => currentUser ? 3 : 1);
+  const [step, setStep] = useState(1);
   const [selectedPlanId, setSelectedPlanId] = useState(() => {
     const matched = ALL_PLANS.find(p => {
       if (p.id.toLowerCase() === initialPlanName.toLowerCase()) return true;
@@ -256,7 +255,7 @@ export default function RegistrationPage({ initialPlanName, onBack, prefilledDat
       planType: selectedPlan.type as 'domestic' | 'international',
       color: selectedPlan.color,
       glow: selectedPlan.glow,
-      drawToken: `TRC-${Math.floor(100000 + Math.random() * 900000)}`
+      drawToken: 'TRC-' + String(Math.floor(100000 + Math.random() * 900000))
     };
 
     // Registration now updates the already authenticated user.
@@ -280,22 +279,19 @@ export default function RegistrationPage({ initialPlanName, onBack, prefilledDat
       savedPickups: []
     };
 
-    if (isRealSupabaseConnected) {
-      const realSupabase = supabase as ReturnType<typeof createClient>;
-      const { error: profileError } = await ((realSupabase as any)
-        .from('profiles')
-        .update({
-          email: formData.email,
-          full_name: formData.fullName,
-          phone: formData.mobile,
-          city: formData.city,
-        })
-        .eq('id', currentUser.id) as Promise<{ error: { message: string } | null }>);
+    const { error: profileError } = await ((supabase
+      .from('profiles')
+      .update({
+        email: formData.email,
+        full_name: formData.fullName,
+        phone: formData.mobile,
+        city: formData.city,
+      })
+      .eq('id', currentUser.id) as unknown) as Promise<{ error: { message: string } | null }>);
 
-      if (profileError) {
-        notify.error(`Registration profile update failed: ${profileError.message}`);
-        return;
-      }
+    if (profileError) {
+      notify.error(`Registration profile update failed: ${profileError.message}`);
+      return;
     }
 
     let registeredUser: SupabaseRawUser | null = currentUser.supabaseUser || null;
@@ -305,6 +301,15 @@ export default function RegistrationPage({ initialPlanName, onBack, prefilledDat
       return;
     }
     registeredUser = data?.user || registeredUser;
+    
+    // Immediately refresh the session token to sync the newly updated metadata
+    try {
+      if ('refreshSession' in supabase.auth && typeof supabase.auth.refreshSession === 'function') {
+        await (supabase.auth as any).refreshSession();
+      }
+    } catch (refreshErr) {
+      console.warn('Session refresh failed or was skipped:', refreshErr);
+    }
 
     setReceipt(newReceipt);
     if (onRegisterSuccess && registeredUser) {
