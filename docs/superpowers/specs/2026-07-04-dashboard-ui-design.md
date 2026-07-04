@@ -6,7 +6,7 @@ Improve the Beduine customer dashboard UI design to match the user's reference s
 ## Requirements
 
 ### Sidebar & Header
-- **Sidebar Menu**: Ensure active items use background color `#006DF5` and text is white. Keep the current circular logo layout. Rename the menu item label "TRC / Travel Reward Credits" to "TRC / Lucky Draw Credits" to match the design reference.
+- **Sidebar Menu**: Ensure active items use background color `#006DF5` and text is white. Keep the current circular logo layout. Keep the menu item label "TRC / Travel Reward Credits" as it is.
 - **Header Profile**: Replace initials placeholder avatar with `/images/avatar.jpg` image. Under the user's name, display "Explorer" instead of their UID.
 
 ### Overview Screen

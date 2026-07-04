@@ -33,11 +33,7 @@ Replace the initials placeholder in `frontend/src/features/dashboard/modern/comp
 ```
 
 - [ ] **Step 2: Update Sidebar label**
-In `frontend/src/features/dashboard/modern/components/Sidebar.tsx`, verify active state styling and that label text renders properly.
-In `frontend/src/features/dashboard/modern/routes.ts`, rename `"TRC / Travel Reward Credits"` to `"TRC / Lucky Draw Credits"`.
-```typescript
-{ label: "TRC / Lucky Draw Credits", id: "trc-credits" as const, icon: TicketCheck },
-```
+In `frontend/src/features/dashboard/modern/components/Sidebar.tsx` and `frontend/src/features/dashboard/modern/routes.ts`, ensure that `"TRC / Travel Reward Credits"` is kept as-is (do not rename to Lucky Draw). Verify active state styling.
 
 - [ ] **Step 3: Run tests to verify setup**
 Run: `npm test -- --run` under `frontend/`
