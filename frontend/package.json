@@ -3,10 +3,13 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "engines": {
+    "node": "20.x"
+  },
   "scripts": {
     "dev": "vite",
     "typecheck": "tsc --noEmit",
-    "build": "npm run typecheck && vite build && node scripts/copy-static-landing.mjs",
+    "build": "npm run typecheck && vite build && node scripts/copy-static-landing.mjs && node scripts/verify-production-build.mjs",
     "preview": "vite preview",
     "test": "vitest run",
     "e2e": "playwright test",
